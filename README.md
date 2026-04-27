@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 28 hand-built sims across 7 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 49 hand-built sims across 7 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, and social science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -9,7 +9,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 
 ## Features
 
-- **28 original simulations** across 7 subjects (4 per subject) — see [Catalog](#catalog) below.
+- **49 original simulations** across 7 subjects (7 per subject) — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -30,6 +30,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Simple Pendulum | Grab and drag the bob to set the initial angle. Compare measured period vs. small-angle prediction. |
 | Waves on a String | Drive a string at one end, choose fixed/free far end, find resonant frequencies. |
 | Electric Field & Charges | Drop, drag, and right-click charges. Toggle field lines, vector grid, or potential heatmap. |
+| Newton's Cradle | Click and lift any of N balls, release, watch momentum cascade through the row. |
+| Lenses & Refraction | Drag the object along the axis; three principal rays trace image formation in a converging or diverging lens. |
+| Springs & SHM | Hang a mass on a spring, drag and release; side-by-side time/position graph shows perfect sine motion. |
 
 ### Chemistry
 
@@ -39,6 +42,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Periodic Table Explorer | Hover any of the 118 elements; color the table by category, state at 25 °C, or period. |
 | Ideal Gas Law | Tune n, T, and V; watch particles bounce while pressure (collision rate) responds as PV = nRT predicts. |
 | Acid-Base Titration | Drip NaOH into strong or weak acid; the pH curve traces out and the indicator color changes in real time. |
+| Bohr Atom Model | Slide atomic number Z; electrons fill 2-8-8-18 shells around the nucleus, valence highlighted. |
+| Le Chatelier's Principle | Pick a reversible reaction (Haber, Contact, generic), then perturb T, P, or reagents and watch equilibrium shift. |
+| Solubility & Saturation | Spoon solute into water; up to a temperature-dependent limit it dissolves, then deposits at the bottom. |
 
 ### Biology
 
@@ -48,6 +54,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Cell Explorer | Click any organelle in an animal or plant cell to see what it does. |
 | Natural Selection | Color-camouflaged prey reproduce on a colored background; the population shifts toward camouflaging hues. |
 | DNA Transcription & Translation | Type any DNA, watch RNA polymerase + ribosome walk it base-by-base into a polypeptide. |
+| Predator-Prey Ecosystem | 2D world of grass, rabbits, foxes — boom-and-bust population cycles emerge. |
+| Enzyme Activity | Tune T and pH on pepsin, trypsin, amylase, catalase; activity curves shift; denaturation past 55 °C. |
+| Osmosis & Membrane Transport | Two compartments, semi-permeable membrane — water flows toward the saltier side. |
 
 ### Earth & Space
 
@@ -57,6 +66,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Seasons & Axial Tilt | Move Earth around its orbit; read day length at any latitude on any date. |
 | Plate Tectonics | Pick convergent / divergent / transform; the cross-section animates with earthquakes. |
 | Moon Phases | Drag the Moon around Earth; top-down and from-Earth views update together. |
+| Greenhouse Effect | Tune CO₂ ppm; visible photons stream down, IR photons bounce off the GHG layer; surface temperature responds. |
+| Eclipse Geometry | Drag Moon and Earth to create solar or lunar eclipses; umbra and penumbra cones rendered live. |
+| Tides | Drag Moon (and Sun) around Earth; two tidal bulges form along the Moon-Earth line; spring vs neap tides labeled. |
 
 ### Computer Science
 
@@ -66,6 +78,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Binary Search Tree | Insert / search / delete; compare sorted vs. balanced insertion shapes. |
 | Pathfinding | Drag walls, start, and goal; race BFS against A*. |
 | Logic Gates & Circuits | Toggle inputs, swap gate types, build half-adders and full-adders; truth table fills in alongside. |
+| Conway's Game of Life | Click cells alive, run the B3/S23 rules, drop in glider/blinker/pulsar presets. |
+| Fractals & Recursion | Sierpinski triangle, Koch snowflake, fractal tree, Cantor set — slide the depth from 0 to 8. |
+| Caesar Cipher | Type plaintext, slide the shift, see ciphertext + a brute-force table of all 25 shifts. |
 
 ### Data Science
 
@@ -75,6 +90,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Distribution Explorer | Sample from normal / uniform / exponential / binomial; histogram converges on the PDF. |
 | K-Means Clustering | Drag points and centroids; step or run-to-convergence. |
 | Central Limit Theorem | Pick a wild parent (bimodal, exponential…); sample-mean histogram smooths into a Gaussian. |
+| Bayes' Theorem | Slide prevalence, sensitivity, specificity; population dot-grid and PPV update — the medical-test paradox in action. |
+| Confusion Matrix & ROC | Slide a classifier threshold across two overlapping populations; ROC and metrics update live. |
+| Outlier Effects | Drag any point — watch the mean lurch and the median barely flinch. |
 
 ### Social Science
 
@@ -84,6 +102,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Prisoner's Dilemma | Pit Always Cooperate, Always Defect, Tit-for-Tat, Grim, Pavlov, Random against each other over hundreds of rounds. |
 | Population Dynamics | Lotka–Volterra predator-prey, with both time-series and phase-plot views. |
 | Schelling's Segregation | 50×50 agent grid; even mild same-neighbor preferences produce strong segregation. |
+| SIR Epidemic Model | Tune R₀, recovery time, pre-vaccinated fraction; see flatten-the-curve in action. |
+| Voting Methods | Edit ballot blocks; plurality, runoff, IRV, and Borda all tally and pick (sometimes different) winners. |
+| Inequality & Lorenz Curve | Pick uniform / exponential / Pareto / two-class incomes; Gini and top-10% / bottom-50% shares update. |
 
 ---
 
@@ -343,13 +364,6 @@ Open to PRs in any of these directions:
 
 ---
 
-## License
-
-Released under the MIT License. See [LICENSE](LICENSE) (you may want to add a `LICENSE` file with the standard MIT text).
-
-If you build on this for your classroom, blog, or product, no attribution is required — but a star or a "made with All-Science Sims" link is appreciated.
-
----
 
 ## Acknowledgements
 
