@@ -1,0 +1,15 @@
+{
+  "name": "all-science-sims",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Client-side hub of interactive science simulations and virtual labs across 7 subjects (EN/ID).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

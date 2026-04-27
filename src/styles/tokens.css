@@ -1,0 +1,68 @@
+:root {
+  --color-bg: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0f2f7;
+  --color-fg: #0b1220;
+  --color-muted: #5b6478;
+  --color-border: #e3e6ee;
+  --color-accent: #3b82f6;
+  --color-accent-fg: #ffffff;
+  --color-danger: #ef4444;
+  --color-warn: #f59e0b;
+  --color-ok: #10b981;
+
+  --subj-physics: #3b82f6;
+  --subj-chemistry: #10b981;
+  --subj-biology: #14b8a6;
+  --subj-earth-space: #f59e0b;
+  --subj-computer-science: #8b5cf6;
+  --subj-data-science: #ec4899;
+  --subj-social-science: #f97316;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-1: 6px;
+  --radius-2: 10px;
+  --radius-3: 16px;
+  --radius-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgba(11, 18, 32, 0.06), 0 1px 1px rgba(11, 18, 32, 0.04);
+  --shadow-2: 0 4px 12px rgba(11, 18, 32, 0.08), 0 2px 4px rgba(11, 18, 32, 0.04);
+  --shadow-3: 0 12px 32px rgba(11, 18, 32, 0.12), 0 4px 8px rgba(11, 18, 32, 0.06);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --type-xs: 12px;
+  --type-sm: 14px;
+  --type-md: 16px;
+  --type-lg: 18px;
+  --type-xl: 22px;
+  --type-2xl: 28px;
+  --type-3xl: 36px;
+
+  --max-w: 1200px;
+  --header-h: 60px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0b1220;
+    --color-surface: #131a2b;
+    --color-surface-2: #1b2338;
+    --color-fg: #e7eaf3;
+    --color-muted: #95a0b8;
+    --color-border: #25304a;
+    --color-accent: #60a5fa;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.45);
+    --shadow-3: 0 12px 32px rgba(0, 0, 0, 0.55);
+  }
+}
