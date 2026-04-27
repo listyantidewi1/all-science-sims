@@ -20,6 +20,34 @@ A client-side hub of original interactive simulations covering **physics, chemis
 
 ---
 
+## Screenshots
+
+**Home page** — pick a subject from the grid, or scroll down for featured sims.
+
+![Home page](screenshots/1.png)
+
+**Featured simulations** — every sim is one click away from the front page.
+
+![Featured simulations](screenshots/2.png)
+
+**Subject pages** — each subject collects its 10 sims in one place.
+
+| Biology · Earth & Space | Computer Science |
+|:---:|:---:|
+| ![Biology and Earth & Space](screenshots/3.png) | ![Computer Science](screenshots/4.png) |
+
+**Sim pages** — every sim has the same layout: interactive stage on the left, intro / objectives / "try this" prompts on the right.
+
+| Newton's Cradle (Physics) | Logic Gates & Circuits (CS) |
+|:---:|:---:|
+| ![Newton's Cradle](screenshots/7.png) | ![Logic Gates & Circuits](screenshots/8.png) |
+
+| Moon Phases (Earth & Space) | Osmosis & Membrane Transport (Biology) |
+|:---:|:---:|
+| ![Moon Phases](screenshots/6.png) | ![Osmosis](screenshots/5.png) |
+
+---
+
 ## Catalog
 
 ### Physics
