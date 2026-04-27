@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 49 hand-built sims across 7 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 70 hand-built sims across 7 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, and social science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -9,7 +9,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 
 ## Features
 
-- **49 original simulations** across 7 subjects (7 per subject) — see [Catalog](#catalog) below.
+- **70 original simulations** across 7 subjects (10 per subject) — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -33,6 +33,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Newton's Cradle | Click and lift any of N balls, release, watch momentum cascade through the row. |
 | Lenses & Refraction | Drag the object along the axis; three principal rays trace image formation in a converging or diverging lens. |
 | Springs & SHM | Hang a mass on a spring, drag and release; side-by-side time/position graph shows perfect sine motion. |
+| Double Pendulum (chaos) | Two pendulums hinged together — drag a bob, release, watch a "ghost" pendulum perturbed by 0.001° diverge wildly. |
+| Doppler Effect | Drag a moving sound source past an observer; wavefronts bunch in front and stretch behind, plus a Mach cone above the speed of sound. |
+| Diffraction & Interference | 1–8 slits, slide width / spacing / wavelength; intensity profile and screen pattern update live. |
 
 ### Chemistry
 
@@ -45,6 +48,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Bohr Atom Model | Slide atomic number Z; electrons fill 2-8-8-18 shells around the nucleus, valence highlighted. |
 | Le Chatelier's Principle | Pick a reversible reaction (Haber, Contact, generic), then perturb T, P, or reagents and watch equilibrium shift. |
 | Solubility & Saturation | Spoon solute into water; up to a temperature-dependent limit it dissolves, then deposits at the bottom. |
+| VSEPR Molecular Geometry | Pick bonded atoms + lone pairs; the 3D shape rearranges (linear, tetrahedral, trigonal bipyramid, octahedral, plus presets like H₂O, NH₃, SF₆). |
+| Phase Diagram (Water) | Drag a marker on the P-T plane; sample becomes solid / liquid / gas / supercritical with triple and critical points marked. |
+| Beer-Lambert Spectroscopy | Slide concentration, path length, and wavelength; live transmittance, full absorbance spectrum, and a tunable lamp-cuvette-detector. |
 
 ### Biology
 
@@ -57,6 +63,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Predator-Prey Ecosystem | 2D world of grass, rabbits, foxes — boom-and-bust population cycles emerge. |
 | Enzyme Activity | Tune T and pH on pepsin, trypsin, amylase, catalase; activity curves shift; denaturation past 55 °C. |
 | Osmosis & Membrane Transport | Two compartments, semi-permeable membrane — water flows toward the saltier side. |
+| Hardy-Weinberg Equilibrium | Diploid population, set N and p; observe drift in small populations and selection shifting allele frequency. |
+| Neuron Action Potential | Click the neuron to fire a pulse; FitzHugh-Nagumo dynamics show threshold, depolarization, refractory period. |
+| Mendelian Pedigree | 3-generation family chart; click anyone to mark affected, and the panel says which inheritance modes are consistent. |
 
 ### Earth & Space
 
@@ -69,6 +78,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Greenhouse Effect | Tune CO₂ ppm; visible photons stream down, IR photons bounce off the GHG layer; surface temperature responds. |
 | Eclipse Geometry | Drag Moon and Earth to create solar or lunar eclipses; umbra and penumbra cones rendered live. |
 | Tides | Drag Moon (and Sun) around Earth; two tidal bulges form along the Moon-Earth line; spring vs neap tides labeled. |
+| Coriolis Effect | Throw a ball across a spinning disk; switch between rotating-frame view (curved path) and inertial view (straight line). |
+| Hertzsprung-Russell Diagram | Slide initial mass and life stage; star moves through main sequence → giant → white dwarf or supernova on the HR plot. |
+| Mantle Convection | 2D slice of Earth's mantle; click to add heat or cold, watch convection cells rearrange and surface plates drift. |
 
 ### Computer Science
 
@@ -81,6 +93,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Conway's Game of Life | Click cells alive, run the B3/S23 rules, drop in glider/blinker/pulsar presets. |
 | Fractals & Recursion | Sierpinski triangle, Koch snowflake, fractal tree, Cantor set — slide the depth from 0 to 8. |
 | Caesar Cipher | Type plaintext, slide the shift, see ciphertext + a brute-force table of all 25 shifts. |
+| Turing Machine | Pick busy beaver / binary inc / unary doubler; tape, head, state, and rule table all step in lockstep. |
+| Boids — Flocking | Reynolds 1986 — three local rules (separate, align, cohese) produce emergent flocking; click to scatter. |
+| Elementary Cellular Automata | Wolfram's 1D rules 0–255 (try 30, 90, 110, 184); rule lookup table rendered as 8 mini-patterns. |
 
 ### Data Science
 
@@ -93,6 +108,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Bayes' Theorem | Slide prevalence, sensitivity, specificity; population dot-grid and PPV update — the medical-test paradox in action. |
 | Confusion Matrix & ROC | Slide a classifier threshold across two overlapping populations; ROC and metrics update live. |
 | Outlier Effects | Drag any point — watch the mean lurch and the median barely flinch. |
+| Anscombe's Quartet | Four datasets with identical summary stats; drag any point in any panel to feel which one is robust. |
+| Monte Carlo: Estimate π | Throw darts into a square + quarter circle; watch the running estimate converge on π with a 1/√N error band. |
+| Simpson's Paradox | Drag three group centers around a scatter; the within-group slopes and the aggregate slope can disagree in sign. |
 
 ### Social Science
 
@@ -105,6 +123,9 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | SIR Epidemic Model | Tune R₀, recovery time, pre-vaccinated fraction; see flatten-the-curve in action. |
 | Voting Methods | Edit ballot blocks; plurality, runoff, IRV, and Borda all tally and pick (sometimes different) winners. |
 | Inequality & Lorenz Curve | Pick uniform / exponential / Pareto / two-class incomes; Gini and top-10% / bottom-50% shares update. |
+| Preferential Attachment | Watch a Barabási–Albert network grow; rich-get-richer attachment produces hubs and a power-law degree histogram. |
+| Public Goods Game | N players contribute to a shared pot; cooperation collapses without punishment, stabilizes with it. |
+| Hawks vs Doves | Maynard Smith's evolutionary game; the hawk-fraction settles at the V/C evolutionary stable strategy. |
 
 ---
 
