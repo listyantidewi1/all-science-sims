@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 // Approximate titration of an acid (mono-protic) with a strong base (NaOH).
 // We treat strong acid as Ka → ∞ for charge balance.
@@ -79,6 +81,7 @@ export function mount(rootEl) {
 
   let pumping = 0; // 0 stop, 1 slow, 2 fast
   let curve = []; // [{vol, pH}]
+  let chartRect = null; // { x, y, w, h, x2(vol), y2(pH), s2v(sx) } — populated each frame
 
   function recompute() {
     curve = [];
@@ -186,6 +189,16 @@ export function mount(rootEl) {
     // pH curve
     drawCurve(ctx, leftW + 30, 30, W - leftW - 50, H - 60);
 
+    // Hover crosshair on the curve
+    const probe = hover.get();
+    if (probe && chartRect) {
+      drawCrosshair(ctx, probe, {
+        bounds: { x: chartRect.x, y: chartRect.y, w: chartRect.w, h: chartRect.h },
+        color: '#fbbf24',
+        label: probe.label,
+      });
+    }
+
     // Big readout
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(leftW + 40, 40, 220, 56);
@@ -204,6 +217,7 @@ export function mount(rootEl) {
     // y: pH 0..14, x: vol 0..50
     const x2 = (vol) => x + (vol / 50) * w;
     const y2 = (pH)  => y + h - (pH / 14) * h;
+    chartRect = { x, y, w, h, x2, y2, s2v: (sx) => Math.max(0, Math.min(50, ((sx - x) / w) * 50)) };
 
     // gridlines
     ctx.strokeStyle = 'rgba(120,130,150,0.2)';
@@ -288,6 +302,33 @@ export function mount(rootEl) {
 
   ctrlPanel.append(acidSel.el, acidConcS.el, acidVolS.el, baseConcS.el, KaS.el, indSel.el, titS.el, row(slowB, fastB, stopB, resetB));
 
+  // Drag the red dot along the curve to scrub volume; hover anywhere on the
+  // chart for a (volume, pH) readout. Both stop the pump while interacting.
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!chartRect) return null;
+    const { x, y, w, h, x2, y2 } = chartRect;
+    if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
+    const v = chartRect.s2v(sx);
+    const p = pHAt(v, params);
+    return { x: x2(v), y: y2(p), label: [`Vol = ${v.toFixed(1)} mL`, `pH = ${p.toFixed(2)}`] };
+  });
+  const drag = dragHandle(cv.canvas, {
+    hitTest(sx, sy) {
+      if (!chartRect) return null;
+      // Hit anywhere inside the chart rect counts as a scrub start.
+      const { x, y, w, h } = chartRect;
+      if (sx >= x && sx <= x + w && sy >= y && sy <= y + h) return 'scrub';
+      return null;
+    },
+    onStart() { pumping = 0; },
+    onDrag(_id, sx) {
+      params.titrantAdded = chartRect.s2v(sx);
+      titS.value = params.titrantAdded;
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ew-resize',
+  });
+
   const animator = loop((dt) => {
     step(dt);
     titS.value = params.titrantAdded;
@@ -295,5 +336,5 @@ export function mount(rootEl) {
   });
   animator.start();
 
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

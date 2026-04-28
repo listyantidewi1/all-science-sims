@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -17,6 +19,9 @@ export function mount(rootEl) {
     population: 10000,
   };
 
+  // Layout cache so hover/drag share coordinates with the renderer.
+  let dotRect = null; // { x, y, dotSize, cols, rows }
+
   function compute() {
     const N = params.population;
     const sick = Math.round(N * params.prevalence);
@@ -30,6 +35,29 @@ export function mount(rootEl) {
     return { N, sick, healthy, TP, FN, TN, FP, PPV };
   }
 
+  function dotIndexAt(sx, sy) {
+    if (!dotRect) return -1;
+    const { x, y, dotSize, cols, rows } = dotRect;
+    if (sx < x || sx >= x + cols * dotSize) return -1;
+    if (sy < y || sy >= y + rows * dotSize) return -1;
+    const cx = Math.floor((sx - x) / dotSize);
+    const cy = Math.floor((sy - y) / dotSize);
+    return cy * cols + cx;
+  }
+
+  function classifyDot(i, r) {
+    if (i >= r.N) return null;
+    if (i < r.sick) return i < r.TP ? 'TP' : 'FN';
+    const j = i - r.sick;
+    return j < r.FP ? 'FP' : 'TN';
+  }
+  const LABELS = {
+    TP: ['TRUE POSITIVE', 'sick · tested +'],
+    FN: ['FALSE NEGATIVE', 'sick · tested −'],
+    FP: ['FALSE POSITIVE', 'healthy · tested +'],
+    TN: ['TRUE NEGATIVE', 'healthy · tested −'],
+  };
+
   function draw() {
     const ctx = cv.ctx;
     const W = cv.width, H = cv.height;
@@ -42,6 +70,8 @@ export function mount(rootEl) {
     const dotSize = Math.min((W - 40) / cols, (H * 0.55) / rows);
     const startX = (W - cols * dotSize) / 2;
     const startY = 20;
+    dotRect = { x: startX, y: startY, dotSize, cols, rows };
+
     let i = 0;
     const dots = r.N;
     const sickDots = r.sick;
@@ -49,15 +79,13 @@ export function mount(rootEl) {
       for (let x = 0; x < cols; x++) {
         if (i >= dots) break;
         const isSick = i < sickDots;
-        // mark TP/FN among sick; TN/FP among healthy
         let color = '#475569';
         if (isSick) {
-          color = i < r.TP ? '#10b981' : '#fbbf24'; // TP green, FN yellow
+          color = i < r.TP ? '#10b981' : '#fbbf24';
         } else {
-          // i in [sickDots, N)
           const j = i - sickDots;
-          if (j < r.FP) color = '#ef4444'; // FP red
-          else color = '#1e293b'; // TN dark
+          if (j < r.FP) color = '#ef4444';
+          else color = '#1e293b';
         }
         ctx.fillStyle = color;
         ctx.fillRect(startX + x * dotSize, startY + y * dotSize, dotSize - 0.5, dotSize - 0.5);
@@ -93,24 +121,73 @@ export function mount(rootEl) {
     ctx.fillText(`Of ${r.N} people: ${r.sick} sick, ${r.TP} TP, ${r.FN} FN, ${r.FP} FP, ${r.TN} TN`, 16, H - 14);
 
     // Legend
-    ctx.fillStyle = '#10b981';
-    ctx.fillRect(W - 170, H - 70, 12, 12);
-    ctx.fillStyle = '#fff';
+    const lg = [
+      ['#10b981', 'True positive'],
+      ['#fbbf24', 'False negative'],
+      ['#ef4444', 'False positive'],
+      ['#1e293b', 'True negative'],
+    ];
+    for (let k = 0; k < lg.length; k++) {
+      ctx.fillStyle = lg[k][0];
+      ctx.fillRect(W - 170, H - 70 + k * 16, 12, 12);
+      ctx.fillStyle = '#fff';
+      ctx.font = '11px var(--font-sans)';
+      ctx.fillText(lg[k][1], W - 154, H - 60 + k * 16);
+    }
+
+    // Hint about drag
+    ctx.fillStyle = 'rgba(120,130,150,0.7)';
     ctx.font = '11px var(--font-sans)';
-    ctx.fillText('True positive', W - 154, H - 60);
-    ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(W - 170, H - 54, 12, 12);
-    ctx.fillStyle = '#fff';
-    ctx.fillText('False negative', W - 154, H - 44);
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(W - 170, H - 38, 12, 12);
-    ctx.fillStyle = '#fff';
-    ctx.fillText('False positive', W - 154, H - 28);
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(W - 170, H - 22, 12, 12);
-    ctx.fillStyle = '#fff';
-    ctx.fillText('True negative', W - 154, H - 12);
+    ctx.fillText('Hover dots for details · drag inside the grid to set prevalence', startX, startY - 6);
+
+    // Hover crosshair / tooltip
+    const probe = hover.get();
+    if (probe) {
+      drawCrosshair(ctx, probe, {
+        bounds: { x: startX, y: startY, w: cols * dotSize, h: rows * dotSize },
+        color: '#fff',
+        vertical: false,
+        horizontal: false,
+        dot: true,
+        label: probe.label,
+      });
+    }
   }
+
+  // Hover: identify the dot under the cursor.
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    const r = compute();
+    const idx = dotIndexAt(sx, sy);
+    if (idx < 0 || idx >= r.N) return null;
+    const cls = classifyDot(idx, r);
+    if (!cls) return null;
+    const counts = { TP: r.TP, FN: r.FN, FP: r.FP, TN: r.TN };
+    return {
+      x: dotRect.x + (idx % dotRect.cols) * dotRect.dotSize + dotRect.dotSize / 2,
+      y: dotRect.y + Math.floor(idx / dotRect.cols) * dotRect.dotSize + dotRect.dotSize / 2,
+      label: [...LABELS[cls], `count: ${counts[cls]} / ${r.N}`],
+    };
+  });
+
+  // Drag inside the grid to set prevalence — vertical position picks the
+  // sick/healthy boundary row, so dragging up = lower prevalence.
+  const drag = dragHandle(cv.canvas, {
+    hitTest(sx, sy) {
+      if (!dotRect) return null;
+      const { x, y, dotSize, cols, rows } = dotRect;
+      if (sx >= x && sx < x + cols * dotSize && sy >= y && sy < y + rows * dotSize) return 'prev';
+      return null;
+    },
+    onDrag(_id, sx, sy) {
+      const idx = Math.max(0, dotIndexAt(sx, sy));
+      // Each dot is one in N; idx maps to the prevalence threshold.
+      const newPrev = Math.max(0.001, Math.min(0.5, idx / params.population));
+      params.prevalence = newPrev;
+      prevS.value = newPrev;
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ns-resize',
+  });
 
   // controls
   const prevS = slider({
@@ -141,5 +218,5 @@ export function mount(rootEl) {
 
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

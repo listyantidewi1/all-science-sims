@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawTooltip } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -9,6 +11,7 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
+  let plot = null; // { padX, padY, lW, lH, sigmaMax, muMax, x2, y2, s2x, m2y }
 
   const params = {
     rfRate: 0.03,
@@ -40,6 +43,11 @@ export function mount(rootEl) {
     const sigmaMax = 0.5, muMax = 0.25;
     const x2 = (s) => padX + (s / sigmaMax) * lW;
     const y2 = (m) => padY + lH - ((m - 0) / muMax) * lH;
+    plot = {
+      x: padX, y: padY, w: lW, h: lH, sigmaMax, muMax, x2, y2,
+      s2sigma: (sx) => Math.max(0.01, Math.min(sigmaMax, ((sx - padX) / lW) * sigmaMax)),
+      s2mu:    (sy) => Math.max(-0.05, Math.min(muMax, muMax - ((sy - padY) / lH) * muMax)),
+    };
 
     // Capital allocation line (CAL): tangent line from rf intercept to highest-Sharpe fund
     let bestSharpe = -Infinity, bestFund = null;
@@ -112,6 +120,21 @@ export function mount(rootEl) {
       ctx.fillText(`µ ${(f.mu*100).toFixed(1)}%   σ ${(f.sigma*100).toFixed(1)}%   excess ${((f.mu - params.rfRate)*100).toFixed(1)}%`, rx + 40, yy);
       yy += 24;
     }
+
+    // Drag hint
+    ctx.fillStyle = 'rgba(120,130,150,0.6)';
+    ctx.font = '11px var(--font-sans)';
+    ctx.fillText('Drag any fund dot to set its (σ, µ)', padX, H - 10);
+
+    const probe = hover.get();
+    if (probe) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(probe.x, probe.y, 12, 0, Math.PI * 2);
+      ctx.stroke();
+      drawTooltip(ctx, probe.label, probe.x + 14, probe.y - 14);
+    }
   }
 
   // controls
@@ -127,7 +150,35 @@ export function mount(rootEl) {
     ctrlPanel.append(muS.el, sgS.el);
   }
 
+  function findFund(sx, sy) {
+    if (!plot) return -1;
+    for (let i = 0; i < params.funds.length; i++) {
+      const f = params.funds[i];
+      if (Math.hypot(sx - plot.x2(f.sigma), sy - plot.y2(f.mu)) < 14) return i;
+    }
+    return -1;
+  }
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    const i = findFund(sx, sy);
+    if (i < 0) return null;
+    const f = params.funds[i];
+    return {
+      x: plot.x2(f.sigma), y: plot.y2(f.mu),
+      label: [f.name, `µ ${(f.mu * 100).toFixed(1)}%   σ ${(f.sigma * 100).toFixed(1)}%`, `Sharpe ${sharpeOf(f).toFixed(3)}`],
+    };
+  });
+  const drag = dragHandle(cv.canvas, {
+    hitTest: (sx, sy) => findFund(sx, sy),
+    onDrag(idx, sx, sy) {
+      const f = params.funds[idx];
+      f.sigma = plot.s2sigma(sx);
+      f.mu = plot.s2mu(sy);
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'grab',
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 const ENZYMES = {
   pepsin:    { name: 'Pepsin (stomach)',         optT: 37, sigT: 8,  optPH: 2.0, sigPH: 1.0, color: '#ef4444' },
@@ -26,6 +28,9 @@ export function mount(rootEl) {
 
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
 
+  // Charts populated each frame so hover/drag can hit-test against them.
+  const charts = { T: null, pH: null };
+
   const params = {
     enzyme: 'pepsin',
     T: 37, pH: 7.0,
@@ -41,14 +46,22 @@ export function mount(rootEl) {
     const halfW = W / 2;
 
     // Temperature curve
+    charts.T = { x: 30, y: 30, w: halfW - 50, h: H - 60, min: 0, max: 100 };
     drawCurve(ctx, 30, 30, halfW - 50, H - 60, 'T (°C)', 0, 100, params.T,
       (T) => activity(ENZYMES[params.enzyme], T, params.pH, false, params.inhibitor),
       (enz, T) => activity(enz, T, params.pH, false, params.inhibitor));
 
     // pH curve
+    charts.pH = { x: halfW + 20, y: 30, w: halfW - 50, h: H - 60, min: 0, max: 14 };
     drawCurve(ctx, halfW + 20, 30, halfW - 50, H - 60, 'pH', 0, 14, params.pH,
       (pH) => activity(ENZYMES[params.enzyme], params.T, pH, false, params.inhibitor),
       (enz, pH) => activity(enz, params.T, pH, false, params.inhibitor));
+
+    const probe = hover.get();
+    if (probe) {
+      const c = probe.kind === 'T' ? charts.T : charts.pH;
+      drawCrosshair(ctx, probe, { bounds: c, color: '#fbbf24', label: probe.label });
+    }
 
     // Big readout
     const act = activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor);
@@ -142,7 +155,41 @@ export function mount(rootEl) {
 
   ctrlPanel.append(enzSel.el, tS.el, pS.el, inhS.el, cmpT.el);
 
+  function chartHit(sx, sy) {
+    if (charts.T && sx >= charts.T.x && sx <= charts.T.x + charts.T.w &&
+        sy >= charts.T.y && sy <= charts.T.y + charts.T.h) return 'T';
+    if (charts.pH && sx >= charts.pH.x && sx <= charts.pH.x + charts.pH.w &&
+        sy >= charts.pH.y && sy <= charts.pH.y + charts.pH.h) return 'pH';
+    return null;
+  }
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    const k = chartHit(sx, sy);
+    if (!k) return null;
+    const c = charts[k];
+    const v = c.min + ((sx - c.x) / c.w) * (c.max - c.min);
+    const a = k === 'T'
+      ? activity(ENZYMES[params.enzyme], v, params.pH, false, params.inhibitor)
+      : activity(ENZYMES[params.enzyme], params.T, v, false, params.inhibitor);
+    return {
+      kind: k,
+      x: sx,
+      y: c.y + c.h - a * (c.h - 10) - 4,
+      label: [k === 'T' ? `T = ${v.toFixed(0)} °C` : `pH = ${v.toFixed(1)}`, `activity = ${(a * 100).toFixed(0)}%`],
+    };
+  });
+  const drag = dragHandle(cv.canvas, {
+    hitTest: (sx, sy) => chartHit(sx, sy),
+    onDrag(id, sx) {
+      const c = charts[id];
+      const v = c.min + ((sx - c.x) / c.w) * (c.max - c.min);
+      if (id === 'T') { params.T = Math.max(0, Math.min(100, v)); tS.value = params.T; }
+      else { params.pH = Math.max(0, Math.min(14, v)); pS.value = params.pH; }
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ew-resize',
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

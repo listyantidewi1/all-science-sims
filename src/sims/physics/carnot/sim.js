@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -9,6 +10,7 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const cv = createCanvas(canvasWrap, { aspect: 4 / 3 });
+  let chartRect = null;
 
   // 1 mole of ideal gas
   const params = {
@@ -55,6 +57,7 @@ export function mount(rootEl) {
     const Pmin = c.P3 * 0.9;
     const x2 = (V) => padX + ((V - Vmin) / (Vmax - Vmin)) * gW;
     const y2 = (P) => padY + gH - ((P - Pmin) / (Pmax - Pmin)) * gH;
+    chartRect = { x: padX, y: padY, w: gW, h: gH, Vmin, Vmax, Pmin, Pmax, x2, y2 };
 
     // gridlines
     ctx.strokeStyle = 'rgba(120,130,150,0.15)';
@@ -160,6 +163,9 @@ export function mount(rootEl) {
     ctx.fillText('Volume V →', padX + gW - 80, padY + gH + 14);
     ctx.save(); ctx.translate(20, padY + gH / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Pressure P', 0, 0); ctx.restore();
+
+    const probe = hover.get();
+    if (probe) drawCrosshair(ctx, probe, { bounds: { x: padX, y: padY, w: gW, h: gH }, color: '#fbbf24', label: probe.label });
   }
 
   // controls
@@ -173,7 +179,21 @@ export function mount(rootEl) {
     onInput: (v) => { params.V2 = Math.max(v, params.V1 + 0.1); } });
   ctrlPanel.append(ThS.el, TcS.el, v1S.el, v2S.el);
 
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!chartRect) return null;
+    const { x, y, w, h, Vmin, Vmax } = chartRect;
+    if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
+    const V = Vmin + ((sx - x) / w) * (Vmax - Vmin);
+    const P_h = R * params.Th / V;
+    const P_c = R * params.Tc / V;
+    return {
+      x: sx,
+      y: sy,
+      label: [`V = ${V.toFixed(3)} m³`, `Pᴴ(Tʰ) = ${P_h.toFixed(0)} Pa`, `Pᴄ(Tᶜ) = ${P_c.toFixed(0)} Pa`],
+    };
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); cv.destroy(); };
 }

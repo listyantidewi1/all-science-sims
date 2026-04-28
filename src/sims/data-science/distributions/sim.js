@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 function gaussian() {
   // Box-Muller
@@ -84,6 +85,8 @@ export function mount(rootEl) {
     return [0, 1];
   }
 
+  let chartRect = null;
+
   function draw() {
     const ctx = cv.ctx;
     const W = cv.width, H = cv.height;
@@ -113,6 +116,7 @@ export function mount(rootEl) {
     // bars
     const x2s = (x) => padX + ((x - a) / (b - a)) * (W - padX * 2);
     const y2s = (y) => H - padY - (y / maxD) * (H - padY * 2);
+    chartRect = { x: padX, y: padY, w: W - padX * 2, h: H - padY * 2, a, b, maxD, x2s, y2s, densities, binW, bins };
     for (let i = 0; i < bins; i++) {
       const x0 = x2s(a + i * binW);
       const x1 = x2s(a + (i + 1) * binW);
@@ -144,7 +148,35 @@ export function mount(rootEl) {
     if (params.dist === 'exponential') label = `Exp(λ=${params.p1.toFixed(2)})`;
     if (params.dist === 'binomial')    label = `Binomial(n=${Math.round(params.p2)}, p=${params.p1.toFixed(2)})`;
     ctx.fillText(`${label}    samples: ${samples.length}`, padX, 24);
+
+    const probe = hover.get();
+    if (probe) {
+      drawCrosshair(ctx, probe, {
+        bounds: { x: padX, y: padY, w: W - padX * 2, h: H - padY * 2 },
+        color: '#fbbf24',
+        label: probe.label,
+      });
+    }
   }
+
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!chartRect) return null;
+    const { x, y, w, h, a, b, maxD, densities, binW, bins, x2s, y2s } = chartRect;
+    if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
+    const xVal = a + ((sx - x) / w) * (b - a);
+    const idx = Math.max(0, Math.min(bins - 1, Math.floor((xVal - a) / binW)));
+    const empirical = densities[idx];
+    const theoretical = pdf(xVal);
+    return {
+      x: sx,
+      y: y2s(theoretical),
+      label: [
+        `x = ${xVal.toFixed(3)}`,
+        `bin density: ${empirical.toFixed(3)}`,
+        `pdf(x) = ${theoretical.toFixed(3)}`,
+      ],
+    };
+  });
 
   function sampledPdf(a, b) {
     const out = [];
@@ -193,5 +225,5 @@ export function mount(rootEl) {
   const tick = () => { draw(); raf = requestAnimationFrame(tick); };
   raf = requestAnimationFrame(tick);
 
-  return () => { cancelAnimationFrame(raf); cv.destroy(); };
+  return () => { cancelAnimationFrame(raf); hover.destroy(); cv.destroy(); };
 }

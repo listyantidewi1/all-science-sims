@@ -133,11 +133,32 @@ export function mount(rootEl) {
     ctx.fillText('From Earth', leftW + 12, 18);
 
     const angDeg = (state.angle * 180 / Math.PI) % 360;
+    // Synodic month ≈ 29.53 days. angle 0 → full (day ~14.77); angle π → new (day 0).
+    // Map state.angle so day 0 = New (angle = π), day grows CCW around the orbit.
+    const SYNODIC = 29.53;
+    const a = ((state.angle - Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+    const day = (a / (Math.PI * 2)) * SYNODIC;
+
     ctx.font = 'bold 16px var(--font-sans)';
-    ctx.fillText(phaseName(angDeg), leftW + 12, H - 24);
+    ctx.fillText(phaseName(angDeg), leftW + 12, H - 40);
     ctx.font = '12px var(--font-sans)';
     const lit = illuminatedFraction(state.angle);
-    ctx.fillText(`Illuminated: ${(lit * 100).toFixed(0)}%`, leftW + 12, H - 8);
+    ctx.fillText(`Illuminated: ${(lit * 100).toFixed(0)}%`, leftW + 12, H - 24);
+    ctx.fillText(`Day ${day.toFixed(1)} of ${SYNODIC.toFixed(2)}`, leftW + 12, H - 8);
+
+    // Eclipse alignment indicator — within ~6° of new (solar eclipse possible)
+    // or full (lunar eclipse possible). The Moon's orbital tilt actually limits
+    // these, but the visual alignment is what we surface here.
+    const dNew = Math.min(angDeg, 360 - angDeg, Math.abs(angDeg - 180));
+    const isNewAlign = Math.abs(((angDeg + 180) % 360) - 180) < 6;
+    const isFullAlign = Math.abs(angDeg) < 6 || Math.abs(angDeg - 360) < 6;
+    if (isNewAlign || isFullAlign) {
+      ctx.fillStyle = 'rgba(239,68,68,0.85)';
+      ctx.fillRect(leftW + 12, 26, 180, 22);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.fillText(isFullAlign ? '☾ Lunar eclipse alignment' : '☉ Solar eclipse alignment', leftW + 18, 41);
+    }
 
     // hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';

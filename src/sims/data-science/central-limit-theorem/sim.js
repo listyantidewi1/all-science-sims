@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 function drawFrom(parent) {
   if (parent === 'uniform') return Math.random();
@@ -39,6 +40,8 @@ export function mount(rootEl) {
 
   let parentSamples = []; // raw values for parent histogram
   let means = [];
+  // Each chart records its rect + range so hover can hit-test it.
+  const charts = { parent: null, means: null };
 
   function reset() {
     parentSamples = [];
@@ -89,9 +92,17 @@ export function mount(rootEl) {
     ctx.clearRect(0, 0, W, H);
 
     const halfW = W / 2;
+    charts.parent = { x: 30, y: 30, w: halfW - 60, h: H - 60, range: [0, 1], values: parentSamples };
     drawHist(ctx, 30, 30, halfW - 60, H - 60, parentSamples, '#94a3b8', 'Parent distribution');
     const meanRange = computeMeanRange();
+    charts.means = { x: halfW + 30, y: 30, w: halfW - 60, h: H - 60, range: meanRange, values: means };
     drawHist(ctx, halfW + 30, 30, halfW - 60, H - 60, means, '#ec4899', `Sample-mean histogram  (n = ${params.n})`, meanRange, true);
+
+    const probe = hover.get();
+    if (probe) {
+      const c = probe.kind === 'parent' ? charts.parent : charts.means;
+      drawCrosshair(ctx, probe, { bounds: c, color: '#fbbf24', label: probe.label });
+    }
   }
 
   function computeMeanRange() {
@@ -170,7 +181,27 @@ export function mount(rootEl) {
 
   ctrlPanel.append(parentSel.el, nS.el, rateS.el, row(drawB, resetB));
 
+  function probeChart(c, kind, sx, sy) {
+    if (!c) return null;
+    if (sx < c.x || sx > c.x + c.w || sy < c.y || sy > c.y + c.h) return null;
+    const bins = 36;
+    const idx = Math.min(bins - 1, Math.max(0, Math.floor(((sx - c.x) / c.w) * bins)));
+    const counts = histogram(c.values, c.range, bins);
+    const lo = c.range[0] + (idx / bins) * (c.range[1] - c.range[0]);
+    const hi = c.range[0] + ((idx + 1) / bins) * (c.range[1] - c.range[0]);
+    return {
+      kind,
+      x: c.x + (idx + 0.5) * (c.w / bins),
+      y: sy,
+      label: [`x ∈ [${lo.toFixed(3)}, ${hi.toFixed(3)})`, `count: ${counts[idx]} / ${c.values.length}`],
+    };
+  }
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    return probeChart(charts.parent, 'parent', sx, sy)
+        || probeChart(charts.means,  'means',  sx, sy);
+  });
+
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); cv.destroy(); };
 }

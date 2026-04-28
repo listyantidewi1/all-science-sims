@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -19,6 +20,7 @@ export function mount(rootEl) {
   let atoms = [];   // {alive: bool}
   let history = []; // {t, alive}
   let t = 0;
+  let chartRect = null;
 
   function reset() {
     atoms = [];
@@ -74,6 +76,7 @@ export function mount(rootEl) {
     const maxT = Math.max(20, params.halfLife * 5);
     const x2 = (tt) => gx + (tt / maxT) * gw;
     const y2 = (n) => gy + gh - (n / params.N0) * gh;
+    chartRect = { x: gx, y: gy, w: gw, h: gh, maxT, x2, y2, history };
 
     // half-life gridlines
     ctx.strokeStyle = 'rgba(245,158,11,0.3)';
@@ -131,7 +134,39 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 13px var(--font-sans)';
     ctx.fillText(`${alive}/${params.N0} alive    t=${t.toFixed(1)} s`, 16, 28);
+
+    const probe = hover.get();
+    if (probe) drawCrosshair(ctx, probe, { bounds: { x: gx, y: gy, w: gw, h: gh }, color: '#fbbf24', label: probe.label });
   }
+
+  function interpHistory(tt) {
+    if (!history.length) return params.N0;
+    if (tt <= history[0].t) return history[0].alive;
+    if (tt >= history[history.length - 1].t) return history[history.length - 1].alive;
+    let lo = 0, hi = history.length - 1;
+    while (lo < hi - 1) { const m = (lo + hi) >> 1; if (history[m].t <= tt) lo = m; else hi = m; }
+    const a = history[lo], b = history[hi];
+    const u = (tt - a.t) / Math.max(1e-9, b.t - a.t);
+    return a.alive + (b.alive - a.alive) * u;
+  }
+
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!chartRect) return null;
+    const { x, y, w, h, maxT, x2, y2 } = chartRect;
+    if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
+    const tt = ((sx - x) / w) * maxT;
+    const theory = params.N0 * Math.pow(0.5, tt / params.halfLife);
+    const actual = interpHistory(tt);
+    return {
+      x: sx,
+      y: y2(theory),
+      label: [
+        `t = ${tt.toFixed(2)} s`,
+        `theoretical: ${theory.toFixed(1)}`,
+        `actual: ${actual.toFixed(0)}`,
+      ],
+    };
+  });
 
   // controls
   const N0S = slider({ label: 'Starting atoms N₀', min: 20, max: 1000, step: 10, value: params.N0,
@@ -144,5 +179,5 @@ export function mount(rootEl) {
 
   const animator = loop((dt) => { step(Math.min(0.1, dt)); draw(); });
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); cv.destroy(); };
 }

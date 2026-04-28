@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -9,6 +11,7 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
+  let respChart = null;
 
   const params = {
     R: 50,        // ohms
@@ -137,6 +140,7 @@ export function mount(rootEl) {
     const x2 = (f) => x + Math.log10(f / fMin) / Math.log10(fMax / fMin) * w;
     const Imax = params.Vsrc / params.R;
     const y2 = (I) => y + h - (I / (Imax * 1.05)) * (h - 16) - 8;
+    respChart = { x, y, w, h, fMin, fMax, x2, y2 };
 
     // current curve
     ctx.strokeStyle = '#10b981';
@@ -178,6 +182,9 @@ export function mount(rootEl) {
     ctx.font = '11px var(--font-sans)';
     ctx.fillText('Current vs frequency (log)', x + 6, y - 4);
     ctx.fillText('Hz →', x + w - 30, y + h + 14);
+
+    const probe = hover.get();
+    if (probe) drawCrosshair(ctx, probe, { bounds: { x, y, w, h }, color: '#fbbf24', label: probe.label });
   }
 
   // controls
@@ -197,7 +204,36 @@ export function mount(rootEl) {
 
   ctrlPanel.append(RS.el, LS.el, CS.el, fS.el, row(tuneB));
 
+  function inResp(sx, sy) {
+    return respChart && sx >= respChart.x && sx <= respChart.x + respChart.w &&
+           sy >= respChart.y && sy <= respChart.y + respChart.h;
+  }
+  function freqAt(sx) {
+    const u = (sx - respChart.x) / respChart.w;
+    return respChart.fMin * Math.pow(respChart.fMax / respChart.fMin, Math.max(0, Math.min(1, u)));
+  }
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!inResp(sx, sy)) return null;
+    const f = freqAt(sx);
+    const I = current(f);
+    const imp = impedance(f);
+    return {
+      x: sx, y: respChart.y2(I),
+      label: [`f = ${f.toFixed(0)} Hz`, `I = ${(I * 1000).toFixed(2)} mA`, `|Z| = ${imp.Z.toFixed(1)} Ω`],
+    };
+  });
+  // Drag along the response chart to set the drive frequency.
+  const drag = dragHandle(cv.canvas, {
+    hitTest: (sx, sy) => inResp(sx, sy) ? 'freq' : null,
+    onDrag(_id, sx) {
+      params.freq = Math.round(Math.max(50, Math.min(50000, freqAt(sx))));
+      fS.value = params.freq;
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ew-resize',
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

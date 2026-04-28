@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -43,6 +44,8 @@ export function mount(rootEl) {
     return { simpleHistory, compoundHistory, principalHistory, finalCompound: compoundBal, finalSimple: simpleBal, finalPrincipal: principalCum };
   }
 
+  let chartRect = null;
+
   function draw() {
     const ctx = cv.ctx;
     const W = cv.width, H = cv.height;
@@ -52,12 +55,14 @@ export function mount(rootEl) {
     const r = compute();
     const padX = 60, padY = 50;
     const gW = W - padX - 30, gH = H - padY - 40;
+    chartRect = { x: padX, y: padY, w: gW, h: gH, history: r.compoundHistory, simple: r.simpleHistory, principal: r.principalHistory, maxY: 0 };
     ctx.strokeStyle = 'rgba(120,130,150,0.4)';
     ctx.strokeRect(padX, padY, gW, gH);
 
     const maxY = Math.max(r.finalCompound, r.finalSimple, r.finalPrincipal) * 1.05;
     const x2 = (yr) => padX + (yr / params.years) * gW;
     const y2 = (v) => padY + gH - (v / maxY) * gH;
+    chartRect.maxY = maxY;
 
     // gridlines
     ctx.strokeStyle = 'rgba(120,130,150,0.15)';
@@ -113,7 +118,50 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
     ctx.font = '11px var(--font-sans)';
     ctx.fillText('Compound interest grows exponentially; simple grows linearly.', 16, 80);
+
+    const probe = hover.get();
+    if (probe) {
+      drawCrosshair(ctx, probe, {
+        bounds: { x: padX, y: padY, w: gW, h: gH },
+        color: '#fbbf24',
+        label: probe.label,
+      });
+    }
   }
+
+  function interp(history, year) {
+    if (!history.length) return 0;
+    if (year <= history[0].year) return history[0].value;
+    if (year >= history[history.length - 1].year) return history[history.length - 1].value;
+    for (let i = 1; i < history.length; i++) {
+      if (history[i].year >= year) {
+        const a = history[i - 1], b = history[i];
+        const t = (year - a.year) / (b.year - a.year);
+        return a.value + (b.value - a.value) * t;
+      }
+    }
+    return 0;
+  }
+
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (!chartRect) return null;
+    const { x, y, w, h, history, maxY } = chartRect;
+    if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
+    const yr = ((sx - x) / w) * params.years;
+    const cv_ = interp(history, yr);
+    const sv = interp(chartRect.simple, yr);
+    const pv = interp(chartRect.principal, yr);
+    return {
+      x: sx,
+      y: y + h - (cv_ / maxY) * h,
+      label: [
+        `Year ${yr.toFixed(1)}`,
+        `Compound: $${cv_.toLocaleString(undefined, {maximumFractionDigits:0})}`,
+        `Simple:   $${sv.toLocaleString(undefined, {maximumFractionDigits:0})}`,
+        `Contributed: $${pv.toLocaleString(undefined, {maximumFractionDigits:0})}`,
+      ],
+    };
+  });
 
   // controls
   const PS = slider({ label: 'Starting principal $', min: 0, max: 100000, step: 100, value: params.P,
@@ -134,5 +182,5 @@ export function mount(rootEl) {
 
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); cv.destroy(); };
 }

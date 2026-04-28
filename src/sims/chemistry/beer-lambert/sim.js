@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 // Sample absorbance spectra — each sample has a peak at λ_max with width.
 const SAMPLES = {
@@ -34,6 +36,7 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
+  let chartRect = null;
 
   const params = {
     sample: 'kmno4',
@@ -110,6 +113,7 @@ export function mount(rootEl) {
 
     // Spectrum plot below
     const sx = 60, sy = appY + appH + 60, sw = W - 90, sh = H - sy - 30;
+    chartRect = { x: sx, y: sy, w: sw, h: sh };
     ctx.strokeStyle = 'rgba(120,130,150,0.4)';
     ctx.strokeRect(sx, sy, sw, sh);
     // Gradient: full visible range
@@ -154,6 +158,9 @@ export function mount(rootEl) {
     ctx.fillText(`A = ε × c × L = ${r.A.toFixed(3)}`, 16, 26);
     ctx.font = '11px var(--font-mono)';
     ctx.fillText(`ε(${params.wavelength}) = ${r.eps.toFixed(0)} M⁻¹cm⁻¹`, 16, 40);
+
+    const probe = hover.get();
+    if (probe) drawCrosshair(ctx, probe, { bounds: { x: sx, y: sy, w: sw, h: sh }, color: '#fbbf24', label: probe.label });
   }
 
   // controls
@@ -182,7 +189,43 @@ export function mount(rootEl) {
 
   ctrlPanel.append(samSel.el, wlS.el, cS.el, lS.el, row(peakB));
 
+  // Hover any wavelength on the spectrum chart for an A and ε readout.
+  const hover = hoverProbe(cv.canvas, (sxh, syh) => {
+    if (!chartRect) return null;
+    const { x, y, w, h } = chartRect;
+    if (sxh < x || sxh > x + w || syh < y || syh > y + h) return null;
+    const wl = 380 + ((sxh - x) / w) * 400;
+    const sample = SAMPLES[params.sample];
+    const eps = molarAbsorptivity(sample, wl);
+    const A = eps * params.concentration * params.pathLength;
+    return {
+      x: sxh,
+      y: y + h - Math.min(A, 3) / 3 * h,
+      label: [
+        `λ = ${wl.toFixed(0)} nm`,
+        `A = ${A.toFixed(3)}`,
+        `ε = ${eps.toFixed(0)}`,
+      ],
+    };
+  });
+  // Drag horizontally on the spectrum chart to set the working wavelength.
+  const drag = dragHandle(cv.canvas, {
+    hitTest(sxh, syh) {
+      if (!chartRect) return null;
+      const { x, y, w, h } = chartRect;
+      return (sxh >= x && sxh <= x + w && syh >= y && syh <= y + h) ? 'wl' : null;
+    },
+    onDrag(_id, sxh) {
+      if (!chartRect) return;
+      const wl = Math.max(380, Math.min(780, 380 + ((sxh - chartRect.x) / chartRect.w) * 400));
+      params.wavelength = Math.round(wl);
+      wlS.value = params.wavelength;
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ew-resize',
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

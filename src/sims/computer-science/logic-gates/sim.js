@@ -391,6 +391,28 @@ export function mount(rootEl) {
   const allOutB = button({ label: 'All inputs 0', onClick: () => { for (const k of Object.keys(state.inputs)) state.inputs[k] = 0; render(); } });
   ctrlPanel.appendChild(row(allInB, allOutB));
 
+  // Auto-cycle through every input combination — the truth table comes alive,
+  // and the corresponding row highlights itself in sync.
+  let cycleTimer = 0;
+  const cycleB = button({ label: '▶ Cycle inputs', onClick: () => {
+    if (cycleTimer) {
+      clearInterval(cycleTimer);
+      cycleTimer = 0;
+      cycleB.label = '▶ Cycle inputs';
+      return;
+    }
+    cycleB.label = '⏸ Stop cycle';
+    const inputs = CIRCUITS[state.circuit].inputs;
+    const total = 1 << inputs.length;
+    let i = inputs.reduce((acc, n, idx) => acc | (state.inputs[n] << (inputs.length - 1 - idx)), 0);
+    cycleTimer = setInterval(() => {
+      i = (i + 1) % total;
+      inputs.forEach((n, idx) => { state.inputs[n] = (i >> (inputs.length - 1 - idx)) & 1; });
+      render();
+    }, 900);
+  } });
+  ctrlPanel.appendChild(row(cycleB));
+
   render();
-  return () => {};
+  return () => { if (cycleTimer) clearInterval(cycleTimer); };
 }

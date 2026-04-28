@@ -1,5 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { dragHandle } from '../../../lib/handle.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -9,6 +11,8 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
+  let priceChart = null;
+  let curveChart = null;
 
   const params = {
     face: 1000,
@@ -47,6 +51,12 @@ export function mount(rootEl) {
     ctx.fillText(`Price: $${price.toFixed(2)}    (${status})`, 16, 28);
     ctx.font = '11px var(--font-mono)';
     ctx.fillText(`coupon ${(params.couponRate*100).toFixed(2)}%   yield ${(params.yield*100).toFixed(2)}%   ${params.years}y`, 16, 46);
+
+    const probe = hover.get();
+    if (probe) {
+      const c = probe.kind === 'price' ? priceChart : curveChart;
+      drawCrosshair(ctx, probe, { bounds: c, color: '#fbbf24', label: probe.label });
+    }
   }
 
   function drawPriceVsYield(ctx, x, y, w, h) {
@@ -57,6 +67,7 @@ export function mount(rootEl) {
     const Pmin = bondPrice(yMax, params.years, params.couponRate, params.face) * 0.9;
     const x2 = (yr) => x + (yr / yMax) * w;
     const y2 = (p) => y + h - ((p - Pmin) / (Pmax - Pmin)) * (h - 16) - 8;
+    priceChart = { x, y, w, h, yMax, x2, y2 };
 
     // par line
     if (params.face > Pmin && params.face < Pmax) {
@@ -101,6 +112,7 @@ export function mount(rootEl) {
     const Pmin = 0, Pmax = 1500;
     const x2 = (t) => x + ((t - Tmin) / (Tmax - Tmin)) * w;
     const y2 = (p) => y + h - ((p - Pmin) / (Pmax - Pmin)) * (h - 16) - 8;
+    curveChart = { x, y, w, h, Tmin, Tmax, x2, y2 };
 
     // bars: bond price for each maturity
     for (let t = Tmin; t <= Tmax; t++) {
@@ -142,7 +154,42 @@ export function mount(rootEl) {
   }
   ctrlPanel.append(cS.el, yS.el, tS.el, presetRow);
 
+  function inRect(c, sx, sy) { return c && sx >= c.x && sx <= c.x + c.w && sy >= c.y && sy <= c.y + c.h; }
+  const hover = hoverProbe(cv.canvas, (sx, sy) => {
+    if (inRect(priceChart, sx, sy)) {
+      const yr = Math.max(0.001, Math.min(priceChart.yMax, ((sx - priceChart.x) / priceChart.w) * priceChart.yMax));
+      const p = bondPrice(yr, params.years, params.couponRate, params.face);
+      return {
+        kind: 'price',
+        x: priceChart.x2(yr), y: priceChart.y2(p),
+        label: [`yield = ${(yr * 100).toFixed(2)}%`, `price = $${p.toFixed(2)}`],
+      };
+    }
+    if (inRect(curveChart, sx, sy)) {
+      const t = Math.max(curveChart.Tmin, Math.min(curveChart.Tmax,
+        Math.round(curveChart.Tmin + ((sx - curveChart.x) / curveChart.w) * (curveChart.Tmax - curveChart.Tmin))));
+      const p = bondPrice(params.yield, t, params.couponRate, params.face);
+      return {
+        kind: 'curve',
+        x: curveChart.x2(t), y: curveChart.y2(p),
+        label: [`maturity = ${t}y`, `price = $${p.toFixed(2)}`],
+      };
+    }
+    return null;
+  });
+  // Drag horizontally on the price-vs-yield chart to set the yield directly.
+  const drag = dragHandle(cv.canvas, {
+    hitTest: (sx, sy) => inRect(priceChart, sx, sy) ? 'yield' : null,
+    onDrag(_id, sx) {
+      const yr = Math.max(0.001, Math.min(priceChart.yMax, ((sx - priceChart.x) / priceChart.w) * priceChart.yMax));
+      params.yield = yr;
+      yS.value = yr;
+    },
+    cursor: 'crosshair',
+    hoverCursor: 'ew-resize',
+  });
+
   const animator = loop(() => draw());
   animator.start();
-  return () => { animator.stop(); cv.destroy(); };
+  return () => { animator.stop(); hover.destroy(); drag.destroy(); cv.destroy(); };
 }

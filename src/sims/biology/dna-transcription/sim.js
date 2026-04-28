@@ -72,11 +72,13 @@ export function mount(rootEl) {
   function baseSpan(b, opts = {}) {
     const c = BASE_COLOR[b] || '#94a3b8';
     const muted = opts.muted ? '0.25' : '1';
-    return `<span style="
+    const ring = opts.ring ? 'box-shadow:0 0 0 2px #fbbf24;' : '';
+    const idx = opts.index != null ? `data-base-index="${opts.index}"` : '';
+    return `<span ${idx} style="
       display:inline-flex;align-items:center;justify-content:center;
       width:28px;height:32px;margin:1px;border-radius:6px;
       background:${c};color:white;font-family:var(--font-mono);font-weight:700;
-      opacity:${muted};
+      opacity:${muted};cursor:pointer;${ring}
     ">${b}</span>`;
   }
 
@@ -87,16 +89,22 @@ export function mount(rootEl) {
     const codons = [];
     for (let i = 0; i + 2 < transcribed.length; i += 3) codons.push(transcribed.slice(i, i + 3));
 
+    // Highlight the codon currently being translated (the last 3 bases that
+    // were transcribed). Bases at positions [codonStart, codonStart+3) are ringed.
+    const codonStart = state.progress === 0 ? -1 : Math.floor((state.progress - 1) / 3) * 3;
+
     let dnaHTML = '';
     for (let i = 0; i < dna.length; i++) {
-      dnaHTML += baseSpan(dna[i], { muted: i >= state.progress });
+      const inCurrentCodon = codonStart >= 0 && i >= codonStart && i < codonStart + 3 && i < state.progress;
+      dnaHTML += baseSpan(dna[i], { muted: i >= state.progress, ring: inCurrentCodon, index: i });
     }
 
     let rnaHTML = '';
     for (let i = 0; i < dna.length; i++) {
       const b = i < state.progress ? fullRna[i] : '';
+      const inCurrentCodon = codonStart >= 0 && i >= codonStart && i < codonStart + 3 && i < state.progress;
       rnaHTML += b
-        ? baseSpan(b)
+        ? baseSpan(b, { ring: inCurrentCodon })
         : `<span style="display:inline-flex;width:28px;height:32px;margin:1px;border-radius:6px;border:1px dashed var(--color-border)"></span>`;
     }
 
@@ -143,12 +151,22 @@ export function mount(rootEl) {
   }
 
   // controls
+  const scrubS = slider({
+    label: 'Scrub position', min: 0, max: 1, step: 1, value: 0,
+    onInput: (v) => { state.progress = Math.max(0, Math.min(state.dna.length, v)); state.autoplay = false; playT.value = false; render(); },
+  });
+  function refreshScrub() {
+    scrubS.el.querySelector('input').max = state.dna.length;
+    scrubS.value = state.progress;
+  }
+
   const playT = toggle({ label: 'Auto-advance', value: state.autoplay, onChange: (v) => { state.autoplay = v; } });
   const speedS = slider({
     label: 'Bases / second', min: 0.5, max: 10, step: 0.5, value: state.speed,
     onInput: (v) => { state.speed = v; },
   });
   const stepB = button({ label: 'Step', onClick: () => { state.progress = Math.min(state.dna.length, state.progress + 1); render(); } });
+  const back1B = button({ label: '◀ Step', onClick: () => { state.progress = Math.max(0, state.progress - 1); render(); } });
   const resetB = button({ label: 'Reset', onClick: () => { state.progress = 0; render(); } });
   const fullB = button({ label: 'Skip to end', primary: true, onClick: () => { state.progress = state.dna.length; render(); } });
   const exB = button({ label: 'Example: insulin signal', onClick: () => {
@@ -158,7 +176,20 @@ export function mount(rootEl) {
     render();
   } });
 
-  ctrlPanel.append(speedS.el, playT.el, row(stepB, resetB, fullB), row(exB));
+  // Click any base in the strand to jump the polymerase there.
+  display.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-base-index]');
+    if (!t) return;
+    const idx = Number(t.getAttribute('data-base-index'));
+    if (Number.isFinite(idx)) {
+      state.progress = idx + 1;
+      state.autoplay = false;
+      playT.value = false;
+      render();
+    }
+  });
+
+  ctrlPanel.append(scrubS.el, speedS.el, playT.el, row(back1B, stepB, resetB, fullB), row(exB));
 
   let raf = 0, last = 0, acc = 0;
   function tick(ts) {
@@ -172,10 +203,12 @@ export function mount(rootEl) {
       }
       render();
     }
+    refreshScrub();
     raf = requestAnimationFrame(tick);
   }
   raf = requestAnimationFrame(tick);
   render();
+  refreshScrub();
 
   return () => { cancelAnimationFrame(raf); };
 }

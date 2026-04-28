@@ -60,22 +60,26 @@ export function mount(rootEl) {
     if (state.mode === 'vectors') drawVectors(ctx, W, H);
     if (state.mode === 'lines') drawFieldLines(ctx, W, H);
 
-    // charges
+    // charges — radius scales with magnitude so you can see strength at a glance
     for (let i = 0; i < state.charges.length; i++) {
       const c = state.charges[i];
       const p = w2s(c);
+      const mag = Math.abs(c.q);
+      const r = RADIUS_PX * (0.7 + Math.min(2, mag) * 0.35);
       ctx.fillStyle = c.q > 0 ? '#ef4444' : '#3b82f6';
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, RADIUS_PX, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px var(--font-sans)';
+      ctx.font = `bold ${Math.round(11 + Math.min(2, mag) * 3)}px var(--font-sans)`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(c.q > 0 ? '+' : '−', p.x, p.y + 1);
+      const sign = c.q > 0 ? '+' : '−';
+      const label = mag === 1 ? sign : `${sign}${mag.toFixed(mag === Math.round(mag) ? 0 : 1)}`;
+      ctx.fillText(label, p.x, p.y + 1);
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
     }
@@ -99,7 +103,7 @@ export function mount(rootEl) {
     // hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
     ctx.font = '12px var(--font-sans)';
-    ctx.fillText('Click empty space to add a charge · Drag a charge to move · Right-click to remove', 12, H - 12);
+    ctx.fillText('Click empty space to add · drag to move · right-click to remove · scroll over a charge to change |q|', 12, H - 12);
   }
 
   function drawVectors(ctx, W, H) {
@@ -266,6 +270,22 @@ export function mount(rootEl) {
     state.dragging = null;
     cv.canvas.style.cursor = 'crosshair';
   });
+
+  // Scroll over a charge to adjust its magnitude (sign-preserving) in 0.5 increments.
+  cv.canvas.addEventListener('wheel', (e) => {
+    const rect = cv.canvas.getBoundingClientRect();
+    const sx = (e.clientX - rect.left) * cv.width / rect.width;
+    const sy = (e.clientY - rect.top) * cv.height / rect.height;
+    const idx = findCharge(sx, sy);
+    if (idx < 0) return;
+    e.preventDefault();
+    const c = state.charges[idx];
+    const sign = c.q >= 0 ? 1 : -1;
+    const mag = Math.abs(c.q);
+    const delta = e.deltaY > 0 ? -0.5 : 0.5;
+    const next = Math.max(0.5, Math.min(5, mag + delta));
+    c.q = sign * next;
+  }, { passive: false });
 
   // controls
   const modeSel = select({

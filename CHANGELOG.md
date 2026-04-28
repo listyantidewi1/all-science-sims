@@ -13,6 +13,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] — Interactivity Wave C (10 chart-heavy sims)
+
+### Changed (chart sims gain hover crosshairs and drag handles)
+
+Every sim below now uses `hoverProbe` + `drawCrosshair` for live (x, y) tooltips on the chart. Where a slider mapped naturally to a chart axis, the slider is now **also** a drag-on-the-curve handle.
+
+- **Finance / Compound Interest** — hover the chart to see compound, simple, and contributed values at any year.
+- **Finance / Sharpe Ratio** — hover any fund dot for µ, σ, and Sharpe; **drag** any fund dot on the risk-return scatter to change its (σ, µ) directly.
+- **Finance / Bond Pricing** — hover the price-vs-yield curve for (yield, price); hover the yield-curve bars for (maturity, price); drag along the price-vs-yield chart to set the market yield.
+- **Chemistry / Beer-Lambert** — hover the absorbance spectrum for (λ, A, ε); drag the spectrum to set the working wavelength.
+- **Chemistry / Radioactive Decay** — hover the decay chart to compare actual atom count vs theoretical N₀·(½)^(t/T) at any time.
+- **Biology / Enzyme Activity** — hover either the T or pH curve for (parameter, activity); drag horizontally on either curve to set T or pH.
+- **Physics / Carnot Cycle** — hover the P–V diagram to read isothermal pressures at both T_h and T_c for any volume.
+- **Physics / RLC Resonance** — hover the frequency response for (f, I, |Z|); drag horizontally to set the drive frequency.
+- **Data Science / Distributions** — hover any bin to see empirical density vs theoretical pdf at that x.
+- **Data Science / Central Limit Theorem** — hover either the parent or sample-mean histogram for the bin range and count.
+
+### Notes
+
+- Bundle: main grew ~0.1 KB (still 83 KB gzipped). Almost all upgrades are net code that doesn't ship to other sims; the lib helpers added in 1.4.0 are doing the heavy lifting.
+- 17 of 153 sims now use the shared chart helpers — there's substantial room to apply the same pattern across the remaining ~25 chart-shaped sims (npv, capm, phillips-curve, monte-carlo-pi, hardy-weinberg, action-potential, hr-diagram, …) in subsequent waves.
+
+---
+
+## [1.4.0] — Interactivity Wave A + B (shared helpers + featured-sim upgrades)
+
+### Added
+
+- **`src/lib/chart.js`** — `hoverProbe(canvas, getProbe)`, `drawCrosshair(ctx, probe, opts)`, `drawTooltip(ctx, text, x, y, bounds)`. A reusable hover/probe/tooltip primitive: any sim can now wire pointer-following crosshairs and labelled tooltips on its canvas in a few lines.
+- **`src/lib/handle.js`** — `dragHandle(canvas, { hitTest, onStart, onDrag, onEnd, ... })`. Pointer-event-based drag layer with proper coordinate mapping, pointer capture, and hover-cursor flips. Touch + mouse work uniformly.
+
+### Changed (featured-sim interactivity upgrades)
+
+- **Chemistry / Titration** — drag the red dot **anywhere along the pH curve** to scrub volume; hover the chart for a (volume, pH) tooltip. Replaces "set titrant added" slider as the primary input.
+- **Data Science / Bayes' Theorem** — hover any dot in the 100×100 population grid to see whether it's a true positive / false negative / etc., with running counts; drag inside the grid to set prevalence directly.
+- **Social Science / Schelling Segregation** — paint mode: drag the grid to seed your own configuration (red / blue / empty); hover a cell to see its same-neighbor ratio and happy/unhappy state.
+- **Earth & Space / Moon Phases** — added synodic-day counter (Day X of 29.53) and an eclipse-alignment badge that lights up when the Moon is within ~6° of new or full.
+- **Computer Science / Logic Gates** — "▶ Cycle inputs" button auto-walks every input combination on a timer, highlighting the corresponding row in the truth table as it goes.
+- **Biology / DNA Transcription** — scrub slider for the polymerase position, "◀ Step" button to back up, **click any base** in the DNA strand to jump there, and the codon currently being translated is ringed in real time.
+- **Physics / Electric Field** — scroll over a charge to change its magnitude (0.5 – 5 in 0.5 steps); charges visually scale with |q| and now show their value (`+2`, `−1.5`, etc.).
+
+### Notes
+
+- Bundle: main grew ~1 KB (still 83 KB gzipped). Shared helpers ship as part of the main bundle so any sim can pull them in without a new chunk.
+- These 7 sims now serve as the reference templates for Wave C — the chart-heavy sims in finance / chemistry / data science can apply the same hover-tooltip / drag-handle pattern with minimal code per sim.
+
+---
+
 ## [1.3.0] — Discoverability + PWA
 
 ### Added
