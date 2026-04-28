@@ -1,0 +1,21 @@
+{
+  "name": "All-Science Sims",
+  "short_name": "Science Sims",
+  "description": "Interactive simulations and virtual labs across 9 science subjects, EN/ID, runs entirely in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "categories": ["education", "science"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

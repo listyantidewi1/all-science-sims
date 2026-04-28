@@ -165,6 +165,7 @@ main {
   box-shadow: var(--shadow-1);
   transition: transform 120ms ease, box-shadow 120ms ease;
   min-height: 120px;
+  position: relative;
 }
 .sim-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
 .sim-card .sim-card__tag {
@@ -175,9 +176,79 @@ main {
   color: var(--accent, var(--color-accent));
   margin-bottom: var(--space-2);
   font-weight: 700;
+  padding-right: 28px;
 }
 .sim-card h4 { margin: 0 0 var(--space-1); font-size: var(--type-md); }
 .sim-card p { margin: 0; color: var(--color-muted); font-size: var(--type-sm); }
+.sim-card__fav {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+.sim-card__fav:hover { background: var(--color-surface-2); color: var(--color-fg); }
+.sim-card__fav.is-on { color: #fbbf24; }
+.sim-card__fav.is-on:hover { color: #f59e0b; }
+.sim-card__fav:active { transform: scale(0.92); }
+
+/* Search */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  font-size: var(--type-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-fg);
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.search__input::placeholder { color: var(--color-muted); }
+.search__input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+.search__count {
+  font-size: var(--type-sm);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Install prompt button (header) */
+.install-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-fg);
+  font-size: var(--type-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+.install-btn.is-available { display: inline-flex; }
+.install-btn:hover { background: var(--color-surface-2); }
 
 /* Sim shell */
 .sim-shell {

@@ -1,6 +1,7 @@
 import { t, getLocale, setLocale } from '../i18n/index.js';
 import { SUBJECTS } from '../catalog/subjects.js';
 import { tr } from '../i18n/index.js';
+import { isInstallable, onInstallableChange, promptInstall } from '../lib/pwa.js';
 
 export function renderHeader() {
   const header = document.createElement('header');
@@ -43,6 +44,22 @@ export function renderHeader() {
   markActive();
   window.addEventListener('hashchange', markActive);
 
+  // Install button — visible only when the browser has fired beforeinstallprompt.
+  const installBtn = document.createElement('button');
+  installBtn.type = 'button';
+  installBtn.className = 'install-btn';
+  installBtn.innerHTML = `<span aria-hidden="true">⬇</span><span>${t('install.button')}</span>`;
+  if (isInstallable()) installBtn.classList.add('is-available');
+  installBtn.addEventListener('click', async () => {
+    await promptInstall();
+    installBtn.classList.remove('is-available');
+  });
+  const offInstall = onInstallableChange((avail) => {
+    installBtn.classList.toggle('is-available', !!avail);
+  });
+  // Drop the listener if the header is replaced.
+  installBtn.addEventListener('DOMNodeRemovedFromDocument', offInstall);
+
   const langs = document.createElement('div');
   langs.className = 'lang-toggle';
   langs.setAttribute('role', 'group');
@@ -57,7 +74,7 @@ export function renderHeader() {
     langs.appendChild(b);
   }
 
-  inner.append(brand, nav, langs);
+  inner.append(brand, nav, installBtn, langs);
   header.appendChild(inner);
   return header;
 }

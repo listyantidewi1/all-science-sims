@@ -13,6 +13,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] — Discoverability + PWA
+
+### Added
+
+- **Search bar** on the home page (searches the full 153-sim catalog by title, description, topic, or subject — EN and ID terms both match) and on each subject page (filters within that subject). Live results, count indicator, accessible.
+- **Favorites**: a star button on every sim card. Starred sims persist in `localStorage` and surface as a "Your favorites" section on the home page (hidden until you star something). Re-rendering reflects toggles immediately.
+- **PWA / installable + offline**:
+  - Web App Manifest (`manifest.webmanifest`) with name, theme color, standalone display, and icon.
+  - Service worker (`sw.js`) with network-first for HTML (so deploys land) and cache-first for hashed assets (instant offline once visited). Old caches are evicted on each new version.
+  - "Install app" button appears in the header when the browser fires `beforeinstallprompt` (Android Chrome/Edge, desktop Chrome/Edge). On iOS, "Add to Home Screen" works via Safari's share sheet thanks to the manifest + apple-touch-icon link.
+- **i18n strings** for search placeholders, favorites section, and install button (EN + ID).
+
+### Changed
+
+- `src/lib/store.js` now exports `getFavorites`, `isFavorite`, `toggleFavorite`, `onFavoritesChange` alongside the existing `get`/`set`.
+- Sim cards gained a star button overlay; the existing card layout, hover, and accent color are preserved.
+
+### Notes
+
+- The service worker is **only registered in production builds** (`import.meta.env.PROD`); dev keeps Vite HMR clean.
+- Bundle: main grew ~5 KB (gzipped 81 → 83 KB) for search + favorites + PWA glue. Sim chunks are unchanged and remain lazy-loaded.
+
+---
+
 ## [1.2.0] — Big Wave (153 sims, 27 added)
 
 ### Added

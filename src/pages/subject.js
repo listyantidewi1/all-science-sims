@@ -3,6 +3,16 @@ import { SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { simsBySubject } from '../catalog/index.js';
 import { simCard } from '../components/sim-card.js';
 
+function matchSim(sim, q) {
+  const hay = [
+    tr(sim.title), tr(sim.description),
+    sim.title.en, sim.title.id,
+    sim.id,
+    ...(sim.topics || []),
+  ].join(' ').toLowerCase();
+  return hay.includes(q);
+}
+
 export function renderSubject(main, subjectId) {
   const subj = SUBJECT_BY_ID[subjectId];
   if (!subj) {
@@ -29,6 +39,18 @@ export function renderSubject(main, subjectId) {
   `;
   main.appendChild(heading);
 
+  // Search bar — filters within this subject.
+  const searchWrap = document.createElement('div');
+  searchWrap.className = 'search';
+  searchWrap.innerHTML = `
+    <input type="search" class="search__input" placeholder="${t('search.placeholderSubject')}"
+      aria-label="${t('search.placeholderSubject')}" autocomplete="off" />
+    <span class="search__count" aria-live="polite"></span>
+  `;
+  main.appendChild(searchWrap);
+  const searchInput = searchWrap.querySelector('input');
+  const searchCount = searchWrap.querySelector('.search__count');
+
   const titleRow = document.createElement('div');
   titleRow.className = 'section-title';
   titleRow.innerHTML = `<h2>${t('subject.simsCount', { n: sims.length })}</h2>`;
@@ -36,10 +58,29 @@ export function renderSubject(main, subjectId) {
 
   const grid = document.createElement('div');
   grid.className = 'grid';
-  if (sims.length === 0) {
-    grid.innerHTML = `<p style="color:var(--color-muted)">—</p>`;
-  } else {
-    for (const sim of sims) grid.appendChild(simCard(sim));
-  }
   main.appendChild(grid);
+
+  function render(filtered) {
+    grid.innerHTML = '';
+    if (filtered.length === 0) {
+      grid.innerHTML = `<p style="color:var(--color-muted)">—</p>`;
+      return;
+    }
+    for (const sim of filtered) grid.appendChild(simCard(sim));
+  }
+  render(sims);
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) {
+      titleRow.querySelector('h2').textContent = t('subject.simsCount', { n: sims.length });
+      searchCount.textContent = '';
+      render(sims);
+      return;
+    }
+    const hits = sims.filter((s) => matchSim(s, q));
+    titleRow.querySelector('h2').textContent = t('subject.simsCount', { n: hits.length });
+    searchCount.textContent = t('search.matches', { n: hits.length });
+    render(hits);
+  });
 }
