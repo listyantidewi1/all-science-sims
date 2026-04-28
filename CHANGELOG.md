@@ -13,6 +13,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.8.0] — School-curriculum staples (197 sims, +20 added)
+
+A targeted wave hitting the most-frequently-assigned middle/high-school topics across 9 subjects. Every sim is direct-manipulation by default and uses the shared `hoverProbe` / `dragHandle` helpers where it fits.
+
+### Added — Physics (4)
+
+- **Inclined Plane with Friction** — drag the ramp angle, set μ_s/μ_k, watch the block stick or slide; live free-body diagram with mg sin θ, mg cos θ, normal, and friction.
+- **Hooke's Law** — three springs (soft/medium/stiff) on the same F-vs-x axes; drag the mass, see the linear law and the elastic-limit kink.
+- **Atwood Machine** — two masses on a string over a pulley; live formulas a = (m₁−m₂)g/(m₁+m₂) and T = 2m₁m₂g/(m₁+m₂).
+- **Curved Mirrors** — concave/convex with a draggable candle; live ray construction (parallel ray, focal-point ray); real vs virtual classification, magnification.
+
+### Added — Chemistry (3)
+
+- **Stoichiometry & Limiting Reagent** — pick a reaction (combustion, Haber, magnesium burn, rust), set grams of each reactant; the limiting reagent is highlighted; theoretical yield computed.
+- **Calorimetry** — drop a hot block into a cool liquid and watch temperatures equilibrate to T_f; 8 substances with realistic specific heats (water, iron, copper, mercury, etc.).
+- **Electrolysis of Water** — animated cell with current-controlled bubble production; live H₂/O₂ volume in 2:1 ratio; Faraday's law n = It/(zF).
+
+### Added — Biology (3)
+
+- **Cardiac Cycle** — pulsing schematic heart with synchronized P-V loop; four phases (filling, isovolumetric contract, ejection, isovolumetric relax) tracked in real time.
+- **Food Web Builder** — grassland ecosystem with 10 species; drag organisms, click pairs to toggle predator-prey arrows, "remove species" cascade-collapses dependent layers.
+- **Microscope Simulator** — virtual compound microscope with 6 slides (onion, plant stem, blood, paramecium, cheek cells, pond water); switch objectives, turn the focus knob, watch the field-of-view change with magnification.
+
+### Added — Earth & Space (1)
+
+- **Rock Cycle** — 80 particles flow between magma / igneous / sedimentary / metamorphic via process arrows; adjust each rate (cooling, weathering, lithification, metamorphism, melting) and watch the system rebalance.
+
+### Added — Mathematics (4)
+
+- **Quadratic Formula Visualizer** — drag a, b, c; live parabola, roots, vertex, axis of symmetry; discriminant Δ = b² − 4ac classifies the three root-cases; vertex draggable directly on the plot.
+- **Slope-Intercept y = mx + b** — drag two points; rise-over-run triangle drawn between them; y-intercept marker; equation, slope, and intercept update live.
+- **Pascal's Triangle** — clickable cells with path-counting highlight; toggle "show parity" to reveal the Sierpinski-triangle fractal in odd entries; up to 20 rows.
+- **Fractions Visualizer** — three views (pie / bar / number line) for two fractions side by side; common-denominator computation; compare/add/subtract; mixed-number and decimal conversions.
+
+### Added — Computer Science (2)
+
+- **Binary Numbers** — clickable bit toggles for 4/8/16/32-bit widths; live decimal, hex, and binary readout; "+1" button shows the rollover behavior.
+- **Tower of Hanoi** — 2 to 8 disks; click pegs to move by hand or hit "Auto-solve" to watch the recursive algorithm; move counter vs the optimum 2^N − 1.
+
+### Added — Data Science (2)
+
+- **Box Plot & 5-Number Summary** — type any list of numbers, see the box plot + dot plot + 5-number table; adjustable IQR multiplier reveals/hides outliers; 5 presets.
+- **Correlation Explorer** — scatter plot with draggable points, click to add, right-click to remove; live Pearson r and best-fit regression line; presets for positive/negative/none/curved relationships.
+
+### Added — Social Science (1)
+
+- **Logistic Population Growth** — dN/dt = rN(1 − N/K) with adjustable r, K, N₀; logistic curve overlaid on exponential reference; inflection point at K/2 marked; hover for (t, N).
+
+### Notes
+
+- Total catalog: **197 sims across 12 subjects**.
+- Bundle: main grew ~32 KB (110 KB gzipped, up from 98). Each new sim is a separately-lazy-loaded chunk; only catalog metadata sits in the main bundle.
+- Subject distribution post-wave: physics 22, chemistry 20, biology 20, earth-space 18, computer-science 20, data-science 19, social-science 18, math 20, finance 16, engineering 8, music 8, climate 8.
+
+---
+
 ## [1.7.0] — Thickening the new subjects (177 sims, +15 added)
 
 Engineering, Music & Acoustics, and Climate & Sustainability each gain 5 new sims. Every new sim uses the shared `hoverProbe` / `dragHandle` helpers (and WebAudio for the music ones) — direct manipulation by default, sliders only as a backstop.

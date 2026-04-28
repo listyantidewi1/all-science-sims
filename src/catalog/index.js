@@ -199,6 +199,28 @@ import solarPanel        from '../sims/climate/solar-panel/manifest.js';
 import daisyworld        from '../sims/climate/daisyworld/manifest.js';
 import carbonFootprint   from '../sims/climate/carbon-footprint/manifest.js';
 
+// 1.8.0: school-curriculum staples
+import inclinedPlane     from '../sims/physics/inclined-plane/manifest.js';
+import hookesLaw         from '../sims/physics/hookes-law/manifest.js';
+import atwood            from '../sims/physics/atwood/manifest.js';
+import mirrors           from '../sims/physics/mirrors/manifest.js';
+import stoichiometry     from '../sims/chemistry/stoichiometry/manifest.js';
+import calorimetry       from '../sims/chemistry/calorimetry/manifest.js';
+import electrolysis      from '../sims/chemistry/electrolysis/manifest.js';
+import cardiacCycle      from '../sims/biology/cardiac-cycle/manifest.js';
+import foodWeb           from '../sims/biology/food-web/manifest.js';
+import microscope        from '../sims/biology/microscope/manifest.js';
+import rockCycle         from '../sims/earth-space/rock-cycle/manifest.js';
+import quadratic         from '../sims/mathematics/quadratic/manifest.js';
+import slopeIntercept    from '../sims/mathematics/slope-intercept/manifest.js';
+import pascalTriangle    from '../sims/mathematics/pascal-triangle/manifest.js';
+import fractions         from '../sims/mathematics/fractions/manifest.js';
+import binaryNumbers     from '../sims/computer-science/binary-numbers/manifest.js';
+import towerOfHanoi      from '../sims/computer-science/tower-of-hanoi/manifest.js';
+import boxPlot           from '../sims/data-science/box-plot/manifest.js';
+import correlation       from '../sims/data-science/correlation/manifest.js';
+import logisticGrowth    from '../sims/social-science/logistic-growth/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -244,6 +266,16 @@ export const SIMS = [
 
   carbonCycle, iceAlbedo, energyMix,
   seaLevelRise, oceanAcidification, solarPanel, daisyworld, carbonFootprint,
+
+  // 1.8.0 school-curriculum wave
+  inclinedPlane, hookesLaw, atwood, mirrors,
+  stoichiometry, calorimetry, electrolysis,
+  cardiacCycle, foodWeb, microscope,
+  rockCycle,
+  quadratic, slopeIntercept, pascalTriangle, fractions,
+  binaryNumbers, towerOfHanoi,
+  boxPlot, correlation,
+  logisticGrowth,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
