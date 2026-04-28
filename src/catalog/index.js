@@ -96,6 +96,16 @@ import hawksDoves       from '../sims/social-science/hawks-doves/manifest.js';
 import stagHunt         from '../sims/social-science/stag-hunt/manifest.js';
 import ultimatum        from '../sims/social-science/ultimatum/manifest.js';
 import bassDiffusion    from '../sims/social-science/bass-diffusion/manifest.js';
+import medianVoter      from '../sims/social-science/median-voter/manifest.js';
+
+import collisions1d     from '../sims/physics/collisions-1d/manifest.js';
+import carnot           from '../sims/physics/carnot/manifest.js';
+import galvanicCell     from '../sims/chemistry/galvanic-cell/manifest.js';
+import dnaReplication   from '../sims/biology/dna-replication/manifest.js';
+import hohmann          from '../sims/earth-space/hohmann/manifest.js';
+import hashTables       from '../sims/computer-science/hash-tables/manifest.js';
+import bigO             from '../sims/computer-science/big-o/manifest.js';
+import pca              from '../sims/data-science/pca/manifest.js';
 
 import functionPlotter  from '../sims/mathematics/function-plotter/manifest.js';
 import derivative       from '../sims/mathematics/derivative/manifest.js';
@@ -105,6 +115,11 @@ import vectors          from '../sims/mathematics/vectors/manifest.js';
 import complexPlane     from '../sims/mathematics/complex-plane/manifest.js';
 import linearTrans      from '../sims/mathematics/linear-transformations/manifest.js';
 import newtonsMethod    from '../sims/mathematics/newtons-method/manifest.js';
+import pythagorean      from '../sims/mathematics/pythagorean/manifest.js';
+import unitCircle       from '../sims/mathematics/unit-circle/manifest.js';
+import conicSections    from '../sims/mathematics/conic-sections/manifest.js';
+import piPolygons       from '../sims/mathematics/pi-polygons/manifest.js';
+import triangleCenters  from '../sims/mathematics/triangle-centers/manifest.js';
 
 import compoundInterest from '../sims/finance/compound-interest/manifest.js';
 import loanAmortization from '../sims/finance/loan-amortization/manifest.js';
@@ -114,32 +129,42 @@ import inflation        from '../sims/finance/inflation/manifest.js';
 import taxBrackets      from '../sims/finance/tax-brackets/manifest.js';
 import dca              from '../sims/finance/dca/manifest.js';
 import blackScholes     from '../sims/finance/black-scholes/manifest.js';
+import bondPricing      from '../sims/finance/bond-pricing/manifest.js';
+import npv              from '../sims/finance/npv/manifest.js';
+import phillipsCurve    from '../sims/finance/phillips-curve/manifest.js';
+import capm             from '../sims/finance/capm/manifest.js';
+import auctions         from '../sims/finance/auctions/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
+  collisions1d, carnot,
 
   phIndicator, periodicTable, gasLaws, titration, bohrAtom, leChatelier, solubility,
-  vsepr, phaseDiagram, beerLambert, collisionTheory, radioactiveDecay, aufbau,
+  vsepr, phaseDiagram, beerLambert, collisionTheory, radioactiveDecay, aufbau, galvanicCell,
 
   punnett, cellExplorer, naturalSelection, dnaTranscription, ecosystem, enzymeActivity,
-  osmosis, hardyWeinberg, actionPotential, pedigree, photosynthesis, ecg, mitosis,
+  osmosis, hardyWeinberg, actionPotential, pedigree, photosynthesis, ecg, mitosis, dnaReplication,
 
   solarSystem, seasons, plateTectonics, moonPhases, greenhouse, eclipses, tides,
-  coriolis, hrDiagram, mantleConvection, waterCycle, atmosphere, blackHole,
+  coriolis, hrDiagram, mantleConvection, waterCycle, atmosphere, blackHole, hohmann,
 
   sortingViz, bst, pathfinding, logicGates, gameOfLife, fractals, caesarCipher,
   turingMachine, boids, elementaryCA, reactionDiffusion, mazeGeneration, geneticAlgo,
+  hashTables, bigO,
 
   linearReg, distributions, kMeans, clt, bayes, confusionMatrix, outliers,
-  anscombe, monteCarloPi, simpsons, gradientDescent, biasVariance, markovText,
+  anscombe, monteCarloPi, simpsons, gradientDescent, biasVariance, markovText, pca,
 
   supplyDemand, prisonersDilemma, populationDynamics, schelling, sirEpidemic, votingMethods,
   inequality, preferentialAtt, publicGoods, hawksDoves, stagHunt, ultimatum, bassDiffusion,
+  medianVoter,
 
   functionPlotter, derivative, riemann, fourier, vectors, complexPlane, linearTrans, newtonsMethod,
+  pythagorean, unitCircle, conicSections, piPolygons, triangleCenters,
 
   compoundInterest, loanAmortization, stockWalk, efficientFrontier, inflation, taxBrackets, dca, blackScholes,
+  bondPricing, npv, phillipsCurve, capm, auctions,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));

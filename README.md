@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 107 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 126 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, and finance & economics**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -9,7 +9,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 
 ## Features
 
-- **107 original simulations** across 9 subjects — see [Catalog](#catalog) below.
+- **126 original simulations** across 9 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -67,6 +67,8 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Buoyancy & Archimedes | Drop blocks of any density into water, oil, mercury, glycerin; the submerged fraction equals density ratio. |
 | Orbital Mechanics (Kepler) | Click to place a planet, drag to set velocity, release; circular, elliptical, or escape trajectories emerge. |
 | RLC Circuit Resonance | Series RLC schematic with animated current; current-vs-frequency curve peaks sharply at f₀ = 1/(2π√(LC)). |
+| 1D Collisions | Two carts with adjustable masses and velocities; tune restitution from elastic to perfectly sticky. |
+| Carnot Heat Engine | P-V diagram with two isotherms + two adiabats; efficiency η = 1 − T_c / T_h. |
 
 ### Chemistry
 
@@ -85,6 +87,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Collision Theory & Reaction Rates | Two species bouncing in a box; only collisions above Eₐ react. Rate responds to T, [A], [B], and a "catalyst" button. |
 | Radioactive Decay & Half-Life | A grid of unstable atoms; each frame each one has a tiny chance to decay. Watch population halve every T₁⁄₂. |
 | Aufbau Principle | Slide Z; electrons fill orbitals 1s, 2s, 2p, 3s, 3p, 4s, 3d… following Aufbau, Hund, Pauli; box diagram + configuration string. |
+| Galvanic Cell | Pick two metal electrodes; cell voltage and electron-flow direction emerge from standard reduction potentials. |
 
 ### Biology
 
@@ -103,6 +106,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Photosynthesis Rate | Tune light, CO₂, and temperature; bubbles of O₂ rise from a virtual leaf at the rate set by the limiting factor. |
 | ECG / Heart Rhythm | Live P-QRS-T trace with a beating schematic heart; presets for resting, sleep, sprint, bradycardia, missed beats. |
 | Mitosis Stages | Step or auto-play through interphase → prophase → metaphase → anaphase → telophase → cytokinesis. |
+| DNA Replication | Replication fork unzips template; leading strand smooth, lagging strand built in Okazaki fragments. |
 
 ### Earth & Space
 
@@ -121,6 +125,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Hydrologic Cycle | Particle-based water cycle — evaporation, clouds, rain, runoff. Solar slider speeds up or stalls the loop. |
 | Atmospheric Layers | Drag a probe from sea level to 500 km; T, P, ρ update live. Landmark presets (Everest, ozone, ISS, auroras). |
 | Black Hole Gravitational Lens | Drag a star behind a black hole; lensed images appear on either side, snap to a perfect Einstein ring when aligned. |
+| Hohmann Transfer Orbit | Two-burn fuel-optimal transfer between circular orbits; presets for Earth→Mars, Venus, Jupiter, LEO→GEO. |
 
 ### Computer Science
 
@@ -139,6 +144,8 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Reaction-Diffusion (Gray-Scott) | Two virtual chemicals on a grid; presets for spots, coral, maze, mitosis, worms — Turing patterns from a PDE. |
 | Maze Generation | DFS, Prim's, Wilson's algorithms each carve a maze cell-by-cell with their own visual signature. |
 | Genetic Algorithm | Type a target sentence; a population of random strings evolves via selection, crossover, and mutation. |
+| Hash Tables & Collisions | Insert keys, watch buckets fill; switch chaining vs linear probing; load factor → expected lookup. |
+| Big-O Comparison | O(1), log n, n, n log n, n², 2ⁿ, n! plotted side by side; live values at chosen n; toggle log scale. |
 
 ### Data Science
 
@@ -157,6 +164,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Gradient Descent | Click anywhere on a 2D loss surface (bowl, banana, multi-modal, saddle); a particle rolls downhill following −∇f. |
 | Bias-Variance Tradeoff | Polynomial degree slider on noisy data; under-/well-/over-fitting labeled live, with train and test MSE. |
 | Markov Chain Text Generator | Paste any text; n-gram Markov chain generates new text in the same style. Sample texts in EN and ID included. |
+| Principal Component Analysis | Drag points around the plane; PC1 and PC2 axes draw themselves through the cloud; explained-variance ratio updates. |
 
 ### Social Science
 
@@ -175,6 +183,7 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Stag Hunt | Coordination game with two stable equilibria — start near 30% stag and watch it collapse, near 70% and watch it lock in. |
 | Ultimatum Game | Slide proposer offer and responder threshold; pie chart of the split, plus a 100-round bar chart of acceptances. |
 | Bass Diffusion of Innovation | Tune p (innovators) and q (imitators); cumulative-S and adoption-rate curves plot side by side. Presets for smartphone, VCR, etc. |
+| Median Voter Theorem | Drag candidate positions on a 1D voter spectrum; vote shares + median marker; auto-optimize toggle. |
 
 ### Mathematics
 
@@ -188,6 +197,11 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Complex Plane Mappings | Drag z; z², z³, 1/z, e^z, conj(z) all appear simultaneously. |
 | Linear Transformations | Drag the columns of a 2×2 matrix; whole grid + unit square bend, rotate, shear, or flip. |
 | Newton's Method for Roots | Click anywhere; tangent-line iterations zoom in on a root. |
+| Pythagorean Theorem | Drag the two legs of a right triangle; the squares on a, b, c always satisfy a² + b² = c². |
+| Unit Circle Trigonometry | Drag the angle around the unit circle; sin θ, cos θ, tan θ visualized geometrically + sine/cosine curves. |
+| Conic Sections | Tilt a plane through a double cone — circle, ellipse, parabola, hyperbola. |
+| Archimedes' π from Polygons | Inscribed and circumscribed n-gons bracket π; presets for Archimedes' n=6, 12, 24, 96. |
+| Triangle Centers | Drag any vertex; centroid, circumcenter, incenter, orthocenter all follow + Euler line. |
 
 ### Finance & Economics
 
@@ -201,6 +215,11 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Progressive Tax Brackets | US 2024 single, Indonesia 2024, and flat rate; effective vs marginal rate visualized. |
 | DCA vs Lump Sum | Hundreds of GBM paths; histogram of (lump-sum − DCA) shows which strategy wins more often. |
 | Black-Scholes Option Pricing | Live call and put prices vs stock price, plus payoff diagrams at expiry. |
+| Bond Pricing & Yield Curve | Coupon, yield, maturity → price; inverse relationship and the yield-curve bar chart for 1–30 year maturities. |
+| NPV / Discounted Cash Flow | Bar chart of nominal vs discounted cash flows; NPV-vs-rate curve with IRR detection. |
+| Phillips Curve | Expectations-augmented Phillips curve; current operating point + natural rate of unemployment. |
+| CAPM & Beta | Scatter of stock vs market returns; regression beta + CAPM expected return. |
+| Auction Mechanics | First-price (with optimal shading) vs second-price (Vickrey) auctions over thousands of rounds. |
 
 ---
 
