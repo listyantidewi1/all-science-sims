@@ -13,6 +13,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] — Big Wave (153 sims, 27 added)
+
+### Added
+
+- **Physics (3)**: Snell's Law (refraction with TIR) · Magnetic Field around a Wire · Photoelectric Effect
+- **Chemistry (3)**: Buffer pH (Henderson-Hasselbalch) · Crystal Lattices (SC, BCC, FCC, HCP — rotatable 3D) · Hybridization (sp / sp² / sp³)
+- **Biology (3)**: Cellular Respiration (glycolysis → Krebs → ETC, full ATP budget) · Epidemic on a Network (compare to well-mixed SIR) · Population Pyramid (with demographic-transition presets)
+- **Earth & Space (3)**: Stellar Parallax · Earth's Interior (drag depth probe) · Hurricane Formation (SST + Coriolis + shear)
+- **Computer Science (3)**: Stack vs Queue · Recursive Fibonacci with Memoization (call-tree visualizer) · RSA Public-Key Crypto (toy primes)
+- **Data Science (3)**: Bootstrap Resampling (95% CI from percentiles) · Decision Tree Classifier · Time Series Smoothing (MA vs EMA)
+- **Social Science (3)**: Yard-Sale Wealth Model · Trust Game · Threshold Diffusion on a Network
+- **Mathematics (3)**: Galton Board (binomial → Gaussian) · Matrix Multiplication (click-to-explain) · Mandelbrot Set (click to zoom)
+- **Finance & Economics (3)**: Yield Curve Shapes (drag rates by tenor) · Sharpe Ratio (rank funds with adjustable rᶠ) · Tax-Advantaged Accounts (taxable vs Trad vs Roth)
+
+---
+
 ## [1.1.0] — Round-out wave (126 sims, 9 subjects)
 
 ### Added
@@ -181,7 +197,8 @@ Sims deliberately picked for being uncommon in educational collections — chaos
 
 ---
 
-[Unreleased]: https://github.com/listyantidewi1/all-science-sims/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/listyantidewi1/all-science-sims/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v1.2.0
 [1.1.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v1.1.0
 [1.0.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v1.0.0
 [0.9.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.9.0

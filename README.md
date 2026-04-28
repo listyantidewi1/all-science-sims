@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 126 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 153 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, and finance & economics**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **126 original simulations** across 9 subjects — see [Catalog](#catalog) below.
+- **153 original simulations** across 9 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -71,6 +71,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | RLC Circuit Resonance | Series RLC schematic with animated current; current-vs-frequency curve peaks sharply at f₀ = 1/(2π√(LC)). |
 | 1D Collisions | Two carts with adjustable masses and velocities; tune restitution from elastic to perfectly sticky. |
 | Carnot Heat Engine | P-V diagram with two isotherms + two adiabats; efficiency η = 1 − T_c / T_h. |
+| Snell's Law (Refraction) | Drag the incident ray; refracted ray bends per n₁sinθ₁ = n₂sinθ₂; total internal reflection beyond critical angle. |
+| Magnetic Field around a Wire | Field circles around the wire by the right-hand rule; cursor probes B = μ₀I/(2πr). |
+| Photoelectric Effect | Below threshold frequency no electrons fly, no matter how bright. Above it, KE_max = hf − φ. |
 
 ### Chemistry
 
@@ -90,6 +93,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Radioactive Decay & Half-Life | A grid of unstable atoms; each frame each one has a tiny chance to decay. Watch population halve every T₁⁄₂. |
 | Aufbau Principle | Slide Z; electrons fill orbitals 1s, 2s, 2p, 3s, 3p, 4s, 3d… following Aufbau, Hund, Pauli; box diagram + configuration string. |
 | Galvanic Cell | Pick two metal electrodes; cell voltage and electron-flow direction emerge from standard reduction potentials. |
+| Buffer pH (Henderson-Hasselbalch) | Slide [HA], [A⁻], pKa; pH curve vs added acid/base shows the buffer's resilience zone. |
+| Crystal Lattices | Rotatable 3D unit cells: simple cubic, BCC, FCC, HCP, with coordination # and packing fraction. |
+| Hybridization (sp / sp² / sp³) | Linear / trigonal-planar / tetrahedral geometries with bond angles and worked examples. |
 
 ### Biology
 
@@ -109,6 +115,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | ECG / Heart Rhythm | Live P-QRS-T trace with a beating schematic heart; presets for resting, sleep, sprint, bradycardia, missed beats. |
 | Mitosis Stages | Step or auto-play through interphase → prophase → metaphase → anaphase → telophase → cytokinesis. |
 | DNA Replication | Replication fork unzips template; leading strand smooth, lagging strand built in Okazaki fragments. |
+| Cellular Respiration | Step through glycolysis → Krebs → ETC; running ATP, NADH, FADH₂, CO₂, O₂ counts. |
+| Epidemic on a Network | Force-directed network with SIR spread along edges; compares structure to well-mixed SIR. |
+| Population Pyramid | 5-year age groups, male/female; demographic-transition presets (Niger, US, Japan). |
 
 ### Earth & Space
 
@@ -128,6 +137,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Atmospheric Layers | Drag a probe from sea level to 500 km; T, P, ρ update live. Landmark presets (Everest, ozone, ISS, auroras). |
 | Black Hole Gravitational Lens | Drag a star behind a black hole; lensed images appear on either side, snap to a perfect Einstein ring when aligned. |
 | Hohmann Transfer Orbit | Two-burn fuel-optimal transfer between circular orbits; presets for Earth→Mars, Venus, Jupiter, LEO→GEO. |
+| Stellar Parallax | Earth orbits the Sun, target star wobbles against background; d (parsec) = 1 / p (arcsec). |
+| Earth's Interior | Drag a depth probe through 6,371 km; T, P, ρ, and material state by layer. |
+| Hurricane Formation | Tune SST, latitude, wind shear; storm intensifies, weakens, or dies. Cyclone direction flips by hemisphere. |
 
 ### Computer Science
 
@@ -148,6 +160,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Genetic Algorithm | Type a target sentence; a population of random strings evolves via selection, crossover, and mutation. |
 | Hash Tables & Collisions | Insert keys, watch buckets fill; switch chaining vs linear probing; load factor → expected lookup. |
 | Big-O Comparison | O(1), log n, n, n log n, n², 2ⁿ, n! plotted side by side; live values at chosen n; toggle log scale. |
+| Stack vs Queue | Push/pop a stack (LIFO) and enqueue/dequeue a queue (FIFO) side by side. |
+| Recursive Fibonacci + Memoization | Visualize the call tree; toggle memoization to watch it collapse. |
+| RSA Public-Key (toy) | Pick small primes p, q; compute n, φ, e, d; encrypt and decrypt a number step by step. |
 
 ### Data Science
 
@@ -167,6 +182,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Bias-Variance Tradeoff | Polynomial degree slider on noisy data; under-/well-/over-fitting labeled live, with train and test MSE. |
 | Markov Chain Text Generator | Paste any text; n-gram Markov chain generates new text in the same style. Sample texts in EN and ID included. |
 | Principal Component Analysis | Drag points around the plane; PC1 and PC2 axes draw themselves through the cloud; explained-variance ratio updates. |
+| Bootstrap Resampling | Resample with replacement to build a 95% CI for the mean; compare to the parametric s/√n. |
+| Decision Tree Classifier | Greedy Gini splits on x or y; depth slider exposes overfitting on three datasets. |
+| Time Series Smoothing | Compare moving-average vs EMA on noisy series; tune window / α; toggle the underlying truth. |
 
 ### Social Science
 
@@ -186,6 +204,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Ultimatum Game | Slide proposer offer and responder threshold; pie chart of the split, plus a 100-round bar chart of acceptances. |
 | Bass Diffusion of Innovation | Tune p (innovators) and q (imitators); cumulative-S and adoption-rate curves plot side by side. Presets for smartphone, VCR, etc. |
 | Median Voter Theorem | Drag candidate positions on a 1D voter spectrum; vote shares + median marker; auto-optimize toggle. |
+| Yard-Sale Wealth Model | Random fair trades produce stark inequality; add a wealth tax and watch Gini stabilize. |
+| Trust Game | P1 sends → tripled → P2 returns; payoffs for any send/return strategy; total-welfare readout. |
+| Threshold Diffusion on a Network | Granovetter cascade — adoption depends on network structure and threshold, not just contagiousness. |
 
 ### Mathematics
 
@@ -204,6 +225,9 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Conic Sections | Tilt a plane through a double cone — circle, ellipse, parabola, hyperbola. |
 | Archimedes' π from Polygons | Inscribed and circumscribed n-gons bracket π; presets for Archimedes' n=6, 12, 24, 96. |
 | Triangle Centers | Drag any vertex; centroid, circumcenter, incenter, orthocenter all follow + Euler line. |
+| Galton Board | Drop balls through a peg triangle; the histogram converges on the Gaussian. |
+| Matrix Multiplication | 3×3 matrices with click-to-explain on each output cell — see "row dot column". |
+| Mandelbrot Set | Click anywhere to zoom 2× into infinite detail; tune max iterations. |
 
 ### Finance & Economics
 
