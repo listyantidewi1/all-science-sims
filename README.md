@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 162 hand-built sims across 12 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 177 hand-built sims across 12 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, and climate & sustainability**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **162 original simulations** across 12 subjects — see [Catalog](#catalog) below.
+- **177 original simulations** across 12 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -254,6 +254,11 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Truss Analyzer | 3-panel Warren bridge; drag a load along the deck; members color-code red (tension) or blue (compression); hover a member for its force. Method-of-joints solver. |
 | Beam Bending | Simply-supported beam; drag a point load; live shear, moment, and Euler-Bernoulli deflection diagrams; hover any diagram for (x, value). |
 | PID Controller | First-order plant with tunable Kp/Ki/Kd; live response chart with disturbance-kick button; hover for (t, y, u). Demonstrates the classic gain-tuning failure modes. |
+| Gear Train Ratios | Three meshed gears with adjustable tooth counts; live RPM and torque ratios; opposite-direction animation. |
+| Pulley & Mechanical Advantage | Block-and-tackle 1× to 6× MA; drag the rope grip to lift the load; W_in vs W_out energy bookkeeping. |
+| Op-Amp Inverting Amplifier | Schematic + live waveform; adjust R_in and R_f; output clips at the rails when over-driven. |
+| RC Low-Pass Filter | Bode magnitude + phase plot with hover; drag to set drive frequency; time-domain output shows actual phase lag. |
+| Stress-Strain Curve | Drag the strain to stretch a virtual specimen through elastic / yield / hardening / necking / fracture; 4 materials overlaid. |
 
 ### Music & Acoustics
 
@@ -262,6 +267,11 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Beat Frequencies | Two pure tones; stacked y₁, y₂, sum waveforms with the beat envelope; click Play to hear it (WebAudio). |
 | Harmonic Series | First 8 harmonics with adjustable weights and presets (sine, sawtooth, square, clarinet); see and hear the Fourier construction. |
 | Equal Temperament vs Just Intonation | Table of all 12 intervals with cents difference and visual deviation bars; click Play to hear "just" or "ET" versions. |
+| ADSR Synth Envelope | Drag four corner handles to sculpt the envelope; click Play to hear it; pluck / pad / organ / stab presets. |
+| Vowel Formants | Drag a point in F1-F2 space; closest-vowel identification; source-filter synthesis lets you actually hear the vowel. |
+| Polyrhythms | N:M dual-beat visualizer with shared playhead and per-beat clicks; 3:2, 3:4, 5:7, 7:11 presets. |
+| Pitch Perception (Mel Scale) | Mel = 2595·log₁₀(1 + f/700) curve; octave-up at low f sounds like a bigger jump than at high f — and you can hear it. |
+| Chord Builder | Clickable 2-octave piano; recognizes major / minor / dim / aug / sus / 7ths / add9; click Play. |
 
 ### Climate & Sustainability
 
@@ -270,6 +280,11 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Carbon Cycle | Four-pool box model (atmosphere, surface ocean, deep ocean, land); adjustable emissions; 100-year fractional-anomaly chart with hover crosshair. |
 | Ice-Albedo Feedback | Energy-balance climate model with temperature-dependent albedo; net-flux curve shows bistable equilibria; drag the temperature ball between snowball-Earth and warm states. |
 | Energy Mix Optimizer | Allocate global electricity between coal / gas / nuclear / hydro / wind / solar; live CO₂ intensity, average cost, and reliability dashboard with presets. |
+| Sea Level Rise | Procedurally generated coastal map with hypsometric curve; drag sea level to flood land; flat / mixed / mountainous reliefs. |
+| Ocean Acidification | pH and aragonite saturation Ω vs atmospheric CO₂; Ω = 1 shell-dissolving threshold marked; presets for pre-industrial / today / RCP scenarios. |
+| Solar Panel Yield | Clear-sky power model: latitude × tilt × day-of-year × cloud cover; daily curve + annual yield side by side. |
+| Daisyworld | Lovelock & Watson's parable; emergent self-regulation; planet temperature stays nearly flat as solar luminosity sweeps. |
+| Carbon Footprint Calculator | 10 lifestyle sliders → tons CO₂-eq/year with benchmarks for global avg and the 2°C target. |
 
 ---
 

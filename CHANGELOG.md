@@ -13,6 +13,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] — Thickening the new subjects (177 sims, +15 added)
+
+Engineering, Music & Acoustics, and Climate & Sustainability each gain 5 new sims. Every new sim uses the shared `hoverProbe` / `dragHandle` helpers (and WebAudio for the music ones) — direct manipulation by default, sliders only as a backstop.
+
+### Added — Engineering ⚙ (3 → 8)
+
+- **Gear Train Ratios** — three meshed gears with adjustable tooth counts; live RPM and torque ratios; meshed gears reverse direction so it animates correctly.
+- **Pulley & Mechanical Advantage** — block-and-tackle with 1× through 6× MA; drag the rope grip vertically to lift the load; W_in vs W_out energy bookkeeping.
+- **Op-Amp Inverting Amplifier** — schematic + live waveform; adjust R_in and R_f to see gain G = −R_f/R_in change; output clips at the supply rails when over-driven.
+- **RC Low-Pass Filter** — Bode magnitude + phase plot with f_c marker; drag horizontally to set drive frequency; time-domain output shows actual phase lag and attenuation.
+- **Stress-Strain Curve** — drag the strain in the chart and watch a virtual specimen stretch, neck, and fracture; four materials (steel / aluminum / glass / polymer) overlaid for comparison.
+
+### Added — Music & Acoustics 🎵 (3 → 8)
+
+- **ADSR Synth Envelope** — drag four corner handles to sculpt the envelope; click Play to hear your custom shape on a triangle oscillator; presets for pluck / pad / organ / stab.
+- **Vowel Formants** — drag a point in F1-F2 space; identifies the closest IPA vowel; source-filter synthesis (sawtooth source through two band-pass filters at F1, F2) lets you actually hear the vowel.
+- **Polyrhythms** — N:M dual-beat visualizer with shared playhead and per-beat clicks; 3:2, 3:4, 5:7, 7:11 presets; tempo control.
+- **Pitch Perception (Mel Scale)** — see the mel = 2595·log₁₀(1 + f/700) curve and hear that octave-up at low f sounds like a bigger jump than at high f.
+- **Chord Builder** — clickable two-octave piano; recognizes major / minor / dim / aug / sus / 7th / m7 / maj7 / m7♭5 / dim7 / 6 / add9; click Play to hear the chord.
+
+### Added — Climate & Sustainability 🌱 (3 → 8)
+
+- **Sea Level Rise** — procedurally generated coastal map with three relief profiles (mixed / flat / mountainous); drag the hypsometric curve to set sea level; live "% land flooded" stat.
+- **Ocean Acidification** — pH and aragonite saturation Ω as functions of atmospheric CO₂ (ppm); the Ω = 1 shell-dissolving threshold marked; drag CO₂ horizontally on the curve.
+- **Solar Panel Yield** — clear-sky model: latitude × tilt × day-of-year × cloud cover; daily power curve + annual yield curve side by side with hover crosshairs on both.
+- **Daisyworld** (Lovelock & Watson 1983) — emergent self-regulation; planet temperature stays nearly flat as solar luminosity sweeps; T-vs-L hysteresis history visualized.
+- **Carbon Footprint Calculator** — 10 lifestyle sliders × CO₂-eq factors → tons/year; gauge benchmarks against global average and the 2°C target; presets for typical American / European / vegan / 2°C-compatible lifestyles.
+
+### Notes
+
+- Total catalog: **177 sims across 12 subjects**. Engineering, Music, Climate are now at 8 each (matching the shape of the other subjects more closely).
+- Bundle: main grew ~25 KB (98.5 KB gzipped, up from 89). Each new sim is its own lazy-loaded chunk; only catalog metadata sits in the main bundle.
+- WebAudio sims (3 of the 5 new music ones) follow the established pattern: lazy AudioContext on first user gesture, torn down on sim unmount.
+
+---
+
 ## [1.6.0] — Three new subjects (162 sims, 12 subjects)
 
 ### Added — Engineering ⚙

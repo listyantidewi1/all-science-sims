@@ -175,14 +175,29 @@ import taxAccounts       from '../sims/finance/tax-accounts/manifest.js';
 import trussAnalyzer     from '../sims/engineering/truss-analyzer/manifest.js';
 import beamBending       from '../sims/engineering/beam-bending/manifest.js';
 import pidController     from '../sims/engineering/pid-controller/manifest.js';
+import gearRatios        from '../sims/engineering/gear-ratios/manifest.js';
+import pulleySystem      from '../sims/engineering/pulley-system/manifest.js';
+import opAmp             from '../sims/engineering/op-amp/manifest.js';
+import rcFilter          from '../sims/engineering/rc-filter/manifest.js';
+import stressStrain      from '../sims/engineering/stress-strain/manifest.js';
 
 import beatFrequencies   from '../sims/music/beat-frequencies/manifest.js';
 import harmonicSeries    from '../sims/music/harmonic-series/manifest.js';
 import equalTemperament  from '../sims/music/equal-temperament/manifest.js';
+import adsrEnvelope      from '../sims/music/adsr-envelope/manifest.js';
+import formants          from '../sims/music/formants/manifest.js';
+import polyrhythms       from '../sims/music/polyrhythms/manifest.js';
+import melScale          from '../sims/music/mel-scale/manifest.js';
+import chordBuilder      from '../sims/music/chord-builder/manifest.js';
 
 import carbonCycle       from '../sims/climate/carbon-cycle/manifest.js';
 import iceAlbedo         from '../sims/climate/ice-albedo/manifest.js';
 import energyMix         from '../sims/climate/energy-mix/manifest.js';
+import seaLevelRise      from '../sims/climate/sea-level-rise/manifest.js';
+import oceanAcidification from '../sims/climate/ocean-acidification/manifest.js';
+import solarPanel        from '../sims/climate/solar-panel/manifest.js';
+import daisyworld        from '../sims/climate/daisyworld/manifest.js';
+import carbonFootprint   from '../sims/climate/carbon-footprint/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -222,10 +237,13 @@ export const SIMS = [
   yieldCurves, sharpe, taxAccounts,
 
   trussAnalyzer, beamBending, pidController,
+  gearRatios, pulleySystem, opAmp, rcFilter, stressStrain,
 
   beatFrequencies, harmonicSeries, equalTemperament,
+  adsrEnvelope, formants, polyrhythms, melScale, chordBuilder,
 
   carbonCycle, iceAlbedo, energyMix,
+  seaLevelRise, oceanAcidification, solarPanel, daisyworld, carbonFootprint,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
