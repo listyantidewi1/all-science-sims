@@ -16,6 +16,9 @@ const FEATURED_IDS = [
   'social-science/schelling-segregation',
   'mathematics/mandelbrot',
   'finance/compound-interest',
+  'engineering/truss-analyzer',
+  'music/beat-frequencies',
+  'climate/carbon-cycle',
 ];
 
 function matchSim(sim, q) {

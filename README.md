@@ -1,9 +1,9 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 153 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 162 hand-built sims across 12 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
-A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, and finance & economics**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
+A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, and climate & sustainability**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
 See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **153 original simulations** across 9 subjects — see [Catalog](#catalog) below.
+- **162 original simulations** across 12 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -246,6 +246,30 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Phillips Curve | Expectations-augmented Phillips curve; current operating point + natural rate of unemployment. |
 | CAPM & Beta | Scatter of stock vs market returns; regression beta + CAPM expected return. |
 | Auction Mechanics | First-price (with optimal shading) vs second-price (Vickrey) auctions over thousands of rounds. |
+
+### Engineering
+
+| Sim | What you do |
+|---|---|
+| Truss Analyzer | 3-panel Warren bridge; drag a load along the deck; members color-code red (tension) or blue (compression); hover a member for its force. Method-of-joints solver. |
+| Beam Bending | Simply-supported beam; drag a point load; live shear, moment, and Euler-Bernoulli deflection diagrams; hover any diagram for (x, value). |
+| PID Controller | First-order plant with tunable Kp/Ki/Kd; live response chart with disturbance-kick button; hover for (t, y, u). Demonstrates the classic gain-tuning failure modes. |
+
+### Music & Acoustics
+
+| Sim | What you do |
+|---|---|
+| Beat Frequencies | Two pure tones; stacked y₁, y₂, sum waveforms with the beat envelope; click Play to hear it (WebAudio). |
+| Harmonic Series | First 8 harmonics with adjustable weights and presets (sine, sawtooth, square, clarinet); see and hear the Fourier construction. |
+| Equal Temperament vs Just Intonation | Table of all 12 intervals with cents difference and visual deviation bars; click Play to hear "just" or "ET" versions. |
+
+### Climate & Sustainability
+
+| Sim | What you do |
+|---|---|
+| Carbon Cycle | Four-pool box model (atmosphere, surface ocean, deep ocean, land); adjustable emissions; 100-year fractional-anomaly chart with hover crosshair. |
+| Ice-Albedo Feedback | Energy-balance climate model with temperature-dependent albedo; net-flux curve shows bistable equilibria; drag the temperature ball between snowball-Earth and warm states. |
+| Energy Mix Optimizer | Allocate global electricity between coal / gas / nuclear / hydro / wind / solar; live CO₂ intensity, average cost, and reliability dashboard with presets. |
 
 ---
 

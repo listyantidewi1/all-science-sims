@@ -13,6 +13,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] — Three new subjects (162 sims, 12 subjects)
+
+### Added — Engineering ⚙
+
+- **Truss Analyzer** — 3-panel Warren bridge with method-of-joints solver (Gaussian-elimination 14×14 system per frame). Drag the load along the deck; members color-code red for tension, blue for compression; hover any member for its force.
+- **Beam Bending** — simply-supported beam with a draggable point load. Live shear, moment, and Euler-Bernoulli deflection diagrams; hover any diagram for (x, value).
+- **PID Controller** — first-order plant + tunable Kp/Ki/Kd; live response chart with disturbance kicks; hover for (t, y, u). Demonstrates the classic gain-tuning failure modes: oscillation, slow rise, steady-state offset.
+
+### Added — Music & Acoustics 🎵 (introduces audio output for the first time)
+
+- **Beat Frequencies** — two pure tones; stacked y₁, y₂, sum waveform with the beat envelope highlighted; click Play to hear it (WebAudio).
+- **Harmonic Series** — first 8 harmonics with adjustable weights and presets (sine, sawtooth, square, clarinet); see and hear the Fourier construction; live waveform + bar chart.
+- **Equal Temperament vs Just Intonation** — table of all 12 intervals with cents difference and visual cents-deviation bars; click Play to hear "just" or "ET" versions back-to-back.
+
+### Added — Climate & Sustainability 🌱
+
+- **Carbon Cycle** — four-pool box model (atmosphere, surface ocean, deep ocean, land biosphere) with linear exchange fluxes and adjustable emissions. Live pool reservoirs + 100-year fractional-anomaly chart with hover crosshair.
+- **Ice-Albedo Feedback** — energy-balance climate model with temperature-dependent albedo; net-flux curve shows the bistable equilibria. Drag the temperature ball to slide between snowball-Earth and warm states.
+- **Energy Mix Optimizer** — allocate global electricity between coal / gas / nuclear / hydro / wind / solar; live CO₂ intensity, average cost, and reliability dashboard. Presets for "today", "Nordic-like", "all renewable", etc.
+
+### Added — Subject + theming infrastructure
+
+- New entries in `src/catalog/subjects.js`: `engineering`, `music`, `climate`, each bilingual.
+- New accent colors in `src/styles/tokens.css`: `--subj-engineering: #94a3b8`, `--subj-music: #d946ef`, `--subj-climate: #22c55e`.
+- Three new featured picks added to the home grid (one per new subject), keeping the "one featured per subject" coverage at 12/12.
+
+### Notes
+
+- Total catalog: **162 sims across 12 subjects**.
+- Bundle: main grew ~16 KB (89 KB gzipped, up from 83) — most of that is the 9 new sim chunks being lazy-loaded plus the truss solver / climate model state in the index.
+- WebAudio is gated behind a Play-button user gesture (browser requirement) and is torn down cleanly on sim unmount.
+
+---
+
 ## [1.5.0] — Interactivity Wave C (10 chart-heavy sims)
 
 ### Changed (chart sims gain hover crosshairs and drag handles)

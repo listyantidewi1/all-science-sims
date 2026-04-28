@@ -53,6 +53,24 @@ export const SUBJECTS = [
     description: { en: 'Interest, markets, inflation, options, taxes.', id: 'Bunga, pasar, inflasi, opsi, pajak.' },
     icon: '💰',
   },
+  {
+    id: 'engineering',
+    name:        { en: 'Engineering',         id: 'Teknik' },
+    description: { en: 'Trusses, beams, control systems, circuits.', id: 'Rangka, balok, sistem kendali, rangkaian.' },
+    icon: '⚙',
+  },
+  {
+    id: 'music',
+    name:        { en: 'Music & Acoustics',   id: 'Musik & Akustik' },
+    description: { en: 'Harmonics, intervals, beats, synthesis.', id: 'Harmoni, interval, layangan, sintesis.' },
+    icon: '🎵',
+  },
+  {
+    id: 'climate',
+    name:        { en: 'Climate & Sustainability', id: 'Iklim & Keberlanjutan' },
+    description: { en: 'Carbon cycle, feedbacks, energy mix.', id: 'Siklus karbon, umpan-balik, bauran energi.' },
+    icon: '🌱',
+  },
 ];
 
 export const SUBJECT_BY_ID = Object.fromEntries(SUBJECTS.map((s) => [s.id, s]));

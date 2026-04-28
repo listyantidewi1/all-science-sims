@@ -172,6 +172,18 @@ import yieldCurves       from '../sims/finance/yield-curves/manifest.js';
 import sharpe            from '../sims/finance/sharpe/manifest.js';
 import taxAccounts       from '../sims/finance/tax-accounts/manifest.js';
 
+import trussAnalyzer     from '../sims/engineering/truss-analyzer/manifest.js';
+import beamBending       from '../sims/engineering/beam-bending/manifest.js';
+import pidController     from '../sims/engineering/pid-controller/manifest.js';
+
+import beatFrequencies   from '../sims/music/beat-frequencies/manifest.js';
+import harmonicSeries    from '../sims/music/harmonic-series/manifest.js';
+import equalTemperament  from '../sims/music/equal-temperament/manifest.js';
+
+import carbonCycle       from '../sims/climate/carbon-cycle/manifest.js';
+import iceAlbedo         from '../sims/climate/ice-albedo/manifest.js';
+import energyMix         from '../sims/climate/energy-mix/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -208,6 +220,12 @@ export const SIMS = [
   compoundInterest, loanAmortization, stockWalk, efficientFrontier, inflation, taxBrackets, dca, blackScholes,
   bondPricing, npv, phillipsCurve, capm, auctions,
   yieldCurves, sharpe, taxAccounts,
+
+  trussAnalyzer, beamBending, pidController,
+
+  beatFrequencies, harmonicSeries, equalTemperament,
+
+  carbonCycle, iceAlbedo, energyMix,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
