@@ -1,0 +1,195 @@
+# Changelog
+
+All notable changes to **All-Science Sims** are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [Unreleased]
+
+> Notes for the next release go here.
+
+---
+
+## [1.1.0] — Round-out wave (126 sims, 9 subjects)
+
+### Added
+
+- **Mathematics (5)**: Pythagorean Theorem · Unit Circle Trigonometry · Conic Sections · Archimedes' π from Polygons · Triangle Centers (with Euler line)
+- **Finance & Economics (5)**: Bond Pricing & Yield Curve · NPV / Discounted Cash Flow · Phillips Curve · CAPM & Beta · First-price vs Second-price Auction Mechanics
+- **Physics (2)**: 1D Collisions · Carnot Heat Engine
+- **Chemistry (1)**: Galvanic Cell (Battery)
+- **Biology (1)**: DNA Replication (replication fork with Okazaki fragments)
+- **Earth & Space (1)**: Hohmann Transfer Orbit
+- **Computer Science (2)**: Hash Tables & Collisions · Big-O Comparison
+- **Data Science (1)**: Principal Component Analysis (PCA)
+- **Social Science (1)**: Median Voter Theorem
+
+Mathematics and Finance & Economics now both have 13 sims, matching the other subjects.
+
+---
+
+## [1.0.0] — Two new subjects: Mathematics + Finance & Economics (107 sims)
+
+### Added
+
+- **Mathematics** subject (📐, sky-blue accent) with 8 sims:
+  Function Plotter · Derivative as Tangent Slope · Riemann Sums · Fourier Series Builder · Vectors & Operations · Complex Plane Mappings · Linear Transformations · Newton's Method for Roots
+- **Finance & Economics** subject (💰, yellow accent) with 8 sims:
+  Compound Interest · Loan Amortization · Stock Random Walk (GBM) · Portfolio Efficient Frontier · Inflation Eraser · Progressive Tax Brackets · DCA vs Lump Sum · Black-Scholes Option Pricing
+
+### Changed
+
+- Subject grid on home page now shows 9 cards instead of 7.
+- `tokens.css` gains `--subj-mathematics` and `--subj-finance` color variables.
+
+---
+
+## [0.9.0] — Round 6: 21 more sims (91 total, 13 per subject)
+
+### Added
+
+- **Physics (3)**: Buoyancy & Archimedes · Orbital Mechanics (drag-to-launch Kepler) · RLC Circuit Resonance
+- **Chemistry (3)**: Collision Theory & Reaction Rates · Radioactive Decay & Half-Life · Aufbau Principle (orbital filling)
+- **Biology (3)**: Photosynthesis Rate · ECG / Heart Rhythm · Mitosis Stages
+- **Earth & Space (3)**: Hydrologic Cycle · Atmospheric Layers · Black Hole Gravitational Lens
+- **Computer Science (3)**: Reaction-Diffusion (Gray-Scott) · Maze Generation (DFS / Prim's / Wilson's) · Genetic Algorithm
+- **Data Science (3)**: Gradient Descent · Bias-Variance Tradeoff · Markov Chain Text Generator
+- **Social Science (3)**: Stag Hunt · Ultimatum Game · Bass Diffusion of Innovation
+
+---
+
+## [0.8.0] — Featured sims curated
+
+### Changed
+
+- Home page **Featured simulations** trimmed from "all 70 sims" to one curated pick per subject (7 cards), to avoid an endless scroll. Subject grid above is the canonical entry point.
+- Added `home.featuredHint` translation key in EN and ID.
+
+---
+
+## [0.7.0] — Round 5: 21 "rare" sims (70 total)
+
+### Added
+
+Sims deliberately picked for being uncommon in educational collections — chaos, classic CS toys, mind-bending statistics.
+
+- **Physics (3)**: Double Pendulum (chaos with ghost) · Doppler Effect (with Mach cone) · Diffraction & Interference (single/multi-slit)
+- **Chemistry (3)**: VSEPR Molecular Geometry (rotatable 3D) · Phase Diagram of Water · Beer-Lambert Spectroscopy
+- **Biology (3)**: Hardy-Weinberg Equilibrium · Neuron Action Potential (FitzHugh-Nagumo) · Mendelian Pedigree Analyzer
+- **Earth & Space (3)**: Coriolis Effect (rotating vs inertial frames) · Hertzsprung-Russell Diagram · Mantle Convection (live PDE)
+- **Computer Science (3)**: Turing Machine · Boids (flocking) · Elementary Cellular Automata (Wolfram rules)
+- **Data Science (3)**: Anscombe's Quartet · Monte Carlo Pi · Simpson's Paradox
+- **Social Science (3)**: Preferential Attachment Networks · Public Goods Game · Hawks vs Doves
+
+---
+
+## [0.6.0] — Round 4: 21 more sims (49 total)
+
+### Added
+
+- **Physics (3)**: Newton's Cradle · Lenses & Refraction (drag-the-object) · Springs & Simple Harmonic Motion
+- **Chemistry (3)**: Bohr Atom Model · Le Chatelier's Principle · Solubility & Saturation
+- **Biology (3)**: Predator-Prey Ecosystem (agent-based) · Enzyme Activity (T, pH curves) · Osmosis & Membrane Transport
+- **Earth & Space (3)**: Greenhouse Effect · Eclipse Geometry · Tides (with spring vs neap)
+- **Computer Science (3)**: Conway's Game of Life · Fractals (Sierpinski / Koch / fractal tree / Cantor) · Caesar Cipher
+- **Data Science (3)**: Bayes' Theorem · Confusion Matrix & ROC · Outlier Effects
+- **Social Science (3)**: SIR Epidemic Model · Voting Methods · Inequality & Lorenz Curve
+
+---
+
+## [0.5.0] — README, screenshots, scope broadening
+
+### Added
+
+- New `README.md` with full catalog, quick-start, deploy instructions for GitHub Pages / Netlify / Vercel, project structure, sim-authoring guide, i18n guide.
+- Embedded screenshots (`screenshots/1.png` … `8.png`) into the README — home page, featured grid, two subject pages, and four sample sim pages.
+
+### Changed
+
+- Removed all "high school" / "SMA" references from the site copy. The project's audience is now described as "students, teachers, self-learners, tutors, and anyone curious about science."
+- `index.html` meta description, `package.json` description, and EN/ID i18n strings updated accordingly.
+- Fixed favicon path in `index.html` (was pointing under `/public/`).
+
+---
+
+## [0.4.0] — Round 3: 7 highly-interactive sims + drag upgrades (28 total)
+
+### Added
+
+- **Physics**: Electric Field & Charges (drag charges, field lines / vector grid / potential heatmap)
+- **Chemistry**: Acid-Base Titration (drip burette, live pH curve)
+- **Biology**: DNA Transcription & Translation (type any DNA, ribosome walks it codon-by-codon)
+- **Earth & Space**: Moon Phases (drag the Moon)
+- **Computer Science**: Logic Gates & Circuits (toggleable inputs, half-adder / full-adder presets, live truth table)
+- **Data Science**: Central Limit Theorem (sample-mean histogram converges to a Gaussian)
+- **Social Science**: Schelling's Segregation (50×50 agent grid)
+
+### Changed
+
+- **Direct manipulation upgrades** to four existing sims:
+  - Projectile Motion: click anywhere on the field to aim the launcher
+  - Pendulum: grab and drag the bob to set initial angle
+  - Linear Regression: drag any point; right-click to remove
+  - K-Means: drag points and centroids; right-click to remove
+
+---
+
+## [0.3.0] — Round 2: 14 more sims (21 total)
+
+### Added
+
+- **Physics (2)**: Simple Pendulum (drag the bob) · Waves on a String
+- **Chemistry (2)**: Periodic Table Explorer (118 elements, color by category / state / period) · Ideal Gas Law (kinetic particles)
+- **Biology (2)**: Cell Explorer (animal/plant SVG) · Natural Selection (color camouflage)
+- **Earth & Space (2)**: Seasons & Axial Tilt · Plate Tectonics
+- **Computer Science (2)**: Binary Search Tree (insert/search/delete) · Pathfinding (BFS vs A*)
+- **Data Science (2)**: Distribution Explorer · K-Means Clustering
+- **Social Science (2)**: Population Dynamics (Lotka–Volterra) · Prisoner's Dilemma (6 strategies, iterated, with noise)
+
+---
+
+## [0.2.0] — Initial wave: 7 sims, one per subject
+
+### Added
+
+- **Physics**: Projectile Motion
+- **Chemistry**: pH Indicator Lab
+- **Biology**: Punnett Square (mono- and dihybrid)
+- **Earth & Space**: Solar System Orrery
+- **Computer Science**: Sorting Visualizer (5 algorithms)
+- **Data Science**: Linear Regression Playground
+- **Social Science**: Supply & Demand
+
+---
+
+## [0.1.0] — Project scaffold
+
+### Added
+
+- Vite + vanilla-JS scaffold with `base: './'` for host-agnostic deploys.
+- Bilingual (English / Bahasa Indonesia) i18n with `localStorage`-persisted locale and per-sim bilingual manifest fields.
+- Hash-based router (`#/`, `#/<subject>`, `#/<subject>/<simId>`, `#/about`) supporting GitHub Pages without rewrites.
+- Subject system with seven hand-themed accent colors (Physics, Chemistry, Biology, Earth & Space, Computer Science, Data Science, Social Science).
+- Shared `lib/` for sims: DPR-aware canvas + animation loop, slider/toggle/button/select control builders, vector and color helpers, localStorage helpers.
+- `sim-shell` component that wraps every sim with intro / objectives / "try this" content from its manifest.
+- Sim contract: each sim is a folder with `manifest.js` (cheap, eager-loaded) and `sim.js` (lazy `import()` on navigation).
+- Catalog registry: every sim is one import away from showing up in the home grid, subject pages, and search.
+- Dark-mode-aware tokens, mobile-responsive grids, `prefers-reduced-motion` respect.
+
+---
+
+[Unreleased]: https://github.com/listyantidewi1/all-science-sims/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v1.1.0
+[1.0.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v1.0.0
+[0.9.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.9.0
+[0.8.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.8.0
+[0.7.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.7.0
+[0.6.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.6.0
+[0.5.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.5.0
+[0.4.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.4.0
+[0.3.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.3.0
+[0.2.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.2.0
+[0.1.0]: https://github.com/listyantidewi1/all-science-sims/releases/tag/v0.1.0

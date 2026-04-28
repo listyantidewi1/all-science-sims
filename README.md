@@ -5,6 +5,8 @@
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, and finance & economics**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
+See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
+
 ---
 
 ## Features
