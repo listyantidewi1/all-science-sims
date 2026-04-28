@@ -9,6 +9,7 @@
   "home.subjects": "Subjects",
   "home.subjectsHint": "Pick a subject to see its sims",
   "home.featured": "Featured simulations",
+  "home.featuredHint": "A handful to start — open a subject above for the full catalog",
   "subject.simsCount": "{{n}} simulations",
   "sim.about": "About this simulation",
   "sim.objectives": "Learning objectives",

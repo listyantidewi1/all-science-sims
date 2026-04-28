@@ -9,6 +9,7 @@
   "home.subjects": "Mata Pelajaran",
   "home.subjectsHint": "Pilih mata pelajaran untuk melihat simulasinya",
   "home.featured": "Simulasi pilihan",
+  "home.featuredHint": "Sekadar pemicu — buka mata pelajaran di atas untuk katalog lengkap",
   "subject.simsCount": "{{n}} simulasi",
   "sim.about": "Tentang simulasi ini",
   "sim.objectives": "Tujuan pembelajaran",

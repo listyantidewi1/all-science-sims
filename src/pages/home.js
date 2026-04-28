@@ -1,7 +1,18 @@
 import { t, tr } from '../i18n/index.js';
 import { SUBJECTS } from '../catalog/subjects.js';
-import { SIMS, simsBySubject } from '../catalog/index.js';
+import { simsBySubject, findSim } from '../catalog/index.js';
 import { simCard } from '../components/sim-card.js';
+
+// Hand-picked featured sims — one per subject, chosen for immediate visual interest.
+const FEATURED_IDS = [
+  'physics/electric-field',
+  'chemistry/titration',
+  'biology/dna-transcription',
+  'earth-space/moon-phases',
+  'computer-science/logic-gates',
+  'data-science/bayes-theorem',
+  'social-science/schelling-segregation',
+];
 
 export function renderHome(main) {
   const hero = document.createElement('section');
@@ -38,14 +49,19 @@ export function renderHome(main) {
   }
   main.appendChild(grid);
 
-  // Featured sims (all of them, since v1 has just 7)
+  // Featured sims — a curated handful, one per subject. Pick a subject card above
+  // (or use the nav) to browse the full catalog.
   const fTitle = document.createElement('div');
   fTitle.className = 'section-title';
-  fTitle.innerHTML = `<h2>${t('home.featured')}</h2>`;
+  fTitle.innerHTML = `<h2>${t('home.featured')}</h2><small>${t('home.featuredHint')}</small>`;
   main.appendChild(fTitle);
 
   const fGrid = document.createElement('div');
   fGrid.className = 'grid';
-  for (const sim of SIMS) fGrid.appendChild(simCard(sim));
+  for (const key of FEATURED_IDS) {
+    const [subj, id] = key.split('/');
+    const sim = findSim(subj, id);
+    if (sim) fGrid.appendChild(simCard(sim));
+  }
   main.appendChild(fGrid);
 }
