@@ -4,6 +4,8 @@ import { SIMS, simsBySubject, findSim } from '../catalog/index.js';
 import { simCard } from '../components/sim-card.js';
 import { getFavorites, onFavoritesChange } from '../lib/store.js';
 
+// One pick per subject — the order matches SUBJECTS so the featured grid
+// reads top-to-bottom in the same sequence as the subject tiles above.
 const FEATURED_IDS = [
   'physics/electric-field',
   'chemistry/titration',
@@ -12,6 +14,8 @@ const FEATURED_IDS = [
   'computer-science/logic-gates',
   'data-science/bayes-theorem',
   'social-science/schelling-segregation',
+  'mathematics/mandelbrot',
+  'finance/compound-interest',
 ];
 
 function matchSim(sim, q) {
