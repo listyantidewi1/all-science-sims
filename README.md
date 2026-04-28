@@ -1,15 +1,15 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 91 hand-built sims across 7 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 107 hand-built sims across 9 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
-A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, and social science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
+A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, and finance & economics**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
 ---
 
 ## Features
 
-- **91 original simulations** across 7 subjects (13 per subject) — see [Catalog](#catalog) below.
+- **107 original simulations** across 9 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -175,6 +175,32 @@ A client-side hub of original interactive simulations covering **physics, chemis
 | Stag Hunt | Coordination game with two stable equilibria — start near 30% stag and watch it collapse, near 70% and watch it lock in. |
 | Ultimatum Game | Slide proposer offer and responder threshold; pie chart of the split, plus a 100-round bar chart of acceptances. |
 | Bass Diffusion of Innovation | Tune p (innovators) and q (imitators); cumulative-S and adoption-rate curves plot side by side. Presets for smartphone, VCR, etc. |
+
+### Mathematics
+
+| Sim | What you do |
+|---|---|
+| Function Plotter | Slide coefficients of polynomials, sin, cos, e^x, ln; live curve responds. |
+| Derivative as Tangent Slope | Drag a point along a curve; tangent rotates and the derivative graph traces below. |
+| Riemann Sums | Slide N rectangles for left/right/midpoint/trapezoidal; converges to the exact integral. |
+| Fourier Series Builder | Build square / sawtooth / triangle waves from sums of sines; Gibbs phenomenon emerges for free. |
+| Vectors & Operations | Drag two 2D arrows; sum, difference, dot product, projection, and angle update live. |
+| Complex Plane Mappings | Drag z; z², z³, 1/z, e^z, conj(z) all appear simultaneously. |
+| Linear Transformations | Drag the columns of a 2×2 matrix; whole grid + unit square bend, rotate, shear, or flip. |
+| Newton's Method for Roots | Click anywhere; tangent-line iterations zoom in on a root. |
+
+### Finance & Economics
+
+| Sim | What you do |
+|---|---|
+| Compound Interest | Slide principal, rate, time, and monthly contribution; compound vs simple vs principal lines. |
+| Loan Amortization | Mortgage / auto loan with monthly payment split into principal + interest; balance curve. |
+| Stock Random Walk (GBM) | Geometric Brownian Motion with adjustable μ and σ; runs many parallel paths. |
+| Portfolio Efficient Frontier | Two assets with adjustable correlation; Sharpe-optimal tangent line emerges. |
+| Inflation Eraser | Real vs nominal vs purchasing-power curves over decades; presets for low / average / high / hyperinflation. |
+| Progressive Tax Brackets | US 2024 single, Indonesia 2024, and flat rate; effective vs marginal rate visualized. |
+| DCA vs Lump Sum | Hundreds of GBM paths; histogram of (lump-sum − DCA) shows which strategy wins more often. |
+| Black-Scholes Option Pricing | Live call and put prices vs stock price, plus payoff diagrams at expiry. |
 
 ---
 

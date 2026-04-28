@@ -41,6 +41,18 @@ export const SUBJECTS = [
     description: { en: 'Economics, game theory, populations.', id: 'Ekonomi, teori permainan, populasi.' },
     icon: '🌐',
   },
+  {
+    id: 'mathematics',
+    name:        { en: 'Mathematics',       id: 'Matematika' },
+    description: { en: 'Algebra, calculus, linear algebra, complex numbers.', id: 'Aljabar, kalkulus, aljabar linear, bilangan kompleks.' },
+    icon: '📐',
+  },
+  {
+    id: 'finance',
+    name:        { en: 'Finance & Economics', id: 'Keuangan & Ekonomi' },
+    description: { en: 'Interest, markets, inflation, options, taxes.', id: 'Bunga, pasar, inflasi, opsi, pajak.' },
+    icon: '💰',
+  },
 ];
 
 export const SUBJECT_BY_ID = Object.fromEntries(SUBJECTS.map((s) => [s.id, s]));

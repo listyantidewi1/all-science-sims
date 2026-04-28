@@ -97,6 +97,24 @@ import stagHunt         from '../sims/social-science/stag-hunt/manifest.js';
 import ultimatum        from '../sims/social-science/ultimatum/manifest.js';
 import bassDiffusion    from '../sims/social-science/bass-diffusion/manifest.js';
 
+import functionPlotter  from '../sims/mathematics/function-plotter/manifest.js';
+import derivative       from '../sims/mathematics/derivative/manifest.js';
+import riemann          from '../sims/mathematics/riemann/manifest.js';
+import fourier          from '../sims/mathematics/fourier/manifest.js';
+import vectors          from '../sims/mathematics/vectors/manifest.js';
+import complexPlane     from '../sims/mathematics/complex-plane/manifest.js';
+import linearTrans      from '../sims/mathematics/linear-transformations/manifest.js';
+import newtonsMethod    from '../sims/mathematics/newtons-method/manifest.js';
+
+import compoundInterest from '../sims/finance/compound-interest/manifest.js';
+import loanAmortization from '../sims/finance/loan-amortization/manifest.js';
+import stockWalk        from '../sims/finance/stock-walk/manifest.js';
+import efficientFrontier from '../sims/finance/efficient-frontier/manifest.js';
+import inflation        from '../sims/finance/inflation/manifest.js';
+import taxBrackets      from '../sims/finance/tax-brackets/manifest.js';
+import dca              from '../sims/finance/dca/manifest.js';
+import blackScholes     from '../sims/finance/black-scholes/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -118,6 +136,10 @@ export const SIMS = [
 
   supplyDemand, prisonersDilemma, populationDynamics, schelling, sirEpidemic, votingMethods,
   inequality, preferentialAtt, publicGoods, hawksDoves, stagHunt, ultimatum, bassDiffusion,
+
+  functionPlotter, derivative, riemann, fourier, vectors, complexPlane, linearTrans, newtonsMethod,
+
+  compoundInterest, loanAmortization, stockWalk, efficientFrontier, inflation, taxBrackets, dca, blackScholes,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
