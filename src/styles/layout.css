@@ -577,6 +577,11 @@ main {
 .lab-del:hover { color: var(--color-danger); }
 .lab-buttons { gap: var(--space-2); }
 .lab-buttons .btn { font-size: var(--type-xs); padding: 6px 10px; }
+.btn--error {
+  background: color-mix(in srgb, var(--color-danger) 15%, var(--color-surface-2)) !important;
+  color: var(--color-danger) !important;
+  border-color: color-mix(in srgb, var(--color-danger) 35%, transparent) !important;
+}
 
 /* Footer */
 .site-footer {

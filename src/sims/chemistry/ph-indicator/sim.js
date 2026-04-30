@@ -216,9 +216,9 @@ export function mount(rootEl) {
     ],
     predict: 'Phenolphthalein is colorless below pH 8.2 and pink above 10. Why is it the standard for titrations to a strong base?',
     source: () => ({
-      indicator: INDICATORS[params.indicator].name,
-      pH: params.pH,
-      color: '(see swatch)',
+      indicator: INDICATORS[state.indicator].name,
+      pH: state.pH,
+      color: colorAt(INDICATORS[state.indicator].stops, state.pH),
     }),
   });
   ctrlPanel.appendChild(lab.el);

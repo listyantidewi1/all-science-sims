@@ -13,6 +13,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.15.1] — Fix broken Record button on the pH indicator lab
+
+The pH indicator lab's `source()` callback referenced a non-existent `params` variable instead of the sim's actual `state` object — clicking Record threw a silent ReferenceError and added no row.
+
+### Fixed
+
+- **pH indicator** ([src/sims/chemistry/ph-indicator/sim.js](src/sims/chemistry/ph-indicator/sim.js)) — `params.indicator` / `params.pH` → `state.indicator` / `state.pH`. The `color` column now records the actual computed RGB string (interpolated from indicator stops) instead of the placeholder "(see swatch)".
+- Audited the other 16 sims that reference `params.` inside `source()` — all of them legitimately declare `const params = {...}` as their state variable name, so they're fine.
+
+### Changed — lab panel surfaces source() errors
+
+To prevent another silent failure: `recordBtn` now wraps `opts.source()` in try/catch ([src/lib/lab.js](src/lib/lab.js)). On error it logs to console and briefly flashes a red error message on the button itself ("! &lt;error message&gt;") before reverting. New `.btn--error` style in [layout.css](src/styles/layout.css).
+
+---
+
 ## [1.15.0] — Click-to-start sims + Subjects dropdown in the navbar
 
 Two UX fixes that surfaced once the catalog grew past ~14 subjects and ~95 sims.

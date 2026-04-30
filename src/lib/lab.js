@@ -151,9 +151,27 @@ export function labPanel(opts) {
   recordBtn.textContent = '+ Record measurement';
   recordBtn.addEventListener('click', () => {
     if (!opts.source) return;
-    const r = opts.source();
+    let r;
+    try {
+      r = opts.source();
+    } catch (err) {
+      console.error('Lab source() threw:', err);
+      flashRecordError(err.message || String(err));
+      return;
+    }
     if (r) { rows.push(r); renderRows(); }
   });
+
+  function flashRecordError(msg) {
+    recordBtn.dataset.origText = recordBtn.dataset.origText || recordBtn.textContent;
+    recordBtn.textContent = `! ${msg.slice(0, 40)}`;
+    recordBtn.classList.add('btn--error');
+    clearTimeout(flashRecordError._t);
+    flashRecordError._t = setTimeout(() => {
+      recordBtn.textContent = recordBtn.dataset.origText;
+      recordBtn.classList.remove('btn--error');
+    }, 2400);
+  }
 
   const clearBtn = document.createElement('button');
   clearBtn.type = 'button';
@@ -200,7 +218,8 @@ export function labPanel(opts) {
     el: wrap,
     record() {
       if (!opts.source) return;
-      const r = opts.source();
+      let r;
+      try { r = opts.source(); } catch (err) { console.error('Lab source() threw:', err); return; }
       if (r) { rows.push(r); renderRows(); }
     },
     clear() { rows = []; renderRows(); },
