@@ -22,24 +22,72 @@ export function renderHeader() {
   home.href = '#/';
   home.textContent = t('nav.home');
   nav.appendChild(home);
+
+  // Subjects dropdown — collapses 14 items into a single toggle so the navbar
+  // fits on any screen.
+  const dropdown = document.createElement('div');
+  dropdown.className = 'nav-dropdown';
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'nav-dropdown__toggle';
+  toggle.setAttribute('aria-haspopup', 'true');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = `<span>${t('home.subjects')}</span><span class="nav-dropdown__caret" aria-hidden="true">▾</span>`;
+  const panel = document.createElement('div');
+  panel.className = 'nav-dropdown__panel';
+  panel.setAttribute('role', 'menu');
   for (const s of SUBJECTS) {
     const a = document.createElement('a');
     a.href = `#/${s.id}`;
-    a.textContent = tr(s.name);
     a.dataset.subject = s.id;
-    nav.appendChild(a);
+    a.setAttribute('role', 'menuitem');
+    a.style.setProperty('--accent', `var(--subj-${s.id})`);
+    a.innerHTML = `<span class="nav-dropdown__icon" aria-hidden="true">${s.icon}</span><span>${tr(s.name)}</span>`;
+    a.addEventListener('click', () => closeDropdown());
+    panel.appendChild(a);
   }
+  dropdown.append(toggle, panel);
+  nav.appendChild(dropdown);
+
   const about = document.createElement('a');
   about.href = '#/about';
   about.textContent = t('nav.about');
   nav.appendChild(about);
 
+  const closeDropdown = () => {
+    dropdown.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  };
+  const openDropdown = () => {
+    dropdown.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+  };
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (dropdown.classList.contains('is-open')) closeDropdown(); else openDropdown();
+  });
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target)) closeDropdown();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDropdown();
+  });
+
   // Mark active nav item based on hash
   const markActive = () => {
     const hash = location.hash || '#/';
-    nav.querySelectorAll('a').forEach((a) => {
+    // Top-level links (Home, About)
+    [home, about].forEach((a) => {
       a.classList.toggle('is-active', a.getAttribute('href') === hash || (hash.startsWith(a.getAttribute('href')) && a.getAttribute('href') !== '#/'));
     });
+    // Subject items inside dropdown
+    let subjectActive = false;
+    panel.querySelectorAll('a').forEach((a) => {
+      const isActive = hash === a.getAttribute('href') || hash.startsWith(a.getAttribute('href') + '/');
+      a.classList.toggle('is-active', isActive);
+      if (isActive) subjectActive = true;
+    });
+    toggle.classList.toggle('is-active', subjectActive);
   };
   markActive();
   window.addEventListener('hashchange', markActive);

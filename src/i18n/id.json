@@ -26,6 +26,8 @@
   "sim.reset": "Atur ulang",
   "sim.play": "Mulai",
   "sim.pause": "Jeda",
+  "sim.start": "Mulai simulasi",
+  "sim.startHint": "Klik untuk memulai simulasi. Baca dulu deskripsi dan tujuan di samping kanan jika perlu.",
   "sim.notFound": "Simulasi tidak ditemukan.",
   "subject.notFound": "Mata pelajaran tidak ditemukan.",
   "common.back": "Kembali",

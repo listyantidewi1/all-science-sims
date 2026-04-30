@@ -26,6 +26,8 @@
   "sim.reset": "Reset",
   "sim.play": "Play",
   "sim.pause": "Pause",
+  "sim.start": "Start simulation",
+  "sim.startHint": "Click to launch the simulation. Read the description and objectives on the right first if you'd like.",
   "sim.notFound": "Simulation not found.",
   "subject.notFound": "Subject not found.",
   "common.back": "Back",

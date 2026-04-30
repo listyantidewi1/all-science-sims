@@ -13,6 +13,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.15.0] — Click-to-start sims + Subjects dropdown in the navbar
+
+Two UX fixes that surfaced once the catalog grew past ~14 subjects and ~95 sims.
+
+### Changed — sims no longer auto-run
+
+Every sim now opens with a Start gate over the stage area. The sim is only loaded and mounted after the user clicks the play button.
+
+- **Why:** with auto-mount, opening a tab fires up animation loops and audio contexts before the user has even read the description. Background tabs were spinning frames; reduced-motion users had no opt-out.
+- **Where:** [src/pages/sim.js](src/pages/sim.js) renders the gate and defers `sim.load()` + `mount()` until clicked. Single shell-level change — no per-sim edits needed.
+- **i18n:** new `sim.start` / `sim.startHint` strings in [en.json](src/i18n/en.json) / [id.json](src/i18n/id.json).
+- **Style:** `.sim-start` block in [layout.css](src/styles/layout.css) — circular play button in the subject accent color, brief hint pointing at the description aside.
+
+### Changed — navbar collapses 14 subjects into a "Subjects ▾" dropdown
+
+The horizontal subject list overflowed past Computer Science / Data Science on most laptop widths. Replaced with a single dropdown toggle.
+
+- **Where:** [src/components/header.js](src/components/header.js) builds a click-driven dropdown panel listing all subjects in a 2-column grid (single column on mobile). Outside-click and Escape close it.
+- **Active highlighting:** when on a `#/<subject>` route, the toggle gets the active style and the matching item inside the panel is highlighted with the subject accent color.
+- **Style:** `.nav-dropdown` block in [layout.css](src/styles/layout.css) — caret rotates on open, items show subject icons in their accent color.
+
+---
+
 ## [1.14.0] — Lab badge: visual identifier for lab-mode sims
 
 Now that ~70 sims have virtual lab mode (since 1.13.0), users had no way to tell from the catalog which sims include the measurement/procedure/CSV-export workflow. A small green "🧪 Lab" pill now marks every lab-shaped sim — both on the cards (home + subject pages, search results) and beside the title on the sim detail page.
