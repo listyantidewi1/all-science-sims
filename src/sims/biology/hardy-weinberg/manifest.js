@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['genetics', 'evolution'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

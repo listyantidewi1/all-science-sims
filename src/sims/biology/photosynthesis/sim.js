@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -149,6 +150,33 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(lightS.el, co2S.el, tS.el, presetRow);
+
+  // Lab — find limiting factors and the temperature optimum.
+  const lab = labPanel({
+    title: 'Photosynthesis lab — find the limiting factor',
+    filename: 'photosynthesis-lab.csv',
+    columns: [
+      { key: 'light', label: 'light',     format: (v) => v.toFixed(2) },
+      { key: 'co2',   label: 'CO₂',        format: (v) => v.toFixed(3) },
+      { key: 'T',     label: 'T (°C)' },
+      { key: 'rate',  label: 'rel. rate',  format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Hold CO₂ = 0.04, T = 25 °C. Sweep light: 0.1, 0.3, 0.5, 0.7, 1.0. Record.',
+      'Note saturation: at high light, more light barely helps. The plant becomes light-saturated.',
+      'Now hold light = 1.0 high. Sweep CO₂: 0.005, 0.01, 0.02, 0.05, 0.1. Record.',
+      'Hold light = 1.0, CO₂ = 0.05. Sweep T: 5, 15, 25, 35, 45 °C. Find the optimum (~25°C).',
+      'Above ~40°C, enzymes denature; below 5°C, kinetics stall. Plot rate vs T.',
+    ],
+    predict: 'A greenhouse can boost growth by raising CO₂ AND adding light. Why isn\'t increasing T past 30 °C as helpful?',
+    source: () => ({
+      light: params.light,
+      co2: params.co2,
+      T: params.temp,
+      rate: rate(),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['electronics', 'circuits'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

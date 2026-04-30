@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Four-box carbon cycle model in GtC.
 // Pools: A (atmosphere), Os (ocean surface), Od (deep ocean), L (land biosphere).
@@ -214,6 +215,37 @@ export function mount(rootEl) {
   }
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(eS.el, spS.el, presetRow, row(resetB));
+
+  // Lab — track pool sizes over emission scenarios.
+  const lab = labPanel({
+    title: 'Carbon cycle lab — where does emitted CO₂ go?',
+    filename: 'carbon-cycle-lab.csv',
+    columns: [
+      { key: 't',     label: 't (yr)',          format: (v) => v.toFixed(1) },
+      { key: 'emit',  label: 'emit (GtC/yr)',   format: (v) => v.toFixed(1) },
+      { key: 'A',     label: 'atmosphere (GtC)', format: (v) => v.toFixed(0) },
+      { key: 'Os',    label: 'surface ocean',    format: (v) => v.toFixed(0) },
+      { key: 'Od',    label: 'deep ocean',       format: (v) => v.toFixed(0) },
+      { key: 'L',     label: 'land',             format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Reset. Set emit = 0. After equilibrium, record t = 0 baseline.',
+      'Set emit = 10 GtC/yr (today). Let run 50 simulated years; record.',
+      'Continue 50 more years; record. Atmosphere grows; ocean lags but absorbs.',
+      'Now set emit = 0 (net zero). Atmosphere slowly falls as ocean absorbs.',
+      'Compare with emit = 5 (half) — atmosphere stabilizes faster than full zero.',
+    ],
+    predict: 'If we cut emissions to zero today, will CO₂ in atmosphere stop rising? Drop fast? Drop slow?',
+    source: () => ({
+      t,
+      emit: params.emit,
+      A: state.atmosphere,
+      Os: state['ocean-surface'],
+      Od: state['deep-ocean'],
+      L: state.land,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

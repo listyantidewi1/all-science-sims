@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['enzymes', 'biochemistry'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

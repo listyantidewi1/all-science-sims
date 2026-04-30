@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -285,6 +286,39 @@ export function mount(rootEl) {
   const raysT = toggle({ label: 'Show principal rays', value: params.showRays, onChange: (v) => { params.showRays = v; } });
 
   ctrlPanel.append(typeSel.el, fS.el, objXS.el, objHS.el, raysT.el);
+
+  // Lab — verify the thin-lens equation 1/d_o + 1/d_i = 1/f.
+  const lab = labPanel({
+    title: 'Thin-lens equation lab — 1/d_o + 1/d_i = 1/f',
+    filename: 'lenses-lab.csv',
+    columns: [
+      { key: 'type',  label: 'lens' },
+      { key: 'f',     label: 'f (units)',   format: (v) => v.toFixed(2) },
+      { key: 'do',    label: 'd_o',          format: (v) => v.toFixed(2) },
+      { key: 'di',    label: 'd_i',          format: (v) => Number.isFinite(v) ? v.toFixed(2) : '∞' },
+      { key: 'm',     label: 'magnif. m',    format: (v) => Number.isFinite(v) ? v.toFixed(3) : '–' },
+      { key: 'kind',  label: 'image' },
+    ],
+    procedure: [
+      'Converging lens, f = 6. Set d_o = 12 (= 2f). Record — image at 2f, m = −1 (inverted, same size).',
+      'Set d_o = 18. Record — closer image, smaller, real, inverted.',
+      'Set d_o = 8 (between f and 2f) — magnified, real, inverted.',
+      'Set d_o = 4 (inside focal length) — virtual, upright, magnified (this is a magnifying glass).',
+      'Switch to diverging lens — always virtual, upright, smaller.',
+    ],
+    predict: 'For a converging lens with f = 10, where will the image form when d_o = 30? Will it be real or virtual?',
+    source: () => {
+      const f = recomputeF();
+      const do_ = Math.abs(params.objX);
+      // Thin-lens: 1/d_i = 1/f - 1/d_o; sign convention: real image is on far side (positive d_i).
+      const inv = 1 / f - 1 / do_;
+      const di = Math.abs(inv) < 1e-6 ? Infinity : 1 / inv;
+      const m = Number.isFinite(di) ? -di / do_ : Infinity;
+      const kind = di > 0 ? (m < 0 ? 'real, inverted' : 'real, upright') : (m > 0 ? 'virtual, upright' : 'virtual, inverted');
+      return { type: params.type, f, do: do_, di, m, kind };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

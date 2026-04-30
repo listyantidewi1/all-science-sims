@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const g = 9.8;
 
@@ -218,6 +219,41 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: () => { state = { s: 0, v: 0, sliding: false }; } });
 
   ctrlPanel.append(angS.el, mS.el, muSS.el, muKS.el, fbdT.el, row(resetB));
+
+  // Lab — find the slipping angle θ_s (where tan θ = μ_s) and the kinetic acceleration.
+  const lab = labPanel({
+    title: 'Inclined plane lab — friction angle & acceleration',
+    filename: 'inclined-plane-lab.csv',
+    columns: [
+      { key: 'angle', label: 'θ (°)',     format: (v) => v.toFixed(1) },
+      { key: 'mu_s',  label: 'μ_s',       format: (v) => v.toFixed(2) },
+      { key: 'mu_k',  label: 'μ_k',       format: (v) => v.toFixed(2) },
+      { key: 'theta_s', label: 'predicted θ_s = arctan(μ_s)', format: (v) => v.toFixed(2) },
+      { key: 'sliding', label: 'sliding?' },
+      { key: 'a',     label: 'a (m/s²)',  format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'μ_s = 0.30, μ_k = 0.25. Predicted slip angle θ_s = arctan(0.30) ≈ 16.7°.',
+      'Set θ = 10°. Block sticks (10 < 16.7). Record.',
+      'Slowly increase θ to 17° — block slides. Record.',
+      'Increase θ to 30° — slides faster. Verify a = g(sinθ − μ_k cosθ).',
+      'Try μ_s = 0.5: predicted θ_s = arctan(0.5) ≈ 26.6°. Verify.',
+    ],
+    predict: 'A block on a ramp with μ_s = 0.7. At what angle does it start to slide? Does mass matter?',
+    source: () => {
+      const theta = params.angleDeg * Math.PI / 180;
+      const a = state.sliding ? g * (Math.sin(theta) - params.muK * Math.cos(theta)) : 0;
+      return {
+        angle: params.angleDeg,
+        mu_s: params.muS,
+        mu_k: params.muK,
+        theta_s: Math.atan(params.muS) * 180 / Math.PI,
+        sliding: state.sliding ? 'yes' : 'no',
+        a,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { dynamics(Math.min(0.05, dt)); draw(); });
   animator.start();

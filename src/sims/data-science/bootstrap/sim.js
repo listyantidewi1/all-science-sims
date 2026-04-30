@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   let u = 0, v = 0;
@@ -150,6 +151,43 @@ export function mount(rootEl) {
   const newSampleB = button({ label: 'New random sample', primary: true, onClick: regenerate });
   const reB = button({ label: 'Re-bootstrap', onClick: runBootstrap });
   ctrlPanel.append(nS.el, muS.el, sdS.el, bS.el, row(newSampleB, reB));
+
+  // Lab — bootstrap CI for the mean.
+  const lab = labPanel({
+    title: 'Bootstrap lab — confidence intervals from resampling',
+    filename: 'bootstrap-lab.csv',
+    columns: [
+      { key: 'n',      label: 'sample n' },
+      { key: 'B',      label: 'B resamples' },
+      { key: 'sampleMean', label: 'sample mean', format: (v) => v.toFixed(4) },
+      { key: 'ciLow',  label: 'CI low (2.5%)',  format: (v) => v.toFixed(4) },
+      { key: 'ciHigh', label: 'CI high (97.5%)', format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Set true μ = 5, σ = 2, n = 30, B = 2000. Click "New sample". Wait for bootstrap.',
+      'Record the sample mean and 95% CI (2.5% and 97.5% percentiles of bootMeans).',
+      'Repeat 5 times. Notice the sample mean varies; the CI usually contains μ = 5.',
+      'Drop n to 10 — CI gets much wider.',
+      'Drop B to 100 — CI estimate is rougher; B = 10000 is smoother.',
+    ],
+    predict: 'You take a sample of n = 100 from a population with σ = 5. What is the SE of the mean? What 95% CI half-width?',
+    source: () => {
+      let sum = 0;
+      for (const v of sample) sum += v;
+      const mean = sum / Math.max(1, sample.length);
+      const sorted = [...bootMeans].sort((a, b) => a - b);
+      const lo = sorted[Math.floor(sorted.length * 0.025)] ?? null;
+      const hi = sorted[Math.floor(sorted.length * 0.975)] ?? null;
+      return {
+        n: sample.length,
+        B: bootMeans.length,
+        sampleMean: mean,
+        ciLow: lo,
+        ciHigh: hi,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

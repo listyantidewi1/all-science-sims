@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['thermodynamics', 'electronics-cooling'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

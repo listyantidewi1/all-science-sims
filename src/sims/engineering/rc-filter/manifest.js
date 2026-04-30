@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['electronics', 'filters'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const g = 9.8;
 const SPRINGS = [
@@ -234,6 +235,40 @@ export function mount(rootEl) {
   const mS = slider({ label: 'Mass (kg)', min: 0.1, max: 20, step: 0.1, value: params.mass, format: (v) => v.toFixed(2),
     onInput: (v) => { params.mass = v; } });
   ctrlPanel.append(sprRow, mS.el);
+
+  // Lab — F vs x to verify F = kx and read off k from the slope.
+  const lab = labPanel({
+    title: "Hooke's law lab — F = kx",
+    filename: 'hookes-law-lab.csv',
+    columns: [
+      { key: 'spring', label: 'spring' },
+      { key: 'm',      label: 'mass (kg)', format: (v) => v.toFixed(2) },
+      { key: 'F',      label: 'F = mg (N)', format: (v) => v.toFixed(2) },
+      { key: 'x',      label: 'stretch x (m)', format: (v) => v.toFixed(4) },
+      { key: 'k_calc', label: 'F/x (N/m)',  format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Pick a spring. Set mass = 0.5 kg, record. Then 1.0, 1.5, 2.0, 2.5 kg.',
+      'For each row: F = mg. Compute F/x; it should equal the spring constant k.',
+      'Switch to a stiffer spring and repeat — same procedure, different k.',
+      'Plot F (y) vs x (x). The slope is k.',
+      'Push past the elastic limit (~60 cm) — the line bends. Why?',
+    ],
+    predict: 'If you double the mass, what happens to the stretch? Will F/x stay constant?',
+    source: () => {
+      const sp = SPRINGS[params.activeIdx];
+      const F = params.mass * g;
+      const x = stretchOf(sp, F);
+      return {
+        spring: sp.name,
+        m: params.mass,
+        F,
+        x,
+        k_calc: x > 1e-6 ? F / x : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['astronomy', 'distance'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

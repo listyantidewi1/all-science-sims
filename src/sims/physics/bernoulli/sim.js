@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const rho = 1000; // kg/m³
 
@@ -136,6 +137,41 @@ export function mount(rootEl) {
   const P1S = slider({ label: 'Inlet pressure P₁ (kPa)', min: 50, max: 200, step: 1, value: params.P1 / 1000,
     onInput: (v) => { params.P1 = v * 1000; } });
   ctrlPanel.append(A2S.el, v1S.el, P1S.el);
+
+  // Lab — verify continuity (A₁v₁ = A₂v₂) and Bernoulli (P + ½ρv² constant).
+  const lab = labPanel({
+    title: 'Bernoulli lab — continuity & pressure-velocity exchange',
+    filename: 'bernoulli-lab.csv',
+    columns: [
+      { key: 'A2',  label: 'A₂ (m²)',   format: (v) => v.toFixed(2) },
+      { key: 'v1',  label: 'v₁ (m/s)',  format: (v) => v.toFixed(2) },
+      { key: 'v2',  label: 'v₂ (m/s)',  format: (v) => v.toFixed(2) },
+      { key: 'P1',  label: 'P₁ (kPa)',  format: (v) => v.toFixed(2) },
+      { key: 'P2',  label: 'P₂ (kPa)',  format: (v) => v.toFixed(2) },
+      { key: 'B',   label: 'P + ½ρv² (kPa)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set A₁ = 1.0 (full), v₁ = 1 m/s, P₁ = 100 kPa. Squeeze A₂ to 0.5. Record.',
+      'Continuity says v₂ = v₁·(A₁/A₂) = 2 m/s. Bernoulli gives P₂ = P₁ + ½ρ(v₁² − v₂²).',
+      'Squeeze A₂ further to 0.3 — speed triples, pressure drops more.',
+      'Increase v₁ to 2 m/s — both v₂ and the pressure drop scale up.',
+      'For each row: P₁ + ½ρv₁² should equal P₂ + ½ρv₂² (Bernoulli). Verify.',
+    ],
+    predict: 'A pipe narrows from A=1 m² to A=0.25 m². If v starts at 1 m/s, what is v in the narrow part? What is ΔP?',
+    source: () => {
+      const v2 = params.v1 * 1.0 / params.A2;
+      const P2 = params.P1 + 0.5 * rho * (params.v1 * params.v1 - v2 * v2);
+      return {
+        A2: params.A2,
+        v1: params.v1,
+        v2,
+        P1: params.P1 / 1000,
+        P2: P2 / 1000,
+        B: (params.P1 + 0.5 * rho * params.v1 * params.v1) / 1000,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

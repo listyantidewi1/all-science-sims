@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Three gears in series, meshed pair-by-pair. Tooth counts T1, T2, T3.
 // Input drives gear 1 at ωin (rad/s).  Each pair: ω_b / ω_a = -T_a / T_b
@@ -152,6 +153,42 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(rpmS.el, t0S.el, t1S.el, t2S.el, tauS.el, presetRow);
+
+  // Lab — verify gear ratio and torque/speed trade-off.
+  const lab = labPanel({
+    title: 'Gear train lab — speed-torque trade-off',
+    filename: 'gear-ratios-lab.csv',
+    columns: [
+      { key: 'T1', label: 'T₁' },
+      { key: 'T2', label: 'T₂' },
+      { key: 'T3', label: 'T₃' },
+      { key: 'ratio',   label: 'overall ratio',  format: (v) => v.toFixed(3) },
+      { key: 'rpm_in',  label: 'rpm in',         format: (v) => v.toFixed(1) },
+      { key: 'rpm_out', label: 'rpm out',        format: (v) => v.toFixed(2) },
+      { key: 'tau_in',  label: 'τ in (N·m)',     format: (v) => v.toFixed(2) },
+      { key: 'tau_out', label: 'τ out (N·m)',    format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Set 12-24-12 (T₁=T₃, T₂=24). Overall ratio = (12/24)·(24/12) = 1. Same speed, same torque.',
+      'Set 12-12-12 (1:1:1). Verify same.',
+      'Set 12-48-12 (intermediate idler) — does T₂ matter for the OUTPUT? (Hint: no — only input/output ratio counts.)',
+      'Set 12-12-48 — final stage reduces speed 4×, multiplies torque 4×.',
+      'For each row, verify: rpm_out × τ_out = rpm_in × τ_in (power conservation, ideal).',
+    ],
+    predict: 'Bicycle: small chainring (T=30) drives big rear cog (T=40). What is the speed ratio? Climbing or descending gear?',
+    source: () => {
+      const ratio = (params.teeth[0] / params.teeth[1]) * (params.teeth[1] / params.teeth[2]);
+      return {
+        T1: params.teeth[0], T2: params.teeth[1], T3: params.teeth[2],
+        ratio,
+        rpm_in: params.rpm,
+        rpm_out: params.rpm * ratio,
+        tau_in: params.torqueIn,
+        tau_out: params.torqueIn / Math.abs(ratio),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

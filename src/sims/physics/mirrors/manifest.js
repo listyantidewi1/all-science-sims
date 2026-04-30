@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['optics'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

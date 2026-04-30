@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['oscillation', 'spring'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

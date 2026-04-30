@@ -17,6 +17,8 @@
   "search.results": "Results",
   "search.matches": "{{n}} match(es)",
   "fav.toggle": "Toggle favorite",
+  "lab.badge": "Lab",
+  "lab.badgeTitle": "This sim has virtual lab mode — record measurements, follow a procedure, export CSV",
   "subject.simsCount": "{{n}} simulations",
   "sim.about": "About this simulation",
   "sim.objectives": "Learning objectives",

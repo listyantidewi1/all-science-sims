@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Lotka-Volterra:
 //   dx/dt = α x − β x y     (prey)
@@ -114,6 +115,42 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
 
   ctrlPanel.append(aS.el, bS.el, dS.el, gS.el, row(resetB));
+
+  // Lab — Lotka-Volterra cycles.
+  const lab = labPanel({
+    title: 'Lotka-Volterra lab — predator-prey cycles',
+    filename: 'population-dynamics-lab.csv',
+    columns: [
+      { key: 'alpha', label: 'α (prey growth)', format: (v) => v.toFixed(2) },
+      { key: 'beta',  label: 'β (predation)',   format: (v) => v.toFixed(2) },
+      { key: 'delta', label: 'δ (pred. growth)', format: (v) => v.toFixed(2) },
+      { key: 'gamma', label: 'γ (pred. death)',  format: (v) => v.toFixed(2) },
+      { key: 't',     label: 't',                format: (v) => v.toFixed(1) },
+      { key: 'prey',  label: 'prey',             format: (v) => v.toFixed(2) },
+      { key: 'pred',  label: 'predators',        format: (v) => v.toFixed(2) },
+      { key: 'eqPrey', label: 'equilibrium prey', format: (v) => v.toFixed(2) },
+      { key: 'eqPred', label: 'equilibrium pred.', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Reset. Watch the cycles. Record at the first peak and trough.',
+      'Compute equilibrium: x* = γ/δ, y* = α/β.',
+      'Verify the populations cycle around (x*, y*) but never exactly settle there.',
+      'Increase α (faster prey growth) — equilibrium predator population rises.',
+      'Decrease γ (longer predator lifespan) — equilibrium prey falls. The wolves can sustain themselves better.',
+    ],
+    predict: 'If you wipe out predators (γ → ∞), what happens to prey? If prey die out (β → ∞), to predators?',
+    source: () => ({
+      alpha: params.alpha,
+      beta: params.beta,
+      delta: params.delta,
+      gamma: params.gamma,
+      t,
+      prey, pred,
+      eqPrey: params.gamma / params.delta,
+      eqPred: params.alpha / params.beta,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

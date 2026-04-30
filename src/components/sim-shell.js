@@ -27,7 +27,10 @@ export function buildSimShell(sim) {
 
   const heading = document.createElement('div');
   heading.style.marginBottom = 'var(--space-4)';
-  heading.innerHTML = `<h1 style="margin:0">${tr(sim.title)}</h1>`;
+  const labBadge = sim.hasLab
+    ? `<span class="sim-card__lab" style="margin-left:12px;font-size:12px;padding:4px 12px" title="${t('lab.badgeTitle')}">🧪 ${t('lab.badge')}</span>`
+    : '';
+  heading.innerHTML = `<h1 style="margin:0;display:inline-flex;align-items:center;flex-wrap:wrap">${tr(sim.title)}${labBadge}</h1>`;
 
   const grid = document.createElement('div');
   grid.className = 'sim-shell';

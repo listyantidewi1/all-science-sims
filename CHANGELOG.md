@@ -13,6 +13,105 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.14.0] — Lab badge: visual identifier for lab-mode sims
+
+Now that ~70 sims have virtual lab mode (since 1.13.0), users had no way to tell from the catalog which sims include the measurement/procedure/CSV-export workflow. A small green "🧪 Lab" pill now marks every lab-shaped sim — both on the cards (home + subject pages, search results) and beside the title on the sim detail page.
+
+### Added
+
+- **`hasLab: true` manifest flag** — added to all 70 sims that ship a lab panel. Detected by grepping `labPanel` usage in each `sim.js` and patching the corresponding `manifest.js`.
+- **Lab badge on sim cards** ([src/components/sim-card.js](src/components/sim-card.js)) — small green pill rendered next to the subject tag when `hasLab` is true.
+- **Lab badge on the sim detail header** ([src/components/sim-shell.js](src/components/sim-shell.js)) — slightly larger version of the same pill, inline with the H1.
+- **i18n strings** — `lab.badge` / `lab.badgeTitle` in both [en.json](src/i18n/en.json) and [id.json](src/i18n/id.json). Tooltip explains what the badge means ("This sim has virtual lab mode — record measurements, follow a procedure, export CSV").
+- **`.sim-card__lab` CSS** ([src/styles/layout.css](src/styles/layout.css)) — green-on-tinted-green pill, deliberately distinct from per-subject accent colors so the lab indicator reads as a category marker independent of subject.
+
+### Why a single shared badge color (green, not subject-tinted)
+
+The badge means "this sim has lab mode" — a property orthogonal to subject. A subject-colored badge would compete with the existing subject tag and muddle the signal. Green is unused elsewhere in the chrome, so the eye latches onto it as a distinct category.
+
+---
+
+## [1.13.0] — Virtual Lab mode goes catalog-wide (~60 sims now lab-shaped)
+
+Every sim where measurements + a procedure makes pedagogical sense now has a lab panel. Pure visualizations, lookups, and audio sims are intentionally excluded.
+
+### Changed — full lab mode coverage across the catalog
+
+**Physics (12)** — waves-on-string (find harmonics), lenses (1/dₒ + 1/dᵢ = 1/f), springs-shm (T = 2π√(m/k)), snell (refraction + critical angle), buoyancy (Archimedes' fraction), atwood (Newton's 2nd law for systems), mirrors (mirror equation), carnot (η_max), bernoulli (continuity + pressure), collisions-1d (momentum + KE), inclined-plane (slip angle), doppler (frequency shift).
+
+**Chemistry (8)** — ph-indicator (transition ranges), le-chatelier (predict shift), solubility (curves vs T), beer-lambert (A vs c·L), collision-theory (rate vs T, Arrhenius), radioactive-decay (verify half-life), galvanic-cell (E°_cell), activation-energy (Arrhenius + catalysis).
+
+**Biology (5)** — punnett-square (offspring ratios), natural-selection (selection coefficient), osmosis (water flow direction), hardy-weinberg (allele freq evolution), photosynthesis (find limiting factor).
+
+**Earth & Space (4)** — solar-system (Kepler's 3rd: T²/a³), moon-phases (illumination vs angle), greenhouse (T vs CO₂), stellar-parallax (d = 1/p).
+
+**Engineering (8)** — beam-bending (M_max), gear-ratios (speed-torque trade), op-amp (gain + clipping), rc-filter (Bode), stress-strain (yield/ultimate), otto-cycle (η vs r), transformer (turns ratio), heat-sink (thermal-RC).
+
+**Climate (4)** — carbon-cycle (pool tracking), ice-albedo (bistable equilibria), energy-mix (CO₂/cost/reliability trilemma), ocean-acidification (pH + Ω vs CO₂).
+
+**Data Science (6)** — linear-regression (least-squares fit), distributions (sample vs theoretical), central-limit-theorem (SD scaling), monte-carlo-pi (1/√N convergence), gradient-descent (lr vs convergence), bootstrap (CI for mean).
+
+**Finance (6)** — compound-interest (compound vs simple), loan-amortization (M, total interest), stock-walk (GBM distribution), inflation (real vs nominal), bond-pricing (premium/par/discount), npv (NPV + IRR).
+
+**Social (4)** — supply-demand (equilibrium + price controls), sir-epidemic (herd threshold), logistic-growth (inflection at K/2), population-dynamics (Lotka-Volterra cycles).
+
+**Math (2)** — pi-polygons (Archimedes' bracket), galton-board (binomial → Gaussian).
+
+**Psychology (1)** — forgetting-curve (design a study schedule).
+
+### Notes
+
+- ~60 sims gained lab panels in this push, on top of the 10 from 1.12.0 → **70 sims now have full lab affordances** (procedure + prediction + data table + CSV export).
+- Pure visualizations, lookups, music/audio, and conceptual sims (Mandelbrot, optical illusions, food web, periodic table, harmonic series, etc.) deliberately skipped — they don't fit the lab shape.
+- Bundle: virtually no main growth (~0.1 KB); each sim's chunk grew ~1 KB. Total catalog still 234 sims.
+
+---
+
+## [1.12.0] — Virtual Lab mode rolls out (10 sims now lab-shaped)
+
+The `lib/lab.js` helper from 1.11.0 now ships across the seven additional lab-shaped sims. Each has a custom procedure and prediction prompt designed around the actual experiment a teacher would assign. Combined with the three exemplars from 1.11.0 (pendulum, titration, Hooke's law), **10 sims now produce real lab data** that students can record and export.
+
+### Changed (7 more sims now in lab mode)
+
+- **Chemistry / Gas Laws** — Boyle / Charles / combined: 5-step procedure varying V then T, columns for n, T, V, P, P·V, and PV/(nT). Verifies the ideal-gas constant from your own data.
+- **Biology / Enzyme Activity** — Find the optimum (T, pH) for pepsin, trypsin, etc. Sweep T at fixed pH, then pH at fixed T; the optimum reveals itself in the data.
+- **Physics / Photoelectric Effect** — Measure h and the work function. Sweep frequency above the threshold, plot KE vs f, slope is Planck's h.
+- **Chemistry / Calorimetry** — Predict T_f from m₁c₁T₁ + m₂c₂T₂ formula, then verify against the live equilibrium. Q = mcΔT energy bookkeeping in the data table.
+- **Chemistry / Electrolysis** — Faraday's laws verified directly: n = It/(zF). Also captures the 2:1 H₂:O₂ ratio across all rows.
+- **Physics / Series & Parallel Circuits** — Ohm's law and the resistance-combination rules. Toggle bulbs off mid-trial to see the cascade differences between configs.
+- **Physics / Projectile Motion** — Range vs angle: sweep through 15°, 30°, 45°, 60°, 75° and verify R = v²sin(2θ)/g (no drag) — the 30°/60° symmetry pops out of the data.
+
+### Notes
+
+- Catalog: still 234 sims; 10 now have full lab affordances (prediction → procedure → data table → CSV export).
+- Bundle: ~0.02 KB main growth; each lab-mode sim's chunk grew ~1 KB.
+- Pattern is fully shaken out — the next batch (any 10–20 lab-shaped sims) will be ~30 lines of sim code each.
+
+---
+
+## [1.11.0] — Virtual Lab mode (lib/lab.js + 3 exemplar upgrades)
+
+The first wave of "sim → virtual lab" upgrades. A shared infrastructure piece + three lab-shaped sims that now have proper lab affordances: structured procedures, prediction prompts, a recordable data table, and CSV export.
+
+### Added
+
+- **`src/lib/lab.js`** — `labPanel({ title, columns, procedure, predict, source, filename })`. Drop-in panel any sim can append to its controls. Procedure section is collapsible with check-off-able steps; prediction section captures free text before measurement; data table grows by row, supports per-row delete; "↓ CSV" exports the full table as a downloadable file.
+- **CSS** — sticky-header table, monospace numerics, accent-colored left rule on the panel so it sits visibly distinct from sliders/buttons.
+
+### Changed (3 exemplar sims now in lab mode)
+
+- **Physics / Pendulum** — "Period vs length" lab: 5-step procedure (vary L from 0.5 → 3.0 m), prediction prompt about T vs L scaling, columns for L, θ₀, g, measured T, and theoretical 2π√(L/g). Drag the bob, let it settle, click Record. Export the rows and your students get a real T-vs-L dataset they can plot on graph paper.
+- **Chemistry / Titration** — "Find the equivalence point" lab: drip slowly, click Record every 2 mL, then more often near the steep midpoint. Auto-tags the row with "equivalence" or "half-equiv (pH ≈ pKa)" when the volume crosses those reference points.
+- **Physics / Hooke's Law** — "F = kx" lab: pick a spring, vary mass from 0.5 → 2.5 kg, record stretch and F/x ratio per row. Procedure walks through how to read k off the slope; the elastic-limit deviation becomes obvious from the data once mass gets high.
+
+### Notes
+
+- Catalog: still 234 sims. This wave is depth, not breadth.
+- Bundle: ~3 KB gzipped added (lab.js + CSS); each lab-mode sim's chunk grew ~1 KB.
+- The pattern is now ready to apply to the next batch (gas-laws, enzyme-activity, photoelectric, calorimetry, electrolysis, circuits, projectile-motion). Each takes ~30 lines of sim code: import labPanel, define columns + procedure + source, append to ctrlPanel.
+
+---
+
 ## [1.10.0] — Two new subjects: Psychology + Cognitive Science (234 sims, 14 subjects)
 
 ### Added — Psychology 🧠 (6 sims, new subject)

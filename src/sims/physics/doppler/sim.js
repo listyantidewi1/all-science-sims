@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, toggle, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -196,6 +197,40 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: () => { reset(); } });
 
   ctrlPanel.append(speedS.el, cS.el, fS.el, autoT.el, row(resetB));
+
+  // Lab — verify f' = f · c / (c − v) when source approaches and f · c / (c + v) when receding.
+  const lab = labPanel({
+    title: 'Doppler effect lab — frequency shift vs source speed',
+    filename: 'doppler-lab.csv',
+    columns: [
+      { key: 'v',    label: 'v_source (px/s)', format: (v) => v.toFixed(1) },
+      { key: 'c',    label: 'c (px/s)',        format: (v) => v.toFixed(0) },
+      { key: 'f',    label: 'f source (Hz)',   format: (v) => v.toFixed(2) },
+      { key: 'fApp', label: "f' approaching",  format: (v) => v.toFixed(3) },
+      { key: 'fRec', label: "f' receding",     format: (v) => v.toFixed(3) },
+      { key: 'rApp', label: 'shift % approach', format: (v) => v.toFixed(1) + '%' },
+    ],
+    procedure: [
+      'Set source speed = 30 px/s, c = 120, f = 1.5 Hz. Predict approaching f.',
+      'Increase source speed to 60, then 100. Watch the shift grow.',
+      'For each row, verify f_approach = f · c / (c − v) and f_recede = f · c / (c + v).',
+      'Note: at v = c, the approaching frequency diverges — that\'s the sonic boom.',
+      'Mach number = v/c. The shift % roughly equals the Mach number for small v.',
+    ],
+    predict: 'A 1000 Hz siren moves at 50 m/s through still air (c = 343 m/s). What frequency do you hear approaching? Receding?',
+    source: () => {
+      const v = params.speedSrc, c = params.speedSound, f = params.freqSrc;
+      const fApp = f * c / (c - v);
+      const fRec = f * c / (c + v);
+      return {
+        v, c, f,
+        fApp,
+        fRec,
+        rApp: (fApp - f) / f * 100,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   reset();
   const animator = loop((dt) => { step(dt); draw(); });

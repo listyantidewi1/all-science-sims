@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Idealized Otto cycle, four corners:
 //   1: BDC, V_max, P1                  (after intake)
@@ -244,6 +245,31 @@ export function mount(rootEl) {
     onInput: (v) => { params.heat = v; } });
   const runT = toggle({ label: 'Running', value: params.running, onChange: (v) => { params.running = v; } });
   ctrlPanel.append(rS.el, rpmS.el, hS.el, runT.el);
+
+  // Lab — verify η_Otto = 1 − 1/r^(γ−1) for various compression ratios.
+  const lab = labPanel({
+    title: 'Otto cycle lab — efficiency vs compression ratio',
+    filename: 'otto-cycle-lab.csv',
+    columns: [
+      { key: 'r',   label: 'compression r', format: (v) => v.toFixed(1) },
+      { key: 'eta', label: 'η (%)',         format: (v) => (v * 100).toFixed(2) },
+      { key: 'note', label: 'note' },
+    ],
+    procedure: [
+      'Sweep r = 4, 6, 8, 10, 12, 14, 18. Record η at each. Verify η = 1 − r^(−0.4).',
+      'r = 4: η ≈ 43% (old engines)',
+      'r = 8: η ≈ 56% (typical gasoline)',
+      'r = 14: η ≈ 65% (diesel-grade)',
+      'But r > 12 in gasoline → autoignition (knock). That\'s why diesel uses high r safely.',
+    ],
+    predict: 'For r = 10, what is η_Otto? Real engines achieve maybe 70% of this — why so much loss?',
+    source: () => ({
+      r: params.r,
+      eta: 1 - 1 / Math.pow(params.r, gamma - 1),
+      note: params.r > 12 ? 'knock-prone for gasoline' : '',
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

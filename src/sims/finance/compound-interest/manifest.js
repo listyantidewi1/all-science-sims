@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['interest', 'savings'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

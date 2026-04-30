@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { cssVar } from '../../../lib/color.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -210,6 +211,45 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: reset });
 
   ctrlPanel.append(angleS.el, speedS.el, gravS.el, dragS.el, vecT.el, row(launchB, resetB));
+
+  // Lab — find the angle that maximizes range; verify R = v² sin(2θ)/g.
+  const lab = labPanel({
+    title: 'Projectile lab — range vs angle',
+    filename: 'projectile-lab.csv',
+    columns: [
+      { key: 'angle', label: 'angle (°)', format: (v) => v.toFixed(0) },
+      { key: 'speed', label: 'v₀ (m/s)',  format: (v) => v.toFixed(1) },
+      { key: 'g',     label: 'g (m/s²)',  format: (v) => v.toFixed(2) },
+      { key: 'drag',  label: 'drag',      format: (v) => v.toFixed(2) },
+      { key: 'range_meas', label: 'R measured (m)', format: (v) => v == null ? '–' : v.toFixed(2) },
+      { key: 'range_th',   label: 'R = v²sin(2θ)/g', format: (v) => v.toFixed(2) },
+      { key: 'tFlight',    label: 't (s)', format: (v) => v == null ? '–' : v.toFixed(2) },
+      { key: 'peak',       label: 'peak (m)', format: (v) => v == null ? '–' : v.toFixed(2) },
+    ],
+    procedure: [
+      'Set drag = 0, v₀ = 35 m/s. Sweep angle: 15°, 30°, 45°, 60°, 75°. Launch each, wait for landing, click Record.',
+      'Notice 30° and 60° give equal range (and similarly 15° and 75°). 45° is the maximum.',
+      'Verify the formula R = v² sin(2θ) / g matches your measurements (no drag).',
+      'Now turn on air drag (~0.10) and repeat. The optimum angle drops below 45°.',
+      'Try Mars gravity (3.7 m/s²) — your projectile flies much farther.',
+    ],
+    predict: 'No drag, v₀ = 50 m/s, g = 9.8. Predict the range at θ = 45°. Now at 30°.',
+    source: () => {
+      const a = (params.angle * Math.PI) / 180;
+      const range_th = (params.speed * params.speed) * Math.sin(2 * a) / params.gravity;
+      return {
+        angle: params.angle,
+        speed: params.speed,
+        g: params.gravity,
+        drag: params.drag,
+        range_meas: proj && !proj.flying ? proj.range : null,
+        range_th,
+        tFlight: proj && !proj.flying ? proj.tFlight : null,
+        peak: proj ? proj.peak : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   // Drag-to-aim: click anywhere above ground to point launcher at cursor
   let dragging = false;

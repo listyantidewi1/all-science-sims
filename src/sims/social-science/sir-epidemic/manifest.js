@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['epidemiology', 'public-health'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

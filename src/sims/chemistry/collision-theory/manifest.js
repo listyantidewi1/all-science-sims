@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['kinetics', 'reactions'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

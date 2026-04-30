@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -151,6 +152,37 @@ export function mount(rootEl) {
   } });
   const resetB = button({ label: 'Reset', onClick: reset });
   ctrlPanel.append(nAS.el, nBS.el, TS.el, eaS.el, row(catB, resetB));
+
+  // Lab — measure rate vs T (Arrhenius), vs concentration (rate law).
+  const lab = labPanel({
+    title: 'Collision theory lab — rate vs T and concentration',
+    filename: 'collision-theory-lab.csv',
+    columns: [
+      { key: 'nA',    label: '[A] (n)' },
+      { key: 'nB',    label: '[B] (n)' },
+      { key: 'T',     label: 'T (K)' },
+      { key: 'Ea',    label: 'Eₐ' },
+      { key: 'rate',  label: 'reactions/s', format: (v) => v.toFixed(2) },
+      { key: 'colls', label: 'collisions/s', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set nA = nB = 30, T = 300 K, Eₐ = 40. Wait ~5 s, then record reaction rate.',
+      'Double nA to 60 — rate should roughly double (first-order in A).',
+      'Restore A and double T to 600 K — rate jumps far more (Arrhenius: k ∝ e^(−Eₐ/RT)).',
+      'Click "Add catalyst" (lowers Eₐ) — rate jumps without changing T or concentrations.',
+      'Plot ln(rate) vs 1/T — slope is −Eₐ/R.',
+    ],
+    predict: 'Increase T from 300 K to 310 K. By what factor does the rate change for Eₐ = 50 kJ/mol? (Hint: ~2.)',
+    source: () => ({
+      nA: params.nA,
+      nB: params.nB,
+      T: params.T,
+      Ea: params.Ea,
+      rate: reactionsLast,
+      colls: collisions / Math.max(0.5, lastTick),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -163,6 +164,46 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: spawn });
 
   ctrlPanel.append(nS.el, tS.el, vS.el, row(resetB));
+
+  // Lab — verify Boyle/Charles/Gay-Lussac and that PV/nT ≈ constant.
+  function pseudoP() {
+    const b = box();
+    const wallLen = 2 * (b.w + b.h);
+    return collisionsPerSec / wallLen * 100;
+  }
+  const lab = labPanel({
+    title: 'Gas laws lab — PV = nRT',
+    filename: 'gas-laws-lab.csv',
+    columns: [
+      { key: 'n',  label: 'n (particles)' },
+      { key: 'T',  label: 'T (K)' },
+      { key: 'V',  label: 'V (rel)',     format: (v) => v.toFixed(2) },
+      { key: 'P',  label: 'P (units)',   format: (v) => v.toFixed(2) },
+      { key: 'PV', label: 'P·V',         format: (v) => v.toFixed(3) },
+      { key: 'PVnT', label: 'PV/(nT)',   format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Boyle\'s law: hold T and n constant. Set V = 1.0, wait, record. Then 0.7, 0.5, 0.3.',
+      'Verify: as V drops, P rises so that P·V stays roughly constant.',
+      'Charles\'s law: hold V and n constant. Set T = 200, 400, 600, 800 K. Record each.',
+      'Verify: V/T constant when P fixed (here it\'s P that grows with T at fixed V).',
+      'Combined: change all three. Confirm PV/(nT) ≈ constant — that\'s R.',
+    ],
+    predict: 'If you halve V at constant T, what should happen to P? Halve T at constant V?',
+    source: () => {
+      const P = pseudoP();
+      const V = params.Vfrac;
+      return {
+        n: params.n,
+        T: params.T,
+        V,
+        P,
+        PV: P * V,
+        PVnT: P * V / (params.n * params.T),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

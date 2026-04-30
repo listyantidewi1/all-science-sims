@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -146,6 +147,43 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(N1S.el, N2S.el, VS.el, RS.el, presetRow);
+
+  // Lab — verify V₂/V₁ = N₂/N₁ and power conservation.
+  const lab = labPanel({
+    title: 'Transformer lab — turns ratio and power conservation',
+    filename: 'transformer-lab.csv',
+    columns: [
+      { key: 'N1',   label: 'N₁' },
+      { key: 'N2',   label: 'N₂' },
+      { key: 'V1',   label: 'V₁ peak' },
+      { key: 'V2',   label: 'V₂ peak',  format: (v) => v.toFixed(1) },
+      { key: 'I1',   label: 'I₁ (mA)',  format: (v) => v.toFixed(2) },
+      { key: 'I2',   label: 'I₂ (mA)',  format: (v) => v.toFixed(2) },
+      { key: 'P1',   label: 'P_in (W)', format: (v) => v.toFixed(3) },
+      { key: 'P2',   label: 'P_out (W)', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Try 1:1 (N₁ = N₂ = 100). Verify V₂ = V₁ and I₂ = I₁.',
+      'Step-up 10× (100 → 1000). Verify V₂ = 10·V₁ but I₂ = I₁/10. Power preserved.',
+      'Step-down 20× (1000 → 50). Used for distribution: high-V transmission, low-V at home.',
+      'Vary load R — current scales but V₂ stays the same (ideal transformer).',
+      'P_in = P_out for an ideal transformer; real ones lose some to heating in the iron core.',
+    ],
+    predict: 'A 120 V wall outlet drives a 12 V appliance through a transformer. If primary has 600 turns, how many on secondary? If appliance draws 2 A, what does primary draw?',
+    source: () => {
+      const V2 = params.V1peak * params.N2 / params.N1;
+      const I2 = V2 / params.R_load;
+      const I1 = I2 * params.N2 / params.N1;
+      return {
+        N1: params.N1, N2: params.N2,
+        V1: params.V1peak, V2,
+        I1: I1 * 1000, I2: I2 * 1000,
+        P1: params.V1peak * I1 / 2,
+        P2: V2 * I2 / 2,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

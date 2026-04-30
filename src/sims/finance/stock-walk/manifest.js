@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['stochastic', 'markets'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['fluid-dynamics'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

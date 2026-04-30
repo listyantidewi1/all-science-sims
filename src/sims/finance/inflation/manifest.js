@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['inflation', 'real-return'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

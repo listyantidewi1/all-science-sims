@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -166,6 +167,41 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
 
   ctrlPanel.append(NS.el, pS.el, fAAS.el, fAaS.el, faaS.el, speedS.el, playT.el, row(stepB, resetB));
+
+  // Lab — verify HW equilibrium and watch selection break it.
+  const lab = labPanel({
+    title: 'Hardy-Weinberg lab — equilibrium and selection',
+    filename: 'hardy-weinberg-lab.csv',
+    columns: [
+      { key: 'gen',  label: 'generation' },
+      { key: 'p',    label: 'p (A freq)', format: (v) => v.toFixed(3) },
+      { key: 'AA',   label: 'AA freq', format: (v) => v.toFixed(3) },
+      { key: 'Aa',   label: 'Aa freq', format: (v) => v.toFixed(3) },
+      { key: 'aa',   label: 'aa freq', format: (v) => v.toFixed(3) },
+      { key: 'pred_AA', label: 'predicted p²', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Reset with p = 0.5, all fitness = 1. Step 5 generations; record after each.',
+      'Verify HW: AA ≈ p², Aa ≈ 2pq, aa ≈ q² (with random sampling drift).',
+      'Set fitAA = 1.0, fitAa = 0.9, faa = 0.5 (recessive disadvantage). Watch p rise.',
+      'Try heterozygote advantage: fitAa = 1.0, fitAA = 0.7, faa = 0.7. p settles to a stable middle.',
+      'Crank N down to 20 — see strong genetic drift even without selection.',
+    ],
+    predict: 'In a population, aa = 1%. Under HW, what is q? p? AA? Aa frequency?',
+    source: () => {
+      const last = history[history.length - 1];
+      if (!last) return null;
+      return {
+        gen: history.length,
+        p: last.p,
+        AA: last.AA,
+        Aa: last.Aa,
+        aa: last.aa,
+        pred_AA: last.p * last.p,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   reset();
   let acc = 0;

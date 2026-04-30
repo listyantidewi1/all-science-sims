@@ -17,6 +17,8 @@
   "search.results": "Hasil",
   "search.matches": "{{n}} hasil",
   "fav.toggle": "Tandai favorit",
+  "lab.badge": "Lab",
+  "lab.badgeTitle": "Sim ini punya mode lab virtual — catat pengukuran, ikuti prosedur, ekspor CSV",
   "subject.simsCount": "{{n}} simulasi",
   "sim.about": "Tentang simulasi ini",
   "sim.objectives": "Tujuan pembelajaran",

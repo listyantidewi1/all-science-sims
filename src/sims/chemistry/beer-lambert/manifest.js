@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['spectroscopy', 'analytical'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

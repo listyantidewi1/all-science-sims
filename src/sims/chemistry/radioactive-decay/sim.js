@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -176,6 +177,37 @@ export function mount(rootEl) {
   const tT = toggle({ label: 'Show theoretical curve', value: params.showTheoretical, onChange: (v) => { params.showTheoretical = v; } });
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(N0S.el, hlS.el, tT.el, row(resetB));
+
+  // Lab — verify exponential decay and the half-life relationship.
+  const lab = labPanel({
+    title: 'Radioactive decay lab — half-life',
+    filename: 'radioactive-decay-lab.csv',
+    columns: [
+      { key: 't',     label: 't (s)',   format: (v) => v.toFixed(1) },
+      { key: 'N',     label: 'atoms remaining' },
+      { key: 'frac',  label: 'N/N₀',    format: (v) => v.toFixed(3) },
+      { key: 'theory', label: 'predicted', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Set N₀ = 200, T₁/₂ = 4 s. Reset and let it run.',
+      'Record atoms at t = 0, 4, 8, 12, 16 s — that\'s 0, 1, 2, 3, 4 half-lives.',
+      'After n half-lives, you should see N₀/2ⁿ atoms (statistically).',
+      'Plot N vs t (semi-log) — should be a straight line with slope −ln(2)/T₁/₂.',
+      'Repeat with different N₀ and T₁/₂ — same scaling law applies.',
+    ],
+    predict: 'A 100-mg sample with T₁/₂ = 5 days. How much remains after 15 days? After 25 days?',
+    source: () => {
+      const alive = atoms.filter((a) => a.alive).length;
+      const theory = params.N0 * Math.pow(0.5, t / params.halfLife);
+      return {
+        t,
+        N: alive,
+        frac: alive / params.N0,
+        theory,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.1, dt)); draw(); });
   animator.start();

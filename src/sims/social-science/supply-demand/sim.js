@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, toggle, button, row, select } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Demand:  P = a - b*Q     (downward sloping)
 // Supply:  P = c + d*Q     (upward sloping)
@@ -179,6 +180,40 @@ export function mount(rootEl) {
   });
 
   ctrlPanel.append(aS.el, bS.el, cS.el, dS.el, ctrlSel.el, pcS.el);
+
+  // Lab — find equilibrium price/quantity and effect of ceiling/floor.
+  const lab = labPanel({
+    title: 'Supply & demand lab — equilibrium and price controls',
+    filename: 'supply-demand-lab.csv',
+    columns: [
+      { key: 'a',  label: 'a (D intercept)' },
+      { key: 'b',  label: 'b (D slope)',     format: (v) => v.toFixed(2) },
+      { key: 'c',  label: 'c (S intercept)' },
+      { key: 'd',  label: 'd (S slope)',     format: (v) => v.toFixed(2) },
+      { key: 'Pe', label: 'P_eq',           format: (v) => v.toFixed(2) },
+      { key: 'Qe', label: 'Q_eq',           format: (v) => v.toFixed(2) },
+      { key: 'control', label: 'control' },
+      { key: 'controlP', label: 'control $' },
+    ],
+    procedure: [
+      'Default supply/demand. Record equilibrium (P, Q).',
+      'Set price ceiling below equilibrium (e.g., $30 when Pe = $50). Shortage emerges.',
+      'Set price floor above equilibrium ($70). Surplus emerges.',
+      'Increase demand (a → 120). Equilibrium shifts up — both P and Q rise.',
+      'Cost shock: c → 30 (supply curve shifts up). Equilibrium P rises, Q falls.',
+    ],
+    predict: 'A new tax raises producer cost. What happens to equilibrium price and quantity? Who pays?',
+    source: () => {
+      const e = equilibrium();
+      return {
+        a: state.a, b: state.b, c: state.c, d: state.d,
+        Pe: e.P, Qe: e.Q,
+        control: state.control,
+        controlP: state.controlPrice,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   let raf = 0;
   const tick = () => { draw(); raf = requestAnimationFrame(tick); };

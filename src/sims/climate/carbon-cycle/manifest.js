@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['climate', 'biogeochemistry'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

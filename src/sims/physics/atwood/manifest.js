@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['mechanics', 'forces'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

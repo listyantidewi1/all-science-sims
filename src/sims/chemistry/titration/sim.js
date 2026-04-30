@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Approximate titration of an acid (mono-protic) with a strong base (NaOH).
 // We treat strong acid as Ka → ∞ for charge balance.
@@ -301,6 +302,39 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset flask', onClick: () => { params.titrantAdded = 0; pumping = 0; titS.value = 0; } });
 
   ctrlPanel.append(acidSel.el, acidConcS.el, acidVolS.el, baseConcS.el, KaS.el, indSel.el, titS.el, row(slowB, fastB, stopB, resetB));
+
+  // Lab — record titration-curve points and find the equivalence volume.
+  function equivalenceVol() {
+    // Strong vs strong: V_eq = C_a · V_a / C_b ; weak-acid case is the same for V_eq.
+    return params.acidConc * params.acidVol / params.baseConc;
+  }
+  const lab = labPanel({
+    title: 'Titration lab — find the equivalence point',
+    filename: 'titration-lab.csv',
+    columns: [
+      { key: 'V',    label: 'V titrant (mL)', format: (v) => v.toFixed(2) },
+      { key: 'pH',   label: 'pH',             format: (v) => v.toFixed(2) },
+      { key: 'note', label: 'note',           format: (v) => v ?? '' },
+    ],
+    procedure: [
+      'Set acid type, concentration, and volume from your problem.',
+      'Drip slowly. Click "Record" every 2 mL: 0, 2, 4, 6, 8, 10 mL.',
+      'Near the steep midpoint (the equivalence point), record every 0.5 mL.',
+      'Past equivalence, take a few more readings.',
+      'Plot pH vs volume. The midpoint of the steep rise is the equivalence point.',
+    ],
+    predict: 'For a strong acid + strong base, what should the equivalence pH be? What about for a weak acid + strong base?',
+    source: () => {
+      const V = params.titrantAdded;
+      const pH = pHAt(V, params);
+      const Veq = equivalenceVol();
+      const note =
+        Math.abs(V - Veq) < 0.4 ? 'equivalence' :
+        Math.abs(V - Veq / 2) < 0.4 && params.acidType === 'weak' ? 'half-equiv (pH ≈ pKa)' : '';
+      return { V, pH, note };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   // Drag the red dot along the curve to scrub volume; hover anywhere on the
   // chart for a (volume, pH) readout. Both stop the pump while interacting.

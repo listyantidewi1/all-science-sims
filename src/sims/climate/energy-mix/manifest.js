@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['climate', 'energy-policy'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

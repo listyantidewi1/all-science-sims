@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // First-order low-pass: H(jω) = 1 / (1 + jωRC)
 // |H| = 1 / sqrt(1 + (f/fc)²)
@@ -221,6 +222,37 @@ export function mount(rootEl) {
   const tuneB = button({ label: 'Drive at f_c', primary: true, onClick: () => { params.drive = Math.round(fc()); driveS.value = params.drive; } });
 
   ctrlPanel.append(RS.el, CS.el, driveS.el, row(tuneB));
+
+  // Lab — verify f_c = 1/(2πRC), −3 dB at f_c, −20 dB/decade rolloff.
+  const lab = labPanel({
+    title: 'RC filter lab — verify cutoff and roll-off',
+    filename: 'rc-filter-lab.csv',
+    columns: [
+      { key: 'R',    label: 'R (Ω)' },
+      { key: 'C',    label: 'C (µF)',     format: (v) => v.toFixed(2) },
+      { key: 'fc',   label: 'f_c (Hz)',    format: (v) => v.toFixed(2) },
+      { key: 'f',    label: 'drive f (Hz)' },
+      { key: 'gain', label: 'gain (dB)',   format: (v) => v.toFixed(2) },
+      { key: 'phase',label: 'phase (°)',   format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'R = 1 kΩ, C = 1 µF → f_c = 159.2 Hz. Drive at f_c. Gain = −3.01 dB; phase = −45°.',
+      'Drive at 0.1·f_c (well below): gain ≈ 0 dB, phase ≈ 0°.',
+      'Drive at 10·f_c (well above): gain ≈ −20 dB, phase ≈ −84°.',
+      'Drive at 100·f_c: gain ≈ −40 dB. The rolloff is −20 dB/decade above f_c.',
+      'Change R or C — f_c shifts but the shape (in dB vs log-f) is identical.',
+    ],
+    predict: 'For R = 10 kΩ, C = 100 nF, what is the cutoff frequency? At what drive frequency does gain hit −6 dB?',
+    source: () => ({
+      R: params.R,
+      C: params.C * 1e6,
+      fc: 1 / (2 * Math.PI * params.R * params.C),
+      f: params.drive,
+      gain: 20 * Math.log10(1 / Math.sqrt(1 + (params.drive / (1 / (2 * Math.PI * params.R * params.C))) ** 2)),
+      phase: -Math.atan(params.drive / (1 / (2 * Math.PI * params.R * params.C))) * 180 / Math.PI,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

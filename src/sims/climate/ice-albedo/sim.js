@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Energy-balance model: planet has temperature T (K), receives S/4 incoming
 // (S = solar constant = 1361 W/m²), reflects fraction α, emits εσT⁴.
@@ -192,6 +193,35 @@ export function mount(rootEl) {
   const warmB = button({ label: 'Warm start', primary: true, onClick: () => { params.T = 295; tS.value = 295; } });
 
   ctrlPanel.append(tS.el, sS.el, epsS.el, row(snowB, warmB));
+
+  // Lab — find the bistable equilibria of the ice-albedo system.
+  const lab = labPanel({
+    title: 'Ice-albedo lab — bistable equilibria',
+    filename: 'ice-albedo-lab.csv',
+    columns: [
+      { key: 'Sscale', label: 'S (×S₀)', format: (v) => v.toFixed(3) },
+      { key: 'eps',    label: 'ε',       format: (v) => v.toFixed(3) },
+      { key: 'T_K',    label: 'T (K)',    format: (v) => v.toFixed(1) },
+      { key: 'T_C',    label: 'T (°C)',   format: (v) => v.toFixed(1) },
+      { key: 'state',  label: 'regime' },
+    ],
+    procedure: [
+      'Set S = 1.0, ε = 0.61, T = 230 K (cold start). System settles to icy equilibrium. Record.',
+      'Same parameters, T = 295 K (warm start). System settles to warm equilibrium. Record.',
+      'Both starts converge to different stable states — that\'s bistability.',
+      'Drop S to 0.7 — only the icy equilibrium remains; warm start cools to ice.',
+      'Raise S to 1.3 — only warm; icy start warms up.',
+    ],
+    predict: 'A planet starts cold (T = 240 K) at S = 1.1. Where does it settle? Now drop S to 0.8.',
+    source: () => ({
+      Sscale: params.Sscale,
+      eps: params.eps,
+      T_K: params.T,
+      T_C: params.T - 273.15,
+      state: params.T < 250 ? 'snowball' : params.T < 280 ? 'tipping zone' : 'warm',
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); tS.value = params.T; });
   animator.start();

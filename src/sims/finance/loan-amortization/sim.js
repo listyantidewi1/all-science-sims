@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -119,6 +120,40 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(PS.el, rS.el, yS.el, presetRow);
+
+  // Lab — see how rate/duration affect monthly payment and total interest.
+  const lab = labPanel({
+    title: 'Loan amortization lab — monthly payment and total interest',
+    filename: 'loan-amortization-lab.csv',
+    columns: [
+      { key: 'P',     label: 'principal',     format: (v) => v.toFixed(0) },
+      { key: 'rate',  label: 'rate',          format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'years', label: 'years' },
+      { key: 'M',     label: 'monthly pmt',   format: (v) => v.toFixed(2) },
+      { key: 'totalP', label: 'total paid',    format: (v) => v.toFixed(0) },
+      { key: 'totalI', label: 'total interest', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      '$300k @ 6%, 30 years. Record. Monthly ~$1799; total interest ~$348k (more than principal!).',
+      'Same loan, 15 years. Monthly jumps to ~$2531, but total interest drops to ~$155k.',
+      'Same loan @ 4%, 30 years. Monthly ~$1432; total interest ~$216k.',
+      'Comparison: a 1% rate cut on a $300k 30-yr saves over $60k in interest.',
+      '15-year vs 30-year tradeoff: higher payment, much less total interest.',
+    ],
+    predict: 'A $200k loan at 5% for 30 years. What is the monthly payment? Total interest paid?',
+    source: () => {
+      const r = compute();
+      return {
+        P: params.P,
+        rate: params.rate,
+        years: params.years,
+        M: r.M,
+        totalP: r.M * params.years * 12,
+        totalI: r.totalInterest,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

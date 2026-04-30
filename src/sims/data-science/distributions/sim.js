@@ -1,6 +1,7 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   // Box-Muller
@@ -219,6 +220,45 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(distSel.el, p1S.el, p2S.el, nS.el, binsS.el, row(resampleB));
+
+  // Lab — sample mean/variance vs theoretical.
+  const lab = labPanel({
+    title: 'Distributions lab — sample vs theoretical',
+    filename: 'distributions-lab.csv',
+    columns: [
+      { key: 'dist',     label: 'distribution' },
+      { key: 'p1',       label: 'param 1', format: (v) => v.toFixed(2) },
+      { key: 'p2',       label: 'param 2', format: (v) => v.toFixed(2) },
+      { key: 'n',        label: 'n' },
+      { key: 'mean_emp', label: 'sample mean', format: (v) => v.toFixed(3) },
+      { key: 'sd_emp',   label: 'sample SD',   format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Pick Normal(0, 1). Sample n = 1000. Record. Sample mean ≈ 0, SD ≈ 1.',
+      'Resample 5 times — record each. Notice variability between batches.',
+      'Now n = 100 — much more variable. n = 50000 — very tight.',
+      'Switch to Uniform(0, 1) — mean = 0.5, variance = 1/12 ≈ 0.083.',
+      'Switch to Exponential(λ=1) — mean = 1/λ, SD = 1/λ.',
+    ],
+    predict: 'For an Exp(λ=2) distribution, what is the theoretical mean and SD?',
+    source: () => {
+      let sum = 0;
+      for (const v of samples) sum += v;
+      const m = sum / Math.max(1, samples.length);
+      let v2 = 0;
+      for (const v of samples) v2 += (v - m) ** 2;
+      const sd = Math.sqrt(v2 / Math.max(1, samples.length));
+      return {
+        dist: params.dist,
+        p1: params.p1,
+        p2: params.p2,
+        n: samples.length,
+        mean_emp: m,
+        sd_emp: sd,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   sample();
   let raf = 0;

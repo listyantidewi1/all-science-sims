@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const F = 96485; // Faraday's constant, C/mol
 const Vm = 22.4; // molar volume of ideal gas at STP, L/mol
@@ -161,6 +162,45 @@ export function mount(rootEl) {
   const runT = toggle({ label: 'Running', value: params.running, onChange: (v) => { params.running = v; } });
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(iS.el, runT.el, row(resetB));
+
+  // Lab — verify Faraday's law and the 2:1 H₂:O₂ ratio.
+  const lab = labPanel({
+    title: "Electrolysis lab — Faraday's laws and the 2:1 ratio",
+    filename: 'electrolysis-lab.csv',
+    columns: [
+      { key: 'I',      label: 'I (A)',         format: (v) => v.toFixed(2) },
+      { key: 't',      label: 't (s)',         format: (v) => v.toFixed(1) },
+      { key: 'Q',      label: 'Q = I·t (C)',   format: (v) => v.toFixed(2) },
+      { key: 'molH2',  label: 'mol H₂',        format: (v) => v.toExponential(2) },
+      { key: 'molO2',  label: 'mol O₂',        format: (v) => v.toExponential(2) },
+      { key: 'mlH2',   label: 'V H₂ (mL STP)', format: (v) => v.toFixed(2) },
+      { key: 'mlO2',   label: 'V O₂ (mL STP)', format: (v) => v.toFixed(2) },
+      { key: 'ratio',  label: 'H₂/O₂',         format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set I = 1 A. Reset. Run for 30 seconds; click Record.',
+      'Reset, run for 60 s. Record. Then 90 s. Verify mol H₂ doubles and triples.',
+      'Now set I = 2 A. Run 30 s. Same charge as 1 A × 60 s — same gas amount.',
+      'Across all rows: H₂ : O₂ should be exactly 2 : 1 (because water is H₂O).',
+      'Compute: predicted mol H₂ = Q / (2F). Compare to your data.',
+    ],
+    predict: 'Predict the mol H₂ produced for I = 1.5 A running for 100 s. Use n = It / (zF), z = 2.',
+    source: () => {
+      const ml1 = state.qH2 * Vm * 1000;
+      const ml2 = state.qO2 * Vm * 1000;
+      return {
+        I: params.current,
+        t: state.t,
+        Q: params.current * state.t,
+        molH2: state.qH2,
+        molO2: state.qO2,
+        mlH2: ml1,
+        mlO2: ml2,
+        ratio: state.qO2 > 1e-9 ? state.qH2 / state.qO2 : NaN,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

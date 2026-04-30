@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -139,6 +140,40 @@ export function mount(rootEl) {
   const rS = slider({ label: 'Discount rate', min: 0, max: 0.50, step: 0.005, value: params.rate, format: (v) => `${(v*100).toFixed(1)}%`,
     onInput: (v) => { params.rate = v; } });
   ctrlPanel.append(initS.el, annS.el, yS.el, rS.el);
+
+  // Lab — NPV vs discount rate, find IRR.
+  const lab = labPanel({
+    title: 'NPV / IRR lab — when does NPV cross zero?',
+    filename: 'npv-lab.csv',
+    columns: [
+      { key: 'init',   label: 'initial',  format: (v) => v.toFixed(0) },
+      { key: 'ann',    label: 'annual',   format: (v) => v.toFixed(0) },
+      { key: 'years',  label: 'years' },
+      { key: 'rate',   label: 'discount r', format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'NPV',    label: 'NPV',      format: (v) => v.toFixed(2) },
+      { key: 'IRR',    label: 'IRR',      format: (v) => v == null ? '–' : (v * 100).toFixed(2) + '%' },
+    ],
+    procedure: [
+      'Project: -$1000 today, +$300/year for 5 years. At r = 8%, record NPV. Negative? Positive?',
+      'Sweep r = 0%, 5%, 10%, 15%, 20%. Record NPV at each.',
+      'NPV crosses zero somewhere — that\'s the IRR. Check: it should match the IRR readout.',
+      'Increase the annual cash flow to $400 — IRR rises. NPV at any rate is higher.',
+      'Apply: accept project if r < IRR. The IRR is your "break-even" required return.',
+    ],
+    predict: 'Project: -$5000 today, +$1500/year for 4 years. Roughly, what is the IRR?',
+    source: () => {
+      const cf = cashflows();
+      return {
+        init: params.initial,
+        ann: params.annual,
+        years: params.years,
+        rate: params.rate,
+        NPV: npv(cf, params.rate),
+        IRR: irr(cf),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

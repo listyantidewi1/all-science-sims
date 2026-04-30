@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Thermal model:
 //   C dT/dt = P_in - (T - T_amb) / R_theta
@@ -195,6 +196,35 @@ export function mount(rootEl) {
   }
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(PS.el, rS.el, aS.el, cS.el, presetRow, row(resetB));
+
+  // Lab — verify T_chip = T_amb + P·R_θ in steady state.
+  const lab = labPanel({
+    title: 'Heat sink lab — thermal resistance and steady-state',
+    filename: 'heat-sink-lab.csv',
+    columns: [
+      { key: 'P',    label: 'P (W)' },
+      { key: 'R',    label: 'R_θ (K/W)', format: (v) => v.toFixed(2) },
+      { key: 'Tamb', label: 'T_amb (°C)' },
+      { key: 'Tss',  label: 'T_ss predicted (°C)', format: (v) => v.toFixed(1) },
+      { key: 'Tlive', label: 'T live (°C)',         format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'P = 65 W, R_θ = 0.5 K/W, T_amb = 25°C. Predicted T_ss = 25 + 65·0.5 = 57.5°C. Wait, record.',
+      'Switch to "Stock cooler" (R_θ = 1.5). New T_ss = 25 + 97.5 = 122.5°C. Chip throttles or fries.',
+      'Drop P to 30 W with the stock cooler — T_ss = 70°C, OK.',
+      'Crank ambient to 40°C — every cooler runs hotter by 15°C.',
+      'For a chip-cooler design problem: given P_max and T_max, solve for required R_θ.',
+    ],
+    predict: 'A 100 W chip needs to stay below 90°C in a 30°C room. What thermal resistance does the cooler need?',
+    source: () => ({
+      P: params.P,
+      R: params.Rtheta,
+      Tamb: params.Tamb,
+      Tss: params.Tamb + params.P * params.Rtheta,
+      Tlive: state.T,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

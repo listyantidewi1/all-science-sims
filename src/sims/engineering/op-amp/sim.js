@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Inverting op-amp: V_out = -(R_f / R_in) * V_in, clipped to ±supply.
 
@@ -243,6 +244,41 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(RinS.el, RfS.el, VinS.el, fS.el, presetRow);
+
+  // Lab — verify gain G = -R_f/R_in and find clipping threshold.
+  const lab = labPanel({
+    title: 'Op-amp lab — verify gain and clipping',
+    filename: 'op-amp-lab.csv',
+    columns: [
+      { key: 'Rin',     label: 'R_in (kΩ)' },
+      { key: 'Rf',      label: 'R_f (kΩ)' },
+      { key: 'Vin',     label: 'V_in peak (V)', format: (v) => v.toFixed(2) },
+      { key: 'gain',    label: 'gain G',         format: (v) => v.toFixed(2) },
+      { key: 'Vout',    label: 'V_out peak (V)', format: (v) => v.toFixed(2) },
+      { key: 'clipped', label: 'clipped?' },
+    ],
+    procedure: [
+      'Unity gain: R_in = R_f = 10 kΩ. V_out = −V_in. Record.',
+      '×10 amplifier: R_in = 10, R_f = 100. V_out should be 10× V_in.',
+      'Verify until V_in × |G| exceeds the supply (±15 V) — output clips.',
+      'Crank V_in to 2 V at gain ×10: 20 V required, but supply is 15 → clipping at 15.',
+      'For each row, compare measured peak to expected; note clipping when |G·V_in| > supply.',
+    ],
+    predict: 'R_in = 5 kΩ, R_f = 50 kΩ, V_in = 0.5 V peak. What is V_out peak? Is it clipped?',
+    source: () => {
+      const G = -params.Rf / params.Rin;
+      const Vout = Math.abs(G) * params.Vin;
+      return {
+        Rin: params.Rin,
+        Rf: params.Rf,
+        Vin: params.Vin,
+        gain: G,
+        Vout: Math.min(Vout, params.supply),
+        clipped: Vout > params.supply ? 'yes' : 'no',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

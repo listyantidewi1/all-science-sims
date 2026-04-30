@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -216,6 +217,47 @@ export function mount(rootEl) {
   } });
 
   ctrlPanel.append(slopeS.el, intS.el, resT.el, bfT.el, row(newB, clearB, matchB));
+
+  // Lab — find the line that minimizes SSR; compare your fit to least squares.
+  function ssr(pts, m, b) {
+    let s = 0;
+    for (const p of pts) { const e = p.y - (m * p.x + b); s += e * e; }
+    return s;
+  }
+  const lab = labPanel({
+    title: 'Linear regression lab — least-squares fit',
+    filename: 'linear-regression-lab.csv',
+    columns: [
+      { key: 'n',     label: 'n points' },
+      { key: 'mUser', label: 'your slope', format: (v) => v.toFixed(3) },
+      { key: 'bUser', label: 'your int',   format: (v) => v.toFixed(3) },
+      { key: 'ssrUser', label: 'your SSR', format: (v) => v.toFixed(1) },
+      { key: 'mBest', label: 'OLS slope', format: (v) => v == null ? '–' : v.toFixed(3) },
+      { key: 'bBest', label: 'OLS int',   format: (v) => v == null ? '–' : v.toFixed(3) },
+      { key: 'ssrBest', label: 'OLS SSR', format: (v) => v == null ? '–' : v.toFixed(1) },
+    ],
+    procedure: [
+      'Click "New" to generate scatter data. Adjust your slope/intercept to minimize SSR.',
+      'Record your best attempt. Then click "Match best fit" — the OLS line.',
+      'Notice: SSR_OLS ≤ SSR_yours always. Least squares is the unique minimum.',
+      'Generate scatterier data — eyeballing gets harder; the math still works.',
+      'Plot residuals to check for patterns; ideal residuals are random.',
+    ],
+    predict: 'Five points: (1,2), (2,3), (3,5), (4,6), (5,8). Estimate the slope by eye, then compute OLS.',
+    source: () => {
+      const bf = bestFit(state.points);
+      return {
+        n: state.points.length,
+        mUser: state.userSlope,
+        bUser: state.userIntercept,
+        ssrUser: ssr(state.points, state.userSlope, state.userIntercept),
+        mBest: bf ? bf.m : null,
+        bBest: bf ? bf.b : null,
+        ssrBest: bf ? ssr(state.points, bf.m, bf.b) : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   let raf = 0;
   const tick = () => { draw(); raf = requestAnimationFrame(tick); };

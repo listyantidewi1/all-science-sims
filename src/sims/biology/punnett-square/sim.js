@@ -1,4 +1,5 @@
 import { select } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Build a Punnett square from two parent genotypes.
 // Supports 1-locus (Aa) or 2-locus (AaBb) crosses.
@@ -170,7 +171,55 @@ export function mount(rootEl) {
     ctrlPanel.append(modeSel.el, p1Sel.el, p2Sel.el);
   }
 
+  function buildLab() {
+    const lab = labPanel({
+      title: 'Punnett square lab — predict offspring ratios',
+      filename: 'punnett-lab.csv',
+      columns: [
+        { key: 'mode', label: 'cross' },
+        { key: 'p1',   label: 'parent 1' },
+        { key: 'p2',   label: 'parent 2' },
+        { key: 'AA',   label: '"AA" %', format: (v) => v == null ? '–' : v.toFixed(0) },
+        { key: 'Aa',   label: '"Aa" %', format: (v) => v == null ? '–' : v.toFixed(0) },
+        { key: 'aa',   label: '"aa" %', format: (v) => v == null ? '–' : v.toFixed(0) },
+        { key: 'pheno', label: 'phenotype ratio' },
+      ],
+      procedure: [
+        'Monohybrid Aa × Aa: predict 1:2:1 genotype, 3:1 phenotype. Record.',
+        'AA × aa: all heterozygous Aa. Record.',
+        'Aa × aa (test cross): 1:1 Aa : aa, useful to test the genotype of an unknown.',
+        'Switch to dihybrid AaBb × AaBb. Predict the classic 9:3:3:1 phenotypic ratio.',
+        'Note: Punnett predicts EXPECTED ratios; real experiments scatter around them.',
+      ],
+      predict: 'A pea cross Aa (yellow) × aa (green). What fraction of offspring will be green?',
+      source: () => {
+        const g1 = gametes(state.p1);
+        const g2 = gametes(state.p2);
+        const counts = {};
+        const phen = {};
+        for (const a of g1) for (const b of g2) {
+          const c = combine(a, b); counts[c] = (counts[c] || 0) + 1;
+          const ph = phenotype(c); phen[ph] = (phen[ph] || 0) + 1;
+        }
+        const total = g1.length * g2.length;
+        const pct = (k) => counts[k] != null ? counts[k] / total * 100 : null;
+        const phenoStr = Object.entries(phen).map(([k, n]) => `${k}:${n}`).join('  ');
+        return {
+          mode: state.mode === 'mono' ? 'mono' : 'di',
+          p1: state.p1,
+          p2: state.p2,
+          AA: state.mode === 'mono' ? pct('AA') : null,
+          Aa: state.mode === 'mono' ? pct('Aa') : null,
+          aa: state.mode === 'mono' ? pct('aa') : null,
+          pheno: phenoStr,
+        };
+      },
+    });
+    ctrlPanel.appendChild(lab.el);
+  }
+
   buildControls();
+  buildLab();
   render();
 
   return () => { /* nothing async to tear down */ };

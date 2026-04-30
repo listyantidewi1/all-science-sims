@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['optimization', 'machine-learning'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

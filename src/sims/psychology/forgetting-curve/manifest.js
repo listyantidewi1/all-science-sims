@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['memory', 'learning'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Solubility (g per 100 g water) at temperature T (°C). Approximated curves.
 const SOLUTES = {
@@ -173,6 +174,31 @@ export function mount(rootEl) {
   const clearB = button({ label: 'Pour out', onClick: () => { params.addedG = 0; addedS.value = 0; } });
 
   ctrlPanel.append(solSel.el, tempS.el, waterS.el, addedS.el, row(spoonB, clearB));
+
+  // Lab — measure solubility curves and find where solutions saturate.
+  const lab = labPanel({
+    title: 'Solubility lab — solubility vs temperature',
+    filename: 'solubility-lab.csv',
+    columns: [
+      { key: 'solute', label: 'solute' },
+      { key: 'T',      label: 'T (°C)',  format: (v) => v.toFixed(0) },
+      { key: 'sol',    label: 'g/100g water', format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Pick KNO₃. Sweep T = 0, 20, 40, 60, 80 °C. Record each solubility.',
+      'KNO₃ rises steeply with T. Plot solubility vs T — strongly concave.',
+      'Switch to NaCl. Sweep the same T values. NaCl is nearly flat — barely T-dependent.',
+      'Sugar: very high solubility, scales linearly.',
+      'CuSO₄: moderate increase. Useful for crystal-growing demos (cool to crystallize).',
+    ],
+    predict: 'You dissolve 60 g KNO₃ in 100 g water at 60 °C. As you cool to 20 °C, how much will crystallize out?',
+    source: () => ({
+      solute: SOLUTES[params.solute].name,
+      T: params.temp,
+      sol: SOLUTES[params.solute].curve(params.temp),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

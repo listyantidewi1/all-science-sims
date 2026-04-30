@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const METALS = {
   cesium:   { name: 'Cesium',    phi: 2.14 },
@@ -164,6 +165,40 @@ export function mount(rootEl) {
   const iS = slider({ label: 'Intensity', min: 0.1, max: 3, step: 0.05, value: params.intensity, format: (v) => v.toFixed(2),
     onInput: (v) => { params.intensity = v; } });
   ctrlPanel.append(mSel.el, fS.el, iS.el);
+
+  // Lab — measure KE_max vs frequency, find threshold f₀ and Planck's h.
+  const lab = labPanel({
+    title: 'Photoelectric lab — measure h and the work function',
+    filename: 'photoelectric-lab.csv',
+    columns: [
+      { key: 'metal', label: 'metal' },
+      { key: 'phi',   label: 'φ (eV)',  format: (v) => v.toFixed(2) },
+      { key: 'f',     label: 'f (×10¹⁴ Hz)', format: (v) => v.toFixed(2) },
+      { key: 'hf',    label: 'hf (eV)', format: (v) => v.toFixed(3) },
+      { key: 'KE',    label: 'KE_max (eV)', format: (v) => v.toFixed(3) },
+      { key: 'emit',  label: 'emission?' },
+    ],
+    procedure: [
+      'Pick sodium (φ ≈ 2.36 eV). Sweep frequency from 4 to 16 ×10¹⁴ Hz in steps of 1.',
+      'Below the threshold, no electrons are emitted regardless of intensity.',
+      'Above threshold: KE_max = hf − φ. Plot KE vs f — slope is h, x-intercept is f₀ = φ/h.',
+      'Switch to gold (φ ≈ 5.10 eV). The threshold shifts to higher f.',
+      'Crank intensity up at fixed f — does KE_max change? (No — only the rate of emission.)',
+    ],
+    predict: 'Will doubling the intensity increase KE_max? Will it increase the rate of emission? (Two different questions.)',
+    source: () => {
+      const ke = KE();
+      return {
+        metal: METALS[params.metal].name,
+        phi: METALS[params.metal].phi,
+        f: params.frequency * 1e-14,
+        hf: h * params.frequency,
+        KE: ke,
+        emit: ke > 0 ? 'yes' : 'no',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

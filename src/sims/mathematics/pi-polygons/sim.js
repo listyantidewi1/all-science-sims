@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -86,6 +87,41 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(nS.el, presetRow);
+
+  // Lab — Archimedes' method: π estimate from inscribed/circumscribed polygons.
+  const lab = labPanel({
+    title: "Archimedes' lab — π from polygons",
+    filename: 'pi-polygons-lab.csv',
+    columns: [
+      { key: 'n',     label: 'n sides' },
+      { key: 'inscr', label: 'inscribed est.', format: (v) => v.toFixed(6) },
+      { key: 'circ',  label: 'circumscribed', format: (v) => v.toFixed(6) },
+      { key: 'avg',   label: 'midpoint',      format: (v) => v.toFixed(6) },
+      { key: 'err',   label: 'midpoint err',  format: (v) => v.toExponential(2) },
+    ],
+    procedure: [
+      'n = 6: inscribed = 3, circumscribed ≈ 3.464. π is between.',
+      'n = 12, 24, 48, 96 (Archimedes\' progression). Bracket narrows toward π.',
+      'n = 1000, 10000. The bracket gets very tight; midpoint is excellent.',
+      'Plot error vs n on log-log — error scales as 1/n² (regular polygon converges quadratically).',
+      'Archimedes used 96-gons by hand to bracket π between 223/71 and 22/7.',
+    ],
+    predict: 'For n = 100 sides, roughly how many decimals of π do you expect to be correct?',
+    source: () => {
+      const a = Math.PI / params.n;
+      const inscr = params.n * Math.sin(a);
+      const circ = params.n * Math.tan(a);
+      const avg = (inscr + circ) / 2;
+      return {
+        n: params.n,
+        inscr,
+        circ,
+        avg,
+        err: Math.abs(avg - Math.PI),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

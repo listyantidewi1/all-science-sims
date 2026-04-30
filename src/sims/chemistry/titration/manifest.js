@@ -32,5 +32,6 @@ export default {
   },
   topics: ['acids', 'bases', 'titration'],
   grade: [11, 12],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, toggle, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Convention: Sun is to the right (positive x). Sunlight travels in -x direction.
 // Moon angle θ measured CCW from +x axis around Earth.
@@ -339,6 +340,39 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(angS.el, autoT.el, speedS.el, presetRow);
+
+  // Lab — connect phase angle to illuminated fraction and synodic day.
+  const lab = labPanel({
+    title: 'Moon phases lab — phase angle vs illumination',
+    filename: 'moon-phases-lab.csv',
+    columns: [
+      { key: 'angle',  label: 'angle (°)', format: (v) => v.toFixed(0) },
+      { key: 'phase',  label: 'phase' },
+      { key: 'lit',    label: 'illum %',   format: (v) => v.toFixed(0) },
+      { key: 'day',    label: 'day of cycle', format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Set phase angle = 0° (Full). Record. Predicted: 100% illuminated.',
+      'Step to 90° (Last quarter), 180° (New), 270° (First quarter). Record each.',
+      'For arbitrary angle θ, illuminated fraction = (1 + cos θ)/2.',
+      'Synodic month is 29.53 days. Day of cycle = (θ − 180°)/360° × 29.53 (with day 0 = new moon).',
+      'Apply: 7 days after new moon, what phase do you expect to see?',
+    ],
+    predict: 'You see a half-lit moon, lit on the right (in northern hemisphere). What phase is it?',
+    source: () => {
+      const angDeg = (state.angle * 180 / Math.PI) % 360;
+      const lit = (1 + Math.cos(state.angle)) / 2;
+      const a = ((state.angle - Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+      const day = (a / (Math.PI * 2)) * 29.53;
+      return {
+        angle: angDeg,
+        phase: phaseName(angDeg),
+        lit: lit * 100,
+        day,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => {
     step(dt);

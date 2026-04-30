@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -205,6 +206,42 @@ export function mount(rootEl) {
     swRow.appendChild(b.el);
   }
   ctrlPanel.appendChild(swRow);
+
+  // Lab — verify Ohm's law and the series/parallel resistance rules.
+  const lab = labPanel({
+    title: "Circuits lab — Ohm's law & resistance rules",
+    filename: 'circuits-lab.csv',
+    columns: [
+      { key: 'mode', label: 'config' },
+      { key: 'V',    label: 'V (V)',    format: (v) => v.toFixed(2) },
+      { key: 'R1',   label: 'R₁ (Ω)' },
+      { key: 'R2',   label: 'R₂ (Ω)' },
+      { key: 'R3',   label: 'R₃ (Ω)' },
+      { key: 'Rt',   label: 'R_total (Ω)', format: (v) => Number.isFinite(v) ? v.toFixed(2) : 'open' },
+      { key: 'I',    label: 'I_total (mA)', format: (v) => (v * 1000).toFixed(2) },
+      { key: 'note', label: 'note' },
+    ],
+    procedure: [
+      'Series mode, R = 10, 20, 30 Ω, V = 12 V. Record. Verify R_total = R₁+R₂+R₃ = 60 Ω.',
+      'Parallel mode, same Rs. Record. Verify 1/R_total = 1/R₁+1/R₂+1/R₃; expect ~5.45 Ω.',
+      'In series, toggle off bulb 2 → I drops to 0 (open circuit). Add a row with the note.',
+      'In parallel, toggle off bulb 2 → others unchanged. Compare to series.',
+      'Vary R₁ from 1 to 100 Ω at fixed V; verify I = V/R_total.',
+    ],
+    predict: 'Two 100 Ω bulbs in series vs in parallel on a 10 V battery. In which case is each bulb brighter?',
+    source: () => {
+      const c = compute();
+      return {
+        mode: params.mode,
+        V: params.V,
+        R1: params.R[0], R2: params.R[1], R3: params.R[2],
+        Rt: c.Rt,
+        I: c.I,
+        note: params.on.map((o, i) => o ? '' : `bulb ${i+1} off`).filter(Boolean).join(', '),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

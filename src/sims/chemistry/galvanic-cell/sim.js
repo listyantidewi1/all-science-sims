@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const METALS = {
   Li: { name: 'Lithium', E: -3.04, color: '#fef3c7' },
@@ -179,6 +180,40 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(lSel.el, rSel.el, presetRow);
+
+  // Lab — predict cell voltage E°_cell = E°_cathode − E°_anode for various pairs.
+  const lab = labPanel({
+    title: 'Galvanic cell lab — standard cell potentials',
+    filename: 'galvanic-cell-lab.csv',
+    columns: [
+      { key: 'left',     label: 'left' },
+      { key: 'leftE',    label: 'E°_L (V)', format: (v) => v.toFixed(2) },
+      { key: 'right',    label: 'right' },
+      { key: 'rightE',   label: 'E°_R (V)', format: (v) => v.toFixed(2) },
+      { key: 'cellE',    label: 'E°_cell (V)', format: (v) => v.toFixed(3) },
+      { key: 'spontaneous', label: 'spontaneous?' },
+    ],
+    procedure: [
+      'Daniell cell: Zn (anode, −0.76) || Cu (cathode, +0.34). Predict E°_cell = 0.34 − (−0.76) = 1.10 V.',
+      'Set Zn / Cu and verify. Record.',
+      'Try Mg / Cu — E°_cell = 0.34 − (−2.37) = 2.71 V (a much more powerful cell).',
+      'Try Ag / Cu (Ag at right) — E°_cell = 0.80 − 0.34 = 0.46 V.',
+      'Try Cu / Zn (reversed) — E°_cell = −1.10 V (non-spontaneous; would need external power = electrolysis).',
+    ],
+    predict: 'You want a 2 V cell. Pick metals from the list and predict the pair.',
+    source: () => {
+      const E = METALS[params.right].E - METALS[params.left].E;
+      return {
+        left: METALS[params.left].name,
+        leftE: METALS[params.left].E,
+        right: METALS[params.right].name,
+        rightE: METALS[params.right].E,
+        cellE: E,
+        spontaneous: E > 0 ? 'yes' : 'no (would need external V)',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { t += dt; draw(); });
   animator.start();

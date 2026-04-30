@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['bonds', 'fixed-income'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

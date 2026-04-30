@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['climate', 'radiation'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

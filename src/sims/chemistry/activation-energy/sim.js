@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const R = 8.314; // J/(mol·K)
 
@@ -174,6 +175,39 @@ export function mount(rootEl) {
   const catT = toggle({ label: 'Catalyst (lowers Eₐ)', value: params.catalyst, onChange: (v) => { params.catalyst = v; } });
 
   ctrlPanel.append(eaS.el, dhS.el, tS.el, catT.el);
+
+  // Lab — Arrhenius equation: rate vs T and effect of catalyst.
+  const lab = labPanel({
+    title: 'Arrhenius lab — activation energy and catalysis',
+    filename: 'activation-energy-lab.csv',
+    columns: [
+      { key: 'Ea',     label: 'Eₐ (kJ/mol)', format: (v) => v.toFixed(0) },
+      { key: 'T',      label: 'T (K)' },
+      { key: 'cat',    label: 'catalyst' },
+      { key: 'Ea_eff', label: 'Eₐ_eff (kJ/mol)', format: (v) => v.toFixed(1) },
+      { key: 'k',      label: 'rate k (1/s)', format: (v) => v.toExponential(2) },
+    ],
+    procedure: [
+      'Set Eₐ = 50 kJ/mol, T = 298 K, no catalyst. Record k.',
+      'Increase T to 308 K (only +10 K). Record. Rate jumps by ~2× (rule of thumb).',
+      'Sweep T = 298, 318, 348, 398, 498. Record each. Plot ln(k) vs 1/T (Arrhenius plot).',
+      'Now turn on the catalyst. Eₐ_eff drops; k jumps an order of magnitude.',
+      'Slope of ln(k) vs 1/T = −Eₐ/R. Verify from your data.',
+    ],
+    predict: 'For Eₐ = 75 kJ/mol, what factor does the rate change by going from 25 °C to 35 °C?',
+    source: () => {
+      const Ea_eff = Math.max(5, params.Ea - (params.catalyst ? params.catReduction : 0));
+      const k = params.A * Math.exp(-Ea_eff * 1000 / (R * params.T));
+      return {
+        Ea: params.Ea,
+        T: params.T,
+        cat: params.catalyst ? 'yes' : 'no',
+        Ea_eff,
+        k,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

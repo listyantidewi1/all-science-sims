@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Each individual carries a hue in [0, 360]. Background hue is fixed.
 // Fitness = 1 / (1 + k * angularDistance(hue, bgHue)). Predator removes proportional to (1 - fitness).
@@ -154,6 +155,33 @@ export function mount(rootEl) {
   const onT = toggle({ label: 'Selection on', value: params.selectionOn, onChange: (v) => { params.selectionOn = v; } });
   const resetB = button({ label: 'Reset', onClick: spawn });
   ctrlPanel.append(bgS.el, selS.el, mutS.el, popS.el, onT.el, row(resetB));
+
+  // Lab — measure how mean color drifts toward background hue under selection.
+  const lab = labPanel({
+    title: 'Natural selection lab — directional selection',
+    filename: 'natural-selection-lab.csv',
+    columns: [
+      { key: 'gen',     label: 'generation' },
+      { key: 'bg',      label: 'bg hue', format: (v) => v.toFixed(0) },
+      { key: 'sel',     label: 'selection', format: (v) => v.toFixed(2) },
+      { key: 'meanDist', label: 'mean dist from bg (°)', format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Selection ON, bg = 120 (green), strength = 1.0. Step 0 generations; record. Initial mean dist ~90.',
+      'Step 5 generations. Record. Mean distance should drop — population converges to bg.',
+      'Step 10 more — evolution is fastest when far from optimum, slows as it approaches.',
+      'Now set selection = 0 (drift only). The mean drifts randomly.',
+      'Restore selection but change bg to 240 (blue). Population evolves toward the new optimum.',
+    ],
+    predict: 'After 20 generations under strong selection, do you expect the population to be uniform or still varied?',
+    source: () => ({
+      gen,
+      bg: params.bgHue,
+      sel: params.selection,
+      meanDist: history.length ? history[history.length - 1] : 0,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

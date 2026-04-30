@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -232,6 +233,34 @@ export function mount(rootEl) {
     onInput: (v) => { params.objectHeight = v; } });
 
   ctrlPanel.append(typeSel.el, fS.el, doS.el, hS.el);
+
+  // Lab — verify the mirror equation 1/d_o + 1/d_i = 1/f.
+  const lab = labPanel({
+    title: 'Curved mirrors lab — mirror equation',
+    filename: 'mirrors-lab.csv',
+    columns: [
+      { key: 'type', label: 'mirror' },
+      { key: 'f',    label: 'f (px)',  format: (v) => v.toFixed(0) },
+      { key: 'do',   label: 'd_o (px)', format: (v) => v.toFixed(0) },
+      { key: 'di',   label: 'd_i (px)', format: (v) => Number.isFinite(v) ? v.toFixed(1) : '∞' },
+      { key: 'm',    label: 'magnif.',  format: (v) => Number.isFinite(v) ? v.toFixed(3) : '–' },
+    ],
+    procedure: [
+      'Concave mirror, f = 80. Set d_o = 200 (well beyond C). Record — image small, real, inverted.',
+      'd_o = 160 (= 2f, at C): image at 2f, m = −1.',
+      'd_o = 120 (between f and C): image larger than object, real.',
+      'd_o = 60 (inside f): image is virtual (negative d_i), upright, magnified — that\'s a makeup mirror.',
+      'Switch to convex: image is always virtual, upright, smaller (a car side mirror).',
+    ],
+    predict: 'A concave mirror with f = 50 cm and an object 100 cm away. Where is the image? What is its magnification?',
+    source: () => {
+      const f = params.type === 'concave' ? params.f : -params.f;
+      const di = imageDist();
+      const m = magnification();
+      return { type: params.type, f, do: params.d_o, di, m };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

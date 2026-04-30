@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -119,6 +120,49 @@ export function mount(rootEl) {
     onInput: (v) => { params.e = v; } });
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(m1S.el, v1S.el, m2S.el, v2S.el, eS.el, row(resetB));
+
+  // Lab — verify momentum conservation; KE conservation only when e = 1.
+  function postCollisionV() {
+    const { m1, m2, v1, v2, e } = params;
+    const v1f = (m1 * v1 + m2 * v2 - m2 * e * (v1 - v2)) / (m1 + m2);
+    const v2f = (m1 * v1 + m2 * v2 + m1 * e * (v1 - v2)) / (m1 + m2);
+    return { v1f, v2f };
+  }
+  const lab = labPanel({
+    title: '1D collisions lab — momentum & KE conservation',
+    filename: 'collisions-1d-lab.csv',
+    columns: [
+      { key: 'm1', label: 'm₁ (kg)', format: (v) => v.toFixed(2) },
+      { key: 'm2', label: 'm₂ (kg)', format: (v) => v.toFixed(2) },
+      { key: 'v1', label: 'v₁ before', format: (v) => v.toFixed(2) },
+      { key: 'v2', label: 'v₂ before', format: (v) => v.toFixed(2) },
+      { key: 'e',  label: 'restitution e', format: (v) => v.toFixed(2) },
+      { key: 'p_before', label: 'p before', format: (v) => v.toFixed(3) },
+      { key: 'p_after',  label: 'p after',  format: (v) => v.toFixed(3) },
+      { key: 'KE_before', label: 'KE before', format: (v) => v.toFixed(3) },
+      { key: 'KE_after',  label: 'KE after',  format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Equal masses (1 kg each), v₁ = 4, v₂ = −2, e = 1 (elastic). Record.',
+      'After elastic collision, equal-mass pairs swap velocities. Verify p and KE are conserved.',
+      'Set e = 0 (perfectly inelastic). Both end at the same velocity. Verify p still conserved, KE not.',
+      'Try a heavy ball into a stationary light one (e = 1). The light one shoots off fast.',
+      'For each row, momentum (p) should match before/after; KE only when e = 1.',
+    ],
+    predict: 'Two equal masses, v₁ = 5, v₂ = 0, fully elastic. What are the final velocities?',
+    source: () => {
+      const { v1f, v2f } = postCollisionV();
+      const p_before = params.m1 * params.v1 + params.m2 * params.v2;
+      const p_after = params.m1 * v1f + params.m2 * v2f;
+      const KE_before = 0.5 * params.m1 * params.v1 ** 2 + 0.5 * params.m2 * params.v2 ** 2;
+      const KE_after = 0.5 * params.m1 * v1f ** 2 + 0.5 * params.m2 * v2f ** 2;
+      return {
+        m1: params.m1, m2: params.m2, v1: params.v1, v2: params.v2, e: params.e,
+        p_before, p_after, KE_before, KE_after,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

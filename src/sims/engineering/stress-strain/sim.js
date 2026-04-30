@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Each material is a piecewise model:
 //   elastic up to yield strain εy with slope E,
@@ -328,6 +329,38 @@ export function mount(rootEl) {
   const resetB = button({ label: 'New specimen', onClick: () => { params.strain = 0; fractured = false; eS.value = 0; } });
 
   ctrlPanel.append(matSel.el, eS.el, row(releaseB, resetB));
+
+  // Lab — record yield, ultimate, and fracture for each material.
+  const lab = labPanel({
+    title: 'Stress-strain lab — yield, ultimate, fracture',
+    filename: 'stress-strain-lab.csv',
+    columns: [
+      { key: 'mat',   label: 'material' },
+      { key: 'E',     label: 'E (MPa)' },
+      { key: 'eY',    label: 'ε_yield (%)',  format: (v) => (v * 100).toFixed(2) },
+      { key: 'sY',    label: 'σ_yield (MPa)', format: (v) => v.toFixed(0) },
+      { key: 'sU',    label: 'σ_ultimate (MPa)', format: (v) => v.toFixed(0) },
+      { key: 'eF',    label: 'ε_fracture (%)', format: (v) => (v * 100).toFixed(1) },
+    ],
+    procedure: [
+      'Pick mild steel. Record. Note ductility — large strain to fracture.',
+      'Pick aluminum. Record. Lower yield strength, less ductile than steel.',
+      'Pick glass. Record. Brittle: yield ≈ ultimate ≈ fracture; no plastic region.',
+      'Pick polymer. Record. Low E, very high ε_fracture (rubbery).',
+      'Compare materials: which has the highest E? The largest plastic region?',
+    ],
+    predict: 'For an engineering bridge, you need high E AND high yield AND ductility. Which of these four materials fits?',
+    source: () => {
+      const m = MATERIALS[params.matKey];
+      return {
+        mat: m.name, E: m.E,
+        eY: m.epsY, sY: m.sigY,
+        sU: m.sigU,
+        eF: m.epsNeckEnd,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

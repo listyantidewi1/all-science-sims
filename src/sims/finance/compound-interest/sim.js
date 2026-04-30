@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -179,6 +180,38 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(PS.el, rS.el, yS.el, mS.el, presetRow);
+
+  // Lab — verify A = P(1+r)^t and the impact of monthly contributions.
+  const lab = labPanel({
+    title: 'Compound interest lab — A = P(1+r)ᵗ + monthly',
+    filename: 'compound-interest-lab.csv',
+    columns: [
+      { key: 'P',     label: 'P ($)',  format: (v) => v.toFixed(0) },
+      { key: 'r',     label: 'rate',   format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'years', label: 'years' },
+      { key: 'monthly', label: 'monthly $' },
+      { key: 'compound', label: 'compound', format: (v) => v.toFixed(0) },
+      { key: 'simple',   label: 'simple',   format: (v) => v.toFixed(0) },
+      { key: 'gap',      label: 'compound − simple', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Set P = 1000, r = 7%, monthly = 0, years = 10. Record. Compound: $1967, simple: $1700.',
+      'Now years = 30. Record. Compound diverges from simple — that\'s exponential growth.',
+      'Set P = 0, monthly = 100, r = 7%, years = 30. Record. Total contribution = $36k, compound = ~$122k.',
+      'r = 4% (conservative) vs r = 8% (S&P avg) — over 30 years, the gap is huge.',
+      '"Time in market beats timing the market" — note how years matter more than rate at the margin.',
+    ],
+    predict: 'You invest $5000 at 6% for 25 years (no monthly). Final value? Now with $200/month?',
+    source: () => {
+      const r = compute();
+      return {
+        P: params.P, r: params.rate, years: params.years, monthly: params.monthly,
+        compound: r.finalCompound, simple: r.finalSimple,
+        gap: r.finalCompound - r.finalSimple,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

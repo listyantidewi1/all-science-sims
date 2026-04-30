@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const g = 9.8;
 
@@ -132,6 +133,35 @@ export function mount(rootEl) {
   } });
   const resetB = button({ label: 'Reset', onClick: reset });
   ctrlPanel.append(m1S.el, m2S.el, presetRow, row(playPauseB, resetB));
+
+  // Lab — verify a = (m₁−m₂)g/(m₁+m₂) and tension formula across mass pairs.
+  const lab = labPanel({
+    title: 'Atwood machine lab — Newton\'s 2nd law for a system',
+    filename: 'atwood-lab.csv',
+    columns: [
+      { key: 'm1',   label: 'm₁ (kg)',   format: (v) => v.toFixed(2) },
+      { key: 'm2',   label: 'm₂ (kg)',   format: (v) => v.toFixed(2) },
+      { key: 'diff', label: 'Δm (kg)',   format: (v) => v.toFixed(2) },
+      { key: 'a',    label: 'a (m/s²)',  format: (v) => v.toFixed(3) },
+      { key: 'T',    label: 'T (N)',     format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Start with equal masses (m₁ = m₂ = 5 kg). Record. a = 0; T = mg.',
+      'Make m₁ = 6, m₂ = 4. Record. Predicted a = (6−4)·9.8/(6+4) = 1.96 m/s².',
+      'Increase Δm: try (8, 2), (9, 1). Record each.',
+      'For each row, verify the formulas a = (m₁−m₂)g/(m₁+m₂) and T = 2m₁m₂g/(m₁+m₂).',
+      'Plot a vs Δm — straight line through origin (with fixed total mass).',
+    ],
+    predict: 'If m₁ = 10 kg and m₂ = 0 (drop), what is the acceleration? What is the tension?',
+    source: () => ({
+      m1: params.m1,
+      m2: params.m2,
+      diff: Math.abs(params.m1 - params.m2),
+      a: (params.m1 - params.m2) * g / (params.m1 + params.m2),
+      T: 2 * params.m1 * params.m2 * g / (params.m1 + params.m2),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

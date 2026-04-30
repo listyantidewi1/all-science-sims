@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -120,6 +121,31 @@ export function mount(rootEl) {
   } });
   const resetB = button({ label: 'Reset', onClick: reset });
   ctrlPanel.append(rateS.el, runT.el, row(burstB, resetB));
+
+  // Lab — convergence rate of Monte Carlo estimate.
+  const lab = labPanel({
+    title: 'Monte Carlo lab — π convergence ∝ 1/√N',
+    filename: 'monte-carlo-lab.csv',
+    columns: [
+      { key: 'N',     label: 'darts' },
+      { key: 'inside', label: 'inside' },
+      { key: 'piEst', label: 'π estimate', format: (v) => v.toFixed(5) },
+      { key: 'err',   label: 'absolute error', format: (v) => v.toFixed(5) },
+    ],
+    procedure: [
+      'Reset. Let it run to ~100 darts; click Record.',
+      'Continue to ~1000 darts; record. Error roughly drops by √10 ≈ 3×.',
+      '~10000 darts; record. Error drops another √10.',
+      '~100000 darts; record. Two more decimal places of accuracy.',
+      'Verify: error scales as 1/√N. To gain one more decimal, you need 100× more darts.',
+    ],
+    predict: 'You have 1 second of compute and can do 1M darts. How many decimals of π do you expect?',
+    source: () => {
+      const piEst = total > 0 ? 4 * inside / total : 0;
+      return { N: total, inside, piEst, err: Math.abs(piEst - Math.PI) };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.1, dt)); draw(); });
   animator.start();

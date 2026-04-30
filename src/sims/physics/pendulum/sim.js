@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { cssVar } from '../../../lib/color.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -130,6 +131,35 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: reset });
 
   ctrlPanel.append(lengthS.el, gravS.el, angS.el, dampS.el, row(resetB));
+
+  // Lab — investigate T vs L (and verify T = 2π√(L/g)).
+  const lab = labPanel({
+    title: 'Pendulum lab — period vs length',
+    filename: 'pendulum-lab.csv',
+    columns: [
+      { key: 'L',         label: 'L (m)',       format: (v) => v.toFixed(2) },
+      { key: 'theta0',    label: 'θ₀ (°)',      format: (v) => v.toFixed(0) },
+      { key: 'g',         label: 'g (m/s²)',    format: (v) => v.toFixed(2) },
+      { key: 'T_meas',    label: 'T meas (s)',  format: (v) => v == null ? '–' : v.toFixed(3) },
+      { key: 'T_theory',  label: 'T = 2π√(L/g)', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Set L = 0.5 m. Wait until "Measured T" stabilizes; click Record.',
+      'Set L = 1.0 m. Record again.',
+      'Set L = 1.5 m, then 2.0 m, then 3.0 m. Record each.',
+      'Now keep L fixed and vary θ₀ from 5° to 90°. Does T change much?',
+      'Plot T vs L on graph paper. Then T² vs L. Which is a straight line?',
+    ],
+    predict: 'Do you expect T to grow linearly with L, with √L, or with L²? Write your prediction first.',
+    source: () => ({
+      L: params.L,
+      theta0: params.theta0,
+      g: params.g,
+      T_meas: state.period || null,
+      T_theory: 2 * Math.PI * Math.sqrt(params.L / params.g),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   // Drag the bob to set position. While dragging, freeze velocity at zero.
   let dragging = false;

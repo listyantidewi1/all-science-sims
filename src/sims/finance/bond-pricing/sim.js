@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -153,6 +154,41 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(cS.el, yS.el, tS.el, presetRow);
+
+  // Lab — bond price vs yield (premium/par/discount).
+  const lab = labPanel({
+    title: 'Bond pricing lab — price vs yield',
+    filename: 'bond-pricing-lab.csv',
+    columns: [
+      { key: 'face',  label: 'face',     format: (v) => v.toFixed(0) },
+      { key: 'cpn',   label: 'coupon',   format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'yld',   label: 'yield',    format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'years', label: 'years' },
+      { key: 'price', label: 'price',    format: (v) => v.toFixed(2) },
+      { key: 'status', label: 'status' },
+    ],
+    procedure: [
+      '$1000 face, 5% coupon, 5% yield, 10 years. Record. Price = $1000 (par).',
+      'Yield drops to 3% (rates fell). Price > face (premium). Record.',
+      'Yield rises to 8%. Price < face (discount). Record.',
+      'Verify: when coupon < yield → discount; coupon > yield → premium; equal → par.',
+      'Long maturities are more sensitive to rate changes than short ones.',
+    ],
+    predict: 'A bond with 4% coupon trades when the market yield is 6%. Is it priced above, at, or below face value?',
+    source: () => {
+      const price = bondPrice(params.yield, params.years, params.couponRate, params.face);
+      const status = price > params.face + 1 ? 'premium' : price < params.face - 1 ? 'discount' : 'par';
+      return {
+        face: params.face,
+        cpn: params.couponRate,
+        yld: params.yield,
+        years: params.years,
+        price,
+        status,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   function inRect(c, sx, sy) { return c && sx >= c.x && sx <= c.x + c.w && sy >= c.y && sy <= c.y + c.h; }
   const hover = hoverProbe(cv.canvas, (sx, sy) => {

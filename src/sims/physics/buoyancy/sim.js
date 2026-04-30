@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const FLUIDS = {
   water:    { name: 'Water',           density: 1.00, color: '#3b82f6' },
@@ -158,6 +159,41 @@ export function mount(rootEl) {
   const dropB = button({ label: 'Drop new block', primary: true, onClick: spawn });
 
   ctrlPanel.append(fluidSel.el, dS.el, sizeS.el, presetRow, row(dropB));
+
+  // Lab — verify Archimedes: ρ_object / ρ_fluid = submerged fraction.
+  const lab = labPanel({
+    title: "Buoyancy lab — Archimedes' principle",
+    filename: 'buoyancy-lab.csv',
+    columns: [
+      { key: 'fluid',     label: 'fluid' },
+      { key: 'rho_fluid', label: 'ρ fluid (g/cm³)', format: (v) => v.toFixed(2) },
+      { key: 'rho_obj',   label: 'ρ object (g/cm³)', format: (v) => v.toFixed(2) },
+      { key: 'predict',   label: 'pred. submerged %', format: (v) => v == null ? 'sinks' : (v * 100).toFixed(1) + '%' },
+      { key: 'state',     label: 'observed' },
+    ],
+    procedure: [
+      'Water (ρ = 1.00). Drop ice (ρ = 0.92): predict 92% submerged. Record.',
+      'Wood (ρ = 0.65): predict 65% submerged. Record.',
+      'Iron (ρ = 7.87): predict it sinks (ρ_object > ρ_fluid). Record.',
+      'Switch fluid to mercury (ρ = 13.6): now iron floats! Predict % submerged.',
+      'Verify: ρ_object / ρ_fluid = submerged fraction (when < 1).',
+    ],
+    predict: 'A wooden block (ρ=0.7) in water vs salt water (ρ=1.03). Will it float higher in one? By how much?',
+    source: () => {
+      const rhoF = FLUIDS[params.fluid].density;
+      const rhoO = params.density;
+      const ratio = rhoO / rhoF;
+      const state = ratio >= 1 ? 'sinks' : ratio < 0.05 ? 'floats high' : 'floats';
+      return {
+        fluid: FLUIDS[params.fluid].name,
+        rho_fluid: rhoF,
+        rho_obj: rhoO,
+        predict: ratio >= 1 ? null : ratio,
+        state,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

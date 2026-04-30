@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Each review at time t_i resets retention to 1, but with a longer time-constant τ_i (memory consolidation).
 
@@ -173,6 +174,38 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(tauS.el, cS.el, hS.el, presetRow);
+
+  // Lab — measure retention at fixed time-points; design a study schedule.
+  const lab = labPanel({
+    title: 'Forgetting curve lab — design a study schedule',
+    filename: 'forgetting-curve-lab.csv',
+    columns: [
+      { key: 'tau0',   label: 'τ₀ (days)',     format: (v) => v.toFixed(1) },
+      { key: 'cons',   label: 'consolidation', format: (v) => v.toFixed(2) },
+      { key: 'reviews', label: 'review days' },
+      { key: 't',      label: 'check t (days)', format: (v) => v.toFixed(1) },
+      { key: 'R',      label: 'retention',     format: (v) => (v * 100).toFixed(1) + '%' },
+    ],
+    procedure: [
+      'No reviews. Check retention at t = 1 day, 7 days, 30 days. Record each.',
+      'Add a single review at day 1. Re-check t = 7, 30. Retention is much higher.',
+      'Add reviews at 1, 3, 7, 14 days (spaced repetition). Check at t = 30. Should be > 80%.',
+      'Vary consolidation factor — higher = each review gives more lasting memory.',
+      'Apply: design a study schedule for an exam in 30 days. When to review?',
+    ],
+    predict: 'You learn vocabulary today. With no review, what fraction will you remember in 7 days? With one review at day 3?',
+    source: () => {
+      const tCheck = params.horizon;
+      return {
+        tau0: params.tau0,
+        cons: params.consolidate,
+        reviews: params.reviews.map((r) => r.toFixed(1)).join(', '),
+        t: tCheck,
+        R: retention(tCheck),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Sample absorbance spectra — each sample has a peak at λ_max with width.
 const SAMPLES = {
@@ -188,6 +189,42 @@ export function mount(rootEl) {
   } });
 
   ctrlPanel.append(samSel.el, wlS.el, cS.el, lS.el, row(peakB));
+
+  // Lab — verify A = ε·c·L is linear in c at fixed λ_max.
+  const lab = labPanel({
+    title: 'Beer-Lambert lab — A vs concentration',
+    filename: 'beer-lambert-lab.csv',
+    columns: [
+      { key: 'sample', label: 'sample' },
+      { key: 'wl',     label: 'λ (nm)',     format: (v) => v.toFixed(0) },
+      { key: 'c',      label: 'c (M)',      format: (v) => v.toFixed(4) },
+      { key: 'L',      label: 'L (cm)',     format: (v) => v.toFixed(2) },
+      { key: 'eps',    label: 'ε (M⁻¹cm⁻¹)', format: (v) => v.toFixed(0) },
+      { key: 'A',      label: 'absorbance', format: (v) => v.toFixed(3) },
+      { key: 'T',      label: 'T = 10⁻ᴬ',   format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Pick KMnO₄, click "Tune to λ_max". Set L = 1 cm. Sweep c: 0.0005, 0.001, 0.002, 0.003 M. Record.',
+      'Verify A is linear in c — that\'s Beer\'s law.',
+      'Now hold c fixed and vary L: 0.5, 1, 2, 3 cm. A should also be linear in L (Lambert).',
+      'Off the absorption peak (e.g. 600 nm for KMnO₄), A is much smaller — ε depends on λ.',
+      'From any row: solve for ε = A / (c·L). All your rows should give the same ε.',
+    ],
+    predict: 'A 1.0 cm cell of CuSO₄ (ε = 5000 at 800 nm) reads A = 0.5. What is the concentration?',
+    source: () => {
+      const r = compute();
+      return {
+        sample: SAMPLES[params.sample].name,
+        wl: params.wavelength,
+        c: params.concentration,
+        L: params.pathLength,
+        eps: r.eps,
+        A: r.A,
+        T: r.T,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   // Hover any wavelength on the spectrum chart for an A and ε readout.
   const hover = hoverProbe(cv.canvas, (sxh, syh) => {

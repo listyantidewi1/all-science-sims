@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['electrochemistry', 'redox'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

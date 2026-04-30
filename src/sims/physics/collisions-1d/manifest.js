@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['mechanics', 'momentum'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

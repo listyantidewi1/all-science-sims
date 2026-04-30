@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function drawFrom(parent) {
   if (parent === 'uniform') return Math.random();
@@ -180,6 +181,43 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: () => { reset(); prefillParent(); } });
 
   ctrlPanel.append(parentSel.el, nS.el, rateS.el, row(drawB, resetB));
+
+  // Lab — verify CLT: sample-mean SD should ~= parent SD / sqrt(n).
+  const lab = labPanel({
+    title: 'Central Limit Theorem lab — sample-mean variance scaling',
+    filename: 'clt-lab.csv',
+    columns: [
+      { key: 'parent', label: 'parent' },
+      { key: 'n',      label: 'sample size n' },
+      { key: 'M',      label: 'num means recorded' },
+      { key: 'mean',   label: 'mean of means', format: (v) => v.toFixed(4) },
+      { key: 'sd',     label: 'SD of means',   format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Pick a non-normal parent (Bimodal). Set n = 1. Draw 200 means. Record.',
+      'Set n = 5. Click "Draw 100 means". Record. Distribution narrows.',
+      'Set n = 30. Distribution becomes nearly normal — that\'s the CLT.',
+      'Verify: SD(sample means) = SD(parent) / √n. Doubling n quarters the variance.',
+      'Try Skewed and Spike+uniform parents — same convergence to normal at large n.',
+    ],
+    predict: 'For a sample size n = 100 from a parent with σ = 1, what is the SD of the sample mean?',
+    source: () => {
+      let sum = 0;
+      for (const v of means) sum += v;
+      const m = means.length > 0 ? sum / means.length : 0;
+      let v2 = 0;
+      for (const v of means) v2 += (v - m) ** 2;
+      const sd = means.length > 0 ? Math.sqrt(v2 / means.length) : 0;
+      return {
+        parent: params.parent,
+        n: params.n,
+        M: means.length,
+        mean: m,
+        sd,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   function probeChart(c, kind, sx, sy) {
     if (!c) return null;

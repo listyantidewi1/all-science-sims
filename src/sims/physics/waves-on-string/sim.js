@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, toggle } from '../../../lib/controls.js';
 import { cssVar } from '../../../lib/color.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -156,6 +157,36 @@ export function mount(rootEl) {
   const envT = toggle({ label: 'Show envelope', value: params.showEnvelope, onChange: (v) => { params.showEnvelope = v; } });
 
   ctrlPanel.append(freqS.el, spdS.el, dampS.el, endSel.el, envT.el);
+
+  // Lab — find the resonant (standing-wave) frequencies of a fixed-fixed string.
+  const lab = labPanel({
+    title: 'Standing waves lab — find the harmonics',
+    filename: 'waves-on-string-lab.csv',
+    columns: [
+      { key: 'speed', label: 'wave speed', format: (v) => v.toFixed(0) },
+      { key: 'end',   label: 'right end' },
+      { key: 'freq',  label: 'drive freq (Hz)', format: (v) => v.toFixed(2) },
+      { key: 'pred_n', label: 'nearest n', format: (v) => v.toFixed(0) },
+      { key: 'pred_f', label: 'predicted f_n', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Fixed-fixed end. Damping = 0. Sweep drive frequency until amplitude maxes out.',
+      'That\'s f₁ (fundamental). Record. Predicted: c/(2L) with L = 1, c = speed × 0.02.',
+      'Find f₂, f₃, f₄ — they should be 2, 3, 4× the fundamental.',
+      'Switch to free end. Resonances now at (2n−1)·c/(4L) — odd harmonics only.',
+      'Verify: with free end, no resonance at 2× the fundamental.',
+    ],
+    predict: 'For a fixed-fixed string at c=80, what is f₁? f₂? Now switch to free end — what changes?',
+    source: () => {
+      const c = params.speed * 0.02;
+      const f1 = params.rightEnd === 'fixed' ? c / 2 : c / 4;
+      const ratio = params.freq / f1;
+      const n = Math.round(params.rightEnd === 'fixed' ? ratio : (ratio + 1) / 2);
+      const pred_f = params.rightEnd === 'fixed' ? n * f1 : (2 * n - 1) * (c / 4);
+      return { speed: params.speed, end: params.rightEnd, freq: params.freq, pred_n: n, pred_f };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

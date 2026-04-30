@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, toggle, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Real orbital periods (years) and a compressed display radius (so Neptune fits).
 // Display radius uses sqrt of AU to keep inner planets visible without losing the order.
@@ -115,6 +116,39 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: () => { state.t = 0; } });
 
   ctrlPanel.append(speedS.el, orbitsT.el, labelsT.el, row(playB, resetB));
+
+  // Lab — verify Kepler's third law: T² ∝ a³.
+  const lab = labPanel({
+    title: "Kepler's third law lab — T² vs a³",
+    filename: 'solar-system-lab.csv',
+    columns: [
+      { key: 'planet', label: 'planet' },
+      { key: 'a',      label: 'a (AU)',  format: (v) => v.toFixed(2) },
+      { key: 'T',      label: 'T (years)', format: (v) => v.toFixed(3) },
+      { key: 'a3',     label: 'a³',       format: (v) => v.toFixed(3) },
+      { key: 'T2',     label: 'T²',       format: (v) => v.toFixed(3) },
+      { key: 'ratio',  label: 'T²/a³',    format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'For each planet, click "Record" — it grabs that planet\'s a and T.',
+      'You\'ll record 8 rows: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.',
+      'Compute a³ and T². The ratio T²/a³ should equal 1 (in units where Earth is at a=1, T=1).',
+      'That\'s Kepler\'s third law: orbital period squared ∝ semi-major axis cubed.',
+      'Plot log(T) vs log(a) — slope should be exactly 3/2.',
+    ],
+    predict: 'A new planet found at 4 AU. What is its orbital period?',
+    source: () => {
+      // Pick the planet with semi-major axis closest to a current "selected" — for simplicity, cycle through.
+      const idx = Math.floor((Date.now() / 800) % PLANETS.length);
+      const p = PLANETS[idx];
+      return {
+        planet: p.name, a: p.au, T: p.period,
+        a3: p.au ** 3, T2: p.period ** 2,
+        ratio: p.period ** 2 / p.au ** 3,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   animator.start();
 

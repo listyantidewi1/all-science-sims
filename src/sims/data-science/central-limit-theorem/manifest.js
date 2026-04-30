@@ -32,5 +32,6 @@ export default {
   },
   topics: ['statistics', 'sampling'],
   grade: [11, 12],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

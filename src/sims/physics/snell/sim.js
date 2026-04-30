@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const MATERIALS = {
   vacuum: { name: 'Vacuum', n: 1.000 },
@@ -208,6 +209,42 @@ export function mount(rootEl) {
     onInput: (v) => { params.angle = v; } });
 
   ctrlPanel.append(m1.el, m2.el, aS.el);
+
+  // Lab — verify Snell's law and find the critical angle for total internal reflection.
+  const lab = labPanel({
+    title: "Snell's law lab — refraction & critical angle",
+    filename: 'snell-lab.csv',
+    columns: [
+      { key: 'm1',     label: 'medium 1' },
+      { key: 'm2',     label: 'medium 2' },
+      { key: 'theta1', label: 'θ₁ (°)',  format: (v) => v.toFixed(1) },
+      { key: 'theta2', label: 'θ₂ (°)',  format: (v) => v == null ? 'TIR' : v.toFixed(2) },
+      { key: 'check',  label: 'n₁ sinθ₁ / n₂ sinθ₂', format: (v) => v == null ? '–' : v.toFixed(4) },
+      { key: 'crit',   label: 'critical θ_c (°)', format: (v) => v == null ? '–' : v.toFixed(2) },
+    ],
+    procedure: [
+      'Air → glass. Sweep θ₁ = 10°, 30°, 50°, 70°. Record each. Verify n₁ sinθ₁ = n₂ sinθ₂.',
+      'Now go glass → air (denser to less dense). Increase θ₁ until you find θ_c where θ₂ = 90°.',
+      'Past θ_c the ray totally internally reflects (no refracted ray). Record that condition.',
+      'Try water → air: θ_c = arcsin(1/1.333) ≈ 48.6°. Verify with the table.',
+      'Diamond → air: θ_c ≈ 24.4° (very narrow — that\'s why diamonds sparkle).',
+    ],
+    predict: 'For glass (n=1.5) to air, what is θ_c? For water (n=1.33)? Why do swimming pools "look" shallower from above?',
+    source: () => {
+      const r = refract(params.angle);
+      const ratio = n2() === 0 ? null : n1() * Math.sin(params.angle * Math.PI / 180) / (n2() * Math.sin((r ?? 0) * Math.PI / 180));
+      const crit = n1() > n2() ? Math.asin(n2() / n1()) * 180 / Math.PI : null;
+      return {
+        m1: MATERIALS[params.medium1].name,
+        m2: MATERIALS[params.medium2].name,
+        theta1: params.angle,
+        theta2: r,
+        check: r == null ? null : ratio,
+        crit,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

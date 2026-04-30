@@ -32,5 +32,6 @@ export default {
   },
   topics: ['waves', 'resonance'],
   grade: [11, 12],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

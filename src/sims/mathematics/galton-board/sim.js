@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -147,6 +148,48 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: reset });
 
   ctrlPanel.append(rS.el, bS.el, rateS.el, row(burstB, resetB));
+
+  // Lab — verify the binomial → Gaussian convergence.
+  const lab = labPanel({
+    title: 'Galton board lab — binomial converges to Gaussian',
+    filename: 'galton-board-lab.csv',
+    columns: [
+      { key: 'rows',  label: 'rows (n)' },
+      { key: 'bias',  label: 'bias',     format: (v) => v.toFixed(2) },
+      { key: 'total', label: 'balls' },
+      { key: 'mean',  label: 'mean bin',  format: (v) => v.toFixed(2) },
+      { key: 'sd',    label: 'SD',        format: (v) => v.toFixed(2) },
+      { key: 'pred_mean', label: 'predicted np', format: (v) => v.toFixed(2) },
+      { key: 'pred_sd',   label: 'predicted √(npq)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'rows = 12, bias = 0.5. Drop ~1000 balls; record. Bell-shaped centered at 6.',
+      'Binomial mean = n·p = 6, SD = √(n·p·q) = √3 ≈ 1.73. Verify.',
+      'Bias = 0.7. Mean shifts to n·p = 8.4. SD = √(12·0.7·0.3) ≈ 1.59.',
+      'rows = 4, bias = 0.5: only 5 bins, but still binomial.',
+      'rows = 24: distribution looks more like a continuous Gaussian.',
+    ],
+    predict: 'For n = 20 rows and bias 0.5, what bin should be the most populated? What is the SD?',
+    source: () => {
+      const total = bins.reduce((a, b) => a + b, 0);
+      let m = 0;
+      for (let i = 0; i <= params.rows; i++) m += i * bins[i];
+      m = total > 0 ? m / total : 0;
+      let v2 = 0;
+      for (let i = 0; i <= params.rows; i++) v2 += bins[i] * (i - m) ** 2;
+      const sd = total > 0 ? Math.sqrt(v2 / total) : 0;
+      return {
+        rows: params.rows,
+        bias: params.bias,
+        total,
+        mean: m,
+        sd,
+        pred_mean: params.rows * params.bias,
+        pred_sd: Math.sqrt(params.rows * params.bias * (1 - params.bias)),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['quantum', 'photons'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -151,6 +152,36 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(dS.el, presetRow);
+
+  // Lab — verify d(parsec) = 1 / parallax(arcsec).
+  const lab = labPanel({
+    title: 'Stellar parallax lab — distance from parallax angle',
+    filename: 'stellar-parallax-lab.csv',
+    columns: [
+      { key: 'd',   label: 'distance (pc)', format: (v) => v.toFixed(2) },
+      { key: 'd_ly', label: 'distance (ly)', format: (v) => v.toFixed(2) },
+      { key: 'p',   label: 'parallax (")',  format: (v) => v.toFixed(4) },
+      { key: 'inv', label: '1 / parallax (pc)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set d = 1 pc (closest possible). Parallax = 1.000″. Record.',
+      'Step d to 4, 10, 50, 100 pc. Record each. Verify p = 1/d.',
+      'Stars beyond ~100 pc give parallax < 0.01″ — hard to measure with ground-based scopes.',
+      'Hipparcos satellite (1989-1993) measured stars to ~500 pc; Gaia (today) reaches ~10 kpc.',
+      'Beyond parallax range, astronomers use other distance methods (standard candles, redshift).',
+    ],
+    predict: 'A star\'s measured parallax is 0.05″. How far away is it (in pc and in ly)?',
+    source: () => {
+      const p = 1 / params.distancePc;
+      return {
+        d: params.distancePc,
+        d_ly: params.distancePc * 3.262,
+        p,
+        inv: 1 / p,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { t += dt * params.speed; draw(); });
   animator.start();

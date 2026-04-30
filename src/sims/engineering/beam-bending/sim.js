@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Simply-supported beam, length L, point load P at position a from left support.
 // Reactions: Ra = P*(L-a)/L, Rb = P*a/L
@@ -246,6 +247,40 @@ export function mount(rootEl) {
     onInput: (v) => { params.EI = v; } });
   const centerB = button({ label: 'Center load', primary: true, onClick: () => { params.a = params.L / 2; aS.value = params.a; } });
   ctrlPanel.append(LS.el, aS.el, PS.el, EIS.el, row(centerB));
+
+  // Lab — find the maximum bending moment and where it occurs.
+  const lab = labPanel({
+    title: 'Beam bending lab — find M_max and δ_max',
+    filename: 'beam-bending-lab.csv',
+    columns: [
+      { key: 'L',     label: 'L (m)',  format: (v) => v.toFixed(1) },
+      { key: 'a',     label: 'a (m)',  format: (v) => v.toFixed(2) },
+      { key: 'P',     label: 'P (kN)', format: (v) => v.toFixed(1) },
+      { key: 'M_at_a', label: 'M at load (kN·m)', format: (v) => v.toFixed(2) },
+      { key: 'M_max', label: 'M_max formula',     format: (v) => v.toFixed(2) },
+      { key: 'EI',   label: 'EI',     format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Set L = 6 m, P = 10 kN. Center the load (a = 3). M_max = P·L/4 = 15 kN·m. Record.',
+      'Slide load to a = 1 m (off-center). Record M at the load, P·a·(L−a)/L.',
+      'Try a = 4.5, a = 0.5 — note M_max is always under the load for a single point load.',
+      'Plot M_max vs a — it\'s a downward parabola, max at L/2.',
+      'Verify the max-deflection formula too: δ_max = P L³/(48 EI) when a = L/2.',
+    ],
+    predict: 'Where does the maximum moment occur for a load at a = L/4? What is its value?',
+    source: () => {
+      const Ra = params.P * (params.L - params.a) / params.L;
+      return {
+        L: params.L,
+        a: params.a,
+        P: params.P,
+        M_at_a: Ra * params.a,
+        M_max: params.P * params.a * (params.L - params.a) / params.L,
+        EI: params.EI,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

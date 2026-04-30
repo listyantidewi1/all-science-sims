@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['biology', 'plants'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

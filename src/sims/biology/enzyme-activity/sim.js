@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const ENZYMES = {
   pepsin:    { name: 'Pepsin (stomach)',         optT: 37, sigT: 8,  optPH: 2.0, sigPH: 1.0, color: '#ef4444' },
@@ -154,6 +155,35 @@ export function mount(rootEl) {
   const cmpT = toggle({ label: 'Compare other enzymes', value: params.compareAll, onChange: (v) => { params.compareAll = v; } });
 
   ctrlPanel.append(enzSel.el, tS.el, pS.el, inhS.el, cmpT.el);
+
+  // Lab — find optimum T and pH for each enzyme.
+  const lab = labPanel({
+    title: 'Enzyme activity lab — find the optimum',
+    filename: 'enzyme-activity-lab.csv',
+    columns: [
+      { key: 'enzyme', label: 'enzyme' },
+      { key: 'T',      label: 'T (°C)',  format: (v) => v.toFixed(0) },
+      { key: 'pH',     label: 'pH',      format: (v) => v.toFixed(1) },
+      { key: 'inh',    label: 'inhibitor', format: (v) => v.toFixed(2) },
+      { key: 'rate',   label: 'activity (%)', format: (v) => (v * 100).toFixed(1) },
+    ],
+    procedure: [
+      'Pick pepsin. Hold pH = 2 (its optimum). Sweep T from 0 → 70 °C in 10° steps; record each.',
+      'Same enzyme. Hold T = 37 °C. Sweep pH from 0 → 14 in steps of 1; record each.',
+      'Find the (T, pH) combo with maximum activity — that\'s the optimum.',
+      'Switch to trypsin (intestinal, pH ≈ 8). Repeat the pH sweep.',
+      'Crank inhibitor up at the optimum — does activity drop linearly?',
+    ],
+    predict: 'Pepsin works in the stomach, trypsin in the intestine. Predict their pH optima before measuring.',
+    source: () => ({
+      enzyme: ENZYMES[params.enzyme].name,
+      T: params.T,
+      pH: params.pH,
+      inh: params.inhibitor,
+      rate: activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   function chartHit(sx, sy) {
     if (charts.T && sx >= charts.T.x && sx <= charts.T.x + charts.T.w &&

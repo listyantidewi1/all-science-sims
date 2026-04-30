@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -134,6 +135,36 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(r0S.el, recS.el, vacS.el, speedS.el, presetRow, row(resetB));
+
+  // Lab — herd immunity and peak attack rate vs R₀.
+  const lab = labPanel({
+    title: 'SIR lab — peak infection vs R₀ and vaccination',
+    filename: 'sir-epidemic-lab.csv',
+    columns: [
+      { key: 'R0',     label: 'R₀',         format: (v) => v.toFixed(2) },
+      { key: 'rec',    label: 'recovery (days)' },
+      { key: 'vacc',   label: 'vaccine %',   format: (v) => (v * 100).toFixed(0) + '%' },
+      { key: 'I',      label: 'I now (%)',   format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'R',      label: 'R now (%)',   format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'herd',   label: 'herd thresh',  format: (v) => (v * 100).toFixed(0) + '%' },
+    ],
+    procedure: [
+      'R₀ = 2.5, no vaccine. Reset and let it run; record peak I and final R (cumulative attack rate).',
+      'Set vaccine = 0.4 (40%). Reset. Peak I drops; total R drops.',
+      'Vaccine = herd-immunity threshold = 1 − 1/R₀. For R₀ = 2.5 that\'s 60%.',
+      'At herd threshold or above, the epidemic doesn\'t take off.',
+      'R₀ = 5 (measles-like): herd threshold = 80%. R₀ = 1.5: only 33%.',
+    ],
+    predict: 'For a disease with R₀ = 4, what fraction of population must be vaccinated to prevent an epidemic?',
+    source: () => ({
+      R0: params.R0,
+      rec: params.recoveryDays,
+      vacc: params.vaccineFrac,
+      I, R,
+      herd: 1 - 1 / params.R0,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

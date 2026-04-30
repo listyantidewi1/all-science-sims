@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Each indicator: list of {pH, color} stops; sim interpolates between adjacent stops.
 const INDICATORS = {
@@ -196,6 +197,31 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(phS.el, indSel.el, presetRow);
+
+  // Lab — note the color transition range for each indicator.
+  const lab = labPanel({
+    title: 'pH indicator lab — find each indicator\'s transition range',
+    filename: 'ph-indicator-lab.csv',
+    columns: [
+      { key: 'indicator', label: 'indicator' },
+      { key: 'pH',        label: 'pH',     format: (v) => v.toFixed(1) },
+      { key: 'color',     label: 'observed color' },
+    ],
+    procedure: [
+      'Pick phenolphthalein. Sweep pH = 0, 2, 4, 6, 8, 10, 12, 14. Record each color.',
+      'Find where the color changes — that\'s the transition range (~8.2–10).',
+      'Switch to methyl orange (transition 3.1–4.4) and repeat.',
+      'Universal indicator: color shifts continuously — useful for unknown samples.',
+      'Apply: which indicator would you use to detect a strong-acid → strong-base titration endpoint?',
+    ],
+    predict: 'Phenolphthalein is colorless below pH 8.2 and pink above 10. Why is it the standard for titrations to a strong base?',
+    source: () => ({
+      indicator: INDICATORS[params.indicator].name,
+      pH: params.pH,
+      color: '(see swatch)',
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   // Redraw on resize via canvas ResizeObserver — use a simple raf loop instead.
   let raf = 0;

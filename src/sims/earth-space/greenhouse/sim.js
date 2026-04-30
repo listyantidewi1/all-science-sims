@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -182,6 +183,31 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(co2S.el, albS.el, presetRow);
+
+  // Lab — temperature vs CO2 and albedo.
+  const lab = labPanel({
+    title: 'Greenhouse effect lab — equilibrium temperature',
+    filename: 'greenhouse-lab.csv',
+    columns: [
+      { key: 'co2',   label: 'CO₂ (ppm)' },
+      { key: 'alb',   label: 'albedo',   format: (v) => v.toFixed(2) },
+      { key: 'T_K',   label: 'T (K)',     format: (v) => v.toFixed(1) },
+      { key: 'T_C',   label: 'T (°C)',    format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Hold albedo = 0.30 (Earth-like). Sweep CO₂: 280 (pre-ind), 420 (today), 560, 800, 1200. Record.',
+      'See temperature rise as CO₂ increases — that\'s the greenhouse effect.',
+      'Now hold CO₂ = 420. Sweep albedo: 0.20 (more absorbing), 0.30, 0.40, 0.50 (more reflective).',
+      'A higher albedo means more sunlight reflected → cooler planet.',
+      'Snowball Earth: albedo ~0.6, very cold. Venus: thick CO₂, very hot.',
+    ],
+    predict: 'Doubling CO₂ from 280 to 560 ppm — by how many degrees does T rise (in this simple model)?',
+    source: () => {
+      const T = tempK();
+      return { co2: params.co2, alb: params.albedo, T_K: T, T_C: T - 273.15 };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

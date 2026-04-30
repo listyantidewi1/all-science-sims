@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['solutions', 'saturation'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -204,6 +205,31 @@ export function mount(rootEl) {
     onInput: (v) => { params.amplitude = v; reset(); } });
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(mS.el, kS.el, dS.el, ampS.el, row(resetB));
+
+  // Lab — verify T = 2π√(m/k) and that amplitude doesn't affect period.
+  const lab = labPanel({
+    title: 'Spring SHM lab — period vs mass and stiffness',
+    filename: 'springs-shm-lab.csv',
+    columns: [
+      { key: 'm',       label: 'm (kg)',  format: (v) => v.toFixed(2) },
+      { key: 'k',       label: 'k (N/m)', format: (v) => v.toFixed(1) },
+      { key: 'amp',     label: 'A₀',      format: (v) => v.toFixed(2) },
+      { key: 'T_theory', label: 'T = 2π√(m/k)', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Set m = 1, k = 8, no damping. Predict T = 2π√(1/8) ≈ 2.22 s. Record.',
+      'Quadruple mass (m = 4): predicts T to double. Record.',
+      'Quadruple k instead (k = 32): predicts T to halve. Record.',
+      'Vary amplitude only (m, k fixed) — T should not change.',
+      'Add damping — T (period of decaying oscillation) is barely affected for light damping.',
+    ],
+    predict: 'If m = 2 kg and k = 50 N/m, what is T? Now what if you double both?',
+    source: () => ({
+      m: params.m, k: params.k, amp: params.amplitude,
+      T_theory: 2 * Math.PI * Math.sqrt(params.m / params.k),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

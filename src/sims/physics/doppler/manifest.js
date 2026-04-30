@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['waves', 'sound'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -178,6 +179,31 @@ export function mount(rootEl) {
   const v2S = slider({ label: 'V₂ (m³)', min: 1, max: 5, step: 0.1, value: params.V2, format: (v) => v.toFixed(2),
     onInput: (v) => { params.V2 = Math.max(v, params.V1 + 0.1); } });
   ctrlPanel.append(ThS.el, TcS.el, v1S.el, v2S.el);
+
+  // Lab — verify η_Carnot = 1 − T_c/T_h.
+  const lab = labPanel({
+    title: 'Carnot cycle lab — maximum thermodynamic efficiency',
+    filename: 'carnot-lab.csv',
+    columns: [
+      { key: 'Th',  label: 'T_h (K)',     format: (v) => v.toFixed(0) },
+      { key: 'Tc',  label: 'T_c (K)',     format: (v) => v.toFixed(0) },
+      { key: 'eta', label: 'η = 1−T_c/T_h', format: (v) => (v * 100).toFixed(2) + '%' },
+    ],
+    procedure: [
+      'Set T_h = 600 K, T_c = 300 K. Predicted η = 50%. Record.',
+      'Crank T_h to 1200 K (T_c still 300). η jumps to 75%.',
+      'Lower T_c to 100 K. η jumps to ~83%.',
+      'No real engine reaches Carnot efficiency — it\'s the thermodynamic upper bound.',
+      'A car engine: T_h ≈ 2000 K, T_c ≈ 600 K → Carnot η = 70%; real engines achieve ~25%.',
+    ],
+    predict: 'A power plant runs steam at 800 K, condensed at 300 K. What is the Carnot efficiency? Why is it less in practice?',
+    source: () => ({
+      Th: params.Th,
+      Tc: params.Tc,
+      eta: 1 - params.Tc / params.Th,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const hover = hoverProbe(cv.canvas, (sx, sy) => {
     if (!chartRect) return null;

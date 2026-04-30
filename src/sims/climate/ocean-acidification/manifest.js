@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['climate', 'oceanography'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

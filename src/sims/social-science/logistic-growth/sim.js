@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -146,6 +147,43 @@ export function mount(rootEl) {
   const expT = toggle({ label: 'Show exponential reference', value: params.showExp, onChange: (v) => { params.showExp = v; } });
 
   ctrlPanel.append(rS.el, KS.el, N0S.el, tS.el, expT.el);
+
+  // Lab — verify the inflection at K/2 and the doubling-time.
+  const lab = labPanel({
+    title: 'Logistic growth lab — inflection at K/2',
+    filename: 'logistic-growth-lab.csv',
+    columns: [
+      { key: 'r',      label: 'r',         format: (v) => v.toFixed(2) },
+      { key: 'K',      label: 'K' },
+      { key: 'N0',     label: 'N₀' },
+      { key: 't',      label: 't',         format: (v) => v.toFixed(1) },
+      { key: 'N',      label: 'N(t)',      format: (v) => v.toFixed(1) },
+      { key: 'tInfl',  label: 't_inflect', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'r = 0.4, K = 1000, N₀ = 10. Sweep t = 0, 5, 10, 15, 20, 30. Record N at each.',
+      'Find when N = K/2 = 500 — that\'s the inflection point.',
+      'Predicted: t_infl = ln((K-N₀)/N₀) / r ≈ 11.5 with these parameters.',
+      'Plot N vs t — classic S-curve. dN/dt vs N is a downward parabola with peak at K/2.',
+      'Compare with exponential reference (toggle on) — they overlap for small N, diverge near K.',
+    ],
+    predict: 'A bacteria culture with r = 1 hour⁻¹, K = 1 million, N₀ = 100. When does it reach 500k?',
+    source: () => {
+      const tInfl = Math.log((params.K - params.N0) / params.N0) / params.r;
+      // Use t = horizon as "current" sample
+      const t = params.Tmax / 2;
+      const N = logistic(t);
+      return {
+        r: params.r,
+        K: params.K,
+        N0: params.N0,
+        t,
+        N,
+        tInfl,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

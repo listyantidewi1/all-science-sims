@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   let u = 0, v = 0;
@@ -126,6 +127,47 @@ export function mount(rootEl) {
   const reB = button({ label: 'Resimulate', primary: true, onClick: simulate });
 
   ctrlPanel.append(muS.el, sgS.el, yS.el, nS.el, row(reB));
+
+  // Lab — observe distribution of final values across paths.
+  const lab = labPanel({
+    title: 'Stock walk lab — GBM and end-of-period distribution',
+    filename: 'stock-walk-lab.csv',
+    columns: [
+      { key: 'mu',     label: 'μ (drift)',  format: (v) => (v * 100).toFixed(1) + '%' },
+      { key: 'sigma',  label: 'σ (vol)',    format: (v) => (v * 100).toFixed(1) + '%' },
+      { key: 'years',  label: 'years' },
+      { key: 'nPaths', label: 'paths' },
+      { key: 'finalMean', label: 'mean final', format: (v) => v.toFixed(2) },
+      { key: 'finalMed',  label: 'median final', format: (v) => v.toFixed(2) },
+      { key: 'finalMin',  label: 'min final', format: (v) => v.toFixed(2) },
+      { key: 'finalMax',  label: 'max final', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Defaults: μ = 8%, σ = 20%, 5 years, 30 paths. Click "New paths". Record.',
+      'Observe: many paths grow above S₀, some drop below. Wide spread.',
+      'Increase σ to 40% — fan-out is dramatic; some paths look catastrophic.',
+      'Drop σ to 5% — paths bunch tightly around the mean drift.',
+      'Increase years to 30 — even modest σ produces enormous spread (volatility scales with √t).',
+    ],
+    predict: 'A stock with μ = 10%, σ = 20%. After 10 years, what is the rough range of outcomes?',
+    source: () => {
+      const finals = paths.map((p) => p[p.length - 1]).filter((v) => v != null);
+      if (finals.length === 0) return null;
+      const sorted = [...finals].sort((a, b) => a - b);
+      const sum = finals.reduce((a, b) => a + b, 0);
+      return {
+        mu: params.mu,
+        sigma: params.sigma,
+        years: params.years,
+        nPaths: paths.length,
+        finalMean: sum / finals.length,
+        finalMed: sorted[Math.floor(sorted.length / 2)],
+        finalMin: sorted[0],
+        finalMax: sorted[sorted.length - 1],
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

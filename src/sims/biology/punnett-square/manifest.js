@@ -32,5 +32,6 @@ export default {
   },
   topics: ['genetics', 'mendelian'],
   grade: [10, 11, 12],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

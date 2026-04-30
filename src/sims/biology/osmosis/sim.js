@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -180,6 +181,43 @@ export function mount(rootEl) {
   } });
   const resetB = button({ label: 'Reset', onClick: reset });
   ctrlPanel.append(sLS.el, sRS.el, speedS.el, row(isoB, resetB));
+
+  // Lab — water flows toward the higher solute concentration.
+  const lab = labPanel({
+    title: 'Osmosis lab — water flow across a semipermeable membrane',
+    filename: 'osmosis-lab.csv',
+    columns: [
+      { key: 'sL',      label: 'salt L',       format: (v) => v.toFixed(0) },
+      { key: 'sR',      label: 'salt R',       format: (v) => v.toFixed(0) },
+      { key: 'wL',      label: 'water L',      format: (v) => v.toFixed(0) },
+      { key: 'wR',      label: 'water R',      format: (v) => v.toFixed(0) },
+      { key: 'cL',      label: '[salt] L (g/100ml)', format: (v) => v.toFixed(2) },
+      { key: 'cR',      label: '[salt] R (g/100ml)', format: (v) => v.toFixed(2) },
+      { key: 'flow',    label: 'predicted flow' },
+    ],
+    procedure: [
+      'Set salt_L = 30, salt_R = 60. Predict: water flows L → R (toward higher solute).',
+      'Wait for partial equilibration; record water counts on each side.',
+      'Set isotonic (equal salt) — net flow is zero (still random exchange both ways).',
+      'Reverse: salt_L = 80, salt_R = 20. Predict and verify reverse flow.',
+      'Apply to cells: red blood cell in pure water → swells, lyses. In strong salt → shrivels.',
+    ],
+    predict: 'A cell sits in a hypertonic solution. Will it gain or lose water? What if hypotonic?',
+    source: () => {
+      const cL = params.saltLeft / Math.max(1, params.waterLeft) * 100;
+      const cR = params.saltRight / Math.max(1, params.waterRight) * 100;
+      return {
+        sL: params.saltLeft,
+        sR: params.saltRight,
+        wL: params.waterLeft,
+        wR: params.waterRight,
+        cL,
+        cR,
+        flow: cL > cR ? 'R → L' : cL < cR ? 'L → R' : 'equilibrium',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   populate();
   const animator = loop((dt) => { step(dt); draw(); });

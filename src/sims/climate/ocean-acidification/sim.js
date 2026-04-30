@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Surface-ocean pH and aragonite saturation Ω as a function of atmospheric CO2 (ppm).
 // Empirical fit anchored on three points:
@@ -191,6 +192,37 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(cS.el, presetRow);
+
+  // Lab — pH and Ω vs atmospheric CO₂.
+  const lab = labPanel({
+    title: 'Ocean acidification lab — pH and Ω vs CO₂',
+    filename: 'ocean-acidification-lab.csv',
+    columns: [
+      { key: 'co2', label: 'CO₂ (ppm)' },
+      { key: 'pH',  label: 'pH',     format: (v) => v.toFixed(3) },
+      { key: 'Om',  label: 'Ω',       format: (v) => v.toFixed(2) },
+      { key: 'note', label: 'note' },
+    ],
+    procedure: [
+      'Pre-industrial (280 ppm): pH = 8.20, Ω ≈ 4.7. Healthy reef baseline.',
+      'Today (~420 ppm): pH ~8.07, Ω ≈ 3.5. ~25% drop in saturation.',
+      'RCP 4.5 by 2100 (~540 ppm): record pH and Ω.',
+      'RCP 8.5 by 2100 (~900 ppm): pH ~7.75, Ω ~1.5 — corals dissolve faster than they build.',
+      'When Ω < 1, dissolution outpaces calcification. Critical for shellfish and reefs.',
+    ],
+    predict: 'CO₂ doubles from 280 to 560 ppm. By how much does pH drop? Is Ω still above 1?',
+    source: () => {
+      const pH = pHFromCO2(params.co2);
+      const Om = omegaFromCO2(params.co2);
+      return {
+        co2: params.co2,
+        pH,
+        Om,
+        note: Om < 1 ? '⚠ Ω<1 dissolution' : Om < 2.5 ? 'reefs at risk' : 'OK',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

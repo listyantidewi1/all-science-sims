@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['statistics', 'inference'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

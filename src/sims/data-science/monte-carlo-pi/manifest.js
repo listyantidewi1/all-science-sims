@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['probability', 'sampling'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

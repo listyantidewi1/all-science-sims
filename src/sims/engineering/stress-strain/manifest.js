@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['mechanics-of-materials'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const SURFACES = {
   bowl: {
@@ -179,6 +180,39 @@ export function mount(rootEl) {
     onInput: (v) => { params.speed = v; } });
   const clearB = button({ label: 'Clear', onClick: () => { particle = null; } });
   ctrlPanel.append(surfSel.el, lrS.el, momS.el, speedS.el, row(clearB));
+
+  // Lab — explore convergence vs learning rate.
+  const lab = labPanel({
+    title: 'Gradient descent lab — convergence vs learning rate',
+    filename: 'gradient-descent-lab.csv',
+    columns: [
+      { key: 'surface',  label: 'surface' },
+      { key: 'lr',       label: 'learning rate', format: (v) => v.toFixed(3) },
+      { key: 'momentum', label: 'momentum', format: (v) => v.toFixed(2) },
+      { key: 'steps',    label: 'steps' },
+      { key: 'loss',     label: 'final loss', format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Convex bowl, lr = 0.1, momentum = 0. Click somewhere off-center; let it converge. Record.',
+      'Reset; lr = 0.5 — overshoots, may oscillate or diverge. Record outcome.',
+      'lr = 0.01 — slow but stable. Record steps to convergence.',
+      'Now Rosenbrock (banana). Bowl-shaped lr fails; momentum helps a lot.',
+      'Multi-modal: gradient descent gets stuck in local minima. Try different start points.',
+    ],
+    predict: 'For a smooth convex function, what happens as you crank lr up? At what value does it become unstable?',
+    source: () => {
+      const surf = SURFACES[params.surface];
+      const loss = particle ? surf.f(particle.x, particle.y) : 0;
+      return {
+        surface: surf.name,
+        lr: params.lr,
+        momentum: params.momentum,
+        steps: particle?.history.length ?? 0,
+        loss,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   let acc = 0;
   const animator = loop((dt) => {

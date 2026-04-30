@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['equilibrium', 'kinetics'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

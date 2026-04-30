@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const SUBSTANCES = {
   water:    { name: 'Water',    c: 4.184 },
@@ -158,6 +159,50 @@ export function mount(rootEl) {
     onInput: (v) => { params.T2 = v; reset(); } });
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(sub1Sel.el, m1S.el, T1S.el, sub2Sel.el, m2S.el, T2S.el, row(resetB));
+
+  // Lab — predict T_f, then run, and record the live equilibrium.
+  function predictedTf() {
+    const c1 = SUBSTANCES[params.sub1].c, c2 = SUBSTANCES[params.sub2].c;
+    return (params.m1 * c1 * params.T1 + params.m2 * c2 * params.T2) / (params.m1 * c1 + params.m2 * c2);
+  }
+  const lab = labPanel({
+    title: 'Calorimetry lab — heat exchange and T_f',
+    filename: 'calorimetry-lab.csv',
+    columns: [
+      { key: 'hot',     label: 'hot' },
+      { key: 'm1',      label: 'm₁ (g)',  format: (v) => v.toFixed(0) },
+      { key: 'T1_0',    label: 'T₁ start (°C)', format: (v) => v.toFixed(1) },
+      { key: 'cold',    label: 'cold' },
+      { key: 'm2',      label: 'm₂ (g)',  format: (v) => v.toFixed(0) },
+      { key: 'T2_0',    label: 'T₂ start (°C)', format: (v) => v.toFixed(1) },
+      { key: 'Tf_pred', label: 'T_f predicted', format: (v) => v.toFixed(2) },
+      { key: 'Tf_meas', label: 'T_f live',      format: (v) => v.toFixed(2) },
+      { key: 'Q',       label: 'Q exchanged (J)', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Set up: 100 g iron at 200 °C into 200 g water at 20 °C. Reset, wait, record.',
+      'Verify Q_lost (hot) = Q_gained (cold): m₁c₁ΔT₁ = m₂c₂ΔT₂.',
+      'Swap iron for aluminum (higher c). Predict T_f; record actual.',
+      'Try mercury (very low c) into the same water — T_f shifts toward 20 °C.',
+      'Equal substances: T_f is the mass-weighted mean of the two temperatures.',
+    ],
+    predict: 'Two equal-mass cups, water at 20 °C and oil at 80 °C. Will T_f be exactly 50 °C? Why or why not?',
+    source: () => {
+      const Q = params.m1 * SUBSTANCES[params.sub1].c * (params.T1 - state.T1);
+      return {
+        hot:  SUBSTANCES[params.sub1].name,
+        m1:   params.m1,
+        T1_0: params.T1,
+        cold: SUBSTANCES[params.sub2].name,
+        m2:   params.m2,
+        T2_0: params.T2,
+        Tf_pred: predictedTf(),
+        Tf_meas: (state.T1 + state.T2) / 2,
+        Q,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

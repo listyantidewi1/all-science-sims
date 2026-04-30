@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -109,6 +110,43 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(piS.el, rS.el, yS.el, initS.el, presetRow);
+
+  // Lab — real vs nominal returns over time.
+  const lab = labPanel({
+    title: 'Inflation lab — real vs nominal returns',
+    filename: 'inflation-lab.csv',
+    columns: [
+      { key: 'years',   label: 'years' },
+      { key: 'pi',      label: 'inflation', format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'nom',     label: 'nominal r', format: (v) => (v * 100).toFixed(2) + '%' },
+      { key: 'init',    label: 'initial',   format: (v) => v.toFixed(0) },
+      { key: 'finalNom', label: 'final $ (nominal)', format: (v) => v.toFixed(0) },
+      { key: 'finalReal', label: 'final $ (real)',    format: (v) => v.toFixed(0) },
+      { key: 'realRate', label: 'real rate', format: (v) => (v * 100).toFixed(2) + '%' },
+    ],
+    procedure: [
+      '$1000 at 5% nominal, 3% inflation, 30 years. Record. Real return = ~1.94%.',
+      'Verify: real ≈ nominal − inflation (Fisher approximation).',
+      'Now π = 8% (high inflation), nominal = 5%. Real rate is NEGATIVE — purchasing power falls.',
+      'High deflation (π = -2%): real rate > nominal — you gain even at 0% nominal.',
+      'Hyperinflation (π = 50%) — savings get wiped out within a few years.',
+    ],
+    predict: 'Your savings yield 4%, inflation is 6%. After 10 years, are you richer or poorer in real terms?',
+    source: () => {
+      const finalNom = params.initial * Math.pow(1 + params.nominalRate, params.years);
+      const finalReal = realValueOf(finalNom, params.years);
+      return {
+        years: params.years,
+        pi: params.inflation,
+        nom: params.nominalRate,
+        init: params.initial,
+        finalNom,
+        finalReal,
+        realRate: (1 + params.nominalRate) / (1 + params.inflation) - 1,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

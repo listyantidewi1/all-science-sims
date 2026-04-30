@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['geometry', 'pi'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

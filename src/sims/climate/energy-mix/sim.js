@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Ballpark numbers per source (illustrative, not policy-grade):
 //   co2:   gCO2-eq per kWh (lifecycle estimate)
@@ -182,6 +183,37 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(presetRow);
+
+  // Lab — record CO2/cost/reliability tradeoffs.
+  const lab = labPanel({
+    title: 'Energy mix lab — the CO₂ / cost / reliability trilemma',
+    filename: 'energy-mix-lab.csv',
+    columns: [
+      { key: 'scenario', label: 'scenario' },
+      { key: 'co2',  label: 'CO₂ (g/kWh)', format: (v) => v.toFixed(0) },
+      { key: 'cost', label: '$/MWh',       format: (v) => v.toFixed(0) },
+      { key: 'rel',  label: 'reliability', format: (v) => (v * 100).toFixed(0) + '%' },
+    ],
+    procedure: [
+      'Click "All coal". Record. Cheap, reliable, but very high CO₂.',
+      'Click "Today (global)". Record. Lower CO₂ than coal, mixed.',
+      '"Nordic-like" preset: hydro + nuclear → very low CO₂ AND high reliability.',
+      '"All renewable" (wind+solar mostly) — lowest CO₂ but reliability collapses (variable).',
+      '"2050 target" — balanced: CO₂ low, reliability decent, cost moderate.',
+      'Build your own mix — try to beat the 2050 target on CO₂ and reliability simultaneously.',
+    ],
+    predict: 'You want low CO₂ AND high reliability. Pick three sources to dominate your mix.',
+    source: () => {
+      const m = metrics();
+      return {
+        scenario: 'custom',
+        co2: m.co2,
+        cost: m.cost,
+        rel: m.rel,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

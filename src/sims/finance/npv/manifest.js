@@ -31,5 +31,6 @@ export default {
     ],
   },
   topics: ['valuation', 'corporate-finance'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

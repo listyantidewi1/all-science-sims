@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Generic reversible reaction: aA + bB ⇌ cC + dD
 // We numerically relax concentrations toward equilibrium where Q = K.
@@ -198,6 +199,44 @@ export function mount(rootEl) {
 
   const resetB = button({ label: 'Reset to initial', primary: true, onClick: reset });
   ctrlPanel.append(rxnSel.el, tS.el, pS.el, addRow, row(resetB));
+
+  // Lab — record concentrations after each stress, observe Le Chatelier shifts.
+  const lab = labPanel({
+    title: "Le Chatelier lab — predict the shift",
+    filename: 'le-chatelier-lab.csv',
+    columns: [
+      { key: 'reaction', label: 'reaction' },
+      { key: 'T',  label: 'T (rel)', format: (v) => v.toFixed(2) },
+      { key: 'P',  label: 'P (rel)', format: (v) => v.toFixed(2) },
+      { key: 's0', label: 'sp 1', format: (v) => v.toFixed(3) },
+      { key: 's1', label: 'sp 2', format: (v) => v.toFixed(3) },
+      { key: 's2', label: 'sp 3', format: (v) => v.toFixed(3) },
+      { key: 'Q',  label: 'Q', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Pick the Haber reaction. Wait for equilibrium, then record.',
+      'Add some N₂ — equilibrium shifts right (more NH₃). Record after settling.',
+      'Compress (P = 1.5) — shifts toward side with fewer moles (right, since 4 → 2). Record.',
+      'Heat (T = 1.5) for an exothermic reaction — shifts left. Record.',
+      'For each row, compare Q to K0 — Q approaches K, but Le Chatelier shifts the equilibrium itself.',
+    ],
+    predict: 'In the Haber process for ammonia, you can shift right by: (a) adding N₂, (b) high P, (c) low T (it\'s exothermic). Why is industrial ammonia made at high T anyway? (Hint: kinetics.)',
+    source: () => {
+      const r = REACTIONS[params.rxn];
+      const Q = (Math.pow(conc[2] || 1e-9, r.c) * Math.pow(conc[3] || 1, r.d)) /
+                (Math.pow(conc[0] || 1e-9, r.a) * Math.pow(conc[1] || 1, r.b));
+      return {
+        reaction: r.name,
+        T: params.T,
+        P: params.P,
+        s0: conc[0],
+        s1: conc[1],
+        s2: conc[2],
+        Q,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();
