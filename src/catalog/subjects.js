@@ -71,6 +71,18 @@ export const SUBJECTS = [
     description: { en: 'Carbon cycle, feedbacks, energy mix.', id: 'Siklus karbon, umpan-balik, bauran energi.' },
     icon: '🌱',
   },
+  {
+    id: 'psychology',
+    name:        { en: 'Psychology',                id: 'Psikologi' },
+    description: { en: 'Bias, conditioning, memory, social pressure.', id: 'Bias, pengondisian, memori, tekanan sosial.' },
+    icon: '🧠',
+  },
+  {
+    id: 'cognitive-science',
+    name:        { en: 'Cognitive Science',          id: 'Ilmu Kognitif' },
+    description: { en: 'Perception, attention, illusions, mental tasks.', id: 'Persepsi, perhatian, ilusi, tugas mental.' },
+    icon: '💡',
+  },
 ];
 
 export const SUBJECT_BY_ID = Object.fromEntries(SUBJECTS.map((s) => [s.id, s]));

@@ -19,6 +19,8 @@ const FEATURED_IDS = [
   'engineering/truss-analyzer',
   'music/beat-frequencies',
   'climate/carbon-cycle',
+  'psychology/stroop-test',
+  'cognitive-science/optical-illusions',
 ];
 
 function matchSim(sim, q) {

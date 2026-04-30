@@ -13,6 +13,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.10.0] — Two new subjects: Psychology + Cognitive Science (234 sims, 14 subjects)
+
+### Added — Psychology 🧠 (6 sims, new subject)
+
+These sims share a fundamentally new interaction pattern: **the user is the experiment subject**.
+
+- **Stroop Test** — color words in mismatched ink; click the ink color, not the word. Live RT comparison between congruent and incongruent trials shows the classic ~30-50% interference.
+- **Reaction Time Test** — wait for green flash, click as fast as you can. Simple vs choice modes; live histogram of trial RTs.
+- **Anchoring Bias** — Tversky-Kahneman style: drag an anchor and watch a simulated population's estimates drift toward it. 5 calibrated trivia questions.
+- **Ebbinghaus Forgetting Curve** — exponential memory decay with draggable review markers; consolidation makes each curve shallower.
+- **Asch Conformity** — line-comparison task with adjustable confederates and an optional ally; track how often you go along with the wrong answer.
+- **Classical Conditioning (Pavlov)** — pair bell + food, watch the association curve grow; "bell only" trials produce extinction.
+
+### Added — Cognitive Science 💡 (6 sims, new subject)
+
+- **Optical Illusions Gallery** — six classics (Müller-Lyer, Ponzo, Café Wall, Ebbinghaus, Hering, Checker Shadow) with a "ruler/proof" overlay that confirms the illusion.
+- **Visual Search** — find the target among distractors. Feature search (pop-out, ~constant RT vs N) vs conjunction search (slow, RT scales with N) live comparison.
+- **Mental Rotation (Shepard task)** — 3D-style "letter R" with rotation/mirror; RT-vs-angle scatter plot accumulates as you respond.
+- **Digit Span** — flashing digit sequences; type back forward or backward; auto-extends span on success. Hits Miller's 7±2 region.
+- **Signal Detection Theory** — overlapping noise/signal Gaussians with draggable criterion β; live confusion matrix and ROC curve.
+- **Change Blindness** — flicker paradigm vs continuous mode; one element changes between two scenes; click the changed item to log RT.
+
+### Added — Subject + theming infrastructure
+
+- New entries in `src/catalog/subjects.js`: `psychology` (🧠) and `cognitive-science` (💡), bilingual.
+- New accent colors in `src/styles/tokens.css`: `--subj-psychology: #f43f5e` (rose) and `--subj-cognitive-science: #6366f1` (indigo).
+- Two new featured picks added to the home grid: stroop-test (psychology) and optical-illusions (cog-sci).
+
+### Notes
+
+- Total catalog: **234 sims across 14 subjects**.
+- Bundle: main grew ~20 KB (132 KB gzipped, up from 125). Each new sim is its own lazy chunk.
+- The catalog now spans natural sciences, formal sciences, social sciences, applied sciences, and (with this wave) the experimental human sciences — covering the full breadth of what most curricula classify as "science".
+
+---
+
 ## [1.9.0] — Balance + breadth wave (222 sims, +25 added)
 
 A wave focused on bringing the new subjects (engineering, music, climate) up from 8 to 12 each — and filling targeted gaps across the rest of the catalog.

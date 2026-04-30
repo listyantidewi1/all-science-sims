@@ -248,6 +248,20 @@ import finiteStateAutomata from '../sims/computer-science/finite-state-automata/
 import pValue            from '../sims/data-science/p-value/manifest.js';
 import titForTat         from '../sims/social-science/tit-for-tat/manifest.js';
 
+// 1.10.0: Psychology + Cognitive Science
+import stroopTest        from '../sims/psychology/stroop-test/manifest.js';
+import reactionTime      from '../sims/psychology/reaction-time/manifest.js';
+import anchoringBias     from '../sims/psychology/anchoring-bias/manifest.js';
+import forgettingCurve   from '../sims/psychology/forgetting-curve/manifest.js';
+import aschConformity    from '../sims/psychology/asch-conformity/manifest.js';
+import classicalConditioning from '../sims/psychology/classical-conditioning/manifest.js';
+import opticalIllusions  from '../sims/cognitive-science/optical-illusions/manifest.js';
+import visualSearch      from '../sims/cognitive-science/visual-search/manifest.js';
+import mentalRotation    from '../sims/cognitive-science/mental-rotation/manifest.js';
+import digitSpan         from '../sims/cognitive-science/digit-span/manifest.js';
+import signalDetection   from '../sims/cognitive-science/signal-detection/manifest.js';
+import changeBlindness   from '../sims/cognitive-science/change-blindness/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -316,6 +330,10 @@ export const SIMS = [
   finiteStateAutomata,
   pValue,
   titForTat,
+
+  // 1.10.0
+  stroopTest, reactionTime, anchoringBias, forgettingCurve, aschConformity, classicalConditioning,
+  opticalIllusions, visualSearch, mentalRotation, digitSpan, signalDetection, changeBlindness,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));

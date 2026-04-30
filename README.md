@@ -1,9 +1,9 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 222 hand-built sims across 12 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 234 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
 
-A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, and climate & sustainability**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
+A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
 See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **222 original simulations** across 12 subjects — see [Catalog](#catalog) below.
+- **234 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
