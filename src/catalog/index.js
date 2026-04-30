@@ -221,6 +221,33 @@ import boxPlot           from '../sims/data-science/box-plot/manifest.js';
 import correlation       from '../sims/data-science/correlation/manifest.js';
 import logisticGrowth    from '../sims/social-science/logistic-growth/manifest.js';
 
+// 1.9.0: balance + breadth wave
+import ottoCycle         from '../sims/engineering/otto-cycle/manifest.js';
+import wheatstone        from '../sims/engineering/wheatstone/manifest.js';
+import transformer       from '../sims/engineering/transformer/manifest.js';
+import heatSink          from '../sims/engineering/heat-sink/manifest.js';
+import fmSynthesis       from '../sims/music/fm-synthesis/manifest.js';
+import compressor        from '../sims/music/compressor/manifest.js';
+import dopplerAudio      from '../sims/music/doppler-audio/manifest.js';
+import scalesModes       from '../sims/music/scales-modes/manifest.js';
+import ghgAbsorption     from '../sims/climate/ghg-absorption/manifest.js';
+import enso              from '../sims/climate/enso/manifest.js';
+import methaneVsCo2      from '../sims/climate/methane-vs-co2/manifest.js';
+import ozoneLayer        from '../sims/climate/ozone-layer/manifest.js';
+import bernoulli         from '../sims/physics/bernoulli/manifest.js';
+import circuits          from '../sims/physics/circuits/manifest.js';
+import emissionSpectra   from '../sims/chemistry/emission-spectra/manifest.js';
+import activationEnergy  from '../sims/chemistry/activation-energy/manifest.js';
+import meiosis           from '../sims/biology/meiosis/manifest.js';
+import antibioticResistance from '../sims/biology/antibiotic-resistance/manifest.js';
+import starLifeCycle     from '../sims/earth-space/star-life-cycle/manifest.js';
+import volcanoTypes      from '../sims/earth-space/volcano-types/manifest.js';
+import vennDiagrams      from '../sims/mathematics/venn-diagrams/manifest.js';
+import systemOfEquations from '../sims/mathematics/system-of-equations/manifest.js';
+import finiteStateAutomata from '../sims/computer-science/finite-state-automata/manifest.js';
+import pValue            from '../sims/data-science/p-value/manifest.js';
+import titForTat         from '../sims/social-science/tit-for-tat/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -276,6 +303,19 @@ export const SIMS = [
   binaryNumbers, towerOfHanoi,
   boxPlot, correlation,
   logisticGrowth,
+
+  // 1.9.0
+  ottoCycle, wheatstone, transformer, heatSink,
+  fmSynthesis, compressor, dopplerAudio, scalesModes,
+  ghgAbsorption, enso, methaneVsCo2, ozoneLayer,
+  bernoulli, circuits,
+  emissionSpectra, activationEnergy,
+  meiosis, antibioticResistance,
+  starLifeCycle, volcanoTypes,
+  vennDiagrams, systemOfEquations,
+  finiteStateAutomata,
+  pValue,
+  titForTat,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));

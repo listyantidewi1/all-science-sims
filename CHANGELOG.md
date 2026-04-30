@@ -13,6 +13,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.9.0] — Balance + breadth wave (222 sims, +25 added)
+
+A wave focused on bringing the new subjects (engineering, music, climate) up from 8 to 12 each — and filling targeted gaps across the rest of the catalog.
+
+### Added — Engineering ⚙ (8 → 12)
+
+- **Otto Cycle** — animated 4-stroke engine with synchronized P-V diagram; adjust compression ratio and watch ideal efficiency η = 1 − 1/r^(γ−1) climb.
+- **Wheatstone Bridge** — diamond of four resistors with galvanometer; balance condition R₁R₄ = R₂R₃; auto-balance button.
+- **Transformer** — primary/secondary windings with adjustable turns; live V/I scaling by N₂/N₁; step-up vs step-down; 1:1 isolation preset.
+- **Heat Sink Design** — thermal-RC model: T_chip = T_amb + P·R_θ in steady state; live time-domain plot; throttle/damage zones marked.
+
+### Added — Music & Acoustics 🎵 (8 → 12)
+
+- **FM Synthesis** — modulator + carrier with adjustable index I and ratio; presets for vibrato/bell/bass/wood; click Play to hear.
+- **Dynamics Compressor** — drag-handle threshold on the input-output transfer curve; sample drum-loop dynamics tamed; 4 presets including limiter.
+- **Doppler Effect (Audio)** — siren racing past a fixed observer; pitch shifts in real time on Play; concentric wavefronts visible.
+- **Scales & Modes** — clickable piano with root + 15 scale/mode choices (major, modes, blues, harmonic minor, whole-tone…); play scale to hear.
+
+### Added — Climate & Sustainability 🌱 (8 → 12)
+
+- **GHG Absorption Spectra** — Earth's IR emission with five gas band toggles (H₂O, CO₂, CH₄, N₂O, O₃); see which "atmospheric windows" close.
+- **El Niño / La Niña (ENSO)** — Pacific cross-section with thermocline tilt + global rainfall anomaly map; sweep the index from −2.5 to +2.5.
+- **Methane vs CO₂** — pulse-response GWP visualization; horizon-dependent (20y, 100y, 500y) integrated forcing comparison.
+- **Ozone Layer & CFCs** — atmospheric column with CFC slider + polar-vortex toggle; ozone DU history chart with 220-DU "hole" threshold.
+
+### Added — Other subjects (9)
+
+- **Physics / Bernoulli** — narrowing pipe with continuity (A₁v₁ = A₂v₂); pressure gauges show the P-v inverse relationship; flowing particles.
+- **Physics / Series & Parallel Circuits** — three light bulbs you can toggle; brightness scales with power dissipated; mode switch + bulb-resistance sliders.
+- **Chemistry / Atomic Emission Spectra** — H, He, Ne, Na, Hg with prominent lines drawn on a 200–800 nm spectrum; hover for nm reading.
+- **Chemistry / Activation Energy & Catalysis** — energy diagram with draggable peak/products; live Arrhenius rate; catalyst toggle compares uncatalyzed reference.
+- **Biology / Meiosis** — 9-phase walk-through (interphase → telophase II) with chromosome dance and crossing-over highlight.
+- **Biology / Antibiotic Resistance** — bacterial dish + S/R population history; turn antibiotic on/off and watch resistance evolve.
+- **Earth & Space / Star Life Cycle** — pick a stellar mass (0.05 – 60 M☉) and walk through its phases on the H-R diagram; four end-state classes.
+- **Earth & Space / Volcano Types** — viscosity × gas → shield / cinder cone / stratovolcano / lava dome with eruption animation.
+- **Mathematics / Venn Diagrams** — 3-set Venn with set-builder operations (∪, ∩, −, △, complement); pixel-shaded result regions.
+- **Mathematics / System of Linear Equations** — two lines with draggable control points; live intersection or "no/infinite solution" classification.
+- **Computer Science / Finite-State Automata** — three pre-built DFAs (ends-with-01, even-parity, divisible-by-3); type input and step through.
+- **Data Science / p-value & Hypothesis Testing** — standard normal with draggable observed z; one- vs two-tailed; α rejection region shaded.
+- **Social Science / Tit-for-Tat Tournament** — 6 strategies × 6 strategies round-robin (Axelrod-style) with live ranking + score matrix.
+
+### Notes
+
+- Total catalog: **222 sims across 12 subjects**.
+- Subject distribution post-wave: physics 24, chemistry 22, biology 22, earth-space 20, computer-science 21, data-science 20, social-science 19, mathematics 22, finance 16, engineering 12, music 12, climate 12.
+- Bundle: main grew ~40 KB (125 KB gzipped, up from 110). Each new sim is its own lazy-loaded chunk.
+
+---
+
 ## [1.8.0] — School-curriculum staples (197 sims, +20 added)
 
 A targeted wave hitting the most-frequently-assigned middle/high-school topics across 9 subjects. Every sim is direct-manipulation by default and uses the shared `hoverProbe` / `dragHandle` helpers where it fits.
