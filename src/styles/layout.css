@@ -582,6 +582,12 @@ main {
   color: var(--color-danger) !important;
   border-color: color-mix(in srgb, var(--color-danger) 35%, transparent) !important;
 }
+.lab-saved-hint {
+  font-size: var(--type-xs);
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 2px 0;
+}
 
 /* Footer */
 .site-footer {

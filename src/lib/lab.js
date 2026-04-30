@@ -1,3 +1,5 @@
+import { get as storeGet, set as storeSet } from './store.js';
+
 /**
  * labPanel — a "virtual lab" panel for any sim.
  *
@@ -6,10 +8,11 @@
  *   - optional prediction prompt + free-text response
  *   - data table (records measurements as rows)
  *   - Record / Clear / Export-CSV buttons
+ *   - auto-save to localStorage so accidental nav away doesn't lose data
  *
  *   const lab = labPanel({
  *     title: 'Pendulum lab',
- *     filename: 'pendulum-data.csv',
+ *     filename: 'pendulum-data.csv',  // also used as the storage key
  *     columns: [
  *       { key: 'L', label: 'Length (m)', format: (v) => v.toFixed(2) },
  *       { key: 'T', label: 'Period (s)', format: (v) => v.toFixed(3) },
@@ -23,8 +26,28 @@
  *
  * The sim is responsible for providing the `source` function. The panel
  * calls source() when "Record" is clicked and adds a row.
+ *
+ * Persistence: rows, prediction text, and procedure checkbox states are
+ * auto-saved to localStorage under `lab.<filename>`. Clear data wipes it.
  */
 export function labPanel(opts) {
+  const storageKey = opts.filename ? `lab.${opts.filename}` : null;
+  const persisted = storageKey ? (storeGet(storageKey, null) || {}) : {};
+
+  // State (loaded from localStorage when available)
+  let rows = Array.isArray(persisted.rows) ? persisted.rows : [];
+  let predictText = typeof persisted.predict === 'string' ? persisted.predict : '';
+  const procLen = (opts.procedure && opts.procedure.length) || 0;
+  let checks = Array.isArray(persisted.checks) && persisted.checks.length === procLen
+    ? persisted.checks.slice()
+    : new Array(procLen).fill(false);
+  const hadRestoredData = rows.length > 0 || predictText.length > 0 || checks.some(Boolean);
+
+  const savePersisted = () => {
+    if (!storageKey) return;
+    storeSet(storageKey, { rows, predict: predictText, checks });
+  };
+
   const wrap = document.createElement('div');
   wrap.className = 'lab-panel';
 
@@ -43,18 +66,22 @@ export function labPanel(opts) {
     proc.appendChild(summary);
     const ol = document.createElement('ol');
     ol.className = 'lab-procedure';
-    for (const step of opts.procedure) {
+    opts.procedure.forEach((step, i) => {
       const li = document.createElement('li');
       const cb = document.createElement('input');
       cb.type = 'checkbox';
+      cb.checked = !!checks[i];
+      if (cb.checked) li.classList.add('done');
       const span = document.createElement('span');
       span.textContent = step;
       cb.addEventListener('change', () => {
         li.classList.toggle('done', cb.checked);
+        checks[i] = cb.checked;
+        savePersisted();
       });
       li.append(cb, span);
       ol.appendChild(li);
-    }
+    });
     proc.appendChild(ol);
     wrap.appendChild(proc);
   }
@@ -63,6 +90,7 @@ export function labPanel(opts) {
   if (opts.predict) {
     const det = document.createElement('details');
     det.className = 'lab-section';
+    if (predictText) det.open = true;
     const summary = document.createElement('summary');
     summary.textContent = 'Prediction';
     det.appendChild(summary);
@@ -74,6 +102,11 @@ export function labPanel(opts) {
     ta.rows = 2;
     ta.placeholder = 'Type your prediction before measuring…';
     ta.className = 'lab-predict-input';
+    ta.value = predictText;
+    ta.addEventListener('input', () => {
+      predictText = ta.value;
+      savePersisted();
+    });
     det.appendChild(ta);
     wrap.appendChild(det);
   }
@@ -101,8 +134,6 @@ export function labPanel(opts) {
   tableWrap.appendChild(table);
   wrap.appendChild(tableWrap);
 
-  // Empty-state row
-  let rows = [];
   function renderRows() {
     tbody.innerHTML = '';
     if (rows.length === 0) {
@@ -133,7 +164,7 @@ export function labPanel(opts) {
       delBtn.className = 'lab-del';
       delBtn.title = 'Delete row';
       delBtn.textContent = '×';
-      delBtn.addEventListener('click', () => { rows.splice(i, 1); renderRows(); });
+      delBtn.addEventListener('click', () => { rows.splice(i, 1); renderRows(); savePersisted(); });
       delTd.appendChild(delBtn);
       tr.appendChild(delTd);
       tbody.appendChild(tr);
@@ -159,7 +190,7 @@ export function labPanel(opts) {
       flashRecordError(err.message || String(err));
       return;
     }
-    if (r) { rows.push(r); renderRows(); }
+    if (r) { rows.push(r); renderRows(); savePersisted(); }
   });
 
   function flashRecordError(msg) {
@@ -177,7 +208,7 @@ export function labPanel(opts) {
   clearBtn.type = 'button';
   clearBtn.className = 'btn';
   clearBtn.textContent = 'Clear data';
-  clearBtn.addEventListener('click', () => { rows = []; renderRows(); });
+  clearBtn.addEventListener('click', () => { rows = []; renderRows(); savePersisted(); });
 
   const exportBtn = document.createElement('button');
   exportBtn.type = 'button';
@@ -187,6 +218,16 @@ export function labPanel(opts) {
 
   btnRow.append(recordBtn, clearBtn, exportBtn);
   wrap.appendChild(btnRow);
+
+  if (storageKey) {
+    const hint = document.createElement('div');
+    hint.className = 'lab-saved-hint';
+    hint.title = 'Measurements, prediction, and procedure progress are saved on this device. Click "Clear data" to wipe.';
+    hint.innerHTML = hadRestoredData
+      ? '<span aria-hidden="true">💾</span> Restored from your previous session — auto-saved on this device.'
+      : '<span aria-hidden="true">💾</span> Auto-saved on this device.';
+    wrap.appendChild(hint);
+  }
 
   function exportCSV() {
     if (rows.length === 0) return;
@@ -220,10 +261,11 @@ export function labPanel(opts) {
       if (!opts.source) return;
       let r;
       try { r = opts.source(); } catch (err) { console.error('Lab source() threw:', err); return; }
-      if (r) { rows.push(r); renderRows(); }
+      if (r) { rows.push(r); renderRows(); savePersisted(); }
     },
-    clear() { rows = []; renderRows(); },
+    clear() { rows = []; renderRows(); savePersisted(); },
     getRows() { return rows.slice(); },
-    setRows(next) { rows = next.slice(); renderRows(); },
+    setRows(next) { rows = next.slice(); renderRows(); savePersisted(); },
+    hadRestoredData,
   };
 }

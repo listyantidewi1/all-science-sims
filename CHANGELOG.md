@@ -13,6 +13,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.16.0] — Auto-save lab measurements to localStorage
+
+Lab data now survives accidental navigation and tab closes. Each lab panel persists its measurements, prediction text, and procedure checkbox state to localStorage, keyed by the sim's CSV filename. Reload, hit the back button, close the tab — the data is still there.
+
+### Added — persistent lab state
+
+- **Auto-save in [src/lib/lab.js](src/lib/lab.js)** — the `labPanel` helper now reads from / writes to `localStorage` under `ass.lab.<filename>`. Storage shape: `{ rows, predict, checks }`. Writes happen on every mutation (record, delete row, clear, prediction edit, procedure check). Loads happen synchronously at panel construction.
+- **Restored-from-session hint** — small "💾 Restored from your previous session" line under the buttons when prior data is loaded. Falls back to "💾 Auto-saved on this device" otherwise. Tooltip explains how to clear ("Clear data" button wipes the storage entry).
+- **`hadRestoredData` flag** on the returned panel object for sims that want to do something custom on restore.
+
+### Why filename as the key
+
+Every sim's lab already sets a unique `filename` for CSV export ('ph-indicator-lab.csv', 'pendulum-data.csv', etc.). Reusing it as the storage key keeps the data colocated with the sim that produced it without requiring a new explicit `id` field on every manifest. Sims that don't pass `filename` simply skip persistence (no key, no save).
+
+### Edge cases handled
+
+- **Procedure-step count changed between releases:** the loaded `checks` array is only restored if its length matches the current procedure length; otherwise it falls back to all-unchecked (avoids checkbox / step misalignment after edits).
+- **Stale row schema:** rows with missing column keys render as `–` (existing behavior in `renderRows`), so old data doesn't break the UI when columns are added.
+- **localStorage write failure (quota exceeded, private mode):** swallowed silently in `store.js`, panel still works — just without persistence.
+
+---
+
 ## [1.15.1] — Fix broken Record button on the pH indicator lab
 
 The pH indicator lab's `source()` callback referenced a non-existent `params` variable instead of the sim's actual `state` object — clicking Record threw a silent ReferenceError and added no row.

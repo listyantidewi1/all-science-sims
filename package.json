@@ -1,7 +1,7 @@
 {
   "name": "all-science-sims",
   "private": true,
-  "version": "1.15.1",
+  "version": "1.16.0",
   "type": "module",
   "description": "Client-side hub of interactive science simulations and virtual labs across 14 subjects (EN/ID).",
   "scripts": {
