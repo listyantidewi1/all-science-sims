@@ -273,6 +273,10 @@ import floatingSinking   from '../sims/physics/floating-sinking/manifest.js';
 import pushPullFriction  from '../sims/physics/push-pull-friction/manifest.js';
 import digestiveSystem   from '../sims/biology/digestive-system/manifest.js';
 import weatherStation    from '../sims/earth-space/weather-station/manifest.js';
+import earthquakeWaves   from '../sims/earth-space/earthquake-waves/manifest.js';
+import energyTransfers   from '../sims/physics/energy-transfers/manifest.js';
+import ratioProportion   from '../sims/mathematics/ratio-proportion/manifest.js';
+import airPressureWeather from '../sims/earth-space/air-pressure-weather/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -353,6 +357,7 @@ export const SIMS = [
 
   // 1.18.0 — primary and middle school
   floatingSinking, pushPullFriction, digestiveSystem, weatherStation,
+  earthquakeWaves, energyTransfers, ratioProportion, airPressureWeather,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
