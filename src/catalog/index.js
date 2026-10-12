@@ -285,6 +285,10 @@ import simpleCircuit     from '../sims/physics/simple-circuit/manifest.js';
 import plantGrowth       from '../sims/biology/plant-growth/manifest.js';
 import lifeCycles        from '../sims/biology/life-cycles/manifest.js';
 import dayAndNight       from '../sims/earth-space/day-and-night/manifest.js';
+import statesOfMatter    from '../sims/chemistry/states-of-matter/manifest.js';
+import lightAndShadows   from '../sims/physics/light-and-shadows/manifest.js';
+import soundVibrations   from '../sims/physics/sound-vibrations/manifest.js';
+import magnets           from '../sims/physics/magnets/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -368,6 +372,7 @@ export const SIMS = [
   earthquakeWaves, energyTransfers, ratioProportion, airPressureWeather,
   electromagnet, separatingMixtures, physicalChemicalChange, breathingLungs,
   simpleCircuit, plantGrowth, lifeCycles, dayAndNight,
+  statesOfMatter, lightAndShadows, soundVibrations, magnets,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
