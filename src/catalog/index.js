@@ -281,6 +281,10 @@ import electromagnet     from '../sims/physics/electromagnet/manifest.js';
 import separatingMixtures from '../sims/chemistry/separating-mixtures/manifest.js';
 import physicalChemicalChange from '../sims/chemistry/physical-chemical-change/manifest.js';
 import breathingLungs    from '../sims/biology/breathing-lungs/manifest.js';
+import simpleCircuit     from '../sims/physics/simple-circuit/manifest.js';
+import plantGrowth       from '../sims/biology/plant-growth/manifest.js';
+import lifeCycles        from '../sims/biology/life-cycles/manifest.js';
+import dayAndNight       from '../sims/earth-space/day-and-night/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -363,6 +367,7 @@ export const SIMS = [
   floatingSinking, pushPullFriction, digestiveSystem, weatherStation,
   earthquakeWaves, energyTransfers, ratioProportion, airPressureWeather,
   electromagnet, separatingMixtures, physicalChemicalChange, breathingLungs,
+  simpleCircuit, plantGrowth, lifeCycles, dayAndNight,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
