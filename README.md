@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 242 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
+> 266 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,10 +11,11 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **242 original simulations** across 14 subjects — see [Catalog](#catalog) below.
+- **266 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
+- **Every sim labelled by school level** — a suggested grade range on each card and page, and Primary / Middle / High school / University filter chips on the home and subject pages. See [By school level](#by-school-level) and the [curriculum map](docs/curriculum-map.md).
 - **Virtual labs** — many sims carry a lab panel: follow a procedure, make a prediction, record measurements into a table, export CSV. Data auto-saves on the device.
 - **Deep links and embedding** — every control has a URL key, so `#/physics/pendulum?length-m=2` opens the sim preset. `#/embed/...` gives a stage-only view for an `<iframe>` in any LMS or blog. See [Sharing, deep links, and embedding](#sharing-deep-links-and-embedding).
 - **Touch and keyboard friendly** — pointer events everywhere, so dragging works on phones and tablets; every drag handle is reachable with Tab and nudged with the arrow keys.
@@ -54,6 +55,21 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ---
 
+## By school level
+
+Each manifest carries `grade: [...]` (school years 1–12, 13 = university), assigned against NGSS, the national curriculum for England, and Kurikulum Merdeka. The home and subject pages filter by level; the badge on each sim shows its range. [docs/curriculum-map.md](docs/curriculum-map.md) lists every sim by level with the closest standards families.
+
+| Level | Typical frameworks | Sims |
+|---|---|---|
+| Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 37 |
+| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 111 |
+| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 215 |
+| University | Undergraduate courses | 119 |
+
+Counts overlap because many sims span two levels. Primary sims use big controls, plain words, and predict-then-test flows; see for example Float or Sink?, Magnets, Light the Bulb, Grow a Plant, and Day and Night.
+
+---
+
 ## Catalog
 
 ### Physics
@@ -86,6 +102,16 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Curved Mirrors | A concave or convex mirror with a candle as the object. |
 | Bernoulli's Principle | A pipe narrows in the middle — the fluid speeds up to maintain volume flow, and pressure drops. |
 | Series & Parallel Circuits | Three light bulbs, a battery, switches you can flip. |
+| Float or Sink? | Pick an object from the shelf. |
+| Push the Car: Friction | Give a toy car a small, medium or big push and watch how far it rolls. |
+| Energy Transfers | Reshape a roller-coaster track by dragging its control points, then release a cart from a chosen height. |
+| Build an Electromagnet | Wind a coil around a core, connect a battery pack and flip the switch. |
+| Light the Bulb | A battery, a bulb, a switch and wires on a board. |
+| Light and Shadows | Drag a torch around a toy and watch its shadow on the wall. |
+| Sound is Vibration | Hit a drum, pluck a guitar string or tap a tuning fork and watch it wobble. |
+| Magnets | Drag two bar magnets around. |
+| Heat Transfer | Three ways heat moves. |
+| Speed, Distance and Time | Set the speed of a vehicle on a straight 200 m track, press Start and watch the stopwatch run while distance–time and speed–time graphs draw themselves. |
 
 ### Chemistry
 
@@ -116,6 +142,11 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Electrolysis of Water | Pass electric current through water and watch hydrogen bubble up at the cathode and oxygen at the anode in a 2:1 volume ratio. |
 | Atomic Emission Spectra | Heat a gas and it glows in a few specific colors — the "fingerprint" of its element. |
 | Activation Energy & Catalysis | Drag the energy diagram to set the activation barrier and the heat of reaction. |
+| Separating Mixtures | Choose a mixture such as sand and water, salt and water or ink dyes, then try to separate it by filtering, evaporating, distilling, chromatography, a magnet or decanting. |
+| Physical or Chemical Change? | Sort ten everyday changes, from ice melting to paper burning, into physical or chemical. |
+| Ice, Water, Steam | Heat or cool a box of tiny particles and watch them change. |
+| Density Lab | Drag blocks of wood, ice, plastic, aluminium, iron, gold, cork and a mystery material onto a balance to read their mass, then into a measuring cylinder to find their volume from the water that rises. |
+| Particle Model of Matter | Particles in a box with a movable piston. |
 
 ### Biology
 
@@ -145,6 +176,10 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Microscope Simulator | A virtual compound microscope. |
 | Meiosis | Step through meiosis I and II — the cell division that makes haploid gametes from a diploid parent. |
 | Antibiotic Resistance Evolution | Start with a population of bacteria. |
+| The Food Journey | Press Eat and follow one bite of food through the body: the mouth chews it, the food pipe pushes it down, the stomach churns it with acid, the small intestine takes the good parts into the blood, the large intestine takes back water, and the rest goes out. |
+| How We Breathe | A bell-jar lung model with balloons for lungs and a rubber sheet for the diaphragm sits next to a real chest. |
+| Grow a Plant | Two pots, two seeds. |
+| Life Cycles | Pick a butterfly, a frog, or a bean plant. |
 
 ### Earth & Space
 
@@ -170,6 +205,10 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Rock Cycle | Particles representing minerals flow between three rock types — igneous, sedimentary, metamorphic — and back to magma. |
 | Star Life Cycle | Pick a star's mass and watch it walk through the H-R diagram from protostar to main sequence to giant to its final fate. |
 | Volcano Types | Magma viscosity and gas content determine what kind of volcano you get. |
+| My Weather Station | Be the weather reporter! |
+| Earthquake Waves | Place an earthquake on a map and watch P and S waves spread out at different speeds. |
+| Air Pressure and Weather | Drag a HIGH and a LOW pressure centre around a simple weather map. |
+| Day and Night | Watch the Earth spin next to the Sun. |
 
 ### Computer Science
 
@@ -279,6 +318,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Fractions Visualizer | Three ways to see a fraction at once: a pie, a bar, and a number-line position. |
 | Venn Diagrams | Three overlapping sets create seven regions plus the universal background. |
 | System of Linear Equations | Two lines on the plane. |
+| Ratio and Proportion | Mix blue and yellow paint to make green, or concentrate and water to make juice. |
 
 ### Finance & Economics
 
@@ -555,7 +595,7 @@ export default {
   title:       { en: 'My Simulation',  id: 'Simulasi Saya' },
   description: { en: 'One paragraph…',  id: 'Satu paragraf…' },
   topics: ['kinematics'],
-  grade: [10, 11],                        // optional
+  grade: [10, 11],                        // school years 1–12, 13 = university (required)
   hasLab: true,                           // only if sim.js adds a labPanel
   details: () => import('./details.js'),  // lazy: objectives + tryThis
   load: () => import('./sim.js'),         // lazy: the sim itself
@@ -617,6 +657,7 @@ That's it — `npm run dev` will hot-reload and the sim shows up on the Physics 
 - **Controls**: prefer the helpers in [src/lib/controls.js](src/lib/controls.js) (`slider`, `toggle`, `button`, `select`, `row`) so styling matches. Each control gets a deep-link key from its label automatically; pass `key: 'short-name'` to choose one.
 - **Dragging on the canvas**: use `dragHandle` from [src/lib/handle.js](src/lib/handle.js) and give it a `handles()` callback that returns each handle's current position and a label — that is what makes the handle keyboard- and screen-reader-accessible. Never use `mousedown`/`mousemove`; if you must listen directly, use pointer events and set `canvas.style.touchAction = 'none'`.
 - **Labs**: if the sim has a measurable quantity, add a `labPanel` from [src/lib/lab.js](src/lib/lab.js) and set `hasLab: true` in the manifest.
+- **Grade range**: set `grade` honestly; the level filter and the curriculum map depend on it. Regenerate `docs/curriculum-map.md` after adding sims (see the script note in that file).
 - **Tests**: nothing to write — the smoke test in `tests/sims.spec.js` picks up every catalog entry. Run `npm test` before opening a PR.
 - **Bilingual content lives in the manifest**, not in the sim code. The shell renders `description` / `objectives` / `tryThis` automatically. If the sim itself needs translated strings, add them to [src/i18n/en.json](src/i18n/en.json) and [src/i18n/id.json](src/i18n/id.json) and read with `t('key')`.
 - **Cleanup**: the function you return from `mount` is called when the user navigates away. Stop animation loops, remove window-level event listeners.

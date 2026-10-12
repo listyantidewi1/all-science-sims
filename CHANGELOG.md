@@ -13,6 +13,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.18.0] — School levels, 24 primary and middle-school sims
+
+The collection was almost entirely pitched at grades 10 and up. This release labels every sim by school level and adds the first sims written for younger students.
+
+### Added — school levels
+
+- **Grade range on every sim**: all manifests now carry `grade: [...]` (school years 1–12, 13 = university), assigned against NGSS, the national curriculum for England (KS1–KS4), and Kurikulum Merdeka (Fase A–F). Existing hints were revised where the content is clearly younger (moon phases, solar system, seasons, plate tectonics, Punnett squares).
+- **Level badge** on each card and next to each sim title; **filter chips** (All · Primary · Middle school · High school · University) on the home and subject pages that filter subject counts, featured picks, favorites, search, and listings. The choice persists on the device.
+- **Curriculum map** ([docs/curriculum-map.md](docs/curriculum-map.md)): every sim by level with the closest standards families, generated from the manifests.
+- Tests: every sim must have a grade; chips filter a subject page and persist; primary level spans several subjects.
+
+### Added — 12 primary-school sims (grades 1–6)
+
+Float or Sink?, Push the Car: Friction, The Food Journey (digestive system), My Weather Station, Light the Bulb (simple circuit and conductor tester), Grow a Plant, Life Cycles, Day and Night, Ice, Water, Steam (states of matter), Light and Shadows, Sound is Vibration, Magnets. Big controls, plain words in both languages, predict-then-test flows, keyboard-accessible drag cards, simple lab tables.
+
+### Added — 12 middle-school sims (grades 7–9)
+
+Density Lab, Particle Model of Matter, Heat Transfer, Speed Distance and Time, Build an Electromagnet, Separating Mixtures, Physical or Chemical Change?, How We Breathe, Earthquake Waves (locate an epicentre), Energy Transfers (roller coaster), Ratio and Proportion, Air Pressure and Weather. All with lab panels and bilingual on-canvas text.
+
+Catalog: 242 → 266 sims; 132 with labs.
+
+---
+
 ## [1.17.0] — Tests, accessibility, deep links, embedding, 8 new sims, 30 new labs
 
 The first release after the project gained an explicit license. The theme is making the collection safe to maintain and easy to reuse: every sim is now exercised by CI, works on touch screens and keyboards, can be shared as a preset link or embedded in another page, and the two smallest subjects grew.
