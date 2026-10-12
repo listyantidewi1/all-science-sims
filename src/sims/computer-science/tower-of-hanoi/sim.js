@@ -67,7 +67,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#94a3b8';
       ctx.fillRect(x - 4, baseY - 200, 8, 200);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(['A', 'B', 'C'][i], x, baseY + 32);
       if (i === selected) {
@@ -96,7 +96,7 @@ export function mount(rootEl) {
         ctx.lineWidth = 2;
         ctx.strokeRect(x - w / 2, y, w, diskH - 2);
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold 12px var(--font-mono)';
+        ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(String(size), x, y + diskH / 2 + 3);
         ctx.textAlign = 'left';
@@ -109,10 +109,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Moves: ${moves} / optimum 2^${params.N} − 1 = ${optimum}`, 16, 28);
     ctx.fillStyle = won ? '#10b981' : 'rgba(120,130,150,0.85)';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(won ? '✓ Solved!' : 'Click peg to pick up, then peg to drop on.', 16, 48);
   }
 

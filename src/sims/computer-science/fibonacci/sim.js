@@ -95,7 +95,7 @@ export function mount(rootEl) {
       ctx.arc(p.x, p.y, 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 10px var(--font-mono)';
+      ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${node.n}`, p.x, p.y + 3);
       ctx.textAlign = 'left';
@@ -107,15 +107,15 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`fib(${params.n}) = ${tree.value}    calls: ${cc.count}    ${params.memoize ? '(memoized)' : '(naive)'}`, 16, 28);
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#10b981';
     ctx.fillText('green = cached hit', 16, 44);
 
     // Compare row
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const naive = naiveCount(params.n);
     const memoCount = params.n + 1;
     ctx.fillText(`naive ≈ ${naive}    memoized = ${memoCount}    iterative = ${params.n}`, 16, H - 12);

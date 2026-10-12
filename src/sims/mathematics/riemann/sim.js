@@ -109,7 +109,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Riemann sum (${params.rule}): ${approx.toFixed(4)}`, 16, 26);
     if (exact != null) {
       ctx.fillStyle = '#10b981';

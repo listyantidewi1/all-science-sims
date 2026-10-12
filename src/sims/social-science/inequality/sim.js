@@ -69,9 +69,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Gini = ${G.toFixed(3)}`, 16, 30);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Top 10% own ${(top10/total*100).toFixed(1)}%`, 16, 46);
     ctx.fillText(`Bottom 50% own ${(bot50/total*100).toFixed(1)}%`, 16, 60);
   }
@@ -88,7 +88,7 @@ export function mount(rootEl) {
       ctx.fillRect(x + i * bw, y + h - bh, Math.max(0.5, bw - 0.5), bh);
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Sorted incomes (poor → rich)', x + 6, y - 4);
   }
 
@@ -136,7 +136,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Cumulative population →', x + w - 130, y + h + 14);
     ctx.save(); ctx.translate(x - 8, y + h - 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Cumulative income', 0, 0); ctx.restore();

@@ -85,7 +85,7 @@ export function mount(rootEl) {
       // legend
       const labelY = padY + 14;
       ctx.fillStyle = '#3b82f6'; ctx.fillRect(padX + 6, labelY - 8, 12, 4);
-      ctx.fillStyle = '#fff'; ctx.font = '11px var(--font-sans)';
+      ctx.fillStyle = '#fff'; ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`S = ${(S*100).toFixed(1)}%`, padX + 22, labelY);
       ctx.fillStyle = '#ef4444'; ctx.fillRect(padX + 100, labelY - 8, 12, 4);
       ctx.fillStyle = '#fff';
@@ -95,7 +95,7 @@ export function mount(rootEl) {
       ctx.fillText(`R = ${(R*100).toFixed(1)}%`, padX + 216, labelY);
 
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`t = ${tEnd.toFixed(1)} days`, padX + gW - 90, padY + gH - 6);
     }
 
@@ -103,7 +103,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, H - 56, 320, 46);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`R₀ = ${params.R0.toFixed(2)}    recovery = ${params.recoveryDays} d`, 16, H - 36);
     const peak = Math.max(...history.map((p) => p.I), 0);
     ctx.fillText(`Peak infected: ${(peak * 100).toFixed(1)}%    Final R: ${(R*100).toFixed(1)}%`, 16, H - 18);

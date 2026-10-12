@@ -71,7 +71,7 @@ export function mount(rootEl) {
 
     // Top: equation
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(r.name, 20, 32);
 
     // Reactant cards on the left, product cards on the right
@@ -87,7 +87,7 @@ export function mount(rootEl) {
     // Arrow
     const arrowX = W * 0.5;
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 30px var(--font-sans)';
+    ctx.font = 'bold 30px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('→', arrowX - 15, H / 2);
 
     for (let i = 0; i < r.products.length; i++) {
@@ -104,10 +104,10 @@ export function mount(rootEl) {
     ctx.strokeRect(x, y, w, h);
 
     ctx.fillStyle = color;
-    ctx.font = 'bold 22px var(--font-sans)';
+    ctx.font = 'bold 22px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(rt.formula, x + 14, y + 32);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`coef: ${rt.coef}    M = ${rt.M.toFixed(2)} g/mol`, x + 14, y + 48);
 
     // Bar showing relative amount (mass)
@@ -123,14 +123,14 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.6)';
     ctx.strokeRect(x + 14, barY, barW, barH);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`consumed`, x + 16, barY + 18);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText(`leftover`, x + 14 + barW - 60, barY + 18);
 
     let yy = barY + 50;
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`given:    ${grams.toFixed(2)} g`, x + 14, yy); yy += 16;
     ctx.fillText(`= ${moles.toFixed(4)} mol`, x + 14, yy); yy += 16;
     if (leftover > 0.01) {
@@ -139,7 +139,7 @@ export function mount(rootEl) {
     }
     if (isLimiting) {
       ctx.fillStyle = '#ef4444';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('LIMITING REAGENT', x + 14, yy + 6);
     }
   }
@@ -150,17 +150,17 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(16,185,129,0.6)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = color;
-    ctx.font = 'bold 22px var(--font-sans)';
+    ctx.font = 'bold 22px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(p.formula, x + 14, y + 32);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`coef: ${p.coef}    M = ${p.M.toFixed(2)} g/mol`, x + 14, y + 48);
     let yy = y + 80;
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`yield:    ${moles.toFixed(4)} mol`, x + 14, yy); yy += 18;
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`= ${grams.toFixed(2)} g`, x + 14, yy);
   }
 

@@ -74,7 +74,7 @@ export function mount(rootEl) {
     ctx.fillRect(cathodeX + tubeW / 2 - 4, tubeTopY + tubeH, 8, cellY + cellH - (tubeTopY + tubeH));
     ctx.fillRect(anodeX + tubeW / 2 - 4, tubeTopY + tubeH, 8, cellY + cellH - (tubeTopY + tubeH));
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('cathode (−)', cathodeX + tubeW / 2, cellY + cellH + 18);
     ctx.fillText('anode (+)',   anodeX + tubeW / 2, cellY + cellH + 18);
@@ -96,7 +96,7 @@ export function mount(rootEl) {
     ctx.moveTo(batX + batW / 2 + 10, batY - 6); ctx.lineTo(batX + batW / 2 + 10, batY + 6);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.current.toFixed(2)} A`, batX + batW / 2 - 14, batY - 18);
 
     // Bubbles climbing the electrodes
@@ -116,16 +116,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`I = ${params.current.toFixed(2)} A    t = ${state.t.toFixed(1)} s    Q = ${(params.current * state.t).toFixed(1)} C`, 16, 28);
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`H₂: ${(state.qH2 * 1000).toFixed(2)} mmol = ${litersH2.toFixed(2)} mL @ STP`, 16, 46);
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`O₂: ${(state.qO2 * 1000).toFixed(2)} mmol = ${litersO2.toFixed(2)} mL  (ratio ${(state.qH2 / Math.max(1e-9, state.qO2)).toFixed(2)} : 1)`, 16, 62);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Cathode: 2H₂O + 2e⁻ → H₂ + 2OH⁻      Anode: 2H₂O → O₂ + 4H⁺ + 4e⁻', 16, H - 12);
   }
 
@@ -147,11 +147,11 @@ export function mount(rootEl) {
     ctx.fillRect(x + 1, y + 1, w - 2, gasH);
 
     ctx.fillStyle = color;
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(label, x + w / 2, y - 4);
     ctx.fillStyle = '#fff';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${ml.toFixed(2)} mL`, x + w / 2, y + 14);
     ctx.textAlign = 'left';
   }

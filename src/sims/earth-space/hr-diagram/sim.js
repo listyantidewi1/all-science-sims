@@ -101,7 +101,7 @@ export function mount(rootEl) {
 
     // gridlines and labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (const T of [3000, 5000, 7500, 10000, 20000, 40000]) {
       const xx = x2(T, W);
       ctx.strokeStyle = 'rgba(120,130,150,0.15)';
@@ -126,7 +126,7 @@ export function mount(rootEl) {
     }
     ctx.stroke();
     ctx.fillStyle = '#3b82f6';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('main sequence', x2(6000, W) + 30, y2(1, H) + 30);
 
     // Cataloged stars
@@ -139,7 +139,7 @@ export function mount(rootEl) {
       ctx.arc(xx, yy, Math.max(2, rad), 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.font = '9px var(--font-sans)';
+      ctx.font = '9px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(name, xx + 5, yy - 5);
     }
 
@@ -158,7 +158,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Surface temperature (K) — hotter ←', W / 2 - 80, H - 16);
     ctx.save(); ctx.translate(20, H / 2 + 60); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Luminosity (L / L☉) — log scale', 0, 0);
@@ -168,10 +168,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     const stages = ['Main sequence', 'Red giant', params.mass < 8 ? 'AGB / planetary' : 'Supergiant', params.mass < 8 ? 'White dwarf' : 'Neutron star'];
     ctx.fillText(`${params.mass.toFixed(1)} M☉ — ${stages[params.stage]}`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T = ${cur.T.toFixed(0)} K    L = ${cur.L.toExponential(2)} L☉`, 16, 44);
   }
 

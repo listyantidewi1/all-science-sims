@@ -98,9 +98,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Trades: ${trades.toLocaleString()}    Gini: ${g.toFixed(3)}`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Top 10% own ${(top10 / total * 100).toFixed(1)}% of wealth`, 16, 46);
   }
 

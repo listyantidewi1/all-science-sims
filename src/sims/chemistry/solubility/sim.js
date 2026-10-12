@@ -76,7 +76,7 @@ export function mount(rootEl) {
 
     // Label
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.waterGrams} g H₂O at ${params.temp}°C`, bX, bY - 10);
 
     // status banner
@@ -86,7 +86,7 @@ export function mount(rootEl) {
     if (params.addedG > sol) { status = 'Saturated + deposit'; statusColor = '#ef4444'; }
     else if (Math.abs(params.addedG - sol) < 0.5) { status = 'Saturated'; statusColor = '#f59e0b'; }
     ctx.fillStyle = statusColor;
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(status, bX, bY + bH + 22);
 
     // Solubility curve
@@ -105,7 +105,7 @@ export function mount(rootEl) {
       ctx.moveTo(gX, y2(s)); ctx.lineTo(gX + gW, y2(s));
       ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(String(s), gX - 22, y2(s) + 4);
     }
 
@@ -134,7 +134,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.8)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Solubility (g / 100g H₂O)', gX - 30, gY - 6);
     ctx.fillText('Temperature (°C)', gX + gW - 100, gY + gH + 16);
 
@@ -142,7 +142,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(bX + bW - 220, bY, 220, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Limit: ${(solubility() * params.waterGrams / 100).toFixed(1)} g`, bX + bW - 210, bY + 18);
     ctx.fillText(`Added: ${params.addedG.toFixed(1)} g`, bX + bW - 210, bY + 36);
     ctx.fillText(`Dissolved: ${dissolvedG().toFixed(1)}, Deposit: ${depositG().toFixed(1)} g`, bX + bW - 210, bY + 54);

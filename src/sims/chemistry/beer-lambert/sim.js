@@ -90,7 +90,7 @@ export function mount(rootEl) {
 
     // path-length indicator
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`L = ${params.pathLength.toFixed(2)} cm`, cuvX + 8, appY - 6);
 
     // lamp icon
@@ -108,7 +108,7 @@ export function mount(rootEl) {
     ctx.fillRect(detX + 6, appY + appH - 8 - r.T * (appH - 16), 28, r.T * (appH - 16));
 
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Detector', detX - 8, appY - 6);
     ctx.fillText(`I/I₀ = ${(r.T * 100).toFixed(1)}%`, detX - 8, appY + appH + 16);
 
@@ -147,7 +147,7 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(cwx, sy); ctx.lineTo(cwx, sy + sh); ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Absorbance vs λ', sx, sy - 6);
     ctx.fillText('λ (nm)', sx + sw - 60, sy + sh + 14);
 
@@ -155,9 +155,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`A = ε × c × L = ${r.A.toFixed(3)}`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`ε(${params.wavelength}) = ${r.eps.toFixed(0)} M⁻¹cm⁻¹`, 16, 40);
 
     const probe = hover.get();

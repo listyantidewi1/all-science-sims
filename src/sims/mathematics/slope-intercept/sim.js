@@ -59,7 +59,7 @@ export function mount(rootEl) {
     ctx.moveTo(x2(0), padY); ctx.lineTo(x2(0), padY + h);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let i = xMin; i <= xMax; i += 2) if (i !== 0) ctx.fillText(i, x2(i) - 6, y2(0) + 14);
     for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i += 2) if (i !== 0) ctx.fillText(i, x2(0) - 22, y2(i) + 4);
 
@@ -89,7 +89,7 @@ export function mount(rootEl) {
       const dx = params.p2.x - params.p1.x;
       const dy = params.p2.y - params.p1.y;
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`run Δx = ${dx.toFixed(2)}`, (x2(params.p1.x) + x2(params.p2.x)) / 2 - 30, y2(params.p1.y) + 16);
       ctx.fillText(`rise Δy = ${dy.toFixed(2)}`, x2(params.p2.x) + 6, (y2(params.p1.y) + y2(params.p2.y)) / 2);
     }
@@ -102,7 +102,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`b = ${b.toFixed(2)}`, x2(0) + 12, y2(b) - 6);
     }
 
@@ -114,13 +114,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-mono)';
+    ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
     if (m !== null && b !== null) {
       ctx.fillText(`y = ${m.toFixed(3)} x ${b >= 0 ? '+' : '−'} ${Math.abs(b).toFixed(3)}`, 16, 32);
     } else {
       ctx.fillText(`x = ${params.p1.x.toFixed(2)}  (vertical line)`, 16, 32);
     }
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`m = Δy/Δx = ${m === null ? 'undefined' : m.toFixed(3)}`, 16, 50);
     ctx.fillStyle = '#10b981';

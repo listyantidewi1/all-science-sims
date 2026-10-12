@@ -59,11 +59,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(bx + 10, by + 50, bw - 20, 40);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 22px var(--font-mono)';
+    ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`pH = ${ph.toFixed(2)}`, bx + 20, by + 80);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Buffer beaker', bx, by - 8);
 
     // Right panel: buffer titration curve (pH vs added acid/base)
@@ -81,7 +81,7 @@ export function mount(rootEl) {
     for (let p = 0; p <= 14; p += 2) {
       ctx.beginPath(); ctx.moveTo(padX, y2(p)); ctx.lineTo(padX + gW, y2(p)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${p}`, padX - 16, y2(p) + 3);
     }
     // zero line
@@ -100,7 +100,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#10b981';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`pKa = ${params.pKa.toFixed(2)}`, padX + 4, y2(params.pKa) - 4);
 
     // Curve: vary "added" from -xRange to +xRange (strong acid vs base)
@@ -125,7 +125,7 @@ export function mount(rootEl) {
     ctx.fill();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('pH vs strong acid (left) / base (right) added', padX + 6, padY - 4);
     ctx.fillText('M added →', padX + gW - 70, padY + gH + 14);
   }

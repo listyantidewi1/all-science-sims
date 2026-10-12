@@ -86,14 +86,14 @@ export function mount(rootEl) {
       ctx.fillRect(px - 1.5, padY + (h - lh) / 2, 3, lh);
       ctx.globalAlpha = 1;
       ctx.fillStyle = '#fff';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${ln.l.toFixed(1)}`, px - 16, padY + h + 14);
       if (ln.label) ctx.fillText(ln.label, px - 8, padY - 6);
     }
 
     // Wavelength axis
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let l = 200; l <= 800; l += 100) {
       const px = padX + (l - chart.lMin) / (chart.lMax - chart.lMin) * w;
       ctx.fillText(`${l}`, px - 10, padY + h + 30);
@@ -104,10 +104,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(spec.name, 16, 32);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${spec.lines.length} prominent lines · hover for nm reading`, 16, 50);
 
     // Hover tooltip

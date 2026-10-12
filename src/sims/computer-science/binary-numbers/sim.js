@@ -38,7 +38,7 @@ export function mount(rootEl) {
 
     // Place-value labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = `bold ${Math.max(9, Math.min(14, cellW * 0.2))}px var(--font-mono)`;
+    ctx.font = `bold ${Math.max(9, Math.min(14, cellW * 0.2))}px ui-monospace, Menlo, Consolas, monospace`;
     ctx.textAlign = 'center';
     for (let i = 0; i < params.width; i++) {
       const idx = params.width - 1 - i;
@@ -64,7 +64,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.strokeRect(r.x, r.y, r.w, r.h);
       ctx.fillStyle = '#fff';
-      ctx.font = `bold ${Math.min(36, cellW * 0.5)}px var(--font-mono)`;
+      ctx.font = `bold ${Math.min(36, cellW * 0.5)}px ui-monospace, Menlo, Consolas, monospace`;
       ctx.textAlign = 'center';
       ctx.fillText(String(on), r.x + r.w / 2, r.y + r.h / 2 + 12);
       ctx.textAlign = 'left';
@@ -78,7 +78,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Decimal:    ${dec}`, 16, 28);
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`Hex:        0x${hex}`, 16, 48);
@@ -87,7 +87,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click any bit to toggle it · max value = 2^N − 1', padX, H - 12);
   }
 

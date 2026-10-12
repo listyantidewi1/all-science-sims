@@ -92,7 +92,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('net flux = 0  (equilibrium)', padX + 6, y2(0) - 4);
 
     // Net flux curve: incoming − outgoing as function of T
@@ -109,7 +109,7 @@ export function mount(rootEl) {
 
     // T axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     for (let T = 220; T <= 320; T += 20) {
       const sx = x2(T);
       ctx.fillText(`${T}K`, sx - 12, padY + gH + 14);
@@ -128,23 +128,23 @@ export function mount(rootEl) {
     ctx.arc(tx, ty, 10, 0, Math.PI * 2);
     ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.T.toFixed(1)} K`, tx + 14, ty - 8);
 
     // Big readout
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T = ${params.T.toFixed(2)} K  (${(params.T - 273.15).toFixed(2)} °C)`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(120,130,150,0.9)';
     ctx.fillText(`albedo α = ${alpha(params.T).toFixed(3)}`, 16, 46);
     ctx.fillText(`net flux = ${fluxOf(params.T).toFixed(2)} W/m²`, 16, 62);
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red ball horizontally to set T · solver pulls T toward zero-crossings (stable equilibria)', padX, H - 12);
 
     // Hover crosshair

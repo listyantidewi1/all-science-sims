@@ -124,7 +124,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     // Predicted resonant frequencies for a fixed-fixed string of length L=1, c=params.speed*0.02:
     // f_n = n * c / (2L). For fixed-free: f_n = (2n-1) * c / (4L).
     const c = params.speed * 0.02;

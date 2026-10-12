@@ -49,7 +49,7 @@ export function mount(rootEl) {
     for (let y = 0; y <= 8; y++) {
       ctx.beginPath(); ctx.moveTo(60, w2sY(y, H)); ctx.lineTo(W - 30, w2sY(y, H)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${y}%`, 30, w2sY(y, H) + 3);
     }
     for (const t of [0, 1, 2, 5, 10, 20, 30]) {
@@ -84,14 +84,14 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = s.color;
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(s.name, 16, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`10y − 2y spread: ${s.spread >= 0 ? '+' : ''}${s.spread.toFixed(2)}%`, 16, 46);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Maturity →', W - 100, H - 12);
     ctx.save(); ctx.translate(20, H / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Yield (%)', 0, 0); ctx.restore();

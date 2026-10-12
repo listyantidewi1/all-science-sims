@@ -48,7 +48,7 @@ export function mount(rootEl) {
       ctx.moveTo(x, cy - 4); ctx.lineTo(x, cy + 4);
       ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(String(v), x - 6, cy + 16);
     }
 
@@ -63,7 +63,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#3b82f6';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`mean = ${mn.toFixed(2)}`, w2sX(mn, W) + 6, 50);
 
     ctx.strokeStyle = '#10b981';
@@ -80,7 +80,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(59,130,246,0.18)';
     ctx.fillRect(w2sX(mn - sd, W), cy - 24, w2sX(mn + sd, W) - w2sX(mn - sd, W), 18);
     ctx.fillStyle = '#3b82f6';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`σ = ${sd.toFixed(2)}`, w2sX(mn, W) + 6, cy - 10);
 
     // points
@@ -96,7 +96,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag any point. Right-click to remove. Click empty space to add.', 12, H - 12);
   }
 

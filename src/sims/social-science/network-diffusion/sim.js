@@ -108,7 +108,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Adopted: ${adopted}/${nodes.length} (${(adopted / nodes.length * 100).toFixed(0)}%)    threshold: ${(params.threshold*100).toFixed(0)}%`, 16, 28);
   }
 

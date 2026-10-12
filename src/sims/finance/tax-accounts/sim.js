@@ -79,7 +79,7 @@ export function mount(rootEl) {
     for (let y = 0; y <= params.years; y += 5) {
       ctx.beginPath(); ctx.moveTo(x2(y), padY); ctx.lineTo(x2(y), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${y}y`, x2(y) - 8, padY + gH + 14);
     }
 
@@ -88,12 +88,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(lx, padY, 190, 100);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Final after-tax balance', lx + 8, padY + 18);
     ctx.fillStyle = '#94a3b8';
     ctx.fillRect(lx + 12, padY + 28, 12, 4);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Taxable: $${r.finalTaxable.toFixed(0)}`, lx + 30, padY + 32);
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(lx + 12, padY + 50, 12, 4);
@@ -106,7 +106,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Years →', padX + gW - 50, padY + gH + 30);
   }
 

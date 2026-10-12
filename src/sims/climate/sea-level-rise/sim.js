@@ -147,13 +147,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(x + 8, y + 8, 250, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Sea level: +${params.seaLevel.toFixed(2)} m`, x + 16, y + 28);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = params.seaLevel > 0 ? '#ef4444' : '#10b981';
     ctx.fillText(`Land flooded: ${(r.frac * 100).toFixed(1)}%`, x + 16, y + 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`(${r.landNowFlooded} of ${r.landCells} land cells)`, x + 16, y + 60);
   }
 
@@ -161,9 +161,9 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Hypsometric curve', x + 6, y - 8);
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('% land below ⤒', x + 6, y + h + 14);
 
     // Compute % of land below each elevation from -5 to +60.
@@ -201,7 +201,7 @@ export function mount(rootEl) {
 
     // y-axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let e = 0; e <= 60; e += 10) {
       ctx.fillText(`${e}m`, x - 26, y2(e) + 3);
     }

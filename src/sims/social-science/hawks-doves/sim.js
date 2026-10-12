@@ -80,7 +80,7 @@ export function mount(rootEl) {
     // ESS line
     const ess = params.C > params.V ? params.V / params.C : 1;
     ctx.fillStyle = 'rgba(245,158,11,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`ESS hawks ≈ ${(ess * 100).toFixed(0)}%`, 30, 24);
 
     // graph on right
@@ -111,7 +111,7 @@ export function mount(rootEl) {
     }
     // labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Fraction hawks over time`, gx + 6, gy - 4);
     ctx.fillText('time →', gx + gw - 50, gy + gh + 14);
 
@@ -119,7 +119,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`p_hawks = ${(p * 100).toFixed(1)}%    V=${params.V}, C=${params.C}`, 16, 26);
   }
 

@@ -102,9 +102,9 @@ export function mount(rootEl) {
     const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
 
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(r.name, padX, 30);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`K(T) = ${K().toFixed(2)}`, padX, 50);
 
     for (let i = 0; i < labels.length; i++) {
@@ -114,10 +114,10 @@ export function mount(rootEl) {
       ctx.fillStyle = colors[i];
       ctx.fillRect(x, padY + barMaxH - h, barW * 0.7, h);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(labels[i], x + 6, padY + barMaxH + 16);
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(v.toFixed(2), x + 6, padY + barMaxH - h - 4);
     }
 
@@ -125,7 +125,7 @@ export function mount(rootEl) {
     drawHistory(ctx, padX + barAreaW + 20, padY, W - barAreaW - padX * 2 - 20, barMaxH);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Concentrations vs. time', padX + barAreaW + 20, padY - 6);
   }
 

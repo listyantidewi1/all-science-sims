@@ -72,12 +72,12 @@ export function mount(rootEl) {
     // Big word
     if (state.word) {
       ctx.fillStyle = state.inkColor.hex;
-      ctx.font = 'bold 90px var(--font-sans)';
+      ctx.font = 'bold 90px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(state.word.name, W / 2, H * 0.42);
       ctx.textAlign = 'left';
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '13px var(--font-sans)';
+      ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Click the button matching the INK color (not the word)', W / 2, H * 0.55);
       ctx.textAlign = 'left';
@@ -88,9 +88,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Trials: ${state.trials.length}    mode: ${params.mode}`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     if (s.congN >= 3) {
       ctx.fillStyle = '#10b981';
       ctx.fillText(`Congruent  avg: ${s.congAvg.toFixed(0)} ms (n=${s.congN})`, 16, 48);

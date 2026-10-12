@@ -75,7 +75,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.5)';
     ctx.strokeRect(padX, padY, W - padX * 2, H - padY * 2);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Universe U', padX + 8, padY - 6);
 
     // Three circles
@@ -115,7 +115,7 @@ export function mount(rootEl) {
       if (list.length === 0) return;
       const center = regionCenter(A, B, C, inA, inB, inC);
       ctx.fillStyle = inOp({ A: inA, B: inB, C: inC }) ? '#fbbf24' : '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(list.join(', '), center.x, center.y);
       ctx.textAlign = 'left';
@@ -128,10 +128,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, W - 16, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Operation: ${OPS[params.op]}`, 16, 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(preset().desc, 16, 48);
   }
 
@@ -159,7 +159,7 @@ export function mount(rootEl) {
     ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fillStyle = color;
-    ctx.font = 'bold 16px var(--font-mono)';
+    ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(c.label, c.x - c.r * 0.85, c.y - c.r * 0.85);
   }
 

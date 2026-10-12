@@ -67,7 +67,7 @@ export function mount(rootEl) {
     drawR(ctx, W * 0.55, H * 0.4, 60, state.angle, state.mirror);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('reference', W * 0.30 - 32, H * 0.4 + 100);
     ctx.fillText('test (rotated?)', W * 0.55 - 32, H * 0.4 + 100);
 
@@ -79,7 +79,7 @@ export function mount(rootEl) {
       ctx.fillStyle = state.result.correct ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)';
       ctx.fillRect(W * 0.30, H * 0.7, W * 0.35, 56);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px var(--font-sans)';
+      ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`${state.result.correct ? '✓' : '✗'}  ${state.result.ms.toFixed(0)} ms`, W * 0.30 + W * 0.175, H * 0.7 + 32);
       ctx.textAlign = 'left';
@@ -93,7 +93,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('RT (ms) vs rotation angle', x + 6, y - 6);
 
     const angMax = 180;
@@ -110,7 +110,7 @@ export function mount(rootEl) {
 
     // Axis ticks
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let a = 0; a <= 180; a += 30) ctx.fillText(`${a}°`, x2(a) - 8, y + h + 14);
     for (let m = 0; m <= 5000; m += 1000) ctx.fillText(`${m}ms`, x - 36, y2(m) + 3);
   }

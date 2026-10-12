@@ -89,7 +89,7 @@ export function mount(rootEl) {
 
     // labels
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('a', aS.x + 6, aS.y - 6);
     ctx.fillStyle = '#ec4899';
     ctx.fillText('b', bS.x + 6, bS.y - 6);
@@ -104,14 +104,14 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 80);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`a = (${params.a.x.toFixed(1)}, ${params.a.y.toFixed(1)})    |a| = ${aMag.toFixed(2)}`, 16, 26);
     ctx.fillText(`b = (${params.b.x.toFixed(1)}, ${params.b.y.toFixed(1)})    |b| = ${bMag.toFixed(2)}`, 16, 44);
     ctx.fillText(`a · b = ${dot.toFixed(2)}    angle = ${ang.toFixed(1)}°`, 16, 62);
     ctx.fillText(`a × b (z-comp) = ${cross.toFixed(2)}`, 16, 80);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the tip of either vector', 12, H - 12);
   }
 

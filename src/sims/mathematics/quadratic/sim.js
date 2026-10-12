@@ -53,7 +53,7 @@ export function mount(rootEl) {
     ctx.moveTo(x2(0), padY); ctx.lineTo(x2(0), padY + h);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let x = -10; x <= 10; x += 2) {
       if (x === 0) continue;
       ctx.fillText(`${x}`, x2(x) - 6, y2(0) + 14);
@@ -86,7 +86,7 @@ export function mount(rootEl) {
         ctx.arc(x2(r), y2(0), 8, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold 11px var(--font-mono)';
+        ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`x = ${r.toFixed(3)}`, x2(r) + 10, y2(0) - 6);
       }
     }
@@ -95,7 +95,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fbbf24';
     ctx.beginPath(); ctx.arc(x2(v.x), y2(v.y), 8, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`vertex (${v.x.toFixed(2)}, ${v.y.toFixed(2)})`, x2(v.x) + 10, y2(v.y) + 4);
     // Axis of symmetry
     ctx.strokeStyle = 'rgba(251,191,36,0.5)';
@@ -110,12 +110,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 80);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f(x) = ${formatA(params.a)}x² ${formatBC(params.b, 'x')} ${formatBC(params.c, '')}`, 16, 28);
     ctx.fillStyle = D > 0 ? '#10b981' : D < 0 ? '#ef4444' : '#fbbf24';
     ctx.fillText(`Δ = b² − 4ac = ${D.toFixed(3)}    ${D > 0 ? '(two real roots)' : D < 0 ? '(no real roots)' : '(one repeated root)'}`, 16, 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`x = (−b ± √Δ) / (2a) = (${(-params.b).toFixed(2)} ± √${D.toFixed(2)}) / ${(2 * params.a).toFixed(2)}`, 16, 64);
     if (rts) ctx.fillText(`Roots: x₁ = ${rts[0].toFixed(3)},  x₂ = ${rts[1].toFixed(3)}`, 16, 80);
     else ctx.fillText('Roots: complex (parabola does not cross x-axis)', 16, 80);

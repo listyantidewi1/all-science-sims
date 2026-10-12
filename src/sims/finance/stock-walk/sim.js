@@ -75,7 +75,7 @@ export function mount(rootEl) {
     for (let y = Math.ceil(lo / 50) * 50; y <= hi; y += 50) {
       ctx.beginPath(); ctx.moveTo(padX, y2(y)); ctx.lineTo(padX + gW, y2(y)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`$${y}`, 10, y2(y) + 3);
     }
 
@@ -109,7 +109,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Final values across ${paths.length} paths:`, 16, 26);
     ctx.fillText(`mean $${mean.toFixed(0)}    sd $${sd.toFixed(0)}`, 16, 44);
     ctx.fillText(`min $${min.toFixed(0)}    max $${max.toFixed(0)}`, 16, 62);

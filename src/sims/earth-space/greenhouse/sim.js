@@ -147,7 +147,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fde047';
     ctx.fillRect(20, 22, 14, 6);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('visible (sunlight)', 40, 30);
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(20, 42, 14, 6);
@@ -160,9 +160,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(W - 240, 10, 230, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Surface: ${TC.toFixed(1)} °C`, W - 230, 32);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`CO₂: ${params.co2} ppm    Albedo: ${params.albedo.toFixed(2)}`, W - 230, 52);
   }
 

@@ -145,7 +145,7 @@ export function mount(rootEl) {
       ctx.arc(x2(s.V), y2(s.P), 4, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(s.name, x2(s.V) + 6, y2(s.P) - 4);
     }
 
@@ -154,13 +154,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`η = 1 − T_c/T_h = ${(eta*100).toFixed(2)}%`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T_h = ${params.Th} K   T_c = ${params.Tc} K`, 16, 46);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Volume V →', padX + gW - 80, padY + gH + 14);
     ctx.save(); ctx.translate(20, padY + gH / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Pressure P', 0, 0); ctx.restore();

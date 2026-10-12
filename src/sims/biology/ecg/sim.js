@@ -70,7 +70,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 200, 26);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.bpm} bpm`, 16, 26);
   }
 

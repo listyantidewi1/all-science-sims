@@ -73,9 +73,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(sqX, sqY - 38, 280, 32);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`π ≈ ${piEst.toFixed(5)}    (true: ${Math.PI.toFixed(5)})`, sqX + 8, sqY - 18);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`error: ${err.toFixed(5)}    after ${total.toLocaleString()} darts`, sqX + 8, sqY - 4);
 
     // history graph
@@ -91,7 +91,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = 'rgba(245,158,11,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('π = 3.14159…', gx + gw - 90, gy + gh / 2 - 4);
 
     if (history.length > 1) {
@@ -107,7 +107,7 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Running estimate of π', gx + 6, gy - 4);
     ctx.fillText('darts thrown →', gx + gw - 80, gy + gh + 14);
   }

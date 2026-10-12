@@ -74,7 +74,7 @@ export function mount(rootEl) {
       ctx.fill();
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = `bold ${Math.round(11 + Math.min(2, mag) * 3)}px var(--font-sans)`;
+      ctx.font = `bold ${Math.round(11 + Math.min(2, mag) * 3)}px system-ui, -apple-system, Roboto, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const sign = c.q > 0 ? '+' : '−';
@@ -96,13 +96,13 @@ export function mount(rootEl) {
       ctx.fillStyle = 'rgba(0,0,0,0.65)';
       ctx.fillRect(cs.x + 12, cs.y + 12, 110, 18);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`|E| = ${mag.toFixed(2)}`, cs.x + 18, cs.y + 25);
     }
 
     // hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click empty space to add · drag to move · right-click to remove · scroll over a charge to change |q|', 12, H - 12);
   }
 

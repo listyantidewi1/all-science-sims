@@ -77,7 +77,7 @@ export function mount(rootEl) {
       ctx.fillRect(x, y2(m.principal + m.interest), Math.max(0.5, w + 0.5), y2(0) - y2(m.principal + m.interest) - (y2(0) - y2(m.principal)));
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Each month: principal (green) + interest (red)', padX + 6, padY - 4);
 
     // Balance curve (right)
@@ -99,7 +99,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Monthly: $${M.toFixed(2)}    Total interest: $${r.totalInterest.toFixed(0)}    Total paid: $${r.totalPaid.toFixed(0)}`, 16, 28);
   }
 

@@ -145,9 +145,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Polynomial degree ${params.degree}`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Train MSE: ${trainErr.toFixed(3)}`, 16, 44);
     ctx.fillText(`Test MSE (vs true curve): ${testErr.toFixed(3)}`, 16, 60);
 
@@ -157,7 +157,7 @@ export function mount(rootEl) {
     else if (params.degree >= 8) verdict = 'Overfitting (high variance)';
     else verdict = 'Good fit';
     ctx.fillStyle = verdict.includes('Under') ? '#fbbf24' : verdict.includes('Over') ? '#ef4444' : '#10b981';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(verdict, W - 200, 26);
   }
 

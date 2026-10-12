@@ -129,17 +129,17 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 80);
     ctx.fillStyle = c.color;
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(c.name, 16, 30);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(c.style, 16, 50);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`viscosity ${params.visc.toFixed(2)}    gas ${params.gas.toFixed(2)}`, 16, 70);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Toggle "Erupt" to launch particles. Style depends on viscosity × gas content.', 16, H - 12);
   }
 

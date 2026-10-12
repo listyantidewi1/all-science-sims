@@ -124,7 +124,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click and drag a ball to lift it. Release to drop.', 12, H - 12);
   }
 

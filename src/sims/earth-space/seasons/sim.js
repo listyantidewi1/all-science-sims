@@ -71,7 +71,7 @@ export function mount(rootEl) {
     drawEarth(ctx, ex, ey, 24, params.tilt);
     // labels — solstices / equinoxes
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     label('Mar equinox', cx, cy - orbitR - 8, ctx);
     label('Jun solstice', cx + orbitR + 4, cy, ctx, 'left');
     label('Sep equinox', cx, cy + orbitR + 14, ctx);
@@ -113,9 +113,9 @@ export function mount(rootEl) {
 
     // Readouts
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(dateLabel(), ox + 12, oy + 22);
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Latitude: ${phi.toFixed(0)}°`, ox + 12, oy + 40);
     ctx.fillText(`Solar declination: ${dec.toFixed(1)}°`, ox + 12, oy + 58);
     ctx.fillText(`Day length: ${dh.toFixed(1)} h`, ox + 12, oy + 76);

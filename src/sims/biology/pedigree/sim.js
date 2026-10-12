@@ -106,7 +106,7 @@ export function mount(rootEl) {
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('fill', 'rgba(120,130,150,0.85)');
       t.setAttribute('font-size', '10');
-      t.setAttribute('font-family', 'var(--font-mono)');
+      t.setAttribute('font-family', 'ui-monospace, Menlo, Consolas, monospace');
       t.textContent = p.id;
       svg.appendChild(t);
     }

@@ -77,10 +77,10 @@ export function mount(rootEl) {
       ctx.fillStyle = state.found.correct ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)';
       ctx.fillRect(W * 0.3, H * 0.4, W * 0.4, 80);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 16px var(--font-sans)';
+      ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(state.found.correct ? `Found in ${state.found.ms.toFixed(0)} ms` : 'Wrong target', W / 2, H * 0.45);
-      ctx.font = '12px var(--font-sans)';
+      ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Click "New trial" to try again', W / 2, H * 0.45 + 22);
       ctx.textAlign = 'left';
     }
@@ -88,10 +88,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Find the changing shape    mode: ${params.mode}`, 16, 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`elapsed: ${state.t.toFixed(1)} s`, 16, 50);
   }
 

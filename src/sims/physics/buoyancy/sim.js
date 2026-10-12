@@ -112,7 +112,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.strokeRect(x, y, block.size, block.size);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`ρ=${block.density.toFixed(2)}`, block.x, block.y + 4);
       ctx.textAlign = 'left';
@@ -129,9 +129,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${fluid.name} (ρ=${fluidDen.toFixed(2)} g/cm³)`, 16, 26);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(verdict, 16, 46);
   }
 

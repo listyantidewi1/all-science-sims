@@ -43,14 +43,14 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 460, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.phase + 1}/${PHASES.length}  ${PHASES[params.phase].name}`, 16, 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(PHASES[params.phase].desc, 16, 50);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Step through 9 phases to see chromosomes pair, cross over, and divide twice.', 30, H - 12);
   }
 
@@ -152,7 +152,7 @@ export function mount(rootEl) {
           chromosome(ctx, cx + 20, cy - 15, i === 0 ? dad : mom, i === 0 ? dadR : momR, true);
         });
         ctx.fillStyle = 'rgba(120,130,150,0.85)';
-        ctx.font = '11px var(--font-mono)';
+        ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(labels[i], xs[i] - 60, cy + 110);
       }
     } else if (phase === 6) {
@@ -190,7 +190,7 @@ export function mount(rootEl) {
           chromosome(ctx, cx + 10, cy + 15, partner[i], null, false);
         });
         ctx.fillStyle = 'rgba(120,130,150,0.85)';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`gamete ${i + 1}`, xs[i] - 20, cy + 88);
       }
     }

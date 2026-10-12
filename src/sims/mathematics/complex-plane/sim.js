@@ -56,7 +56,7 @@ export function mount(rootEl) {
 
     // labels for axes
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Re', W - 18, H / 2 - 4);
     ctx.fillText('Im', W / 2 + 6, 12);
 
@@ -75,7 +75,7 @@ export function mount(rootEl) {
       ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, s.x + 8, s.y - 6);
     }
 
@@ -93,7 +93,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`z = ${params.z.x.toFixed(2)} + ${params.z.y.toFixed(2)}i`, 16, 26);
     ctx.fillText(`|z| = ${r.toFixed(2)}    arg = ${theta.toFixed(1)}°`, 16, 44);
     ctx.fillText(`z² has |·|=${(r*r).toFixed(2)} arg=${(theta*2).toFixed(1)}°`, 16, 62);

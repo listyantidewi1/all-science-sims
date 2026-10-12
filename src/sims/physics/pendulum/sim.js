@@ -105,7 +105,7 @@ export function mount(rootEl) {
     // readout
     const Tsmall = 2 * Math.PI * Math.sqrt(params.L / params.g);
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Small-angle T = 2π√(L/g) = ${Tsmall.toFixed(3)} s`, 12, 18);
     ctx.fillText(`Measured T = ${state.period ? state.period.toFixed(3) : '—'} s`, 12, 36);
     ctx.fillText(`θ = ${(state.theta * 180 / Math.PI).toFixed(1)}°    ω = ${state.omega.toFixed(2)} rad/s`, 12, H - 12);

@@ -63,10 +63,10 @@ export function mount(rootEl) {
 
     let yy = 80;
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Common-denominator view:', rx + 16, yy); yy += 22;
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 18px var(--font-mono)';
+    ctx.font = 'bold 18px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${c.aOverLcd.num}/${c.aOverLcd.den}`, rx + 16, yy);
     ctx.fillStyle = '#fff';
     const opSym = params.op === 'add' ? '+' : params.op === 'subtract' ? '−' : (params.f1.num * params.f2.den < params.f2.num * params.f1.den ? '<' : params.f1.num * params.f2.den > params.f2.num * params.f1.den ? '>' : '=');
@@ -77,14 +77,14 @@ export function mount(rootEl) {
 
     if (c.result) {
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('Result:', rx + 16, yy); yy += 26;
       const simp = simplify(c.result);
       ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 22px var(--font-mono)';
+      ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${c.result.num}/${c.result.den}`, rx + 16, yy); yy += 24;
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '13px var(--font-mono)';
+      ctx.font = '13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`= ${simp.num}/${simp.den} (simplified)`, rx + 16, yy); yy += 20;
       const m = asMixed(simp);
       if (m.whole !== 0 && m.num > 0) {
@@ -98,16 +98,16 @@ export function mount(rootEl) {
       const b = params.f2.num / params.f2.den;
       const cmp = a < b ? '<' : a > b ? '>' : '=';
       ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 16px var(--font-mono)';
+      ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${params.f1.num}/${params.f1.den} ${cmp} ${params.f2.num}/${params.f2.den}`, rx + 16, yy); yy += 28;
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '12px var(--font-mono)';
+      ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${params.f1.num}/${params.f1.den} = ${a.toFixed(4)}`, rx + 16, yy); yy += 18;
       ctx.fillText(`${params.f2.num}/${params.f2.den} = ${b.toFixed(4)}`, rx + 16, yy);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Adjust the four sliders below; the LCD and simplification update automatically.', 16, H - 12);
   }
 
@@ -167,19 +167,19 @@ export function mount(rootEl) {
     ctx.fillStyle = color;
     ctx.beginPath(); ctx.arc(px, ly, 6, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('0', lx - 4, ly + 22);
     ctx.fillText('1', lx + lw - 4, ly + 22);
 
     // Header
     ctx.fillStyle = color;
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${title}:  ${f.num}/${f.den}`, x, y - 8);
   }
 
   function drawNumberLine(ctx, x, y, w, h, fs) {
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Number line', x, y - 8);
     const lx = x + 30, ly = y + h / 2;
     const lw = w - 50;
@@ -190,7 +190,7 @@ export function mount(rootEl) {
       const px = lx + (i / 4) * lw;
       ctx.beginPath(); ctx.moveTo(px, ly - 6); ctx.lineTo(px, ly + 6); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${i}`, px - 4, ly + 22);
     }
     const colors = ['#0ea5e9', '#a855f7'];
@@ -200,7 +200,7 @@ export function mount(rootEl) {
       ctx.fillStyle = colors[i];
       ctx.beginPath(); ctx.arc(px, ly, 8, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 10px var(--font-mono)';
+      ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${f.num}/${f.den}`, px - 12, ly - 12);
     }
   }

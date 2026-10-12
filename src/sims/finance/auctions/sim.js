@@ -69,9 +69,9 @@ export function mount(rootEl) {
       }
       const mean = values.reduce((s, v) => s + v, 0) / values.length;
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = 'bold 13px var(--font-sans)';
+      ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(title, x + 6, y - 4);
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`mean revenue ${mean.toFixed(3)}`, x + 6, y + 14);
     }
     const halfW = W * 0.5;
@@ -83,7 +83,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`n=${params.n}    Δ revenue = ${(fpMean - spMean).toFixed(3)}`, 16, 28);
   }
 

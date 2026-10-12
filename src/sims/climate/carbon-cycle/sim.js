@@ -115,9 +115,9 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(POOL_LABELS[k], x, yTop + 14);
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${v.toFixed(0)} GtC`, x, yTop + 30);
       ctx.fillStyle = ratio > 1 ? '#ef4444' : '#10b981';
       const delta = v - eq[k];
@@ -166,14 +166,14 @@ export function mount(rootEl) {
       ctx.fillStyle = COLORS[k];
       ctx.fillRect(cx + 16, yy - 8, 12, 4);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(POOL_LABELS[k], cx + 34, yy - 2);
       yy += 16;
     }
 
     // labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Year ${tNow.toFixed(0)} since start (${tWindow}-year window)`, cx + cw - 200, cy - 4);
     ctx.fillText('Fractional anomaly vs preindustrial →', cx + 6, cy - 4);
 

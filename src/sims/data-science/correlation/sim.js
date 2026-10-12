@@ -58,7 +58,7 @@ export function mount(rootEl) {
     ctx.moveTo(40, 30); ctx.lineTo(40, H - 30); ctx.lineTo(W - 30, H - 30);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('y →', 14, H / 2);
     ctx.fillText('x →', W - 50, H - 12);
 
@@ -90,10 +90,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Pearson correlation r = ${c ? c.r.toFixed(3) : '--'}`, 16, 28);
     ctx.fillStyle = c && Math.abs(c.r) > 0.85 ? '#10b981' : c && Math.abs(c.r) > 0.5 ? '#fbbf24' : '#ef4444';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`r² = ${c ? (c.r * c.r).toFixed(3) : '--'}    n = ${points.length}`, 16, 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText('Drag any point · click empty space to add · right-click to remove', 16, 62);

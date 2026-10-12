@@ -117,9 +117,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, W - 16, 40);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(STAGES[params.stage].name, 16, 28);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillText(STAGES[params.stage].desc, 16, 44);
 

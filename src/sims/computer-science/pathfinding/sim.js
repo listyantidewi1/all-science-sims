@@ -149,7 +149,7 @@ export function mount(rootEl) {
 
     // header
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Algorithm: ${state.algo === 'bfs' ? 'BFS' : 'A*'}    Visited: ${state.visited.size}    Path: ${state.path.length || '—'}`, 10, 18);
   }
 

@@ -88,7 +88,7 @@ export function mount(rootEl) {
     for (let f = 200; f <= 900; f += 100) {
       ctx.beginPath(); ctx.moveTo(padX, F1y(f)); ctx.lineTo(padX + w, F1y(f)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${f}`, padX - 32, F1y(f) + 3);
     }
     for (let f = 800; f <= 2500; f += 200) {
@@ -99,7 +99,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('F2 (Hz) →  high front     low back', padX + w / 2 - 80, padY - 22);
     ctx.save(); ctx.translate(padX - 50, padY + h / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('F1 (Hz) ↓  closed     open', 0, 0); ctx.restore();
@@ -112,9 +112,9 @@ export function mount(rootEl) {
       ctx.arc(px, py, 7, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(v.sym, px + 12, py + 5);
-      ctx.font = '10px var(--font-sans)';
+      ctx.font = '10px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
       ctx.fillText(v.label, px + 12, py + 18);
     }
@@ -138,16 +138,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`F1 = ${params.F1.toFixed(0)} Hz   F2 = ${params.F2.toFixed(0)} Hz`, 16, 28);
     if (best) {
       ctx.fillStyle = '#f97316';
-      ctx.font = 'bold 16px var(--font-sans)';
+      ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`closest vowel: ${best.sym}`, 16, 52);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the orange dot · click Play to hear it', padX, H - 12);
   }
 

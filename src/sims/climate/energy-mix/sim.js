@@ -69,7 +69,7 @@ export function mount(rootEl) {
       ctx.fillRect(x, barY, w, barH);
       if (w > 30) {
         ctx.fillStyle = '#0b1220';
-        ctx.font = 'bold 11px var(--font-mono)';
+        ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`${(mix[src.id] * 100).toFixed(0)}%`, x + 4, barY + 25);
       }
       x += w;
@@ -77,7 +77,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(255,255,255,0.4)';
     ctx.strokeRect(padX, barY, barW, barH);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Electricity mix (drag the sliders below to allocate)', padX, 28);
 
     // Legend dots row
@@ -86,7 +86,7 @@ export function mount(rootEl) {
       ctx.fillStyle = src.color;
       ctx.fillRect(lx, ly - 8, 14, 14);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(src.name, lx + 20, ly + 3);
       lx += 100;
     }
@@ -105,13 +105,13 @@ export function mount(rootEl) {
       ctx.strokeRect(x0, cardY, cardW, cardH);
 
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(label, x0 + 12, cardY + 20);
       ctx.fillStyle = color;
-      ctx.font = 'bold 28px var(--font-mono)';
+      ctx.font = 'bold 28px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(value, x0 + 12, cardY + 56);
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(unit, x0 + 12, cardY + 72);
 
       // gauge bar
@@ -130,7 +130,7 @@ export function mount(rootEl) {
         ctx.stroke();
       }
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`max ${max}`, gx + gw - 50, gy - 4);
     }
 

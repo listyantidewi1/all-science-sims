@@ -109,9 +109,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 360, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Regressed β = ${reg.beta.toFixed(3)}    α = ${(reg.alpha*100).toFixed(2)}%/mo`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`true β = ${params.trueBeta.toFixed(2)}   R² = ${reg.r2.toFixed(3)}`, 16, 46);
 
     // Expected return via CAPM at current beta
@@ -122,12 +122,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, H - 30, 360, 22);
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`CAPM E[r] = rᶠ + β·(rᴹ−rᶠ) = ${(ECAPM*100).toFixed(2)}%/yr`, 16, H - 14);
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Market return r_m →', padX + gW - 130, padY + gH + 14);
     ctx.save(); ctx.translate(20, padY + gH / 2 + 50); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Stock return r_i', 0, 0); ctx.restore();

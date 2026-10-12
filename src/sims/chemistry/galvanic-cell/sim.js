@@ -70,12 +70,12 @@ export function mount(rootEl) {
       ctx.strokeRect(x + beakerW / 2 - 10, beakerY + 10, 20, beakerH - 30);
       // label
       ctx.fillStyle = 'rgba(120,130,150,0.95)';
-      ctx.font = 'bold 13px var(--font-sans)';
+      ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`${m.name} (${metalKey})`, x + 10, beakerY + beakerH + 18);
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`E° = ${m.E >= 0 ? '+' : ''}${m.E.toFixed(2)} V`, x + 10, beakerY + beakerH + 34);
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(label, x + beakerW / 2 - 18, beakerY - 6);
     }
     const left = anodeIsLeft() ? '— Anode' : '+ Cathode';
@@ -137,7 +137,7 @@ export function mount(rootEl) {
       }
       // arrow direction label
       ctx.fillStyle = '#3b82f6';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`e⁻ →`, ledX + 22, topY - 8);
     }
 
@@ -149,14 +149,14 @@ export function mount(rootEl) {
     ctx.lineTo(rightX, beakerY + 70);
     ctx.stroke();
     ctx.fillStyle = '#a78bfa';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('salt bridge', (leftX + beakerW + rightX) / 2 - 30, beakerY + 60);
 
     // Voltage display
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 240, 36);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 18px var(--font-mono)';
+    ctx.font = 'bold 18px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`E°_cell = ${v.toFixed(2)} V`, 16, 32);
   }
 

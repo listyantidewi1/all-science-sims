@@ -42,7 +42,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Plane tilt ${t.toFixed(1)}° → ${classify(t)}`, 16, 28);
   }
 
@@ -102,7 +102,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Cone (rotational)', x, y + 14);
   }
 
@@ -151,7 +151,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(classify(t), x + 6, y + 16);
   }
 

@@ -102,7 +102,7 @@ export function mount(rootEl) {
       ctx.strokeStyle = '#0b1220';
       ctx.strokeRect(x, kbY, wKeyW - 1, kbH);
       ctx.fillStyle = '#0b1220';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(NOTE_NAMES[m % 12], x + wKeyW / 2, kbY + kbH - 6);
       ctx.textAlign = 'left';
@@ -123,7 +123,7 @@ export function mount(rootEl) {
         ctx.fillRect(x, kbY, bw, bh);
         if (lit) {
           ctx.fillStyle = '#0b1220';
-          ctx.font = '9px var(--font-mono)';
+          ctx.font = '9px ui-monospace, Menlo, Consolas, monospace';
           ctx.textAlign = 'center';
           ctx.fillText(NOTE_NAMES[next % 12], x + bw / 2, kbY + bh - 6);
           ctx.textAlign = 'left';
@@ -137,15 +137,15 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${NOTE_NAMES[params.rootIdx]}  ${SCALES[params.scaleKey].name}`, 16, 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const intervals = SCALES[params.scaleKey].steps.map((s, i, arr) => i === 0 ? '' : (s - arr[i - 1])).slice(1).join('-');
     ctx.fillText(`Steps: ${intervals}`, 340, 30);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click any lit key to hear it · root note is gold', padX, H - 14);
   }
 

@@ -87,10 +87,10 @@ export function mount(rootEl) {
     const stroke = phase < 0.25 ? 'Intake' : phase < 0.50 ? 'Compression' : phase < 0.75 ? 'Power' : 'Exhaust';
     const eta = efficiency();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Stroke: ${stroke}    r = ${params.r.toFixed(1)}`, 16, 28);
     ctx.fillStyle = '#10b981';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`η_Otto = 1 − 1/r^(γ−1) = ${(eta * 100).toFixed(1)}%`, 16, 48);
     if (params.r > 12) {
       ctx.fillStyle = '#ef4444';
@@ -169,7 +169,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('TDC', cylX + cylW / 2 + 14, cylY + 8);
     ctx.fillText('BDC', cylX + cylW / 2 + 14, cylY + cylH - 4);
@@ -180,7 +180,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('P–V diagram', x + 6, y - 6);
     ctx.fillText('V →', x + w - 30, y + h + 16);
     ctx.save(); ctx.translate(x - 24, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);
@@ -215,7 +215,7 @@ export function mount(rootEl) {
     // 4 corner labels
     function corner(label, V, P) {
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, x2(V) + 4, y2(P) - 4);
       ctx.fillStyle = '#fbbf24';
       ctx.beginPath();

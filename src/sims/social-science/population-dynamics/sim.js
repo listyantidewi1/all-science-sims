@@ -49,7 +49,7 @@ export function mount(rootEl) {
 
     // header
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`prey = ${prey.toFixed(2)}    predator = ${pred.toFixed(2)}    t = ${t.toFixed(1)}`, 20, 22);
   }
 
@@ -74,7 +74,7 @@ export function mount(rootEl) {
     history.forEach((p, i) => i === 0 ? ctx.moveTo(x2(p.t), y2(p.pred)) : ctx.lineTo(x2(p.t), y2(p.pred)));
     ctx.stroke();
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('prey', x + 8, y + 16);
     ctx.fillStyle = '#ef4444';
     ctx.fillText('predator', x + 8, y + 32);
@@ -98,7 +98,7 @@ export function mount(rootEl) {
     ctx.arc(x2(prey), y2(pred), 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('predator', x + 4, y + 14);
     ctx.fillText('prey →', x + w - 50, y + h - 6);
   }

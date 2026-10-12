@@ -88,7 +88,7 @@ export function mount(rootEl) {
 
     // Labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Sun', orbitCx - 10, orbitCy + 22);
     ctx.fillText('Earth (now)', ex + 8, ey - 6);
     ctx.fillText('Earth (+6 mo)', ex2 + 8, ey2 - 6);
@@ -126,7 +126,7 @@ export function mount(rootEl) {
     ctx.fill();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('What we see (telescope view, exaggerated)', obsCx - fieldW / 2, obsY - fieldH / 2 - 6);
 
     // Info
@@ -134,11 +134,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Distance: ${params.distancePc.toFixed(2)} pc (${(params.distancePc * 3.26).toFixed(2)} ly)`, 16, 28);
     ctx.fillText(`Parallax: ${p.toFixed(4)} arcsec`, 16, 46);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`d (pc) = 1 / p (arcsec)`, 16, 62);
   }
 

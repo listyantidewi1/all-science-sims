@@ -58,7 +58,7 @@ export function mount(rootEl) {
 
     if (state.phase === 'idle') {
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 24px var(--font-sans)';
+      ctx.font = 'bold 24px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`Click "Start trial" to see ${state.spanLen} digits`, W / 2, H / 2);
       ctx.textAlign = 'left';
@@ -66,23 +66,23 @@ export function mount(rootEl) {
       const elapsed = performance.now() - state.showStart;
       if (elapsed < params.flashMs && state.showIdx < state.seq.length) {
         ctx.fillStyle = '#fbbf24';
-        ctx.font = 'bold 200px var(--font-mono)';
+        ctx.font = 'bold 200px ui-monospace, Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(state.seq[state.showIdx], W / 2, H / 2 + 60);
         ctx.textAlign = 'left';
       }
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '12px var(--font-mono)';
+      ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${state.showIdx + 1} of ${state.seq.length}`, W - 100, 30);
     } else if (state.phase === 'input') {
       ctx.fillStyle = '#fff';
-      ctx.font = '18px var(--font-sans)';
+      ctx.font = '18px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(params.mode === 'forward' ? 'Type the digits in order' : 'Type the digits in REVERSE order', W / 2, H * 0.35);
-      ctx.font = 'bold 80px var(--font-mono)';
+      ctx.font = 'bold 80px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillStyle = '#fbbf24';
       ctx.fillText(state.typed || '_', W / 2, H * 0.6);
-      ctx.font = '13px var(--font-sans)';
+      ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
       ctx.fillText('Press Enter to submit · Backspace to fix', W / 2, H * 0.75);
       ctx.textAlign = 'left';
@@ -91,10 +91,10 @@ export function mount(rootEl) {
       ctx.fillStyle = last.correct ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)';
       ctx.fillRect(0, H * 0.4, W, H * 0.2);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 36px var(--font-sans)';
+      ctx.font = 'bold 36px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(last.correct ? '✓ Correct' : '✗ Wrong', W / 2, H * 0.5 + 12);
-      ctx.font = '14px var(--font-mono)';
+      ctx.font = '14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`expected: ${params.mode === 'forward' ? state.seq.join('') : state.seq.slice().reverse().join('')}`, W / 2, H * 0.5 + 40);
       ctx.textAlign = 'left';
     }
@@ -103,10 +103,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Span: ${state.spanLen} digits    Mode: ${params.mode}`, 16, 28);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const correctTrials = state.history.filter((h) => h.correct).length;
     const maxSpan = state.history.filter((h) => h.correct).reduce((max, h) => Math.max(max, h.len), 0);
     ctx.fillText(`Correct: ${correctTrials} / ${state.history.length}    Max span achieved: ${maxSpan}`, 16, 48);

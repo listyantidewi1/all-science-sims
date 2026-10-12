@@ -74,9 +74,9 @@ export function mount(rootEl) {
       ctx.lineWidth = active && i === params.stage ? 3 : 1;
       ctx.strokeRect(x + 8, padY, sw - 16, 56);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(STAGES[i].name.split(' (')[0], x + 16, padY + 22);
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       ctx.fillText(STAGES[i].name.split(' (')[1] ? '(' + STAGES[i].name.split(' (')[1] : '', x + 16, padY + 38);
       // arrow
@@ -95,9 +95,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(padX, padY + 80, W - padX * 2, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(cur.name, padX + 16, padY + 102);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillText(`In:  ${cur.inputs}`, padX + 16, padY + 120);
     ctx.fillText(`Out: ${cur.outputs}`, padX + 16, padY + 136);
@@ -108,10 +108,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(padX, tY, W - padX * 2, 80);
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 22px var(--font-mono)';
+    ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${t.atp} ATP`, padX + 20, tY + 32);
     ctx.fillStyle = '#3b82f6';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${t.nadh} NADH`, padX + 200, tY + 28);
     ctx.fillStyle = '#a78bfa';
     ctx.fillText(`${t.fadh} FADH₂`, padX + 320, tY + 28);
@@ -122,7 +122,7 @@ export function mount(rootEl) {
 
     // glucose icon at top
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Glucose → → → → → → →', padX, 30);
   }
 

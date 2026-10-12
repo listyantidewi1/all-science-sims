@@ -137,7 +137,7 @@ export function mount(rootEl) {
 
     // Axis ticks
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (const l of [4, 8, 12, 16, 20, 30, 50, 70]) {
       ctx.fillText(`${l}µm`, x2(l) - 12, padY + h + 14);
     }
@@ -145,7 +145,7 @@ export function mount(rootEl) {
 
     // Legend
     let lx = padX, ly = padY + h + 36;
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     for (const [k, g] of Object.entries(GASES)) {
       ctx.fillStyle = params.enabled[k] ? g.color : 'rgba(120,130,150,0.4)';
       ctx.fillRect(lx, ly - 8, 14, 8);

@@ -62,10 +62,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Threshold: ${params.threshold.toFixed(1)} dB    Ratio: ${params.ratio === 999 ? '∞' : params.ratio.toFixed(1)}:1`, 16, 28);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Makeup gain: ${params.makeup >= 0 ? '+' : ''}${params.makeup.toFixed(1)} dB`, 16, 46);
   }
 
@@ -77,7 +77,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Input → Output transfer curve (dB)', x + 6, y - 6);
     ctx.fillText('input dB →', x + w - 70, y + h + 16);
     ctx.save(); ctx.translate(x - 24, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);
@@ -110,7 +110,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.fillStyle = '#ef4444';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('threshold', x2(params.threshold) + 12, y2(params.threshold) - 8);
   }
 
@@ -118,7 +118,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Sample drum hits — input (cyan) vs compressed (green)', x + 6, y - 6);
 
     const dbMin = -50, dbMax = 0;

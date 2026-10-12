@@ -91,7 +91,7 @@ export function mount(rootEl) {
     ctx.arc(cxScreen, cy + 16, 16, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#0b1220';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('👂', cxScreen, cy + 22);
     ctx.textAlign = 'left';
@@ -103,7 +103,7 @@ export function mount(rootEl) {
     ctx.arc(sx, cy - 30, 18, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('🚨', sx, cy - 25);
     ctx.textAlign = 'left';
@@ -130,12 +130,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f_source = ${params.fSrc.toFixed(0)} Hz`, 16, 28);
     ctx.fillStyle = fObs > params.fSrc ? '#10b981' : fObs < params.fSrc ? '#ef4444' : '#fbbf24';
     ctx.fillText(`f_observed = ${fObs.toFixed(1)} Hz`, 16, 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`v_radial toward listener = ${vRadial.toFixed(1)} m/s`, 16, 66);
   }
 

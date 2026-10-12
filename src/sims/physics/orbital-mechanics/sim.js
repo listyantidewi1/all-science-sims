@@ -93,7 +93,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#10b981';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       const dx = aimEnd.x - body.x, dy = aimEnd.y - body.y;
       const sp = Math.hypot(dx, dy) * 1.2;
       ctx.fillText(`v = ${sp.toFixed(0)}`, aimEnd.x + 8, aimEnd.y);
@@ -118,7 +118,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     let line1 = '';
     if (mode === 'idle') line1 = 'Click to place planet';
     else if (mode === 'placing') line1 = 'Click again to set velocity';
@@ -126,7 +126,7 @@ export function mount(rootEl) {
     else line1 = `Flying — ${totalE != null && totalE < 0 ? 'BOUND' : 'UNBOUND'}`;
     ctx.fillText(line1, 16, 26);
     if (totalE != null) {
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`E = ${totalE.toFixed(1)}`, 16, 44);
     }
   }

@@ -142,7 +142,7 @@ export function mount(rootEl) {
 
     // header
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     let label = '';
     if (params.dist === 'normal')      label = `Normal(μ=${params.p1.toFixed(2)}, σ=${params.p2.toFixed(2)})`;
     if (params.dist === 'uniform')     label = `Uniform(${params.p1.toFixed(2)}, ${params.p2.toFixed(2)})`;

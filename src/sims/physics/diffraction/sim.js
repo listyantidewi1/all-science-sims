@@ -149,9 +149,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.N} slit${params.N > 1 ? 's' : ''}    λ = ${params.wavelength} nm`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`slit width = ${params.slitWidth} µm    spacing = ${params.slitSep} µm`, 16, 42);
     if (params.N >= 2) {
       const fringeM = (params.wavelength * 1e-9 * params.L) / (params.slitSep * 1e-6);

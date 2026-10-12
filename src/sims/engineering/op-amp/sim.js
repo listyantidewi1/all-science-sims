@@ -58,7 +58,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = 'rgba(239,68,68,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`+${params.supply}V rail`, px + 6, yMid - params.supply * yScale - 4);
     ctx.fillText(`−${params.supply}V rail`, px + 6, yMid + params.supply * yScale + 12);
 
@@ -86,7 +86,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(px + 16, py + 22, 20, 3);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('V_in (input wave)', px + 42, py + 26);
     ctx.fillStyle = '#10b981';
     ctx.fillRect(px + 16, py + 40, 20, 3);
@@ -100,10 +100,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(W - 240, py + 8, 230, 60);
     ctx.fillStyle = clipped ? '#ef4444' : '#fbbf24';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Gain = ${G.toFixed(2)}`, W - 230, py + 30);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`peak V_out = ${ampOut.toFixed(2)} V`, W - 230, py + 50);
     if (clipped) ctx.fillText('— clipping at rails!', W - 230, py + 64);
 
@@ -126,7 +126,7 @@ export function mount(rootEl) {
     ctx.closePath();
     ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('−', ax + 8, ay - 14);
     ctx.fillText('+', ax + 8, ay + 22);
 
@@ -138,10 +138,10 @@ export function mount(rootEl) {
     ctx.arc(srcX, srcY, 18, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = '14px var(--font-sans)';
+    ctx.font = '14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('~', srcX, srcY + 4);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`V_in = ${params.Vin.toFixed(2)}V`, srcX, srcY - 24);
     ctx.textAlign = 'left';
 
@@ -181,7 +181,7 @@ export function mount(rootEl) {
 
     // output label
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('V_out', outX - 6, outY - 10);
   }
 
@@ -205,7 +205,7 @@ export function mount(rootEl) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
     ctx.fillStyle = color;
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, (x1 + x2) / 2 - 30, (y1 + y2) / 2 - 10);
   }
 

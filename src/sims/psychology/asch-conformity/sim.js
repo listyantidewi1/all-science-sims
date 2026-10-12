@@ -64,7 +64,7 @@ export function mount(rootEl) {
     ctx.moveTo(cx - target / 2, ty); ctx.lineTo(cx + target / 2, ty);
     ctx.stroke();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('Target line', cx, ty - 14);
     ctx.textAlign = 'left';
@@ -83,7 +83,7 @@ export function mount(rootEl) {
       ctx.moveTo(positions[i] - len / 2, yLine); ctx.lineTo(positions[i] + len / 2, yLine);
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 18px var(--font-mono)';
+      ctx.font = 'bold 18px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(labels[i], positions[i], yLine + 30);
       ctx.textAlign = 'left';
@@ -92,7 +92,7 @@ export function mount(rootEl) {
     // Confederate row
     const cy = 300;
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Other people in the room (their answers):', 30, cy - 10);
     let cxN = 30;
     for (let i = 0; i < params.confederates; i++) {
@@ -101,14 +101,14 @@ export function mount(rootEl) {
       ctx.arc(cxN + 25, cy + 30, 22, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`P${i + 1}`, cxN + 25, cy + 34);
       // Their answer in a speech bubble
       ctx.fillStyle = 'rgba(239,68,68,0.18)';
       ctx.fillRect(cxN, cy + 60, 50, 24);
       ctx.fillStyle = '#ef4444';
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(state.confedAnswer, cxN + 25, cy + 78);
       ctx.textAlign = 'left';
       cxN += 56;
@@ -119,13 +119,13 @@ export function mount(rootEl) {
       ctx.arc(cxN + 25, cy + 30, 22, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText('A', cxN + 25, cy + 34);
       ctx.fillStyle = 'rgba(16,185,129,0.18)';
       ctx.fillRect(cxN, cy + 60, 50, 24);
       ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(state.target, cxN + 25, cy + 78);
       ctx.textAlign = 'left';
     }
@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fbbf24';
     ctx.beginPath(); ctx.arc(cxN + 25, cy + 30, 24, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#0b1220';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('YOU', cxN + 25, cy + 34);
     ctx.textAlign = 'left';
@@ -145,10 +145,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Trial ${state.seq}    Confederates: ${params.confederates}${params.ally ? ' + 1 ally' : ''}`, 16, 28);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     if (total > 0) {
       ctx.fillText(`You conformed on ${conformed} of ${total} trials (${(conformed / total * 100).toFixed(0)}%)`, 16, 48);
       ctx.fillText(`Asch's original study: ~75% conformed at least once`, 16, 64);

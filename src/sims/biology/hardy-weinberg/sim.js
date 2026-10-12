@@ -91,7 +91,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Gen ${history.length - 1}    p = ${last.p.toFixed(3)}    q = ${(1-last.p).toFixed(3)}`, 16, 28);
   }
 
@@ -111,7 +111,7 @@ export function mount(rootEl) {
     }
     // legend
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('AA', x, y - 4);
     ctx.fillStyle = '#3b82f6';
     ctx.fillRect(x + 18, y - 12, 10, 10);
@@ -144,7 +144,7 @@ export function mount(rootEl) {
     plot('p', '#10b981');
     // labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('genotype freqs + p (green)', x + 6, y - 4);
     ctx.fillText('generations →', x + w - 90, y + h + 14);
   }

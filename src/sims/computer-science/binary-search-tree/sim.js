@@ -75,7 +75,7 @@ export function mount(rootEl) {
 
     if (!root) {
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '14px var(--font-sans)';
+      ctx.font = '14px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Empty tree — click Insert to add a node.', 20, 30);
       return;
     }
@@ -121,13 +121,13 @@ export function mount(rootEl) {
     function drawNodes(n) {
       if (!n) return;
       const p = pos(n);
-      ctx.fillStyle = highlight.has(n) ? '#f59e0b' : 'var(--subj-computer-science)';
+      ctx.fillStyle = highlight.has(n) ? '#f59e0b' : '#8b5cf6';
       ctx.fillStyle = highlight.has(n) ? '#f59e0b' : '#8b5cf6';
       ctx.beginPath();
       ctx.arc(p.x, p.y, 18, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px var(--font-sans)';
+      ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(String(n.v), p.x, p.y);
@@ -140,7 +140,7 @@ export function mount(rootEl) {
 
     // stats
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`nodes: ${nodeCount(root)}    height: ${height(root)}`, 12, 18);
   }
 

@@ -48,9 +48,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Price: $${price.toFixed(2)}    (${status})`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`coupon ${(params.couponRate*100).toFixed(2)}%   yield ${(params.yield*100).toFixed(2)}%   ${params.years}y`, 16, 46);
 
     const probe = hover.get();
@@ -79,7 +79,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(245,158,11,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('par $1000', x + w - 70, y2(params.face) - 4);
     }
 
@@ -101,7 +101,7 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.arc(x2(yr), y2(p), 6, 0, Math.PI * 2); ctx.fill();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Price vs yield', x + 6, y - 4);
     ctx.fillText('yield →', x + w - 50, y + h + 14);
   }
@@ -132,7 +132,7 @@ export function mount(rootEl) {
     ctx.setLineDash([]);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Price for 1–30 year maturities at current yield', x + 6, y - 4);
     ctx.fillText('maturity (years) →', x + w - 110, y + h + 14);
   }

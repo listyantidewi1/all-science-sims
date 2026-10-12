@@ -95,7 +95,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.strokeRect(cx - mw / 2, massY, mw, mh);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${params.mass.toFixed(2)} kg`, cx, massY + 30);
     ctx.textAlign = 'left';
@@ -107,17 +107,17 @@ export function mount(rootEl) {
     ctx.moveTo(cx + 80, topY); ctx.lineTo(cx + 80, massY);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`x = ${(x_m * 100).toFixed(1)} cm`, cx + 86, (topY + massY) / 2);
 
     // Header
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 220, 50);
     ctx.fillStyle = spring.color;
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${spring.name} spring  k = ${spring.k} N/m`, 16, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`F = mg = ${force.toFixed(2)} N`, 16, 46);
   }
 
@@ -125,7 +125,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Force vs stretch', x + 6, y - 6);
 
     const Fmax = 200;
@@ -139,7 +139,7 @@ export function mount(rootEl) {
       const xx = (i / 6) * xMax;
       ctx.beginPath(); ctx.moveTo(x2(xx), y); ctx.lineTo(x2(xx), y + h); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(xx * 100).toFixed(0)}cm`, x2(xx) - 16, y + h + 14);
     }
     for (let F = 0; F <= 200; F += 50) {
@@ -176,7 +176,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#ef4444';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('elastic limit', x2(params.elasticLimit) + 4, y + 16);
 
     // Current point

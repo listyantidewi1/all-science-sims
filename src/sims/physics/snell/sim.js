@@ -132,7 +132,7 @@ export function mount(rootEl) {
 
     // Labels in each medium
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${MATERIALS[params.medium1].name} (n₁=${n1().toFixed(2)})`, 16, 24);
     ctx.fillText(`${MATERIALS[params.medium2].name} (n₂=${n2().toFixed(2)})`, 16, H - 14);
 
@@ -140,7 +140,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(W - 280, 8, 270, 76);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`θ₁ = ${params.angle.toFixed(1)}°`, W - 270, 28);
     if (t2deg != null) {
       ctx.fillText(`θ₂ = ${t2deg.toFixed(1)}°`, W - 270, 46);
@@ -151,12 +151,12 @@ export function mount(rootEl) {
     const crit = criticalAngle();
     if (crit != null) {
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`θ_c = ${crit.toFixed(1)}°`, W - 270, 70);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the incident ray (yellow)', cx - 100, cy - 8);
   }
 

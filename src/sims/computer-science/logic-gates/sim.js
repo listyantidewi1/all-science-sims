@@ -147,7 +147,7 @@ export function mount(rootEl) {
       t.setAttribute('x', p.x); t.setAttribute('y', p.y + 5);
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('fill', '#fff'); t.setAttribute('font-weight', '700');
-      t.setAttribute('font-family', 'var(--font-mono)');
+      t.setAttribute('font-family', 'ui-monospace, Menlo, Consolas, monospace');
       t.textContent = `${name}=${v}`;
       g.appendChild(t);
       svg.appendChild(g);
@@ -170,7 +170,7 @@ export function mount(rootEl) {
       t.setAttribute('x', p.x); t.setAttribute('y', p.y + 5);
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('fill', '#fff'); t.setAttribute('font-weight', '700');
-      t.setAttribute('font-family', 'var(--font-mono)');
+      t.setAttribute('font-family', 'ui-monospace, Menlo, Consolas, monospace');
       t.textContent = `${name}=${v}`;
       svg.appendChild(t);
     }
@@ -326,7 +326,7 @@ export function mount(rootEl) {
     const t = document.createElementNS(ns, 'text');
     t.setAttribute('x', '-8'); t.setAttribute('y', '5');
     t.setAttribute('font-size', '11');
-    t.setAttribute('font-family', 'var(--font-mono)');
+    t.setAttribute('font-family', 'ui-monospace, Menlo, Consolas, monospace');
     t.setAttribute('font-weight', '700');
     t.setAttribute('fill', '#cbd5e1');
     t.textContent = kind;

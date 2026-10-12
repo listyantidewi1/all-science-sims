@@ -93,7 +93,7 @@ export function mount(rootEl) {
     ctx.arc(observer.x, observer.y, 12, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('observer', observer.x - 26, observer.y + 28);
     ctx.fillStyle = '#fff';
     ctx.fillText('source', source.x - 18, source.y - 16);
@@ -137,10 +137,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Source f = ${params.freqSrc.toFixed(2)} Hz`, 16, 26);
     ctx.fillText(fObs ? `Observed f = ${fObs.toFixed(2)} Hz` : 'Supersonic — observer in shock', 16, 44);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`v_src = ${v_src.toFixed(0)}    c = ${params.speedSound}`, 16, 60);
   }
 

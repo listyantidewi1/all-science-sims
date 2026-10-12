@@ -138,12 +138,12 @@ export function mount(rootEl) {
     if (phase === 1 && phaseT < 0.2) {
       // burn 1 just happened
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`Δv₁`, scX + 8, scY - 8);
     }
     if (phase === 2 && phaseT < 0.2) {
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`Δv₂`, scX + 8, scY - 8);
     }
 
@@ -153,7 +153,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 76);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`r₁ = ${params.r1.toFixed(2)} AU   r₂ = ${params.r2.toFixed(2)} AU`, 16, 26);
     ctx.fillText(`Δv₁ = ${dv1.toFixed(4)} (units of √(μ/AU))`, 16, 44);
     ctx.fillText(`Δv₂ = ${dv2.toFixed(4)}`, 16, 62);

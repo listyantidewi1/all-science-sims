@@ -93,7 +93,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#ec4899';
       ctx.fillRect(center + 5, y, fw, barH);
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(labels[i], center - 30, y + barH * 0.7);
     }
 
@@ -103,7 +103,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#ec4899';
     ctx.fillRect(padX + 60, 12, 14, 14);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Male', padX + 18, 22);
     ctx.fillText('Female', padX + 78, 22);
 
@@ -119,11 +119,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(W - 220, 8, 210, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Total: ${(kids + workers + elders).toFixed(0)}`, W - 210, 26);
     ctx.fillText(`Kids ${kids.toFixed(0)} Workers ${workers.toFixed(0)} Elders ${elders.toFixed(0)}`, W - 210, 44);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Dependency ratio: ${dep}%`, W - 210, 60);
   }
 

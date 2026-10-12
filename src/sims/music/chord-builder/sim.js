@@ -97,7 +97,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 1;
       ctx.strokeRect(wx, y, wKeyW - 1, h);
       ctx.fillStyle = '#0b1220';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(k.name, wx + wKeyW / 2, y + h - 8);
       ctx.textAlign = 'left';
@@ -117,7 +117,7 @@ export function mount(rootEl) {
       ctx.fillRect(wx, y, bKeyW, bKeyH);
       if (active.has(k.idx)) {
         ctx.fillStyle = '#0b1220';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(k.name, wx + bKeyW / 2, y + bKeyH - 6);
         ctx.textAlign = 'left';
@@ -162,14 +162,14 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, W - 16, 32);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     if (r.name) ctx.fillText(`${r.rootName} ${r.name}`, 16, 30);
     else if (active.size > 0) ctx.fillText(`${[...active].length} notes — no standard chord match`, 16, 30);
     else ctx.fillText('Click keys to build a chord', 16, 30);
 
     // Bottom hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click any key to toggle; click Play to hear the chord', padX, H - 14);
   }
 

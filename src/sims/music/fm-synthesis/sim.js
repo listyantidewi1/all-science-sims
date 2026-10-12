@@ -72,15 +72,15 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f_c = ${params.fc.toFixed(1)} Hz   ratio = 1:${params.ratio.toFixed(2)}   I = ${params.I.toFixed(2)}`, 16, 28);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`y(t) = sin(2π f_c t + I·sin(2π f_m t))`, 16, 46);
     ctx.fillText(`f_m = ratio · f_c = ${(params.fc * params.ratio).toFixed(1)} Hz`, 16, 60);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click Play to hear FM in real time', padX, H - 12);
   }
 
@@ -103,7 +103,7 @@ export function mount(rootEl) {
     }
     ctx.stroke();
     ctx.fillStyle = color;
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, x, y - 4);
   }
 

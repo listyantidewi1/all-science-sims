@@ -115,11 +115,11 @@ export function mount(rootEl) {
     ctx.moveTo(x2(params.criterion), y); ctx.lineTo(x2(params.criterion), y + h);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`β = ${params.criterion.toFixed(2)}`, x2(params.criterion) + 4, y + 14);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Noise (no signal)', x + 8, y - 6);
     ctx.fillStyle = '#ef4444';
     ctx.fillText('Noise + Signal', x + w - 110, y - 6);
@@ -129,7 +129,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('ROC curve', x + 6, y - 6);
     ctx.fillText('false alarm →', x + w - 70, y + h + 14);
     ctx.save(); ctx.translate(x - 14, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);
@@ -172,7 +172,7 @@ export function mount(rootEl) {
     const m = metrics();
     const vals = [m.hit, m.miss, m.fa, m.cr];
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Confusion matrix (probabilities)', x, y);
     ctx.fillText('respond YES', startX + cellW * 0.3, y + 24);
     ctx.fillText('respond NO',  startX + cellW + cellW * 0.3, y + 24);
@@ -189,10 +189,10 @@ export function mount(rootEl) {
         ctx.strokeStyle = labels[idx][1];
         ctx.strokeRect(cx, cy, cellW, cellH);
         ctx.fillStyle = labels[idx][1];
-        ctx.font = 'bold 13px var(--font-mono)';
+        ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(labels[idx][0], cx + 8, cy + 18);
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold 22px var(--font-mono)';
+        ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`${(vals[idx] * 100).toFixed(1)}%`, cx + 8, cy + cellH - 12);
       }
     }

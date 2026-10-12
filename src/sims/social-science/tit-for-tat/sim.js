@@ -73,7 +73,7 @@ export function mount(rootEl) {
 
   function drawRanking(ctx, x, y, w, h) {
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Tournament ranking', x, y);
 
     const sorted = STRATS.slice().sort((a, b) => scores[b.id] - scores[a.id]);
@@ -89,17 +89,17 @@ export function mount(rootEl) {
       ctx.fillStyle = s.color;
       ctx.fillRect(x, yy, w * (scores[s.id] / maxScore) * 0.85, rowH - 4);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`#${i + 1}  ${s.name}`, x + 8, yy + 18);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${scores[s.id]}`, x + w - 60, yy + 18);
     }
   }
 
   function drawMatrix(ctx, x, y, w, h) {
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Round-robin score matrix (${params.rounds} rounds each)`, x, y);
 
     const cellSize = Math.min(w, h - 50) / (STRATS.length + 1);
@@ -108,7 +108,7 @@ export function mount(rootEl) {
     // Headers
     for (let i = 0; i < STRATS.length; i++) {
       ctx.fillStyle = STRATS[i].color;
-      ctx.font = 'bold 10px var(--font-mono)';
+      ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(STRATS[i].id, startX + i * cellSize + 6, startY - 6);
       ctx.fillText(STRATS[i].id, x + 6, startY + i * cellSize + cellSize / 2 + 4);
     }
@@ -123,7 +123,7 @@ export function mount(rootEl) {
         ctx.fillStyle = `hsl(${Math.round(t * 120)}, 60%, ${30 + t * 30}%)`;
         ctx.fillRect(cx, cy, cellSize - 2, cellSize - 2);
         ctx.fillStyle = '#fff';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(s, cx + cellSize / 2 - 1, cy + cellSize / 2 + 4);
         ctx.textAlign = 'left';
@@ -131,7 +131,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('rows = strategy A, columns = strategy B; cell = A\'s score', x, y + h - 4);
   }
 

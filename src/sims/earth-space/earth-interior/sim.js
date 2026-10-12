@@ -101,14 +101,14 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(px - 10, 30, W - px - 20, 200);
     ctx.fillStyle = layer.color;
-    ctx.font = 'bold 18px var(--font-sans)';
+    ctx.font = 'bold 18px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(layer.name, px, 60);
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`State: ${layer.state}`, px, 80);
 
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Depth: ${params.depth.toFixed(0)} km`, px, 110);
     ctx.fillStyle = '#ef4444';
     ctx.fillText(`Temp: ${T.toFixed(0)} K (${(T - 273).toFixed(0)} °C)`, px, 134);
@@ -119,7 +119,7 @@ export function mount(rootEl) {
 
     // Layer legend
     let yy = 250;
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     for (const l of LAYERS) {
       ctx.fillStyle = l.color;
       ctx.fillRect(px, yy - 10, 14, 10);

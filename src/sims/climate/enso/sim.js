@@ -40,10 +40,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 60);
     ctx.fillStyle = params.idx > 0.5 ? '#ef4444' : params.idx < -0.5 ? '#0ea5e9' : '#10b981';
-    ctx.font = 'bold 16px var(--font-mono)';
+    ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(s.name, 16, 30);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Niño-3.4 anomaly = ${params.idx >= 0 ? '+' : ''}${params.idx.toFixed(2)} °C`, 16, 50);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText(s.desc, 16, 64);
@@ -65,7 +65,7 @@ export function mount(rootEl) {
     }
     // Labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Indonesia', x + 6, y - 4);
     ctx.fillText('West Pacific', x + 6, y + surfaceH + 12);
     ctx.fillText('Peru', x + w - 50, y - 4);
@@ -87,7 +87,7 @@ export function mount(rootEl) {
     }
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('thermocline (warm above, cold below)', x + 6, y + h - 6);
 
     // Cold water beneath thermocline
@@ -108,7 +108,7 @@ export function mount(rootEl) {
         ctx.stroke();
       }
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`trade winds (${windStrength.toFixed(2)})`, x + w / 2 - 50, y - 30);
     }
   }
@@ -122,7 +122,7 @@ export function mount(rootEl) {
       { name: 'Africa Sahel',                  cliff: 'dry', xfrac: 0.38 },
     ];
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Global rainfall anomalies (sign flips between El Niño and La Niña)', x, y - 6);
 
     ctx.fillStyle = 'rgba(255,255,255,0.05)';
@@ -140,7 +140,7 @@ export function mount(rootEl) {
       ctx.arc(px, py, 12 + mag * 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(r.name, px - 50, py + 28);
       const label = sign > 0.1 ? 'wetter' : sign < -0.1 ? 'drier' : 'normal';
       ctx.fillStyle = sign > 0 ? '#0ea5e9' : sign < 0 ? '#ef4444' : '#10b981';

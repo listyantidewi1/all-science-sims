@@ -81,7 +81,7 @@ export function mount(rootEl) {
     for (let f = 0; f <= 20000; f += 4000) {
       ctx.beginPath(); ctx.moveTo(x2(f), padY); ctx.lineTo(x2(f), padY + h); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${f}`, x2(f) - 14, padY + h + 14);
     }
     for (let m = 0; m <= 4000; m += 1000) {
@@ -92,7 +92,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Frequency (Hz) →', padX + w - 100, padY + h + 30);
     ctx.save(); ctx.translate(padX - 40, padY + h / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Perceived pitch (mel) ↑', 0, 0); ctx.restore();
@@ -100,17 +100,17 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f = ${params.f.toFixed(1)} Hz`, 16, 28);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#10b981';
     ctx.fillText(`mel = ${hzToMel(params.f).toFixed(1)}`, 16, 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`= 2595 · log₁₀(1 + f/700)`, 16, 60);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag along the curve · click "+1 oct" to double frequency', padX, H - 12);
 
     const probe = hover.get();

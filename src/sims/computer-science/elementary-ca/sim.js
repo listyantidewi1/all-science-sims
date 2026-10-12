@@ -65,7 +65,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.7)';
     ctx.fillRect(8, 8, cv.width - 16, 26);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Rule ${params.rule}`, 16, 26);
     // 8 mini patterns
     const startX = 90;

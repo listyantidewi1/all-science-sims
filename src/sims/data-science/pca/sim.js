@@ -111,7 +111,7 @@ export function mount(rootEl) {
       ctx.lineTo(cs.x + dx, cs.y + dy);
       ctx.stroke();
       ctx.fillStyle = color;
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(label, cs.x + dx + 6, cs.y + dy);
     }
     drawAxis(r.pc1, r.pc1.lambda, '#ec4899', 'PC1');
@@ -126,16 +126,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#ec4899';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`PC1 var = ${r.pc1.lambda.toFixed(3)}  (${(r.pc1.lambda / total * 100).toFixed(1)}%)`, 16, 26);
     ctx.fillStyle = '#10b981';
     ctx.fillText(`PC2 var = ${r.pc2.lambda.toFixed(3)}  (${(r.pc2.lambda / total * 100).toFixed(1)}%)`, 16, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`mean (${r.mean.x.toFixed(2)}, ${r.mean.y.toFixed(2)})`, 16, 62);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag any point. Click empty space to add.', 12, H - 12);
   }
 

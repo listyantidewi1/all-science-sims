@@ -162,7 +162,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Ocean ${counts.ocean}  Vapor ${counts.vapor}  Cloud ${counts.cloud}  Rain ${counts.rain}  Ground ${counts.ground}`, 16, 26);
   }
 

@@ -64,7 +64,7 @@ export function mount(rootEl) {
       ctx.stroke();
       // shell label (n)
       ctx.fillStyle = 'rgba(120,130,150,0.6)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`n=${i + 1}`, cx + r + 4, cy + 3);
     }
 
@@ -99,7 +99,7 @@ export function mount(rootEl) {
     ctx.fill();
     // labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(ELEMENTS[params.z] || '?', cx, cy + 5);
     ctx.textAlign = 'left';
@@ -108,9 +108,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${ELEMENTS[params.z]}    Z = ${params.z}`, 14, 26);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Shells: ${shells.join(', ')}`, 14, 44);
     const valence = shells[shells.length - 1] || 0;
     const noble = [2, 10, 18, 36].includes(params.z);

@@ -54,7 +54,7 @@ export function mount(rootEl) {
       const n = (i / 5) * params.nMax;
       ctx.beginPath(); ctx.moveTo(x2(n), padY); ctx.lineTo(x2(n), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${n.toFixed(0)}`, x2(n) - 6, padY + gH + 14);
     }
 
@@ -80,7 +80,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(legX, padY, 200, FUNCS.length * 22 + 16);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`At n = ${params.n}`, legX + 8, padY + 16);
     for (let i = 0; i < FUNCS.length; i++) {
       const f = FUNCS[i];
@@ -88,14 +88,14 @@ export function mount(rootEl) {
       ctx.fillStyle = f.color;
       ctx.fillRect(legX + 8, yy - 8, 12, 4);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       const v = f.f(params.n);
       const display = v > 1e9 ? v.toExponential(2) : v >= 1 ? v.toLocaleString(undefined, { maximumFractionDigits: 0 }) : v.toFixed(2);
       ctx.fillText(`${f.name}  ${display}`, legX + 26, yy);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('n →', padX + gW - 30, padY + gH + 14);
     ctx.fillText(`${params.logScale ? 'log scale' : 'linear scale'}`, padX + 6, padY + gH + 14);
   }

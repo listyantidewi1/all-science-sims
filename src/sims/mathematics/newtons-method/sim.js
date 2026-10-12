@@ -109,7 +109,7 @@ export function mount(rootEl) {
         ctx.arc(w2sX(h.x, W), w2sY(h.y, H), 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold 10px var(--font-mono)';
+        ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`x${iter}`, w2sX(h.x, W) + 7, w2sY(h.y, H) - 4);
         iter++;
       }
@@ -121,7 +121,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(lastX != null ? `Converged to x ≈ ${lastX.toFixed(6)}    f = ${fn.f(lastX).toExponential(2)}` : 'Click anywhere to start',
       16, 28);
   }

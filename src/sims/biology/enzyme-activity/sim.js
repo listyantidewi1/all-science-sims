@@ -69,7 +69,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 220, 38);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${ENZYMES[params.enzyme].name}: ${(act * 100).toFixed(0)}%`, 16, 30);
   }
 
@@ -127,9 +127,9 @@ export function mount(rootEl) {
 
     // axis label
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(axisLabel, x + w / 2 - 12, y + h + 16);
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${current.toFixed(axisLabel === 'pH' ? 1 : 0)}`, mx + 8, my - 6);
   }
 

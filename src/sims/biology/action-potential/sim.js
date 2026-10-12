@@ -77,11 +77,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`V_m = ${vMv(V).toFixed(1)} mV`, 16, 28);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click the neuron to deliver a stimulus.', 12, H - 12);
   }
 
@@ -128,7 +128,7 @@ export function mount(rootEl) {
 
     // axon hillock label
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('soma', cx - 16, cy + 4);
     ctx.fillText('axon', cx + 14, cy + 60);
 
@@ -159,7 +159,7 @@ export function mount(rootEl) {
       const yy = y2(v);
       ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x + w, yy); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${v} mV`, x + 6, yy - 2);
     }
     // threshold (highlighted)
@@ -184,7 +184,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Membrane potential vs time', x + 6, y - 4);
     ctx.fillText('time (ms) →', x + w - 80, y + h + 14);
   }

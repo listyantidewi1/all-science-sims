@@ -182,18 +182,18 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(NAMES[key] || `${N} domains`, 16, 28);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.bonds} bonded · ${params.lones} lone pair${params.lones === 1 ? '' : 's'}`, 16, 46);
     if (EXAMPLES[key]) {
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 11px var(--font-sans)';
+      ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`Example: ${EXAMPLES[key]}`, 16, 60);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag to rotate', 12, H - 12);
   }
 

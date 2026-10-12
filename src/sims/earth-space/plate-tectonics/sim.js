@@ -152,7 +152,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(8, 8, 200, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(params.type[0].toUpperCase() + params.type.slice(1) + ' boundary', 14, 27);
   }
 
@@ -175,7 +175,7 @@ export function mount(rootEl) {
     ctx.fill();
   }
   function label(ctx, text, x, y) {
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     const m = ctx.measureText(text);
     ctx.fillRect(x - 4, y - 12, m.width + 8, 16);

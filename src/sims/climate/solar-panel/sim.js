@@ -89,7 +89,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, W - 16, 38);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     const dailyEnergy = computeDailyEnergy(params.day);
     ctx.fillText(`Latitude ${params.lat}° · Tilt ${params.tilt}° · Day ${params.day} · Cloud ${(params.cloud*100).toFixed(0)}%`, 16, 30);
     ctx.fillStyle = '#fbbf24';
@@ -110,7 +110,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Power output across one day (W/m²)', x + 6, y - 6);
 
     const Pmax = 1100;
@@ -122,7 +122,7 @@ export function mount(rootEl) {
     for (let hr = 0; hr <= 24; hr += 3) {
       ctx.beginPath(); ctx.moveTo(x2(hr), y); ctx.lineTo(x2(hr), y + h); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${hr}`, x2(hr) - 6, y + h + 14);
     }
 
@@ -169,7 +169,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Daily yield across the year (kWh/m²/day)', x + 6, y - 6);
 
     const Emax = 10;
@@ -196,7 +196,7 @@ export function mount(rootEl) {
 
     // month labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     for (let m = 0; m < 12; m++) {
       ctx.fillText(months[m], x + (m / 12) * w + 4, y + h + 14);

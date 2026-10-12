@@ -51,7 +51,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let x = X_MIN; x <= X_MAX; x++) if (x !== 0) ctx.fillText(String(x), w2sX(x, W) - 4, w2sY(0, H) + 12);
     for (let y = Y_MIN; y <= Y_MAX; y++) if (y !== 0) ctx.fillText(String(y), w2sX(0, W) + 4, w2sY(y, H) + 3);
 
@@ -74,7 +74,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(formula(), 16, 28);
   }
 

@@ -72,7 +72,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(name, p.x + 12, p.y - 8);
     }
 
@@ -91,7 +91,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.fillStyle = color;
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, s.x + 8, s.y - 6);
     }
     drawCenter(G, '#10b981', 'G centroid', params.showCentroid);
@@ -140,7 +140,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red dots A, B, C', 12, H - 12);
   }
 

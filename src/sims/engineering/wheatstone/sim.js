@@ -66,7 +66,7 @@ export function mount(rootEl) {
     ctx.moveTo(A.x - 200, A.y - 70); ctx.lineTo(A.x - 200, A.y - 50);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.V} V`, A.x - 240, A.y - 90);
 
     // Galvanometer between B and D
@@ -92,14 +92,14 @@ export function mount(rootEl) {
     ctx.moveTo(gx, gy); ctx.lineTo(gx + Math.cos(ang) * 18, gy + Math.sin(ang) * 18);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('G', gx + 28, gy + 4);
 
     // Labels at corners
     function dot(p, label) {
       ctx.fillStyle = '#fff';
       ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillStyle = '#fbbf24';
       ctx.fillText(label, p.x + 8, p.y - 6);
     }
@@ -109,19 +109,19 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 80);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`V_B = ${r.Vb.toFixed(3)} V`, 16, 26);
     ctx.fillText(`V_D = ${r.Vd.toFixed(3)} V`, 16, 44);
     ctx.fillStyle = Math.abs(r.Vg) < 0.01 ? '#10b981' : '#fbbf24';
     ctx.fillText(`V_g = V_B − V_D = ${r.Vg.toFixed(4)} V`, 16, 62);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const ratio = (params.R[0] * params.R[3]) / (params.R[1] * params.R[2]);
     ctx.fillText(`R₁·R₄ / (R₂·R₃) = ${ratio.toFixed(3)}  (balance ⇔ ratio = 1)`, 16, 80);
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Adjust resistors with the sliders. Bridge balances when R₁ R₄ = R₂ R₃.', 16, H - 12);
   }
 
@@ -147,7 +147,7 @@ export function mount(rootEl) {
     const mx = (a.x + b.x) / 2 + px * 18;
     const my = (a.y + b.y) / 2 + py * 18;
     ctx.fillStyle = color;
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, mx - 30, my);
   }
 

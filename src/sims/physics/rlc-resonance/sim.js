@@ -52,9 +52,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`f₀ = 1/(2π√(LC)) = ${fr.toFixed(0)} Hz`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const imp = impedance(f);
     ctx.fillText(`f=${f} Hz   X_L=${imp.XL.toFixed(1)}   X_C=${imp.XC.toFixed(1)}   I=${(I*1000).toFixed(2)} mA`, 16, 44);
   }
@@ -96,7 +96,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#ef4444';
     ctx.strokeRect(x + w * 0.3, y + 22, 60, 16);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`R = ${params.R}Ω`, x + w * 0.3 + 30, y + 14);
 
@@ -126,9 +126,9 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#fbbf24';
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '14px var(--font-sans)';
+    ctx.font = '14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('~', x + 30, cy + 5);
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.Vsrc}V`, x + 30, cy + 30);
     ctx.textAlign = 'left';
   }
@@ -166,7 +166,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`f₀=${fr.toFixed(0)}`, sx + 4, y + 14);
     }
 
@@ -180,7 +180,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Current vs frequency (log)', x + 6, y - 4);
     ctx.fillText('Hz →', x + w - 30, y + h + 14);
 

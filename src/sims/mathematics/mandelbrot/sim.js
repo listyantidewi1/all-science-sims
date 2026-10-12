@@ -59,7 +59,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`zoom: ${params.zoom.toFixed(2)}×    center: (${params.cx.toFixed(4)}, ${params.cy.toFixed(4)})    iter: ${params.maxIter}`, 16, 28);
 
     dirty = false;

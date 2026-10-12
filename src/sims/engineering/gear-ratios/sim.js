@@ -80,7 +80,7 @@ export function mount(rootEl) {
 
     // tooth count label
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${teeth}T`, cx, cy + r + 18);
     ctx.textAlign = 'left';
@@ -116,7 +116,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 88);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Input:  ${params.rpm.toFixed(1)} rpm    τ = ${params.torqueIn.toFixed(2)} N·m`, 16, 26);
     ctx.fillStyle = '#10b981';
     ctx.fillText(`Output: ${rpmOut.toFixed(2)} rpm    τ = ${tauOut.toFixed(3)} N·m`, 16, 44);
@@ -127,7 +127,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Adjust tooth counts and input RPM to feel the speed/torque trade-off.', 16, H - 10);
   }
 

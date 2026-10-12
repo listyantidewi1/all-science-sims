@@ -74,7 +74,7 @@ export function mount(rootEl) {
 
     // labels
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('sin θ', px + 8, (py + cy) / 2);
     ctx.fillStyle = '#0ea5e9';
     ctx.fillText('cos θ', (cx + px) / 2 - 14, cy + 16);
@@ -123,7 +123,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let m = 0; m <= 4; m++) {
       const xx = x2(m * Math.PI);
       ctx.fillText(`${m}π`, xx - 6, ry + rh / 2 + 14);
@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     const deg = (t * 180 / Math.PI) % 360;
     ctx.fillText(`θ = ${deg.toFixed(1)}° (${(t / Math.PI).toFixed(3)}π)`, 16, 26);
     ctx.fillStyle = '#10b981';

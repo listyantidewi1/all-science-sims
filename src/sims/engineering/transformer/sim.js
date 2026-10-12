@@ -58,9 +58,9 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(cx - 250, cy, 22, 0, Math.PI * 2); ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('~', cx - 254, cy + 5);
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`V₁ = ${params.V1peak}V`, cx - 280, cy + 40);
 
     // Secondary side wires + load
@@ -78,7 +78,7 @@ export function mount(rootEl) {
     ctx.lineTo(cx + 240, cy + 8); ctx.lineTo(cx + 260, cy + 14);
     ctx.stroke();
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`R = ${params.R_load}Ω`, cx + 270, cy + 5);
 
     // Animated current arrows
@@ -100,13 +100,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 90);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Turns ratio N₂/N₁ = ${params.N2}/${params.N1} = ${ratio.toFixed(2)}`, 16, 28);
     ctx.fillStyle = ratio > 1 ? '#10b981' : ratio < 1 ? '#ef4444' : '#fbbf24';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${ratio > 1 ? 'STEP-UP' : ratio < 1 ? 'STEP-DOWN' : 'ISOLATION'}`, 16, 48);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`V₂ = V₁ · N₂/N₁ = ${v2().toFixed(1)} V`, 16, 66);
     ctx.fillText(`I₂ = V₂/R = ${(i2() * 1000).toFixed(2)} mA    I₁ = I₂·N₂/N₁ = ${(i1() * 1000).toFixed(2)} mA`, 16, 82);
   }
@@ -125,7 +125,7 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     ctx.fillStyle = color;
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`N = ${N}`, x + (side === 'left' ? -6 : 14), btm + 18);
   }
 

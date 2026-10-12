@@ -70,14 +70,14 @@ export function mount(rootEl) {
     ctx.strokeRect(cardX, cardY, cardW, cardH);
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Your annual footprint', cardX + 16, cardY + 24);
     const colorTotal = total < 2 ? '#10b981' : total < 5 ? '#fbbf24' : '#ef4444';
     ctx.fillStyle = colorTotal;
-    ctx.font = 'bold 56px var(--font-mono)';
+    ctx.font = 'bold 56px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(total.toFixed(2), cardX + 16, cardY + 86);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('tons CO₂-eq / year', cardX + 16, cardY + 108);
 
     // benchmark gauge
@@ -94,7 +94,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(x, gy - 4); ctx.lineTo(x, gy + gh + 4); ctx.stroke();
       ctx.fillStyle = color;
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, x - 30, gy + gh + 16);
     }
     mark(2, '2°C target', '#10b981');
@@ -103,7 +103,7 @@ export function mount(rootEl) {
 
     // Comparison messages
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     let msgY = cardY + 200;
     ctx.fillText(`vs global avg (4.7t):  ${(total / 4.7).toFixed(2)}×`, cardX + 16, msgY); msgY += 18;
     ctx.fillText(`vs 2°C target (2t):     ${(total / 2).toFixed(2)}×`, cardX + 16, msgY); msgY += 18;
@@ -133,7 +133,7 @@ export function mount(rootEl) {
       ctx.fillStyle = c;
       ctx.fillRect(bx, y, bw * frac, barH);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(s.name, bx + 8, y + 16);
       ctx.fillStyle = '#fbbf24';
       ctx.fillText(`${s.t.toFixed(2)} t`, bx + bw - 60, y + 16);

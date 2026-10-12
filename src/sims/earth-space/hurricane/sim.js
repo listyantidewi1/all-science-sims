@@ -127,12 +127,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = inten > 0.5 ? '#ef4444' : inten > 0 ? '#fbbf24' : '#94a3b8';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(cat.name, 16, 30);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Sustained winds ~${cat.winds} km/h`, 16, 50);
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(255,255,255,0.7)';
     ctx.fillText(`SST ${params.sst}°C   lat ${params.latitude}°   shear ${params.shear} m/s`, 16, 64);
   }

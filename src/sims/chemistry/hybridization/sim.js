@@ -109,7 +109,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('C', central.x, central.y + 5);
     ctx.textAlign = 'left';
@@ -119,16 +119,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(t.name, 16, 28);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`bond angle ${t.angle}°    ${t.count} hybrid orbitals`, 16, 46);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Example: ${t.example}`, 16, 62);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag to rotate', 12, H - 12);
   }
 

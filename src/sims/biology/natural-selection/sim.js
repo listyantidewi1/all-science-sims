@@ -115,7 +115,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.45)';
     ctx.fillRect(gx, gy, gw, gh);
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Mean Δhue from background', gx + 4, gy + 12);
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
@@ -131,7 +131,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(8, 8, 200, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Generation ${gen}    n = ${pop.length}`, 14, 28);
   }
 

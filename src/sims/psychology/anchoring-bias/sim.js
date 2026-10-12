@@ -73,7 +73,7 @@ export function mount(rootEl) {
     ctx.moveTo(x2(q.truth), padY); ctx.lineTo(x2(q.truth), padY + h);
     ctx.stroke();
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`truth = ${q.truth}`, x2(q.truth) + 6, padY + 14);
 
     // Anchor marker
@@ -109,12 +109,12 @@ export function mount(rootEl) {
     ctx.moveTo(x2(meanEst), padY); ctx.lineTo(x2(meanEst), padY + h);
     ctx.stroke();
     ctx.fillStyle = '#ef4444';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`avg estimate = ${meanEst.toFixed(0)}`, x2(meanEst) + 6, padY + 50);
 
     // x-axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (const v of [lo, lo * Math.sqrt(hi / lo), hi]) {
       ctx.fillText(v.toFixed(0), x2(v) - 12, padY + h + 14);
     }
@@ -123,15 +123,15 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Q: ${q.name}`, 16, 30);
     const bias = (meanEst - q.truth) / q.truth * 100;
     ctx.fillStyle = bias > 0 ? '#fbbf24' : '#0ea5e9';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Bias: avg estimate is ${bias > 0 ? '+' : ''}${bias.toFixed(1)}% off the truth`, 16, 50);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the orange anchor — population estimates pull toward it (strength controls "stickiness").', padX, H - 12);
   }
 

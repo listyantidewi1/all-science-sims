@@ -60,7 +60,7 @@ export function mount(rootEl) {
     for (let s = 0; s <= Smax; s += 25) {
       ctx.beginPath(); ctx.moveTo(x2(s), padY); ctx.lineTo(x2(s), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`$${s}`, x2(s) - 8, padY + gH + 14);
     }
 
@@ -135,19 +135,19 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(16, 22 - 8, 12, 4);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Call: $${cur.call.toFixed(3)}`, 36, 26);
     ctx.fillStyle = '#ec4899';
     ctx.fillRect(16, 44 - 8, 12, 4);
     ctx.fillStyle = '#fff';
     ctx.fillText(`Put:  $${cur.put.toFixed(3)}`, 36, 44);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`d₁=${cur.d1.toFixed(3)}  d₂=${cur.d2.toFixed(3)}`, 16, 62);
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Stock price S →', padX + gW - 100, padY + gH + 14);
   }
 

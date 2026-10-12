@@ -60,13 +60,13 @@ export function mount(rootEl) {
     for (let c = 200; c <= 1500; c += 200) {
       ctx.beginPath(); ctx.moveTo(x2(c), padY); ctx.lineTo(x2(c), padY + h); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${c}`, x2(c) - 12, padY + h + 14);
     }
     for (let p = 7.5; p <= 8.3; p += 0.1) {
       ctx.beginPath(); ctx.moveTo(padX, y2pH(p)); ctx.lineTo(padX + w, y2pH(p)); ctx.stroke();
       ctx.fillStyle = '#0ea5e9';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(p.toFixed(1), padX - 28, y2pH(p) + 3);
     }
     for (let om = 0; om <= 6; om += 1) {
@@ -82,7 +82,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#ef4444';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Ω = 1: shells dissolve below this', padX + 6, y2om(1) - 4);
 
     // pH curve
@@ -120,7 +120,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${r.label}`, x2(r.c) + 3, padY + 12);
     }
 
@@ -140,24 +140,24 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(padX + 16, padY + 22, 18, 3);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`pH = ${pHFromCO2(params.co2).toFixed(2)}`, padX + 40, padY + 26);
     ctx.fillStyle = '#10b981';
     ctx.fillRect(padX + 16, padY + 40, 18, 3);
     ctx.fillStyle = '#fff';
     ctx.fillText(`Ω = ${omegaFromCO2(params.co2).toFixed(2)}`, padX + 40, padY + 44);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`atmospheric CO₂ = ${params.co2.toFixed(0)} ppm`, padX + 40, padY + 60);
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Atmospheric CO₂ (ppm) →', padX + w - 160, padY + h + 30);
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag horizontally to set CO₂ · pH (left axis, blue) · Ω (right axis, green)', padX, H - 10);
 
     // Hover crosshair

@@ -106,7 +106,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.7)';
     ctx.strokeRect(30, barY, barW, barH);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`True positives ${r.TP}`, 36, barY + 20);
     ctx.fillText(`False positives ${r.FP}`, 30 + barW * tpFrac + 10, barY + 20);
 
@@ -114,9 +114,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, H - 70, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`P(disease | positive) = ${(r.PPV * 100).toFixed(2)}%`, 16, H - 48);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`prev=${(params.prevalence*100).toFixed(2)}%  sens=${(params.sensitivity*100).toFixed(1)}%  spec=${(params.specificity*100).toFixed(1)}%`, 16, H - 28);
     ctx.fillText(`Of ${r.N} people: ${r.sick} sick, ${r.TP} TP, ${r.FN} FN, ${r.FP} FP, ${r.TN} TN`, 16, H - 14);
 
@@ -131,13 +131,13 @@ export function mount(rootEl) {
       ctx.fillStyle = lg[k][0];
       ctx.fillRect(W - 170, H - 70 + k * 16, 12, 12);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(lg[k][1], W - 154, H - 60 + k * 16);
     }
 
     // Hint about drag
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Hover dots for details · drag inside the grid to set prevalence', startX, startY - 6);
 
     // Hover crosshair / tooltip

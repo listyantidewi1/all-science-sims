@@ -90,7 +90,7 @@ export function mount(rootEl) {
       ctx.stroke();
       const yy = y2(params.N0 * Math.pow(0.5, k));
       ctx.fillStyle = 'rgba(245,158,11,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${k}T`, x2(ht) + 2, gy + 10);
       ctx.fillText(`N₀/${1 << k}`, gx + 4, yy + 4);
     }
@@ -125,7 +125,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Atoms remaining', gx + 6, gy - 4);
     ctx.fillText('time (s) →', gx + gw - 60, gy + gh + 14);
 
@@ -133,7 +133,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${alive}/${params.N0} alive    t=${t.toFixed(1)} s`, 16, 28);
 
     const probe = hover.get();

@@ -70,7 +70,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`p=${params.p.toFixed(3)}    q=${params.q.toFixed(2)}    M=${params.M}    N=${N.toFixed(0)}`, 14, 28);
   }
 
@@ -91,7 +91,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(label, x + 6, y - 4);
     ctx.fillText('time →', x + w - 50, y + h + 14);
   }

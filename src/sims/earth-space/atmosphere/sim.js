@@ -89,7 +89,7 @@ export function mount(rootEl) {
       ctx.fillStyle = lay.color;
       ctx.fillRect(40, yy, W - 240, prevY - yy);
       ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`${lay.name} (≤ ${lay.top} km)`, 50, (yy + prevY) / 2 + 4);
       prevY = yy;
     }
@@ -105,7 +105,7 @@ export function mount(rootEl) {
     }
     ctx.stroke();
     ctx.fillStyle = '#ef4444';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Temperature', W - 200, 22);
 
     // Probe marker
@@ -129,7 +129,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#fbbf24';
       ctx.beginPath(); ctx.arc(W - 200, ly, 4, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = 'rgba(251,191,36,0.85)';
-      ctx.font = '10px var(--font-sans)';
+      ctx.font = '10px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`${l.name} (${l.alt} km)`, W - 192, ly + 3);
     }
 
@@ -137,9 +137,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 76);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${params.alt.toFixed(1)} km — ${layer(params.alt)}`, 16, 26);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T = ${tempC(params.alt).toFixed(1)} °C`, 16, 46);
     ctx.fillText(`P = ${pressureKPa(params.alt).toFixed(2)} kPa`, 16, 62);
     ctx.fillText(`ρ = ${densityKgM3(params.alt).toExponential(2)} kg/m³`, 16, 78);

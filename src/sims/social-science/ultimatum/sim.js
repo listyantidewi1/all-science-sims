@@ -69,7 +69,7 @@ export function mount(rootEl) {
     ctx.stroke();
     // labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`Proposer keeps`, cx, cy - r - 14);
     ctx.fillText(`$${(params.pot * (1 - offer)).toFixed(2)}`, cx - r - 30, cy);
@@ -91,7 +91,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = 'rgba(245,158,11,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`threshold ${(params.responderThreshold * 100).toFixed(0)}%`, hx + 6, tY - 4);
 
     // bars
@@ -107,14 +107,14 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Offers per round (green = accepted, red = rejected)', hx + 6, hy - 4);
 
     // header
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 32);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Rounds ${params.rounds}    Accepted ${params.accepted}    P-total $${params.proposerTotal.toFixed(2)}    R-total $${params.responderTotal.toFixed(2)}`, 14, 28);
   }
 

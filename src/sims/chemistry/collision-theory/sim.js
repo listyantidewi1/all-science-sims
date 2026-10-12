@@ -130,9 +130,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 64);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`A: ${A.length}    B: ${B.length}    C: ${C.length}`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Collisions: ${collisions}    Reactions: ${reactions}`, 16, 44);
     ctx.fillText(`Rate ≈ ${rateEMA.toFixed(1)} /s    T=${params.T} K   Eₐ=${params.Ea}`, 16, 62);
   }

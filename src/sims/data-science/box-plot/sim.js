@@ -66,7 +66,7 @@ export function mount(rootEl) {
     const s = summary();
     if (!s) {
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '13px var(--font-mono)';
+      ctx.font = '13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('Type some numbers above to see the box plot.', 30, H / 2);
       return;
     }
@@ -87,7 +87,7 @@ export function mount(rootEl) {
     for (let i = 0; i <= 6; i++) {
       const v = xMin + (i / 6) * (xMax - xMin);
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(v.toFixed(0), x2(v) - 8, axisY + 86);
       ctx.beginPath(); ctx.moveTo(x2(v), axisY + 70); ctx.lineTo(x2(v), axisY + 76); ctx.stroke();
     }
@@ -125,7 +125,7 @@ export function mount(rootEl) {
 
     // Labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     function tag(v, label, color, dy) {
       ctx.fillStyle = color;
       ctx.fillText(`${label}=${v.toFixed(1)}`, x2(v) - 30, boxY + boxH + 24 + dy);
@@ -150,9 +150,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 140);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('5-number summary', 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     let yy = 48;
     ctx.fillText(`min   = ${s.min.toFixed(2)}`, 16, yy); yy += 16;
     ctx.fillText(`Q1    = ${s.q1.toFixed(2)}`, 16, yy); yy += 16;

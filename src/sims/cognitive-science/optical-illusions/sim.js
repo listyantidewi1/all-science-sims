@@ -38,7 +38,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 38);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(ILLUSIONS[params.which].name, 16, 30);
   }
 
@@ -59,7 +59,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('both line ends align — same length', cx - 100, cy + 140);
     }
   }
@@ -225,7 +225,7 @@ export function mount(rootEl) {
     const Ax = start + 1 * tile + tile / 2, Ay = top + 5 * tile + tile / 2;
     const Bx = start + 5 * tile + tile / 2, By = top + 3 * tile + tile / 2;
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-mono)';
+    ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('A', Ax, Ay + 4);
     ctx.fillText('B', Bx, By + 4);
@@ -236,7 +236,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#7c2d12';   // approximate the actual color
       ctx.fillRect(Ax - 20, Ay + 16, Bx - Ax + 40, 20);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('A and B are the same color', Ax + 80, Ay + 60);
     }
   }

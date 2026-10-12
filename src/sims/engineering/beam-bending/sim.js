@@ -95,7 +95,7 @@ export function mount(rootEl) {
     ctx.moveTo(lx - 6, beamY - 18); ctx.lineTo(lx, beamY - 8); ctx.lineTo(lx + 6, beamY - 18);
     ctx.closePath();
     ctx.fill();
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`P = ${params.P} kN`, lx - 28, beamY - 56);
 
     // Three diagrams stacked below
@@ -117,7 +117,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the load arrow along the beam · hover any diagram for values', padX, H - 8);
   }
 
@@ -162,7 +162,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(label, x + 4, y + 12);
   }
 

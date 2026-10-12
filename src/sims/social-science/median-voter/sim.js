@@ -88,7 +88,7 @@ export function mount(rootEl) {
     ctx.moveTo(padX, lineY); ctx.lineTo(W - padX, lineY);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Left', padX, lineY + 18);
     ctx.fillText('Center', W / 2 - 18, lineY + 18);
     ctx.fillText('Right', W - padX - 30, lineY + 18);
@@ -120,11 +120,11 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(c.name, x - 4, lineY + 4);
       // score
       ctx.fillStyle = c.color;
-      ctx.font = 'bold 14px var(--font-mono)';
+      ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
       const pct = ((wins[i] / total) * 100).toFixed(1);
       const isWinner = i === winnerIdx;
       ctx.fillText(`${pct}%${isWinner ? ' ★' : ''}`, x - 24, lineY - 28);
@@ -141,11 +141,11 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('median voter', mx + 4, padY + 12);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag candidate dots', padX, H - 12);
   }
 

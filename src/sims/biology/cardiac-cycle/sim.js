@@ -90,10 +90,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = p.color;
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Phase: ${p.name}`, 16, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`P = ${pressure(phi, params.contractility).toFixed(0)} mmHg    V = ${volume(phi).toFixed(0)} mL`, 16, 46);
   }
 
@@ -117,7 +117,7 @@ export function mount(rootEl) {
 
     // Chambers indicator
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Heart  ${params.bpm} bpm`, x + 10, y + 20);
     ctx.fillText(`vol ${v.toFixed(0)} mL`, x + 10, y + 40);
 
@@ -145,7 +145,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Pressure-Volume loop', x + 6, y - 6);
     ctx.fillText('Volume (mL) →', x + w - 100, y + h + 16);
     ctx.save(); ctx.translate(x - 40, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);

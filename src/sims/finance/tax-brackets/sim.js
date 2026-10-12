@@ -94,9 +94,9 @@ export function mount(rootEl) {
       ctx.lineWidth = 1;
       ctx.strokeRect(x2(lower), padY, x2(upper) - x2(lower), stripH);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(b.rate * 100).toFixed(0)}%`, x2(lower) + 4, padY + 18);
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(b.limit === Infinity ? '∞' : `${sched.currency}${(b.limit / 1000).toFixed(0)}k`,
         x2(lower) + 4, padY + 36);
       lower = upper;
@@ -110,7 +110,7 @@ export function mount(rootEl) {
     ctx.moveTo(incomeX, padY - 8); ctx.lineTo(incomeX, padY + stripH + 8);
     ctx.stroke();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${sched.currency}${params.income.toLocaleString()}`, incomeX + 4, padY - 12);
 
     // Tax breakdown
@@ -121,7 +121,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 380, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(sched.name, 16, 28);
 
     // Bar chart of dollars per bracket
@@ -152,7 +152,7 @@ export function mount(rootEl) {
       ctx.fillStyle = s.color;
       ctx.fillRect(xx, padY2 + 8 + (totalH - taxH), w, taxH);
       ctx.fillStyle = '#fff';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       if (w > 60) {
         ctx.fillText(`${sched.currency}${s.slice.toLocaleString()}`, xx + 4, padY2 + 22);
         ctx.fillText(`tax ${sched.currency}${taxPart.toFixed(0)}`, xx + 4, padY2 + 38);
@@ -160,14 +160,14 @@ export function mount(rootEl) {
       xx += w;
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Income broken into bracket slices; the colored portion is tax', padX, padY2 - 6);
 
     // Bottom totals
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, H - 32, 480, 24);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Total tax: ${sched.currency}${tax.toFixed(0)}    Effective: ${(effective*100).toFixed(2)}%    Marginal: ${(marg*100).toFixed(0)}%    Take-home: ${sched.currency}${(params.income - tax).toFixed(0)}`, 16, H - 14);
   }
 

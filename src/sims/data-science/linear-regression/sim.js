@@ -112,7 +112,7 @@ export function mount(rootEl) {
     }
 
     // points
-    ctx.fillStyle = 'var(--color-fg)';
+    ctx.fillStyle = getComputedStyle(cv.canvas).getPropertyValue('--color-fg').trim() || '#e5e7eb';
     for (const p of state.points) {
       ctx.beginPath();
       ctx.arc(w2sX(p.x, W), w2sY(p.y, H), 4.5, 0, Math.PI * 2);
@@ -121,7 +121,7 @@ export function mount(rootEl) {
 
     // readout
     ctx.fillStyle = 'rgba(120,130,150,0.9)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     const myErr = ssr(state.points, state.userSlope, state.userIntercept).toFixed(2);
     let txt = `Your line: y = ${state.userSlope.toFixed(2)}x + ${state.userIntercept.toFixed(2)}    SSR = ${myErr}`;
     ctx.fillText(txt, 12, 18);

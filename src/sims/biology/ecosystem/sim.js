@@ -152,7 +152,7 @@ export function mount(rootEl) {
       history.forEach((p, i) => i === 0 ? ctx.moveTo(x2(i), y2(p.f)) : ctx.lineTo(x2(i), y2(p.f)));
       ctx.stroke();
       ctx.fillStyle = '#fef9c3';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`R: ${rabbits.length}`, gx + 6, gy + 14);
       ctx.fillStyle = '#dc2626';
       ctx.fillText(`F: ${foxes.length}`, gx + 60, gy + 14);

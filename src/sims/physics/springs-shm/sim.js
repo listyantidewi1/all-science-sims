@@ -81,7 +81,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.strokeRect(cx - 26, massY - 22, 52, 44);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(`${params.m.toFixed(1)} kg`, cx, massY + 5);
     ctx.textAlign = 'left';
@@ -102,11 +102,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(8, 8, 230, 38);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`T = 2π√(m/k) = ${T.toFixed(2)} s`, 16, 28);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the blue mass up or down', 12, H - 12);
   }
 
@@ -145,7 +145,7 @@ export function mount(rootEl) {
     ctx.stroke();
     // y-axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('+A', x + 4, y + h * 0.15);
     ctx.fillText('0', x + 4, y + h / 2 + 12);
     ctx.fillText('−A', x + 4, y + h * 0.85);

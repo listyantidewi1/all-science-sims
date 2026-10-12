@@ -89,7 +89,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.strokeRect(platex, 0, 30, H);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.save(); ctx.translate(platex + 15, H / 2); ctx.rotate(-Math.PI / 2);
     ctx.fillText(METALS[params.metal].name + ` (φ=${METALS[params.metal].phi} eV)`, -50, 4);
     ctx.restore();
@@ -100,7 +100,7 @@ export function mount(rootEl) {
     ctx.arc(40, 40, 24, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#0b1220';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('lamp', 25, 80);
 
     // photons
@@ -132,13 +132,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 80);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f = ${(params.frequency * 1e-14).toFixed(2)}×10¹⁴ Hz`, 16, 26);
     ctx.fillText(`hf = ${(h * params.frequency).toFixed(2)} eV`, 16, 44);
     ctx.fillStyle = ke > 0 ? '#10b981' : '#ef4444';
     ctx.fillText(ke > 0 ? `KE_max = ${ke.toFixed(2)} eV (electrons emitted)` : 'No emission (hf < φ)', 16, 62);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`threshold f₀ = ${(f0 * 1e-14).toFixed(2)}×10¹⁴ Hz`, 16, 80);
   }
 

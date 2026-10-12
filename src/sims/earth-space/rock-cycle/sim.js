@@ -100,11 +100,11 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(s.toUpperCase(), cx, cy - 100);
       ctx.fillStyle = COLORS[s];
-      ctx.font = 'bold 24px var(--font-mono)';
+      ctx.font = 'bold 24px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${counts[s]}`, cx, cy + 8);
       ctx.textAlign = 'left';
     }
@@ -140,7 +140,7 @@ export function mount(rootEl) {
       ctx.fill();
       // label
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, (sx + ex) / 2 - 30, (sy + ey) / 2);
     }
 
@@ -157,7 +157,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 30);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('The Rock Cycle — particles flowing between rock types', 16, 28);
   }
 

@@ -44,12 +44,12 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.strokeRect(p1x - 60, py - 60, 120, 120);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Player 1', p1x, py - 30);
-    ctx.font = 'bold 22px var(--font-mono)';
+    ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`$${r.p1.toFixed(2)}`, p1x, py + 8);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('start: $10', p1x, py + 36);
 
     // Player 2
@@ -58,9 +58,9 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#fff';
     ctx.strokeRect(p2x - 60, py - 60, 120, 120);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Player 2', p2x, py - 30);
-    ctx.font = 'bold 22px var(--font-mono)';
+    ctx.font = 'bold 22px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`$${r.p2.toFixed(2)}`, p2x, py + 8);
     ctx.textAlign = 'left';
 
@@ -78,7 +78,7 @@ export function mount(rootEl) {
       ctx.lineTo(p2x - 70, py - 24);
       ctx.closePath();
       ctx.fill();
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`sends $${r.sent.toFixed(2)} → ×${params.multiplier} = $${r.tripled.toFixed(2)}`, (p1x + p2x) / 2 - 80, py - 36);
     }
 
@@ -96,7 +96,7 @@ export function mount(rootEl) {
       ctx.lineTo(p1x + 70, py + 36);
       ctx.closePath();
       ctx.fill();
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`returns $${r.returned.toFixed(2)}`, (p1x + p2x) / 2 - 50, py + 50);
     }
 
@@ -104,10 +104,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 44);
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Total welfare: $${r.total.toFixed(2)}`, 16, 28);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     const ratio = r.p2 > 0 && r.p1 > 0 ? `${(r.p1 / r.total * 100).toFixed(0)} : ${(r.p2 / r.total * 100).toFixed(0)}` : '—';
     ctx.fillText(`P1:P2 split = ${ratio}    (no-trust baseline = $${params.endowment})`, 16, 46);
   }

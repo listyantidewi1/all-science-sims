@@ -75,7 +75,7 @@ export function mount(rootEl) {
     }
 
     // planets
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     for (const p of PLANETS) {
       const angle = (state.t / p.period) * Math.PI * 2;
       const r = scale(p.au);
@@ -93,7 +93,7 @@ export function mount(rootEl) {
 
     // readout
     ctx.fillStyle = 'rgba(180,190,210,0.85)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`t = ${state.t.toFixed(2)} yr`, 12, 18);
   }
 

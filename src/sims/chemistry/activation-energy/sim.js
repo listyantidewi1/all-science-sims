@@ -101,7 +101,7 @@ export function mount(rootEl) {
 
     // Annotations
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Reactants', x2(xR) - 30, y2(yR) - 8);
     ctx.fillText('Products', x2(xP) - 30, y2(yP) - 8);
     ctx.fillStyle = '#fbbf24';
@@ -115,7 +115,7 @@ export function mount(rootEl) {
     ctx.moveTo(cx, y2(yR)); ctx.lineTo(cx, y2(yT));
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Eₐ = ${effEa().toFixed(1)} kJ/mol`, cx + 6, (y2(yR) + y2(yT)) / 2);
     // ΔH arrow
     const dhX = x2(0.7);
@@ -130,10 +130,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Reaction rate k = A·exp(−Eₐ/RT) = ${rate().toExponential(2)} s⁻¹`, 16, 28);
     ctx.fillStyle = params.catalyst ? '#10b981' : 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T = ${params.T} K   Eₐ_eff = ${effEa().toFixed(1)} kJ/mol${params.catalyst ? ' (catalyzed)' : ''}`, 16, 48);
     ctx.fillStyle = params.deltaH > 0 ? '#ef4444' : '#10b981';
     ctx.fillText(params.deltaH > 0 ? 'endothermic' : 'exothermic', 16, 64);

@@ -141,7 +141,7 @@ export function mount(rootEl) {
     ctx.fillRect(8, 8, 200, 50);
     ctx.fillRect(W - 208, 8, 200, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Left: ${wL} water, ${params.saltLeft} salt`, 16, 28);
     ctx.fillText(`${concL}% solute`, 16, 46);
     ctx.fillText(`Right: ${wR} water, ${params.saltRight} salt`, W - 200, 28);
@@ -163,7 +163,7 @@ export function mount(rootEl) {
         ctx.moveTo(cx + 30, cy + 50); ctx.lineTo(cx - 30, cy + 50);
       }
       ctx.stroke();
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('water flow', cx - 28, cy + 70);
     }
   }

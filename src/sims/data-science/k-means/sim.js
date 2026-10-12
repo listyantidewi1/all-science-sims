@@ -123,10 +123,10 @@ export function mount(rootEl) {
     }
     // header
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`k = ${state.k}    iter = ${state.iter}    ${state.converged ? '✓ converged' : ''}`, 12, 18);
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click empty space to add · drag any point or centroid · right-click to remove', W - 460, H - 12);
   }
 

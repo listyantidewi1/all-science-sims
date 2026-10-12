@@ -91,7 +91,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.strokeRect(x - sz / 2, y, sz, sz);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${m.toFixed(1)} kg`, x, y + sz / 2 + 4);
       ctx.textAlign = 'left';
@@ -105,11 +105,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 90);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`a = (m₁ − m₂)g / (m₁ + m₂) = ${a.toFixed(3)} m/s²`, 16, 28);
     ctx.fillText(`T = 2 m₁ m₂ g / (m₁ + m₂) = ${T.toFixed(2)} N`, 16, 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`m₁g = ${(params.m1 * g).toFixed(2)} N    m₂g = ${(params.m2 * g).toFixed(2)} N`, 16, 66);
     ctx.fillText(`v = ${state.vy.toFixed(2)} m/s`, 16, 82);
   }

@@ -70,13 +70,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 360, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Sample x̄ = ${sMean.toFixed(2)}    s = ${sSd.toFixed(2)}`, 16, 26);
     if (ci) {
       ctx.fillStyle = '#10b981';
       ctx.fillText(`Bootstrap 95% CI: [${ci.lo.toFixed(2)}, ${ci.hi.toFixed(2)}]`, 16, 44);
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Parametric SE = s/√n = ${seParam.toFixed(2)} → ±${(1.96 * seParam).toFixed(2)}`, 16, 62);
     }
   }
@@ -98,7 +98,7 @@ export function mount(rootEl) {
       ctx.fill();
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Sample (n=${sample.length})`, x + 6, y + 14);
   }
 
@@ -135,7 +135,7 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Bootstrap means (${bootMeans.length})`, x + 6, y + 14);
   }
 

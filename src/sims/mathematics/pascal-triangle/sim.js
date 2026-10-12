@@ -84,7 +84,7 @@ export function mount(rootEl) {
         const txt = String(v);
         const fontSize = Math.max(8, Math.min(14, r.w * 0.4));
         ctx.fillStyle = isSelected ? '#0b1220' : '#fff';
-        ctx.font = `bold ${fontSize}px var(--font-mono)`;
+        ctx.font = `bold ${fontSize}px ui-monospace, Menlo, Consolas, monospace`;
         ctx.textAlign = 'center';
         ctx.fillText(txt, r.x + r.w / 2, r.y + r.h / 2 + fontSize / 3);
         ctx.textAlign = 'left';
@@ -95,17 +95,17 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText("Pascal's triangle — click any cell", 16, 30);
     if (selected) {
       ctx.fillStyle = '#fbbf24';
-      ctx.font = '12px var(--font-mono)';
+      ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
       const v = T[selected.row][selected.col];
       ctx.fillText(`C(${selected.row}, ${selected.col}) = ${v}  (highlighted = ${countPaths(reach)} paths from apex)`, 340, 30);
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Each cell = sum of the two cells above it', 16, H - 12);
   }
 

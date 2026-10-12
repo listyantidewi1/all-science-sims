@@ -193,7 +193,7 @@ export function mount(rootEl) {
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`P = ${params.loadP} kN`, lp.x, lp.y - 66);
     ctx.textAlign = 'left';
@@ -202,9 +202,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Tension (red)   /   Compression (blue)', 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Ra = ${result.reactions.Ry0.toFixed(2)} kN     Rb = ${result.reactions.Ry3.toFixed(2)} kN`, 16, 44);
     const worst = result.memberForces.reduce((acc, f, i) => Math.abs(f) > Math.abs(acc.F) ? { F: f, idx: i } : acc, { F: 0, idx: -1 });
     ctx.fillText(`worst member: F = ${worst.F.toFixed(2)} kN`, 16, 60);
@@ -223,7 +223,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the load arrow along the deck · hover any member for its force', 16, H - 12);
   }
 

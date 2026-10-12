@@ -96,11 +96,11 @@ export function mount(rootEl) {
 
       // header
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`Dataset ${i + 1}`, r.x + 6, r.y + 16);
       if (showStats) {
         ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`x̄ ${s.mx.toFixed(2)}  ȳ ${s.my.toFixed(2)}`, r.x + 6, r.y + 30);
         ctx.fillText(`var ${s.vx.toFixed(2)},${s.vy.toFixed(2)}`, r.x + 6, r.y + 44);
         ctx.fillText(`r ${s.r.toFixed(3)}`, r.x + 6, r.y + 58);

@@ -96,7 +96,7 @@ export function mount(rootEl) {
     ctx.arc(geom.baseX, geom.baseY, 28, -geom.theta, 0);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`θ = ${params.angleDeg.toFixed(1)}°`, geom.baseX + 32, geom.baseY - 6);
 
     // Block
@@ -112,7 +112,7 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.strokeRect(0, -blockSz, blockSz, blockSz);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${params.mass} kg`, blockSz / 2, -blockSz / 2 + 4);
     ctx.textAlign = 'left';
@@ -132,18 +132,18 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 100);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Slide threshold: θ_s = ${slideAngle.toFixed(1)}°`, 16, 26);
     ctx.fillStyle = state.sliding ? '#ef4444' : '#10b981';
     ctx.fillText(state.sliding ? 'sliding' : 'static (stuck)', 16, 44);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`F‖ = mg sin θ = ${par.toFixed(2)} N`, 16, 62);
     ctx.fillText(`F⊥ = mg cos θ = ${perp.toFixed(2)} N`, 16, 78);
     ctx.fillText(`max static fric = μ_s · N = ${fStatMax.toFixed(2)} N    a = ${a.toFixed(2)} m/s²`, 16, 94);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the top of the ramp to set θ', 16, H - 10);
   }
 
@@ -180,7 +180,7 @@ export function mount(rootEl) {
     ctx.lineTo(x2 - sz * Math.cos(ang + 0.4), y2 - sz * Math.sin(ang + 0.4));
     ctx.closePath();
     ctx.fill();
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, x2 + 4, y2 + 4);
   }
 

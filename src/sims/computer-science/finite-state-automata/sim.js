@@ -114,7 +114,7 @@ export function mount(rootEl) {
         ctx.stroke();
       }
       ctx.fillStyle = isCurrent ? '#0b1220' : '#fff';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(s, sp[s].x, sp[s].y + 4);
       ctx.textAlign = 'left';
@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, W - 16, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`DFA: ${dfa.name}    input: "${params.input}"`, 16, tapeY);
 
     const charW = 24;
@@ -145,7 +145,7 @@ export function mount(rootEl) {
       ctx.fillStyle = head ? '#fbbf24' : consumed ? 'rgba(120,130,150,0.4)' : '#fff';
       ctx.fillRect(x, 40, charW - 2, 18);
       ctx.fillStyle = '#0b1220';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(params.input[i], x + charW / 2 - 1, 54);
       ctx.textAlign = 'left';
@@ -157,10 +157,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, H - 56, 380, 48);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Step ${stepIdx} / ${trace.length - 1}    final state: ${finalState ?? '(error)'}`, 16, H - 36);
     ctx.fillStyle = accepted ? '#10b981' : '#ef4444';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(accepted ? '✓ ACCEPT' : '✗ REJECT', 16, H - 16);
   }
 
@@ -173,7 +173,7 @@ export function mount(rootEl) {
       ctx.arc(a.x, a.y - 50, 18, 0, Math.PI * 2);
       ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.9)';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(label, a.x, a.y - 76);
       ctx.textAlign = 'left';
@@ -201,7 +201,7 @@ export function mount(rootEl) {
     ctx.fill();
     // Label
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, cx - 8, cy);
   }
 

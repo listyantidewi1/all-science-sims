@@ -125,8 +125,8 @@ export function mount(rootEl) {
     ctx.fillRect(stripX, stripY, stripW, stripH);
     ctx.strokeStyle = 'rgba(120,130,150,0.5)';
     ctx.strokeRect(stripX, stripY, stripW, stripH);
-    ctx.fillStyle = 'var(--color-fg)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.fillStyle = getComputedStyle(cv.canvas).getPropertyValue('--color-fg').trim() || '#e5e7eb';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     for (let p = 0; p <= 14; p += 2) {
       const x = stripX + (p / 14) * stripW;
       ctx.fillStyle = 'rgba(120,130,150,0.9)';
@@ -167,13 +167,13 @@ export function mount(rootEl) {
     ctx.fillRect(beakerX + 2, beakerY + 24, beakerW - 4, 4);
 
     // labels
-    ctx.fillStyle = 'var(--color-fg)';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.fillStyle = getComputedStyle(cv.canvas).getPropertyValue('--color-fg').trim() || '#e5e7eb';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`pH = ${state.pH.toFixed(1)}`, 30, H - 28);
     const cls = classify(state.pH);
     ctx.fillText(`${cls.en} / ${cls.id}`, 30, H - 8);
 
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = 'rgba(120,130,150,0.9)';
     ctx.fillText(INDICATORS[state.indicator].name, beakerX, beakerY - 6);
   }

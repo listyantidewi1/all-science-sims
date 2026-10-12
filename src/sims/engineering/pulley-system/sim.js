@@ -120,7 +120,7 @@ export function mount(rootEl) {
     ctx.fillRect(loadX, loadY, loadW, loadH);
     ctx.strokeRect(loadX, loadY, loadW, loadH);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${params.weight} kg`, loadX + loadW / 2, loadY + 30);
     ctx.textAlign = 'left';
@@ -131,7 +131,7 @@ export function mount(rootEl) {
     ctx.arc(handX, handY, 12, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('pull', handX, handY + 4);
     ctx.textAlign = 'left';
@@ -147,9 +147,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 90);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Mechanical advantage: ${N}×`, 16, 28);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#10b981';
     ctx.fillText(`Effort force F = mg/N = ${F.toFixed(1)} N`, 16, 46);
     ctx.fillStyle = '#fbbf24';
@@ -158,7 +158,7 @@ export function mount(rootEl) {
     ctx.fillText(`W_in ≈ ${Win.toFixed(0)} J   W_out ≈ ${Wout.toFixed(0)} J`, 16, 78);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red grip downward to pull the rope', 16, H - 10);
   }
 

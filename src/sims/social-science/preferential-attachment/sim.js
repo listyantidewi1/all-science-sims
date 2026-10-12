@@ -166,19 +166,19 @@ export function mount(rootEl) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = 'rgba(245,158,11,0.85)';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText('expected ~ k^-3', hx + hw - 100, hy + 14);
       }
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Degree distribution (log-log)`, hx + 6, hy - 4);
     ctx.fillText('degree k →', hx + hw - 70, hy + hh + 14);
 
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 32);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${nodes.length} nodes / ${params.targetN}    max degree: ${Math.max(...degrees, 0)}`, 16, 28);
   }
 

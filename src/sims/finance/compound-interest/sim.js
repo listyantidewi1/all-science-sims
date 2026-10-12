@@ -70,7 +70,7 @@ export function mount(rootEl) {
     for (let yr = 0; yr <= params.years; yr += Math.max(1, Math.round(params.years / 10))) {
       ctx.beginPath(); ctx.moveTo(x2(yr), padY); ctx.lineTo(x2(yr), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${yr}y`, x2(yr) - 8, padY + gH + 14);
     }
 
@@ -111,13 +111,13 @@ export function mount(rootEl) {
       ctx.fillStyle = c;
       ctx.fillRect(16, yy - 9, 12, 4);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(t, 36, yy);
       yy += 18;
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Compound interest grows exponentially; simple grows linearly.', 16, 80);
 
     const probe = hover.get();

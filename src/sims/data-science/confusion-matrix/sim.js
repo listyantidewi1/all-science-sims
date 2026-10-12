@@ -90,9 +90,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`thr=${params.threshold.toFixed(2)}    AUC=${auc().toFixed(3)}`, 16, 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`TP=${m.TP}  FN=${m.FN}  FP=${m.FP}  TN=${m.TN}`, 16, 42);
     ctx.fillText(`acc=${m.accuracy.toFixed(2)}  prec=${m.precision.toFixed(2)}  recall=${m.TPR.toFixed(2)}  F1=${m.f1.toFixed(2)}`, 16, 58);
   }
@@ -127,7 +127,7 @@ export function mount(rootEl) {
     ctx.moveTo(tx, y); ctx.lineTo(tx, y + h);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Negatives', x + 8, y + 14);
     ctx.fillStyle = 'rgba(239,68,68,0.85)';
     ctx.fillText('Positives', x + 80, y + 14);
@@ -162,7 +162,7 @@ export function mount(rootEl) {
     ctx.fill();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('FPR (false positive rate)', x + w / 2 - 70, y + h + 14);
     ctx.save(); ctx.translate(x - 8, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('TPR (true positive rate)', 0, 0); ctx.restore();

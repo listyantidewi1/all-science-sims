@@ -64,10 +64,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 90);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`n = ${n} sides`, 16, 26);
     ctx.fillStyle = '#10b981';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Inscribed:    π ≥ ${piIn.toFixed(8)}`, 16, 46);
     ctx.fillStyle = '#ec4899';
     ctx.fillText(`Circumscribed: π ≤ ${piOut.toFixed(8)}`, 16, 64);

@@ -80,7 +80,7 @@ export function mount(rootEl) {
 
     // header
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('INTERVAL', padX, 24);
     ctx.fillText('JUST RATIO', padX + 130, 24);
     ctx.fillText('JUST Hz', padX + 240, 24);
@@ -100,9 +100,9 @@ export function mount(rootEl) {
       const cents = centsDiff(i);
 
       ctx.fillStyle = '#fff';
-      ctx.font = '12px var(--font-sans)';
+      ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(iv.name, padX, y + 14);
-      ctx.font = '12px var(--font-mono)';
+      ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${iv.num}:${iv.den}`, padX + 130, y + 14);
       ctx.fillStyle = '#0ea5e9';
       ctx.fillText(justF.toFixed(2), padX + 240, y + 14);
@@ -122,7 +122,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Click a row to select · play "just" or "ET" to hear the difference · root = C4 (261.63 Hz)', padX, H - 14);
   }
 

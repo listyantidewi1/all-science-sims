@@ -103,10 +103,10 @@ export function mount(rootEl) {
       ctx.lineWidth = selected === s.id ? 3 : 2;
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = '20px var(--font-sans)';
+      ctx.font = '20px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(s.emoji, p.x, p.y + 6);
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(s.alive ? s.name : `${s.name} (extinct)`, p.x, p.y + r + 14);
       ctx.textAlign = 'left';
     }
@@ -116,10 +116,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Living species: ${aliveCt} / ${species.length}`, 16, 28);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag species to rearrange · click two species to toggle a prey arrow', 16, 46);
   }
 

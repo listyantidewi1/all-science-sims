@@ -92,7 +92,7 @@ export function mount(rootEl) {
 
     // Labels
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`a = ${a.toFixed(2)}`, p.A.x - aPx / 2 - 10, p.C.y + aPx / 2);
     ctx.fillText(`b = ${b.toFixed(2)}`, p.A.x + bPx / 2 - 16, p.A.y + bPx / 2 + 6);
     ctx.fillText(`c = ${c.toFixed(2)}`, (p.B.x + p.C.x) / 2 + 10, (p.B.y + p.C.y) / 2);
@@ -101,13 +101,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`a² + b² = c²`, 16, 28);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${(a * a).toFixed(2)} + ${(b * b).toFixed(2)} = ${(c * c).toFixed(2)} ✓`, 16, 44);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red dots at B (right) and C (top)', 12, H - 12);
   }
 

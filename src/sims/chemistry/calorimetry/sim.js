@@ -72,16 +72,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Predicted T_f = ${Tf.toFixed(2)} °C`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText(`(m₁ c₁ T₁ + m₂ c₂ T₂) / (m₁ c₁ + m₂ c₂)`, 16, 46);
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`Live: T₁ = ${state.T1.toFixed(1)} °C, T₂ = ${state.T2.toFixed(1)} °C`, 16, 62);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Both objects are in thermal contact and exchange heat until T₁ = T₂ = T_f.', padX, H - 12);
   }
 
@@ -121,10 +121,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(x + 8, y + 8, w - 16, 70);
     ctx.fillStyle = color;
-    ctx.font = 'bold 16px var(--font-mono)';
+    ctx.font = 'bold 16px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(sub.name, x + 16, y + 28);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`mass: ${m} g`, x + 16, y + 46);
     ctx.fillText(`c = ${sub.c} J/g·°C`, x + 16, y + 62);
 
@@ -132,10 +132,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(x + 8, y + h - 60, w - 16, 50);
     ctx.fillStyle = color;
-    ctx.font = 'bold 24px var(--font-mono)';
+    ctx.font = 'bold 24px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${T.toFixed(1)} °C`, x + 16, y + h - 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`(started at ${T0.toFixed(0)} °C)`, x + 16, y + h - 14);
   }
 

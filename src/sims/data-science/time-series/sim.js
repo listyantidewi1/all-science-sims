@@ -138,7 +138,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fbbf24';
     ctx.fillRect(16, 22 - 6, 12, 4);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('true signal', 36, 26);
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(16, 44 - 6, 12, 4);

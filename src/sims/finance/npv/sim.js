@@ -71,14 +71,14 @@ export function mount(rootEl) {
       ctx.fillStyle = present >= 0 ? '#10b981' : '#ef4444';
       ctx.fillRect(cx(i) - bw / 4, Math.min(cy0, cyV(present)), bw / 2, Math.abs(cyV(present) - cy0));
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`t=${i}`, cx(i) - 10, padY + lH - 4);
     }
     // axis line
     ctx.strokeStyle = 'rgba(120,130,150,0.7)';
     ctx.beginPath(); ctx.moveTo(padX, cy0); ctx.lineTo(padX + lW, cy0); ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Cash flows: lighter = nominal, darker = discounted', padX, padY - 4);
 
     // NPV vs rate curve (right)
@@ -113,7 +113,7 @@ export function mount(rootEl) {
     ctx.arc(x2(params.rate), y2(npv(cf, params.rate)), 6, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('NPV vs discount rate', padX2 + 6, padY - 4);
     ctx.fillText('rate →', padX2 + lW2 - 50, padY + lH + 14);
 
@@ -123,10 +123,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 36);
     ctx.fillStyle = v >= 0 ? '#10b981' : '#ef4444';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`NPV = $${v.toFixed(2)}`, 16, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`IRR = ${r != null ? `${(r * 100).toFixed(2)}%` : '—'}`, 16, 44);
   }
 

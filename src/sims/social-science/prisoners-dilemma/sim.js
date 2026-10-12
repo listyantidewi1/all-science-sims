@@ -85,7 +85,7 @@ export function mount(rootEl) {
 
     // payoff matrix
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Payoff matrix (your, theirs)', padX, 22);
     drawCell(padX, 36, 60, 28, 'C', 'C', '(3, 3)');
     drawCell(padX + 60, 36, 60, 28, 'C', 'D', '(0, 5)');
@@ -96,12 +96,12 @@ export function mount(rootEl) {
       ctx.strokeStyle = 'rgba(120,130,150,0.5)';
       ctx.strokeRect(x, y, w, h);
       ctx.fillStyle = 'rgba(120,130,150,0.95)';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(label, x + 6, y + 18);
     }
 
     // scores
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = '#3b82f6';
     ctx.fillText(`A (${STRATEGIES[params.a].name}):  ${state.aScore}`, padX + 200, 50);
     ctx.fillStyle = '#ef4444';
@@ -128,7 +128,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     // history strip
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     let hx = padX, hy = top - 14;
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
     ctx.fillText('A:', padX - 18, hy);

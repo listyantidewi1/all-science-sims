@@ -104,7 +104,7 @@ export function mount(rootEl) {
 
     // gridlines
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let lp = LOG_P_MIN; lp <= LOG_P_MAX; lp++) {
       const yy = y2(Math.pow(10, lp), H);
       ctx.strokeStyle = 'rgba(120,130,150,0.15)';
@@ -166,7 +166,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#a855f7';
     ctx.beginPath(); ctx.arc(x2(374, W), y2(218, H), 5, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = '10px var(--font-sans)';
+    ctx.font = '10px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('triple', x2(0.01, W) + 8, y2(0.006, H) - 4);
     ctx.fillText('critical', x2(374, W) - 50, y2(218, H) - 4);
 
@@ -183,7 +183,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('T (°C)', diagW - 60, H - 16);
     ctx.save(); ctx.translate(20, 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('P (atm, log)', -100, 0);
@@ -195,13 +195,13 @@ export function mount(rootEl) {
     ctx.fillStyle = COLORS[ph];
     ctx.fillRect(rx, 30, 180, 40);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 18px var(--font-sans)';
+    ctx.font = 'bold 18px system-ui, -apple-system, Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(ph.toUpperCase(), rx + 90, 56);
     ctx.textAlign = 'left';
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`T = ${params.T.toFixed(1)} °C`, rx, 90);
     ctx.fillText(`P = ${params.P.toExponential(2)} atm`, rx, 108);
 
@@ -235,7 +235,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red dot on the diagram', 12, H - 12);
   }
 

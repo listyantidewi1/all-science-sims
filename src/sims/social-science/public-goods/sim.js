@@ -90,7 +90,7 @@ export function mount(rootEl) {
     const halfW = W * 0.45;
     const barAreaH = H - 50;
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Contributions per player', 30, 24);
     if (history.length > 0) {
       const last = history[history.length - 1];
@@ -103,7 +103,7 @@ export function mount(rootEl) {
         ctx.fillStyle = '#10b981';
         ctx.fillRect(x + 2, y, bw - 4, bh);
         ctx.fillStyle = 'rgba(120,130,150,0.85)';
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(`${c.toFixed(1)}`, x + 4, y - 2);
       }
       // endowment line
@@ -130,7 +130,7 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Average contribution over rounds', gx + 6, gy - 4);
     ctx.fillText('round →', gx + gw - 60, gy + gh + 14);
 
@@ -138,7 +138,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 24);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Round ${round}    multiplier ${params.multiplier.toFixed(1)}    punishment: ${params.punishment ? 'ON' : 'off'}`, 16, 24);
   }
 

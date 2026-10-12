@@ -46,7 +46,7 @@ export function mount(rootEl) {
     for (let u = 0; u <= 0.15; u += 0.025) {
       ctx.beginPath(); ctx.moveTo(x2(u), padY); ctx.lineTo(x2(u), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(u*100).toFixed(0)}%`, x2(u) - 8, padY + gH + 14);
     }
     for (let p = -0.05; p <= 0.15; p += 0.025) {
@@ -69,7 +69,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = 'rgba(245,158,11,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`u_n = ${(params.naturalRate*100).toFixed(1)}%`, x2(params.naturalRate) + 4, padY + 14);
 
     // Curve
@@ -93,7 +93,7 @@ export function mount(rootEl) {
 
     // axes labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Unemployment u →', padX + gW - 130, padY + gH + 14);
     ctx.save(); ctx.translate(20, padY + gH / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Inflation π', 0, 0); ctx.restore();
@@ -102,7 +102,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`u = ${(params.unemployment*100).toFixed(2)}%   π = ${(cur*100).toFixed(2)}%`, 16, 26);
     ctx.fillText(`expected πᵉ = ${(params.expectedInflation*100).toFixed(2)}%`, 16, 44);
     if (Math.abs(cur - params.expectedInflation) < 0.001) {

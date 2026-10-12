@@ -53,7 +53,7 @@ export function mount(rootEl) {
 
     // ticks every unit
     ctx.fillStyle = 'rgba(120,130,150,0.5)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let u = -16; u <= 16; u++) {
       const x = cx + u * scale;
       if (x < 0 || x > W) continue;
@@ -67,7 +67,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#f59e0b';
     ctx.beginPath(); ctx.arc(Fx1, cy, 3, 0, Math.PI * 2); ctx.fill();
     ctx.beginPath(); ctx.arc(Fx2, cy, 3, 0, Math.PI * 2); ctx.fill();
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('F', Fx1 - 4, cy + 28);
     ctx.fillText('F', Fx2 - 4, cy + 28);
 
@@ -174,7 +174,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
     ctx.fillRect(8, 8, 280, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`f = ${f.toFixed(1)}    object dist = ${obj_d.toFixed(1)}`, 14, 26);
     if (Number.isFinite(di)) {
       ctx.fillText(`image dist = ${di.toFixed(2)}    M = ${M.toFixed(2)}`, 14, 44);
@@ -184,7 +184,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the object (green) or move sliders to explore.', 12, H - 12);
   }
 

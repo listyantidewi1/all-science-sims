@@ -49,7 +49,7 @@ export function mount(rootEl) {
       const r = (i / 5) * RISK_MAX;
       ctx.beginPath(); ctx.moveTo(x2(r), padY); ctx.lineTo(x2(r), padY + gH); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(r*100).toFixed(0)}%`, x2(r) - 8, padY + gH + 14);
     }
     for (let i = 0; i <= 6; i++) {
@@ -75,7 +75,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#3b82f6';
     ctx.beginPath(); ctx.arc(x2(params.sgA), y2(params.muA), 6, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('A', x2(params.sgA) + 8, y2(params.muA) - 6);
     ctx.fillStyle = '#ec4899';
     ctx.beginPath(); ctx.arc(x2(params.sgB), y2(params.muB), 6, 0, Math.PI * 2); ctx.fill();
@@ -114,7 +114,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Risk (σ) →', padX + gW - 70, padY + gH + 14);
     ctx.save(); ctx.translate(20, padY + gH / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Return (μ)', 0, 0);
@@ -124,7 +124,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`weight A: ${(params.weight*100).toFixed(0)}%   B: ${((1-params.weight)*100).toFixed(0)}%`, 16, 26);
     ctx.fillText(`return: ${(cur.ret*100).toFixed(2)}%   risk: ${(cur.risk*100).toFixed(2)}%`, 16, 44);
     ctx.fillStyle = '#10b981';

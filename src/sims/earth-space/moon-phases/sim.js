@@ -129,7 +129,7 @@ export function mount(rootEl) {
 
     // Labels
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Top-down view', 12, 18);
     ctx.fillText('From Earth', leftW + 12, 18);
 
@@ -140,9 +140,9 @@ export function mount(rootEl) {
     const a = ((state.angle - Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
     const day = (a / (Math.PI * 2)) * SYNODIC;
 
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(phaseName(angDeg), leftW + 12, H - 40);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     const lit = illuminatedFraction(state.angle);
     ctx.fillText(`Illuminated: ${(lit * 100).toFixed(0)}%`, leftW + 12, H - 24);
     ctx.fillText(`Day ${day.toFixed(1)} of ${SYNODIC.toFixed(2)}`, leftW + 12, H - 8);
@@ -157,13 +157,13 @@ export function mount(rootEl) {
       ctx.fillStyle = 'rgba(239,68,68,0.85)';
       ctx.fillRect(leftW + 12, 26, 180, 22);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px var(--font-sans)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(isFullAlign ? '☾ Lunar eclipse alignment' : '☉ Solar eclipse alignment', leftW + 18, 41);
     }
 
     // hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the Moon', cx - 30, cy + orbitR + 24);
   }
 

@@ -89,9 +89,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(SLIDES[params.slideKey].name, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`Total mag: ${OCULAR}× ocular × ${OBJECTIVES[params.objIdx].mag}× obj = ${totalMag()}×`, 16, 46);
     ctx.fillStyle = b < 0.1 ? '#10b981' : '#ef4444';
@@ -99,7 +99,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Pick a slide and an objective; turn the focus knob until sharp.', 16, H - 12);
   }
 

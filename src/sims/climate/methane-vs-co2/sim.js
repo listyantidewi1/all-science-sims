@@ -93,7 +93,7 @@ export function mount(rootEl) {
 
     // Axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let p = 0; p <= 5; p++) {
       const t = p / 5 * Hmax;
       ctx.fillText(`${t.toFixed(0)}y`, x2(t) - 10, padY + h + 14);
@@ -104,12 +104,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Horizon: ${params.horizon} years`, 16, 28);
     ctx.fillStyle = '#10b981';
     ctx.fillText(`GWP_CH₄ over ${params.horizon}y ≈ ${g.toFixed(0)}× CO₂`, 16, 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Equal-mass pulses · y-axis: instantaneous radiative forcing (CO₂ unit = 1)`, 16, 64);
 
     // Legend
@@ -117,7 +117,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#10b981';
     ctx.fillRect(lx, ly - 6, 14, 4);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('CH₄ pulse', lx + 20, ly);
     ctx.fillStyle = '#fbbf24';
     ctx.fillRect(lx, ly + 12, 14, 4);

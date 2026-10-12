@@ -63,17 +63,17 @@ export function mount(rootEl) {
     ctx.strokeRect(padX, ty, W - padX * 2, H - ty - 30);
 
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Mode: ${params.mode.toUpperCase()}    R_total = ${Number.isFinite(c.Rt) ? c.Rt.toFixed(2) + ' Ω' : 'open'}    Total current = ${(c.I * 1000).toFixed(2)} mA`, padX + 10, ty + 24);
     let xx = padX + 20;
     const colW = (W - padX * 2 - 40) / 3;
     for (let i = 0; i < 3; i++) {
       const b = c.perBulb[i];
       ctx.fillStyle = params.on[i] ? '#fbbf24' : '#475569';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Bulb ${i + 1}`, xx, ty + 50);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`R = ${params.R[i]} Ω`, xx, ty + 68);
       ctx.fillText(`V = ${b.V.toFixed(2)} V`, xx, ty + 82);
       ctx.fillText(`I = ${(b.I * 1000).toFixed(2)} mA`, xx, ty + 96);
@@ -102,7 +102,7 @@ export function mount(rootEl) {
     ctx.moveTo(bx - 4, by - 8); ctx.lineTo(bx - 4, by + 8);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.V} V`, bx - 36, by + 4);
 
     // 3 bulbs along the top wire
@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.moveTo(x + 76, by - 8); ctx.lineTo(x + 76, by + 8);
     ctx.stroke();
     ctx.fillStyle = '#fbbf24';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.V} V`, x + 50, by + 4);
 
     // 3 branches
@@ -176,7 +176,7 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.arc(x, y, r + 30, 0, Math.PI * 2); ctx.fill();
     }
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${R}Ω`, x, y + r + 16);
     ctx.fillText(`#${idx}`, x, y + r + 30);

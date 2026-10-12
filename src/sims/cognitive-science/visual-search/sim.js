@@ -63,7 +63,7 @@ export function mount(rootEl) {
     // Items
     for (const it of state.items) {
       ctx.fillStyle = it.color;
-      ctx.font = 'bold 28px var(--font-mono)';
+      ctx.font = 'bold 28px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(it.shape, it.x, it.y);
       ctx.textAlign = 'left';
@@ -73,17 +73,17 @@ export function mount(rootEl) {
       ctx.fillStyle = state.result.correct ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)';
       ctx.fillRect(W * 0.35, H * 0.4, W * 0.3, 80);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 18px var(--font-sans)';
+      ctx.font = 'bold 18px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(state.result.correct ? `Found in ${state.result.ms.toFixed(0)} ms` : 'Wrong target', W / 2, H * 0.45);
-      ctx.font = '12px var(--font-sans)';
+      ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Click anywhere for next trial', W / 2, H * 0.48 + 20);
       ctx.textAlign = 'left';
     } else {
       ctx.fillStyle = 'rgba(0,0,0,0.55)';
       ctx.fillRect(8, 8, 320, 36);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Find the RED O    N=${params.N}    mode: ${params.mode}`, 16, 30);
     }
 
@@ -95,12 +95,12 @@ export function mount(rootEl) {
       const conjT = state.trials.filter((t) => t.mode === 'conjunction').map((t) => t.ms);
       const avg = (a) => a.length ? (a.reduce((x, y) => x + y, 0) / a.length).toFixed(0) : '–';
       ctx.fillStyle = '#0ea5e9';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Feature search avg:     ${avg(featureT)} ms (n=${featureT.length})`, 16, H - 48);
       ctx.fillStyle = '#ef4444';
       ctx.fillText(`Conjunction search avg: ${avg(conjT)} ms (n=${conjT.length})`, 16, H - 30);
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Conjunction RT scales with N; feature pop-out is roughly constant.`, 16, H - 14);
     }
   }

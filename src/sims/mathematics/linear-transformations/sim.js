@@ -90,7 +90,7 @@ export function mount(rootEl) {
     drawArrow(ctx, O.x, O.y, e1S.x, e1S.y, '#0ea5e9');
     drawArrow(ctx, O.x, O.y, e2S.x, e2S.y, '#ec4899');
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Ae₁', e1S.x + 6, e1S.y - 6);
     ctx.fillStyle = '#ec4899';
     ctx.fillText('Ae₂', e2S.x + 6, e2S.y - 6);
@@ -100,15 +100,15 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 300, 64);
     ctx.fillStyle = '#fff';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`A = [ ${params.e1.x.toFixed(2)}  ${params.e2.x.toFixed(2)} ]`, 16, 26);
     ctx.fillText(`    [ ${params.e1.y.toFixed(2)}  ${params.e2.y.toFixed(2)} ]`, 16, 42);
     ctx.fillStyle = det < 0 ? '#fbbf24' : '#10b981';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`det A = ${det.toFixed(2)}${det < 0 ? ' (orientation flipped)' : ''}`, 16, 62);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the blue (e₁) or pink (e₂) arrowhead', 12, H - 12);
   }
 

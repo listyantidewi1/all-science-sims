@@ -186,7 +186,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`${ALGOS[state.algo].name}  ·  n = ${n}`, 12, 18);
     const cs = state.counts;
     ctx.fillText(`compares: ${cs.compare}   swaps: ${cs.swap}   writes: ${cs.set}`, 12, 36);

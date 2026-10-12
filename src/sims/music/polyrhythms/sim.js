@@ -73,7 +73,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(padX, combY, railW, combH);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Combined polyrhythm', padX, combY - 4);
 
     function tickAt(frac, color, h, label) {
@@ -81,7 +81,7 @@ export function mount(rootEl) {
       ctx.fillStyle = color;
       ctx.fillRect(sx - 1, combY + (combH - h) / 2, 2, h);
       if (label) {
-        ctx.font = '10px var(--font-mono)';
+        ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
         ctx.fillText(label, sx + 4, combY + 12);
       }
     }
@@ -100,9 +100,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px var(--font-sans)';
+    ctx.font = 'bold 16px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Polyrhythm  ${params.N} : ${params.M}`, 16, 30);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Tempo: ${params.bpm} bpm   ·   alignment every ${lcm(params.N, params.M)} pulses`, 16, 48);
   }
 
@@ -110,7 +110,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(label, x, y - 4);
     for (let i = 0; i < n; i++) {
       const px = x + (i / n) * w;
@@ -120,7 +120,7 @@ export function mount(rootEl) {
       ctx.arc(px + (w / n) / 2, y + h / 2, beatActive ? 18 : 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(String(i + 1), px + (w / n) / 2, y + h / 2 + 4);
       ctx.textAlign = 'left';

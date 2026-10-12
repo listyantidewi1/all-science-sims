@@ -82,7 +82,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`setpoint = ${params.setpoint.toFixed(2)}`, padX + 6, y2(params.setpoint) - 4);
 
     // Plant output y
@@ -115,7 +115,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#10b981';
     ctx.fillRect(padX + 16, padY + 22, 16, 3);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('plant output  y(t)', padX + 38, padY + 26);
     ctx.fillStyle = 'rgba(168,139,250,0.7)';
     ctx.fillRect(padX + 16, padY + 38, 16, 3);
@@ -131,16 +131,16 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(W - 230, padY + 8, 220, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`y = ${y.toFixed(3)}`, W - 218, padY + 28);
     ctx.fillText(`error = ${e.toFixed(3)}`, W - 218, padY + 46);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText(`t = ${t.toFixed(1)} s`, W - 218, padY + 60);
 
     // Axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('time (s) →', padX + gW - 60, padY + gH + 16);
     ctx.save(); ctx.translate(18, padY + gH / 2 + 10); ctx.rotate(-Math.PI / 2);
     ctx.fillText('y / u', 0, 0); ctx.restore();

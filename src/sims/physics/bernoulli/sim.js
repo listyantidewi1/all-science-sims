@@ -103,7 +103,7 @@ export function mount(rootEl) {
       ctx.arc(px, top - 70, radius, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 10px var(--font-mono)';
+      ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${(Pval / 1000).toFixed(1)} kPa`, px, top - 88);
       ctx.fillText(`v = ${v(u).toFixed(2)} m/s`, px, top - 100);
@@ -120,10 +120,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Continuity:  A₁ v₁ = A₂ v₂`, 16, 28);
     ctx.fillStyle = '#10b981';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`v_middle = v₁ · (A₁/A₂) = ${v_mid.toFixed(2)} m/s`, 16, 46);
     ctx.fillStyle = '#fbbf24';
     ctx.fillText(`P_middle = P₁ + ½ρ(v₁² − v_middle²) = ${(P_mid / 1000).toFixed(2)} kPa`, 16, 62);

@@ -103,7 +103,7 @@ export function mount(rootEl) {
     }
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Sum (2 periods of f₀ = ${params.fundamental.toFixed(0)} Hz)`, padX, 24);
 
     // harmonic-amplitude bar chart
@@ -120,12 +120,12 @@ export function mount(rootEl) {
       ctx.fillStyle = wgt >= 0 ? '#0ea5e9' : '#ec4899';
       ctx.fillRect(x0, by + bh - h - 2, colW - 12, h);
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`H${n + 1}`, x0 + (colW - 12) / 2 - 8, by + bh - 4);
       ctx.fillText(wgt.toFixed(2), x0 + (colW - 12) / 2 - 12, by + bh - h - 6);
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('Harmonic weights', bx, by - 6);
   }
 

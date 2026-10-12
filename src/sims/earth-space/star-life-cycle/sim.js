@@ -80,13 +80,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(listX, listY, W - listX - 30, H - listY - 30);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Lifecycle for ${params.M.toFixed(2)} M☉`, listX + 12, listY + 22);
     let yy = listY + 42;
     for (let i = 0; i < phases.length; i++) {
       const ph = phases[i];
       ctx.fillStyle = i === params.phaseIdx ? '#fbbf24' : 'rgba(255,255,255,0.85)';
-      ctx.font = i === params.phaseIdx ? 'bold 11px var(--font-mono)' : '11px var(--font-mono)';
+      ctx.font = i === params.phaseIdx ? 'bold 11px ui-monospace, Menlo, Consolas, monospace' : '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${i + 1}. ${ph.name}  (~${formatDur(ph.dur)})`, listX + 12, yy);
       yy += 16;
     }
@@ -103,7 +103,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Hertzsprung-Russell diagram', x + 6, y - 6);
     ctx.fillText('Temperature (K) ←  hot     cool  →', x + w - 220, y + h + 14);
     ctx.save(); ctx.translate(x - 30, y + h / 2 + 30); ctx.rotate(-Math.PI / 2);
@@ -167,11 +167,11 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.arc(cx, cy, sizePx, 0, Math.PI * 2); ctx.fill();
     }
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(ph.name, cx, cy + sizePx + 24);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T ≈ ${ph.T.toFixed(0)} K   L ≈ ${ph.L.toExponential(2)} L☉`, cx, cy + sizePx + 40);
     ctx.textAlign = 'left';
   }

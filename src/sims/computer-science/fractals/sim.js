@@ -35,7 +35,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 220, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     let count = 0;
     if (params.kind === 'sierpinski') count = Math.pow(3, params.depth);
     else if (params.kind === 'koch') count = 3 * Math.pow(4, params.depth);

@@ -118,7 +118,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 250, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     const sep = Math.hypot(a.x2 - b.x2, a.y2 - b.y2).toFixed(0);
     ctx.fillText(`Drag a bob to set position.    Δ separation: ${sep} px`, 14, 26);
   }

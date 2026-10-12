@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.fillRect(buX + 1, buY + buH - fillFrac * (buH - 2), buW - 2, fillFrac * (buH - 2));
     // tick marks
     ctx.fillStyle = 'rgba(120,130,150,0.8)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let m = 0; m <= 50; m += 10) {
       const ty = buY + (m / 50) * buH;
       ctx.fillRect(buX + buW + 1, ty - 0.5, 4, 1);
@@ -183,7 +183,7 @@ export function mount(rootEl) {
 
     // Labels
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = 'bold 12px var(--font-sans)';
+    ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Burette: NaOH', buX, buY - 6);
     ctx.fillText('Flask: acid', flX, flY - 6);
 
@@ -204,9 +204,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(leftW + 40, 40, 220, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 22px var(--font-sans)';
+    ctx.font = 'bold 22px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`pH = ${ph.toFixed(2)}`, leftW + 50, 68);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Titrant: ${params.titrantAdded.toFixed(1)} mL`, leftW + 50, 88);
   }
 
@@ -253,7 +253,7 @@ export function mount(rootEl) {
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.9)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('pH', x - 18, y + 12);
     ctx.fillText('mL titrant', x + w - 60, y + h + 14);
     for (let p = 0; p <= 14; p += 2) ctx.fillText(String(p), x - 16, y2(p) + 3);

@@ -101,7 +101,7 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Lump-sum final − DCA final ($)', padX + gW / 2 - 80, padY + gH + 14);
 
     // Stats
@@ -110,7 +110,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 360, 36);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Lump avg $${lumpAvg.toFixed(0)}    DCA avg $${dcaAvg.toFixed(0)}`, 16, 26);
     const wp = (lumpWins / diffs.length) * 100;
     ctx.fillStyle = wp > 50 ? '#0ea5e9' : '#ec4899';

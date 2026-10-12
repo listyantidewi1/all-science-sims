@@ -72,7 +72,7 @@ export function mount(rootEl) {
       ctx.arc(x2(f.sigma), y2(f.mu), 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px var(--font-sans)';
+      ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(f.name, x2(f.sigma) + 12, y2(f.mu) - 4);
     }
     // rf marker
@@ -81,12 +81,12 @@ export function mount(rootEl) {
     ctx.arc(x2(0), y2(params.rfRate), 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = 'rgba(251,191,36,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`rᶠ = ${(params.rfRate*100).toFixed(1)}%`, x2(0) + 8, y2(params.rfRate) + 12);
 
     // axes labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Risk σ →', padX + lW - 60, padY + lH + 14);
     ctx.save(); ctx.translate(15, padY + lH / 2 + 30); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Return µ', 0, 0); ctx.restore();
@@ -97,7 +97,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(rx, padY, W - rx - 30, lH);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Ranking by Sharpe ratio', rx + 16, padY + 26);
     let yy = padY + 52;
     for (let i = 0; i < sorted.length; i++) {
@@ -108,22 +108,22 @@ export function mount(rootEl) {
       ctx.arc(rx + 24, yy, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = '12px var(--font-sans)';
+      ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`#${i + 1}  ${f.name}`, rx + 40, yy + 4);
       ctx.fillStyle = s > 1 ? '#10b981' : s > 0 ? '#fbbf24' : '#ef4444';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Sharpe ${s.toFixed(3)}`, rx + 200, yy + 4);
       yy += 36;
       // breakdown
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`µ ${(f.mu*100).toFixed(1)}%   σ ${(f.sigma*100).toFixed(1)}%   excess ${((f.mu - params.rfRate)*100).toFixed(1)}%`, rx + 40, yy);
       yy += 24;
     }
 
     // Drag hint
     ctx.fillStyle = 'rgba(120,130,150,0.6)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag any fund dot to set its (σ, µ)', padX, H - 10);
 
     const probe = hover.get();

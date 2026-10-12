@@ -79,9 +79,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 90);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`${params.type} mirror   f = ${f.toFixed(1)} px`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`d_o = ${params.d_o.toFixed(1)} px`, 16, 46);
     ctx.fillStyle = di > 0 ? '#10b981' : '#a855f7';
     ctx.fillText(`d_i = ${Number.isFinite(di) ? di.toFixed(1) : '∞'} px (${di > 0 ? 'real' : 'virtual'})`, 16, 62);
@@ -92,7 +92,7 @@ export function mount(rootEl) {
 
     // Hint
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the object arrow horizontally · drag tip vertically to change height', 16, H - 12);
   }
 
@@ -134,7 +134,7 @@ export function mount(rootEl) {
     ctx.lineTo(x2 - sz * Math.cos(ang + 0.4), y2 - sz * Math.sin(ang + 0.4));
     ctx.closePath();
     ctx.fill();
-    ctx.font = 'bold 10px var(--font-mono)';
+    ctx.font = 'bold 10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, x2 + 6, y2 - 2);
   }
 
@@ -191,7 +191,7 @@ export function mount(rootEl) {
     ctx.beginPath();
     ctx.arc(x, y, 4, 0, Math.PI * 2);
     ctx.fill();
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(label, x - 4, y + 18);
   }
 

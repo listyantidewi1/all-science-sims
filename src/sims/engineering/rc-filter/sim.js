@@ -57,9 +57,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f_c = 1/(2πRC) = ${fc().toFixed(1)} Hz`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.fillText(`R = ${params.R} Ω   C = ${(params.C * 1e6).toFixed(2)} µF`, 16, 46);
     ctx.fillText(`drive: ${params.drive} Hz   gain ${gainDB(params.drive).toFixed(1)} dB   phase ${phaseDeg(params.drive).toFixed(1)}°`, 16, 60);
@@ -77,7 +77,7 @@ export function mount(rootEl) {
     for (let p = -50; p <= 0; p += 10) {
       ctx.beginPath(); ctx.moveTo(x, dB2y(p)); ctx.lineTo(x + w, dB2y(p)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${p}dB`, x + 4, dB2y(p) - 2);
     }
     for (let dec = 0; dec <= 5; dec++) {
@@ -95,7 +95,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`f_c=${fc().toFixed(0)}Hz`, f2x(fc()) + 4, y + 14);
 
     // gain curve
@@ -131,7 +131,7 @@ export function mount(rootEl) {
     ctx.fill();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Bode magnitude (green) and phase 0° → −90° (purple, dashed)', x + 6, y - 4);
     ctx.fillText('Drag horizontally to set drive frequency', x + w - 240, y - 4);
   }
@@ -177,7 +177,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Time response at f = ${params.drive} Hz`, x + 6, y - 4);
     ctx.fillStyle = '#0ea5e9';
     ctx.fillText('input', x + w - 100, y + 14);

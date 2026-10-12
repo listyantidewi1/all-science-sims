@@ -191,6 +191,7 @@ export function labPanel(opts) {
       return;
     }
     if (r) { rows.push(r); renderRows(); savePersisted(); }
+    else flashRecordError('Nothing to record yet');
   });
 
   function flashRecordError(msg) {

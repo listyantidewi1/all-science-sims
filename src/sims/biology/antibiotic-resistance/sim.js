@@ -58,13 +58,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Susceptible: ${state.S.toFixed(0)}    Resistant: ${state.R.toFixed(0)}`, 16, 28);
     ctx.fillStyle = params.abxOn ? '#ef4444' : '#10b981';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(params.abxOn ? '💊 antibiotic ON' : 'no antibiotic', 16, 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`resistant fraction = ${(state.R / Math.max(1, state.S + state.R) * 100).toFixed(2)}%`, 16, 64);
   }
 
@@ -153,14 +153,14 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(x + 16, y + 22, 16, 3);
     ctx.fillStyle = '#fff';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Susceptible', x + 38, y + 26);
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(x + 16, y + 40, 16, 3);
     ctx.fillStyle = '#fff';
     ctx.fillText('Resistant', x + 38, y + 44);
     ctx.fillStyle = 'rgba(168,139,250,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('shaded = antibiotic on', x + w - 160, y + 18);
   }
 

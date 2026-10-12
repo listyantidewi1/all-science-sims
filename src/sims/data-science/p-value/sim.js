@@ -147,7 +147,7 @@ export function mount(rootEl) {
 
     // x-axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let z = -4; z <= 4; z += 1) {
       ctx.fillText(`${z}`, x2(z) - 4, padY + h + 14);
     }
@@ -157,17 +157,17 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Observed z = ${obs.toFixed(2)}    ${params.tail}-tailed`, 16, 28);
     ctx.fillStyle = p < params.alpha ? '#10b981' : '#ef4444';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`p-value = ${p.toFixed(4)}     ${p < params.alpha ? '< α: REJECT H₀' : '≥ α: fail to reject H₀'}`, 16, 50);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`α = ${params.alpha.toFixed(3)}    z_crit = ±${zCrit.toFixed(3)}`, 16, 66);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Yellow = p-value tail. Red = α rejection region. Drag the observed point to scan.', padX, H - 12);
   }
 

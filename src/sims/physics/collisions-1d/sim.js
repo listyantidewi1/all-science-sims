@@ -82,7 +82,7 @@ export function mount(rootEl) {
       ctx.lineTo(s.x + v * 0.5, H * 0.6 - s.r);
       ctx.stroke();
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${s.m}kg ${(v/30).toFixed(2)}m/s`, s.x - 30, H * 0.6 + 16);
     }
     drawBall(s1, '#0ea5e9');
@@ -95,7 +95,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Total momentum: ${p.toFixed(2)} kg·m/s`, 16, 26);
     ctx.fillText(`Total KE: ${ke.toFixed(2)} J  (initial: ${initialKE.toFixed(2)} J)`, 16, 44);
     if (Math.abs(lost) > 0.01) {

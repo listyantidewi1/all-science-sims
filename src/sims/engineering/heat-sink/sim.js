@@ -82,7 +82,7 @@ export function mount(rootEl) {
     ctx.fillStyle = `rgb(${r}, ${Math.round(50 + (1 - tNorm) * 100)}, 60)`;
     ctx.fillRect(cx - chipW / 2, chipY, chipW, chipH);
     ctx.fillStyle = '#0b1220';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`${T.toFixed(1)} °C`, cx, chipY + 22);
     ctx.textAlign = 'left';
@@ -109,7 +109,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(x + 8, y + 8, 240, 70);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`P = ${params.P} W`, x + 16, y + 28);
     ctx.fillText(`R_θ = ${params.Rtheta.toFixed(2)} K/W`, x + 16, y + 46);
     const Tss = params.Tamb + params.P * params.Rtheta;
@@ -121,7 +121,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Chip temperature vs time', x + 6, y - 6);
     ctx.fillText('time (s) →', x + w - 50, y + h + 16);
 
@@ -137,7 +137,7 @@ export function mount(rootEl) {
       ctx.strokeStyle = 'rgba(120,130,150,0.15)';
       ctx.beginPath(); ctx.moveTo(x, y2(T)); ctx.lineTo(x + w, y2(T)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${T}°C`, x - 32, y2(T) + 3);
     }
 
@@ -156,7 +156,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`T_ss = ${Tss.toFixed(1)}°C`, x + 6, y2(Tss) - 4);
 
     // History

@@ -71,10 +71,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, H - 70, W - 16, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Association strength: ${(state.associationStrength * 100).toFixed(0)}%    Salivation: ${(state.salivation * 100).toFixed(0)}%`, 16, H - 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Trials: ${state.history.length}`, 16, H - 30);
   }
 
@@ -82,7 +82,7 @@ export function mount(rootEl) {
     const cx = x + w / 2, cy = y + h / 2;
     // Bell at top-left
     ctx.fillStyle = state.bellRinging > 0 ? '#fbbf24' : '#94a3b8';
-    ctx.font = '60px var(--font-sans)';
+    ctx.font = '60px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('🔔', x, y + 80);
     if (state.bellRinging > 0) {
       ctx.strokeStyle = `rgba(251,191,36,${state.bellRinging})`;
@@ -95,9 +95,9 @@ export function mount(rootEl) {
     }
 
     // Dog (emoji as proxy)
-    ctx.font = '120px var(--font-sans)';
+    ctx.font = '120px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('🐕', cx - 60, cy + 60);
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
 
     // Salivation drops
@@ -112,12 +112,12 @@ export function mount(rootEl) {
         ctx.fill();
       }
       ctx.fillStyle = '#0ea5e9';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('💧 salivating', cx + 50, cy + 90);
     }
 
     // Food bowl
-    ctx.font = '60px var(--font-sans)';
+    ctx.font = '60px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillStyle = state.foodVisible > 0 ? '#fff' : 'rgba(120,130,150,0.4)';
     ctx.fillText('🍖', x + w - 70, y + h - 50);
   }
@@ -127,7 +127,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Association strength over trials', x + 6, y - 6);
 
     const N = Math.max(20, state.history.length);
@@ -162,7 +162,7 @@ export function mount(rootEl) {
       ctx.fillStyle = legend[i][0];
       ctx.fillRect(x + 16, y + 22 + i * 16, 14, 4);
       ctx.fillStyle = '#fff';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(legend[i][1], x + 36, y + 26 + i * 16);
     }
   }

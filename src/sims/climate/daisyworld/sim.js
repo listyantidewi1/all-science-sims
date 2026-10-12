@@ -103,9 +103,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`L = ${params.L.toFixed(3)} S₀`, 16, 28);
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = (state.T > 273 && state.T < 313) ? '#10b981' : '#ef4444';
     ctx.fillText(`T = ${(state.T - 273.15).toFixed(2)} °C`, 16, 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
@@ -136,7 +136,7 @@ export function mount(rootEl) {
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Planetary surface fractions', cx - 80, cy + r + 18);
   }
 
@@ -144,7 +144,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Temperature vs solar luminosity (history)', x + 6, y - 6);
 
     const Lmin = 0.6, Lmax = 1.6;
@@ -157,7 +157,7 @@ export function mount(rootEl) {
     for (let T = 260; T <= 320; T += 10) {
       ctx.beginPath(); ctx.moveTo(x, y2(T)); ctx.lineTo(x + w, y2(T)); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(T - 273.15).toFixed(0)}°C`, x - 32, y2(T) + 3);
     }
     for (let L = 0.6; L <= 1.6; L += 0.2) {

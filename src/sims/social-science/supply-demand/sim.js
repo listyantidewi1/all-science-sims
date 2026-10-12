@@ -65,7 +65,7 @@ export function mount(rootEl) {
     ctx.lineTo(w2sX(0, W), w2sY(P_MAX, H));
     ctx.stroke();
     ctx.fillStyle = 'rgba(120,130,150,0.9)';
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Q (quantity)', W - 100, w2sY(0, H) + 22);
     ctx.fillText('P (price)', 10, w2sY(P_MAX, H) - 4);
 
@@ -119,7 +119,7 @@ export function mount(rootEl) {
         const y1 = w2sY(pc, H);
         ctx.fillRect(x1, y1 - 12, x2 - x1, 24);
         ctx.fillStyle = state.control === 'ceiling' ? '#ef4444' : '#8b5cf6';
-        ctx.font = 'bold 12px var(--font-sans)';
+        ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
         const label = state.control === 'ceiling' ? `Shortage: ${gap.toFixed(1)}` : `Surplus: ${gap.toFixed(1)}`;
         ctx.fillText(label, (x1 + x2) / 2 - 30, y1 - 18);
       }
@@ -127,7 +127,7 @@ export function mount(rootEl) {
 
     // readout
     ctx.fillStyle = 'rgba(120,130,150,0.95)';
-    ctx.font = '13px var(--font-sans)';
+    ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
     if (eq.Q > 0 && eq.P > 0) {
       ctx.fillText(`Equilibrium:  P* = ${eq.P.toFixed(1)},  Q* = ${eq.Q.toFixed(1)}`, 12, 18);
     } else {
@@ -143,7 +143,7 @@ export function mount(rootEl) {
     ctx.lineTo(w2sX(q2, W), w2sY(p2, H));
     ctx.stroke();
     ctx.fillStyle = color;
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(label, w2sX(q2, W) + 4, w2sY(p2, H) + 4);
   }
 

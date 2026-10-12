@@ -123,11 +123,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Photosynthesis rate: ${(r * 100).toFixed(0)}%`, 16, 28);
-    ctx.font = '12px var(--font-sans)';
+    ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Limiting factor: ${limitingFactor()}`, 16, 48);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Light ${(params.light*100).toFixed(0)}%   CO₂ ${(params.co2*100).toFixed(1)}%   T ${params.temp}°C`, 16, 65);
   }
 

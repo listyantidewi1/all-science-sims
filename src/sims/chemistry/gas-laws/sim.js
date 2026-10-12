@@ -135,7 +135,7 @@ export function mount(rootEl) {
     const PV_nT = pseudoP * v / (params.n * params.T);
 
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     const lines = [
       `n = ${params.n}    T = ${params.T} K    V (rel) = ${params.Vfrac.toFixed(2)}`,
       `Pressure ≈ ${pseudoP.toFixed(1)} (collisions/s/length)`,

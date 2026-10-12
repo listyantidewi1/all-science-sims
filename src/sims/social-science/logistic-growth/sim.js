@@ -52,7 +52,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`K = ${params.K}`, padX + 6, y2(params.K) - 4);
 
     // Exponential reference
@@ -90,13 +90,13 @@ export function mount(rootEl) {
       ctx.fillStyle = '#ec4899';
       ctx.beginPath(); ctx.arc(x2(tInfl), y2(params.K / 2), 7, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#ec4899';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText('inflection (fastest growth)', x2(tInfl) + 10, y2(params.K / 2) - 6);
     }
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let t = 0; t <= params.Tmax; t += params.Tmax / 6) {
       ctx.fillText(t.toFixed(0), x2(t) - 6, padY + h + 14);
     }
@@ -109,9 +109,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-mono)';
+    ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`dN/dt = rN(1 − N/K)`, 16, 28);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = '#10b981';
     ctx.fillText(`r = ${params.r.toFixed(2)}    K = ${params.K}    N₀ = ${params.N0}`, 16, 46);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';

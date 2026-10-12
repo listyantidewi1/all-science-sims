@@ -101,7 +101,7 @@ export function mount(rootEl) {
       ctx.lineTo(x, originY);
       ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`${m}m`, x + 2, originY - 4);
     }
 
@@ -139,12 +139,12 @@ export function mount(rootEl) {
 
       // readout
       ctx.fillStyle = cssVar('--color-fg', '#0b1220');
-      ctx.font = 'bold 13px var(--font-sans)';
+      ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
       const rText = `Range: ${proj.range ? proj.range.toFixed(1) : proj.x.toFixed(1)} m   Peak: ${proj.peak.toFixed(1)} m   t: ${proj.tFlight.toFixed(2)} s`;
       ctx.fillText(rText, 12, 20);
     } else {
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '13px var(--font-sans)';
+      ctx.font = '13px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Press Launch to fire a projectile.', 12, 20);
     }
 

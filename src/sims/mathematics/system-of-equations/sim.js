@@ -78,7 +78,7 @@ export function mount(rootEl) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 12px var(--font-mono)';
+      ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`(${r.x.toFixed(2)}, ${r.y.toFixed(2)})`, x2(r.x) + 14, y2(r.y) - 6);
     }
 
@@ -86,12 +86,12 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 80);
     ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`y = ${params.m1.toFixed(2)} x ${params.b1 >= 0 ? '+' : '−'} ${Math.abs(params.b1).toFixed(2)}`, 16, 30);
     ctx.fillStyle = '#a855f7';
     ctx.fillText(`y = ${params.m2.toFixed(2)} x ${params.b2 >= 0 ? '+' : '−'} ${Math.abs(params.b2).toFixed(2)}`, 16, 50);
     ctx.fillStyle = r.kind === 'unique' ? '#10b981' : r.kind === 'none' ? '#ef4444' : '#fbbf24';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(r.kind === 'unique' ? 'one solution' : r.kind === 'none' ? 'no solution (parallel)' : 'infinitely many (same line)', 16, 70);
   }
 

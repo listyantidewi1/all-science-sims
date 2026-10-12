@@ -79,7 +79,7 @@ export function mount(rootEl) {
     for (let s = 0.5; s < HORIZON; s += 0.5) {
       ctx.beginPath(); ctx.moveTo(x2(s), padY); ctx.lineTo(x2(s), padY + h); ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${s.toFixed(1)}s`, x2(s) - 12, padY + h + 14);
     }
 
@@ -96,7 +96,7 @@ export function mount(rootEl) {
       ctx.fillStyle = colors[i];
       ctx.fillRect(x2(a), padY, x2(b) - x2(a), h);
       ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.font = 'bold 11px var(--font-mono)';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(labels[i], x2(a) + 4, padY + 14);
     }
 
@@ -133,11 +133,11 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`A ${(params.A*1000).toFixed(0)}ms · D ${(params.D*1000).toFixed(0)}ms · S ${(params.S*100).toFixed(0)}% · R ${(params.R*1000).toFixed(0)}ms`, 16, 26);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Drag the red handles to shape the envelope', padX, H - 10);
   }
 

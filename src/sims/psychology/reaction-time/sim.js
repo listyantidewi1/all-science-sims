@@ -68,11 +68,11 @@ export function mount(rootEl) {
 
     ctx.fillStyle = '#fff';
     ctx.textAlign = 'center';
-    ctx.font = 'bold 36px var(--font-sans)';
+    ctx.font = 'bold 36px system-ui, -apple-system, Roboto, sans-serif';
     if (state.phase === 'idle') {
       ctx.fillText('Click anywhere to start', W / 2, H / 2);
     } else if (state.phase === 'waiting') {
-      ctx.font = '18px var(--font-sans)';
+      ctx.font = '18px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Wait for the flash…', W / 2, H / 2);
     } else if (state.phase === 'go') {
       if (params.mode === 'choice' && state.color === 'red') ctx.fillText('RED — do NOT click', W / 2, H / 2);
@@ -84,11 +84,11 @@ export function mount(rootEl) {
         ctx.fillText(`✗ ${r.error}`, W / 2, H / 2 - 24);
       } else {
         ctx.fillStyle = '#fbbf24';
-        ctx.font = 'bold 56px var(--font-sans)';
+        ctx.font = 'bold 56px system-ui, -apple-system, Roboto, sans-serif';
         ctx.fillText(`${r.ms.toFixed(0)} ms`, W / 2, H / 2 - 24);
       }
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '14px var(--font-sans)';
+      ctx.font = '14px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText('Click to try again', W / 2, H / 2 + 30);
     }
     ctx.textAlign = 'left';
@@ -102,9 +102,9 @@ export function mount(rootEl) {
       ctx.fillStyle = 'rgba(0,0,0,0.55)';
       ctx.fillRect(8, 8, 320, 80);
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px var(--font-mono)';
+      ctx.font = 'bold 13px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`Trials: ${state.trials.length}    mode: ${params.mode}`, 16, 28);
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`mean   = ${mean.toFixed(0)} ms`, 16, 46);
       ctx.fillText(`median = ${median.toFixed(0)} ms`, 16, 62);
       ctx.fillText(`fastest = ${sorted[0].toFixed(0)} ms    slowest = ${sorted[sorted.length - 1].toFixed(0)} ms`, 16, 78);
@@ -129,7 +129,7 @@ export function mount(rootEl) {
         ctx.fillRect(padX + i * bw + 1, hY + hH - bh - 2, bw - 2, bh);
       }
       ctx.fillStyle = 'rgba(120,130,150,0.85)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${min.toFixed(0)} ms`, padX, hY + hH + 14);
       ctx.fillText(`${max.toFixed(0)} ms`, padX + hW - 60, hY + hH + 14);
       ctx.fillText('reaction time distribution', padX, hY - 4);

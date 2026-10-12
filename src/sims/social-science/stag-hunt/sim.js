@@ -104,7 +104,7 @@ export function mount(rootEl) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(245,158,11,0.85)';
-      ctx.font = '11px var(--font-sans)';
+      ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
       ctx.fillText(`Unstable equilibrium ≈ ${(eq * 100).toFixed(0)}%`, gx + 6, eqY - 4);
     }
 
@@ -123,14 +123,14 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Stag fraction over time', gx + 6, gy - 4);
 
     // header
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px var(--font-sans)';
+    ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Stag: ${(p*100).toFixed(1)}%   payoffs S=${fStag(p).toFixed(2)}  H=${fHare(p).toFixed(2)}`, 16, 28);
   }
 

@@ -57,13 +57,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-mono)';
+    ctx.font = 'bold 14px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Ozone column: ${state.du.toFixed(0)} DU`, 16, 28);
     ctx.fillStyle = state.du > 250 ? '#10b981' : state.du > 200 ? '#fbbf24' : '#ef4444';
-    ctx.font = '12px var(--font-mono)';
+    ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(state.du > 220 ? 'normal' : state.du > 150 ? 'depleted' : '"hole"', 16, 48);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`CFC = ${params.cfc.toFixed(2)} ppb${params.polar ? ' (polar vortex)' : ''}`, 16, 64);
   }
 
@@ -83,7 +83,7 @@ export function mount(rootEl) {
       ctx.strokeStyle = 'rgba(255,255,255,0.1)';
       ctx.strokeRect(x, y + i * layerH, w, layerH);
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font = '11px var(--font-mono)';
+      ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(layers[i], x + 6, y + i * layerH + 14);
     }
 
@@ -114,7 +114,7 @@ export function mount(rootEl) {
       ctx.fillRect(xx - 1, yy - 1, 3, 3);
     }
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 11px var(--font-mono)';
+    ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('UV ↓', x + w - 40, y - 4);
     ctx.fillStyle = '#10b981';
     ctx.fillText('CFC ●', x + w - 90, y - 4);
@@ -124,7 +124,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(120,130,150,0.3)';
     ctx.strokeRect(x, y, w, h);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = 'bold 11px var(--font-sans)';
+    ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Ozone column over time (DU)', x + 6, y - 6);
 
     const tNow = state.t;
@@ -142,7 +142,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#ef4444';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('220 DU (hole)', x + 6, y2(220) - 4);
 
     // History
@@ -159,7 +159,7 @@ export function mount(rootEl) {
 
     for (const D of [100, 200, 300, 400]) {
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${D}`, x - 28, y2(D) + 3);
     }
   }

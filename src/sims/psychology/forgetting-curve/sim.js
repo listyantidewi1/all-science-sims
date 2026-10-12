@@ -63,7 +63,7 @@ export function mount(rootEl) {
       ctx.moveTo(padX, y2(r)); ctx.lineTo(padX + w, y2(r));
       ctx.stroke();
       ctx.fillStyle = 'rgba(120,130,150,0.7)';
-      ctx.font = '10px var(--font-mono)';
+      ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(r * 100).toFixed(0)}%`, padX - 32, y2(r) + 3);
     }
 
@@ -106,7 +106,7 @@ export function mount(rootEl) {
 
     // x-axis
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     for (let d = 0; d <= params.horizon; d += params.horizon / 6) {
       ctx.fillText(`${d.toFixed(0)}d`, x2(d) - 8, padY + h + 14);
     }
@@ -115,10 +115,10 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 380, 50);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 14px var(--font-sans)';
+    ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Retention curve over ${params.horizon} days`, 16, 30);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Reviews at: ${params.reviews.map((r) => r.toFixed(2) + 'd').join(', ')}`, 16, 48);
 
     const probe = hover.get();

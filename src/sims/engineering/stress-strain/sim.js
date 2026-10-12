@@ -149,7 +149,7 @@ export function mount(rootEl) {
 
     // Region labels
     ctx.fillStyle = 'rgba(120,130,150,0.6)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText('elastic', x2(m.epsY * 0.4), cy + ch - 10);
     ctx.fillText('hardening', x2((m.epsY + m.epsHardEnd) / 2), cy + ch - 24);
     ctx.fillText('necking', x2((m.epsHardEnd + m.epsNeckEnd) / 2), cy + ch - 38);
@@ -167,7 +167,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`σ_yield = ${m.sigY.toFixed(0)} MPa`, cx + 4, y2(m.sigY) - 4);
     ctx.fillText(`σ_ultimate = ${m.sigU.toFixed(0)} MPa`, cx + 4, y2(m.sigU) - 4);
 
@@ -184,9 +184,9 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(cx + 8, cy + 8, 240, 64);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 12px var(--font-mono)';
+    ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(m.name, cx + 16, cy + 26);
-    ctx.font = '11px var(--font-mono)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`E = ${(m.E / 1000).toFixed(0)} GPa`, cx + 16, cy + 42);
     ctx.fillStyle = fractured ? '#ef4444' : (params.strain > m.epsY ? '#fbbf24' : '#10b981');
     ctx.fillText(fractured ? 'FRACTURED' :
@@ -195,7 +195,7 @@ export function mount(rootEl) {
 
     // Axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '11px var(--font-sans)';
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText('Strain ε →', cx + cw - 60, cy + ch + 14);
     ctx.save(); ctx.translate(cx - 30, cy + ch / 2 + 20); ctx.rotate(-Math.PI / 2);
     ctx.fillText('Stress σ (MPa)', 0, 0); ctx.restore();
@@ -220,7 +220,7 @@ export function mount(rootEl) {
       ctx.fillRect(cx - baseW / 2, y, baseW, split);
       ctx.fillRect(cx - baseW / 2, y + split + 60, baseW, h - split - 60);
       ctx.fillStyle = '#ef4444';
-      ctx.font = 'bold 14px var(--font-sans)';
+      ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('FRACTURE', cx, y + split + 40);
       ctx.textAlign = 'left';
@@ -266,7 +266,7 @@ export function mount(rootEl) {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
-    ctx.font = '10px var(--font-mono)';
+    ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(`σ = ${s.toFixed(0)} MPa`, cx, yTop + stretchedH + 50);
     ctx.fillText(`ε = ${(params.strain * 100).toFixed(2)}%`, cx, yTop + stretchedH + 64);
