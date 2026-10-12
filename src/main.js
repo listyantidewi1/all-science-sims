@@ -15,6 +15,13 @@ function renderApp() {
   renderRoute(main);
 }
 
+// Register before the first render so a `?lang=` deep link (which switches the
+// locale during routing) can trigger the re-render.
+onLocaleChange(() => {
+  // Full re-render so all translated strings refresh.
+  renderApp();
+});
+
 initInstallPrompt();
 renderApp();
 registerServiceWorker();
@@ -23,9 +30,4 @@ window.addEventListener('hashchange', () => {
   // Only re-render the main panel; header/footer can stay.
   const main = app.querySelector('main');
   if (main) renderRoute(main);
-});
-
-onLocaleChange(() => {
-  // Full re-render so all translated strings refresh.
-  renderApp();
 });

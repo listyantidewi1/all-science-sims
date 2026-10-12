@@ -35,5 +35,17 @@
   "install.button": "Install app",
   "footer.text": "Free for non-commercial use · commercial licenses available. Built with vanilla JS — no tracking, works offline once loaded.",
   "about.title": "About",
-  "about.body": "All-Science Sims is a free, client-side collection of original interactive simulations covering physics, chemistry, biology, earth & space, computer science, data science, and social science. Every sim is hand-built in vanilla JavaScript, runs entirely in your browser, and works in English or Bahasa Indonesia. Useful for students, teachers, self-learners, and anyone curious about science."
+  "about.body": "All-Science Sims is a free, client-side collection of original interactive simulations covering physics, chemistry, biology, earth & space, computer science, data science, and social science. Every sim is hand-built in vanilla JavaScript, runs entirely in your browser, and works in English or Bahasa Indonesia. Useful for students, teachers, self-learners, and anyone curious about science.",
+  "share.title": "Share this setup",
+  "share.hint": "The link reproduces the current slider and switch values. The embed code drops the simulation into any web page or LMS.",
+  "share.linkLabel": "Link to this simulation with current settings",
+  "share.embedLabel": "Embed code",
+  "share.copyLink": "Copy link",
+  "share.copyEmbed": "Copy embed code",
+  "share.copied": "Copied ✓",
+  "share.copyFailed": "Select and copy",
+  "share.embedHint": "Add autostart=1 to the URL to skip the start button. Embedding keeps the attribution bar; see the LICENSE for commercial use.",
+  "embed.credit": "from All-Science Sims",
+  "embed.openFull": "Open full version",
+  "embed.startHint": "Click to launch the simulation."
 }

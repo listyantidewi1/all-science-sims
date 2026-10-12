@@ -35,5 +35,17 @@
   "install.button": "Pasang aplikasi",
   "footer.text": "Gratis untuk penggunaan non-komersial · lisensi komersial tersedia. Dibangun dengan JavaScript murni — tanpa pelacakan, berjalan offline setelah dimuat.",
   "about.title": "Tentang",
-  "about.body": "All-Science Sims adalah koleksi gratis simulasi interaktif sisi-klien yang mencakup fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, dan ilmu sosial. Setiap simulasi dibuat tangan dengan JavaScript murni, berjalan sepenuhnya di peramban Anda, dan tersedia dalam Bahasa Inggris atau Bahasa Indonesia. Bermanfaat untuk pelajar, pengajar, pembelajar mandiri, dan siapa pun yang ingin tahu tentang sains."
+  "about.body": "All-Science Sims adalah koleksi gratis simulasi interaktif sisi-klien yang mencakup fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, dan ilmu sosial. Setiap simulasi dibuat tangan dengan JavaScript murni, berjalan sepenuhnya di peramban Anda, dan tersedia dalam Bahasa Inggris atau Bahasa Indonesia. Bermanfaat untuk pelajar, pengajar, pembelajar mandiri, dan siapa pun yang ingin tahu tentang sains.",
+  "share.title": "Bagikan pengaturan ini",
+  "share.hint": "Tautan ini mereproduksi nilai slider dan sakelar saat ini. Kode sematan menampilkan simulasi di halaman web atau LMS mana pun.",
+  "share.linkLabel": "Tautan ke simulasi ini dengan pengaturan saat ini",
+  "share.embedLabel": "Kode sematan",
+  "share.copyLink": "Salin tautan",
+  "share.copyEmbed": "Salin kode sematan",
+  "share.copied": "Tersalin ✓",
+  "share.copyFailed": "Pilih lalu salin",
+  "share.embedHint": "Tambahkan autostart=1 pada URL untuk melewati tombol mulai. Sematan tetap menampilkan bilah atribusi; lihat LICENSE untuk penggunaan komersial.",
+  "embed.credit": "dari All-Science Sims",
+  "embed.openFull": "Buka versi lengkap",
+  "embed.startHint": "Klik untuk memulai simulasi."
 }
