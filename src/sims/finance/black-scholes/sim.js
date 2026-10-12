@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Standard normal CDF using error function approximation
 function normCDF(x) {
@@ -163,6 +164,38 @@ export function mount(rootEl) {
     onInput: (v) => { params.sigma = v; } });
 
   ctrlPanel.append(SS.el, KS.el, TS.el, rS.el, sgS.el);
+
+  // Lab — volatility and time to expiry vs call and put price.
+  const lab = labPanel({
+    title: 'Option pricing lab — σ and T vs price',
+    filename: 'black-scholes-lab.csv',
+    columns: [
+      { key: 'S',     label: 'S ($)' },
+      { key: 'T',     label: 'T (yr)',   format: (v) => v.toFixed(2) },
+      { key: 'sigma', label: 'σ (%)',    format: (v) => (v * 100).toFixed(1) },
+      { key: 'call',  label: 'call ($)', format: (v) => v.toFixed(3) },
+      { key: 'put',   label: 'put ($)',  format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Set S = 100, K = 100, r = 5.00%, T = 1.00. Set σ = 10% and record. Then 20%, 30%, 50%, 75%, 100%.',
+      'Plot call and put price vs σ. Is the relation linear? Does the put track the call?',
+      'Fix σ = 25%. Set T = 0.05, 0.25, 0.50, 1.00, 2.00, 5.00 years and record each.',
+      'Plot call price vs T. Does it grow like T or more like √T?',
+      'Check put–call parity on every row: call − put should equal S − K·e^(−rT).',
+    ],
+    predict: 'If volatility doubles, will the at-the-money call price roughly double, or change by less?',
+    source: () => {
+      const cur = bs(params.S, params.K, params.T, params.r, params.sigma);
+      return {
+        S: params.S,
+        T: params.T,
+        sigma: params.sigma,
+        call: cur.call,
+        put: cur.put,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

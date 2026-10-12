@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, toggle, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -20,6 +21,7 @@ export function mount(rootEl) {
 
   let earthSpin = 0;
   let drag = null;
+  let lastAmp = 1, lastLabel = ''; // latest combined tidal amplitude + label from draw(), read by the lab
 
   function draw() {
     const ctx = cv.ctx;
@@ -133,6 +135,8 @@ export function mount(rootEl) {
       if (aligned) label = 'SPRING tide (Sun + Moon aligned)';
       else if (perpend) label = 'NEAP tide (Sun ⟂ Moon)';
     }
+    lastAmp = ampCombined;
+    lastLabel = label;
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 280, 28);
     ctx.fillStyle = '#fff';
@@ -189,6 +193,41 @@ export function mount(rootEl) {
   const npB = button({ label: 'Neap tide', onClick: () => { params.sunAngle = params.moonAngle + Math.PI / 2; sunS.value = (params.sunAngle * 180 / Math.PI + 360) % 360; } });
 
   ctrlPanel.append(moonS.el, sunS.el, sunT.el, spinT.el, row(spB, npB));
+
+  // Lab — Sun–Moon alignment vs tidal range (Moon-only range = 1.00).
+  const lab = labPanel({
+    title: 'Tides lab — alignment vs tidal range',
+    filename: 'tides-lab.csv',
+    columns: [
+      { key: 'moon',  label: 'Moon (°)',       format: (v) => v.toFixed(0) },
+      { key: 'sun',   label: 'Sun (°)',        format: (v) => v.toFixed(0) },
+      { key: 'sep',   label: 'Sun–Moon sep (°)', format: (v) => v.toFixed(0) },
+      { key: 'range', label: 'tidal range (rel.)', format: (v) => v.toFixed(3) },
+      { key: 'type',  label: 'tide' },
+    ],
+    procedure: [
+      'Turn "Show Sun" on. Set Moon angle = 0° and Sun angle = 0° (new moon, aligned). Record.',
+      'Move the Sun to 30°, 45°, 60°, 90°, 120°, 150°, 180°, recording each time.',
+      'Plot tidal range vs Sun–Moon separation. Where are the maxima (spring) and the minimum (neap)?',
+      'Turn "Show Sun" off and record — this is the Moon-only baseline (range = 1.000).',
+      'Compute the spring/neap ratio (1 + 0.46)/(1 − 0.46) and compare with your data.',
+    ],
+    predict: 'Will the tidal range at 180° separation (full moon) equal the range at 0° (new moon)?',
+    source: () => {
+      const moonDeg = ((params.moonAngle * 180 / Math.PI) % 360 + 360) % 360;
+      const sunDeg = ((params.sunAngle * 180 / Math.PI) % 360 + 360) % 360;
+      let sep = Math.abs(sunDeg - moonDeg) % 180;
+      if (sep > 90) sep = 180 - sep;
+      return {
+        moon: moonDeg,
+        sun: params.showSun ? sunDeg : null,
+        sep: params.showSun ? sep : null,
+        range: lastAmp,
+        type: params.showSun ? lastLabel : 'Moon only',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw();
     moonS.value = (params.moonAngle * 180 / Math.PI + 360) % 360 | 0;

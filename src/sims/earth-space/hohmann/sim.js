@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -174,6 +175,38 @@ export function mount(rootEl) {
     presetRow.appendChild(b.el);
   }
   ctrlPanel.append(r1S.el, r2S.el, sS.el, presetRow);
+
+  // Lab — orbit radius ratio vs the two burns, total Δv and transfer time.
+  const lab = labPanel({
+    title: 'Hohmann lab — radius ratio vs Δv',
+    filename: 'hohmann-lab.csv',
+    columns: [
+      { key: 'ratio',   label: 'r₂ / r₁',   format: (v) => v.toFixed(3) },
+      { key: 'dv1',     label: 'Δv₁',        format: (v) => v.toFixed(4) },
+      { key: 'dv2',     label: 'Δv₂',        format: (v) => v.toFixed(4) },
+      { key: 'dvTotal', label: '|Δv| total', format: (v) => v.toFixed(4) },
+      { key: 'tT',      label: 'transfer (yr)', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Keep r₁ = 1.00 AU. Set r₂ = 1.52 (Earth→Mars) and record.',
+      'Record at r₂ = 2, 3, 5, 10, 15, 20, 30 AU.',
+      'Plot total Δv vs r₂/r₁. Does it keep rising? Look for a maximum near a ratio of 15.6.',
+      'Plot transfer time vs r₂/r₁ and compare with Kepler: t ∝ a^(3/2) where a = (r₁ + r₂)/2.',
+      'Set r₂ = 0.72 (Earth→Venus). Which burn is larger now, and what do the signs mean?',
+    ],
+    predict: 'Does total Δv keep growing as the target orbit gets farther away, or is there a maximum?',
+    source: () => {
+      const dv1 = dvBurn1(), dv2 = dvBurn2();
+      return {
+        ratio: params.r2 / params.r1,
+        dv1,
+        dv2,
+        dvTotal: Math.abs(dv1) + Math.abs(dv2),
+        tT: transferTime(),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

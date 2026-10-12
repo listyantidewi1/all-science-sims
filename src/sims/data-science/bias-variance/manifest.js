@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['regression', 'machine-learning'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

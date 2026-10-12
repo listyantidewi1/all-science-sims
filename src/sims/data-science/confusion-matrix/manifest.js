@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['classification', 'metrics'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

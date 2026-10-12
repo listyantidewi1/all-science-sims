@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const COLORS = ['#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#14b8a6', '#f97316'];
 
@@ -211,6 +212,45 @@ export function mount(rootEl) {
   const clearB = button({ label: 'Clear', onClick: () => { state.points = []; initCentroids(); } });
 
   ctrlPanel.append(kS.el, row(stepB, runB), row(seedB, reinitB, clearB));
+
+  // Lab — k vs inertia (within-cluster sum of squares) and iterations to converge.
+  const lab = labPanel({
+    title: 'K-means lab — the elbow curve',
+    filename: 'k-means-lab.csv',
+    columns: [
+      { key: 'k',         label: 'k' },
+      { key: 'n',         label: 'points' },
+      { key: 'iter',      label: 'iterations' },
+      { key: 'converged', label: 'converged', format: (v) => (v ? 'yes' : 'no') },
+      { key: 'inertia',   label: 'inertia (WCSS)', format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Click "Random clusters" to seed data. Set k = 2, click "Run to convergence", record.',
+      'Keep the same points. Set k = 3, 4, 5, 6, 8 — for each, Run to convergence and record.',
+      'Plot inertia vs k. Find the "elbow" where the drop flattens — is it the true number of clusters?',
+      'At one k, click "Reinit centroids" and Run again 3 times, recording each. Does inertia change? Why?',
+      'Drag a few points far away (outliers), rerun, and record. How does inertia react?',
+    ],
+    predict: 'Will inertia ever increase as k goes up? What do you expect at k = number of points?',
+    source: () => {
+      let inertia = 0, assigned = 0;
+      for (let i = 0; i < state.points.length; i++) {
+        const c = state.assignments[i];
+        if (c < 0 || c >= state.centroids.length) continue;
+        const p = state.points[i], cn = state.centroids[c];
+        inertia += (p.x - cn.x) ** 2 + (p.y - cn.y) ** 2;
+        assigned++;
+      }
+      return {
+        k: state.k,
+        n: state.points.length,
+        iter: state.iter,
+        converged: state.converged,
+        inertia: assigned > 0 ? inertia : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   seedClusters();
 

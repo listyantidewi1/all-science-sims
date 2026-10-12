@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   let u = 0, v = 0;
@@ -60,6 +61,7 @@ export function mount(rootEl) {
 
   const params = { degree: 3, n: 15, noise: 0.4 };
   let points = [];
+  let lastTrainErr = null, lastTestErr = null; // latest errors from draw(), read by the lab
 
   function trueFn(x) { return Math.sin(x) + 0.3 * x; }
   function regenerate() {
@@ -137,6 +139,8 @@ export function mount(rootEl) {
       if (Number.isFinite(v)) testErr += v * v;
     }
     testErr /= testN;
+    lastTrainErr = trainErr;
+    lastTestErr = testErr;
 
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 280, 56);
@@ -166,6 +170,35 @@ export function mount(rootEl) {
     onInput: (v) => { params.noise = v; regenerate(); } });
   const reB = button({ label: 'Resample noise', primary: true, onClick: regenerate });
   ctrlPanel.append(dS.el, nS.el, noiseS.el, row(reB));
+
+  // Lab — model complexity (degree) vs train and test error.
+  const lab = labPanel({
+    title: 'Bias–variance lab — complexity vs error',
+    filename: 'bias-variance-lab.csv',
+    columns: [
+      { key: 'degree', label: 'degree' },
+      { key: 'n',      label: 'points' },
+      { key: 'noise',  label: 'noise σ',  format: (v) => v.toFixed(2) },
+      { key: 'train',  label: 'train MSE', format: (v) => v.toFixed(4) },
+      { key: 'test',   label: 'test MSE',  format: (v) => v.toFixed(4) },
+    ],
+    procedure: [
+      'Set points = 15, σ = 0.40. Set degree = 0 and record. Then 1, 2, 3, 5, 8, 12, 15.',
+      'Plot train MSE and test MSE vs degree on the same axes. Where is the test minimum?',
+      'At degree 12, click "Resample noise" 5 times, recording each. The spread in test MSE is variance.',
+      'Set points = 40 and repeat the degree sweep. Does the best degree move? Does overfitting shrink?',
+      'Set σ = 0 and sweep degree again. Does the train–test gap close?',
+    ],
+    predict: 'As the degree increases, will train MSE ever go up? Will test MSE keep falling?',
+    source: () => ({
+      degree: params.degree,
+      n: params.n,
+      noise: params.noise,
+      train: lastTrainErr,
+      test: lastTestErr,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

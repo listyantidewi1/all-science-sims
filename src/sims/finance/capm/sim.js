@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   let u = 0, v = 0;
@@ -27,6 +28,7 @@ export function mount(rootEl) {
   };
 
   let points = [];
+  let lastECAPM = null; // latest CAPM expected return (annual) from draw(), read by the lab
 
   function regenerate() {
     points = [];
@@ -116,6 +118,7 @@ export function mount(rootEl) {
     const Erf = params.rfMonthly * 12;
     const Erm = (params.rfMonthly + params.marketPremium) * 12;
     const ECAPM = Erf + reg.beta * (Erm - Erf);
+    lastECAPM = ECAPM;
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, H - 30, 360, 22);
     ctx.fillStyle = '#10b981';
@@ -140,6 +143,38 @@ export function mount(rootEl) {
   const reB = button({ label: 'Resample', primary: true, onClick: regenerate });
 
   ctrlPanel.append(bS.el, idS.el, nS.el, row(reB));
+
+  // Lab — beta vs CAPM expected return (the Security Market Line).
+  const lab = labPanel({
+    title: 'CAPM lab — beta vs expected return',
+    filename: 'capm-lab.csv',
+    columns: [
+      { key: 'trueBeta', label: 'true β',  format: (v) => v.toFixed(2) },
+      { key: 'n',        label: 'months' },
+      { key: 'beta',     label: 'β̂ (regressed)', format: (v) => v.toFixed(3) },
+      { key: 'r2',       label: 'R²',      format: (v) => v.toFixed(3) },
+      { key: 'eR',       label: 'CAPM E[r] (%/yr)', format: (v) => (v * 100).toFixed(2) },
+    ],
+    procedure: [
+      'Set months = 60, idiosyncratic σ = 0.040. Set true β = 0.50 and record. Then 1.00, 1.50, 2.00, 3.00.',
+      'Plot CAPM E[r] vs β̂. It should be a straight line (the Security Market Line). Read off its intercept and slope.',
+      'Try β = 0 and β = −1. What does CAPM say a negative-beta asset should earn? Why would anyone hold it?',
+      'Fix β = 1.20. Set months = 6, 12, 24, 60, 240, clicking Resample at each and recording. How far is β̂ from the true β?',
+      'Raise idiosyncratic σ to 0.100 and repeat step 4. How does R² change?',
+    ],
+    predict: 'Doubling beta doubles the expected return — true or false?',
+    source: () => {
+      const reg = regress();
+      return {
+        trueBeta: params.trueBeta,
+        n: params.n,
+        beta: reg.beta,
+        r2: reg.r2,
+        eR: lastECAPM,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

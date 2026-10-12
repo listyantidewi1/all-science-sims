@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['gravity', 'tides'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -1,4 +1,5 @@
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function hash(s) {
   let h = 0;
@@ -135,6 +136,54 @@ export function mount(rootEl) {
   } });
   const clearB = button({ label: 'Clear', onClick: () => { rebuild(); render(); } });
   ctrlPanel.append(nS.el, methodSel.el, row(presetB, clearB));
+
+  // Lab — load factor vs collisions and measured lookup cost, for both methods.
+  const lab = labPanel({
+    title: 'Hash table lab — load factor vs lookup cost',
+    filename: 'hash-tables-lab.csv',
+    columns: [
+      { key: 'method',     label: 'method' },
+      { key: 'buckets',    label: 'buckets' },
+      { key: 'load',       label: 'load α',        format: (v) => v.toFixed(3) },
+      { key: 'collisions', label: 'collisions' },
+      { key: 'avgProbe',   label: 'avg lookup cost', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Chaining, buckets = 8. Click "Insert 10 sample names", then record.',
+      'Click Clear, set buckets = 16, insert the names again, record. Repeat for 32 and for 4.',
+      'Switch to open addressing (linear probe) and repeat the same bucket sizes.',
+      'Plot avg lookup cost vs load α for each method. Compare with 1 + α/2 (chaining) and ½(1 + 1/(1−α)) (probing).',
+      'Type extra keys to push α past 1 with chaining, and toward 1 with probing. What happens to each?',
+    ],
+    predict: 'As the load factor α approaches 1, which method\'s lookup cost grows faster — chaining or linear probing?',
+    source: () => {
+      let items = 0, collisions = 0, probeSum = 0;
+      if (params.method === 'chaining') {
+        for (const list of params.table) {
+          items += list.length;
+          if (list.length > 1) collisions += list.length - 1;
+          for (let i = 0; i < list.length; i++) probeSum += i + 1;
+        }
+      } else {
+        for (const k of params.table) {
+          if (k == null) continue;
+          items++;
+          const probes = probesByKey.get(k);
+          const n = probes ? probes.length : 1;
+          if (n > 1) collisions++;
+          probeSum += n;
+        }
+      }
+      return {
+        method: params.method === 'chaining' ? 'chaining' : 'linear probe',
+        buckets: params.nBuckets,
+        load: items / params.nBuckets,
+        collisions,
+        avgProbe: items > 0 ? probeSum / items : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   return () => {};
 }

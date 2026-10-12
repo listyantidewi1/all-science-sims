@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 function gaussian() {
   let u = 0, v = 0;
@@ -187,6 +188,38 @@ export function mount(rootEl) {
   const reB = button({ label: 'Resample', primary: true, onClick: regenerate });
 
   ctrlPanel.append(thrS.el, sepS.el, sigS.el, fracS.el, row(reB));
+
+  // Lab — threshold vs precision, recall, F1 and accuracy.
+  const lab = labPanel({
+    title: 'Classifier lab — threshold vs metrics',
+    filename: 'confusion-matrix-lab.csv',
+    columns: [
+      { key: 'thr',       label: 'threshold', format: (v) => v.toFixed(2) },
+      { key: 'precision', label: 'precision', format: (v) => v.toFixed(3) },
+      { key: 'recall',    label: 'recall',    format: (v) => v.toFixed(3) },
+      { key: 'f1',        label: 'F1',        format: (v) => v.toFixed(3) },
+      { key: 'accuracy',  label: 'accuracy',  format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Keep separation = 1.50, σ = 0.70, positive fraction = 0.50. Set threshold = −1.00 and record.',
+      'Record at threshold = −0.50, 0.00, 0.50, 1.00, 1.50, 2.00.',
+      'Plot precision and recall vs threshold on the same axes. Where do they cross?',
+      'Plot F1 and accuracy vs threshold. Which threshold maximizes each?',
+      'Set positive fraction = 0.20 and repeat. Does the best-accuracy threshold still match the best-F1 threshold?',
+    ],
+    predict: 'As the threshold rises, which goes up and which goes down — precision or recall?',
+    source: () => {
+      const m = metrics(params.threshold);
+      return {
+        thr: params.threshold,
+        precision: m.precision,
+        recall: m.TPR,
+        f1: m.f1,
+        accuracy: m.accuracy,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

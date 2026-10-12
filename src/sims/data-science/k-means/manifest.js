@@ -9,5 +9,6 @@ export default {
   details: () => import('./details.js'),
   topics: ['clustering', 'unsupervised'],
   grade: [11, 12],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

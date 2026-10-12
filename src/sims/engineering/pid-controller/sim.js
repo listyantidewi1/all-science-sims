@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // First-order plant: dy/dt = (-y + Ku * u) / tau
 // PID:  e = setpoint - y
@@ -186,6 +187,48 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
 
   ctrlPanel.append(KpS.el, KiS.el, KdS.el, spS.el, tauS.el, runT.el, row(distB, resetB));
+
+  // Lab — gains vs step-response metrics, measured from the history since the last Reset.
+  function responseMetrics() {
+    const sp = params.setpoint;
+    if (history.length === 0) return { overshoot: null, settling: null, ssError: null };
+    let yMax = -Infinity;
+    for (const h of history) if (h.y > yMax) yMax = h.y;
+    const overshoot = sp > 1e-9 ? Math.max(0, (yMax - sp) / sp) * 100 : null;
+    const tol = Math.max(0.02, 0.02 * Math.abs(sp)); // 2% band
+    let settled = null;
+    if (Math.abs(history[history.length - 1].y - sp) <= tol) {
+      let i = history.length - 1;
+      while (i > 0 && Math.abs(history[i - 1].y - sp) <= tol) i--;
+      settled = history[i].t;
+    }
+    return { overshoot, settling: settled, ssError: sp - y };
+  }
+  const lab = labPanel({
+    title: 'PID tuning lab — gains vs response',
+    filename: 'pid-controller-lab.csv',
+    columns: [
+      { key: 'Kp',        label: 'Kp', format: (v) => v.toFixed(2) },
+      { key: 'Ki',        label: 'Ki', format: (v) => v.toFixed(2) },
+      { key: 'Kd',        label: 'Kd', format: (v) => v.toFixed(2) },
+      { key: 'overshoot', label: 'overshoot (%)',   format: (v) => v.toFixed(1) },
+      { key: 'settling',  label: 'settling 2% (s)', format: (v) => v.toFixed(2) },
+      { key: 'ssError',   label: 'steady-state err', format: (v) => v.toFixed(3) },
+    ],
+    procedure: [
+      'Set Ki = 0, Kd = 0, setpoint = 1. Set Kp = 1, click Reset, wait ~10 s, record. Repeat for Kp = 2, 4, 8.',
+      'Plot steady-state error vs Kp. A P-only controller never quite reaches the setpoint — why?',
+      'Fix Kp = 2, Kd = 0. Set Ki = 0.2, 0.5, 1, 2, 4 — Reset, wait ~10 s, record each. Watch overshoot.',
+      'Fix Kp = 2, Ki = 1. Set Kd = 0, 0.2, 0.5, 1, 2 — Reset, wait, record each. What does Kd do to overshoot?',
+      'Hunt for the tuning with the shortest settling time and under 5% overshoot. Record it as your best.',
+    ],
+    predict: 'Which gain removes the steady-state error, and what side effect do you expect it to bring?',
+    source: () => {
+      const m = responseMetrics();
+      return { Kp: params.Kp, Ki: params.Ki, Kd: params.Kd, ...m };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

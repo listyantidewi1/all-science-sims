@@ -1,6 +1,7 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Block-and-tackle with N supporting rope segments.
 // Mechanical advantage = N. Pull rope by Δ, load rises by Δ/N.
@@ -226,6 +227,35 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Lower load', primary: true, onClick: () => { params.pulled = 0; } });
 
   ctrlPanel.append(NS.el, wS.el, row(resetB));
+
+  // Lab — number of supporting rope segments vs effort force and rope pulled.
+  const lab = labPanel({
+    title: 'Pulley lab — force vs distance trade-off',
+    filename: 'pulley-system-lab.csv',
+    columns: [
+      { key: 'N',      label: 'rope segments N' },
+      { key: 'weight', label: 'load (kg)' },
+      { key: 'F',      label: 'effort F (N)',   format: (v) => v.toFixed(1) },
+      { key: 'pulled', label: 'rope pulled (m)', format: (v) => v.toFixed(2) },
+      { key: 'lifted', label: 'load lifted (m)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set load = 100 kg and 1×. Drag the red grip all the way down to pull the full rope. Record.',
+      'Click "Lower load", choose 2×, pull the full rope again, record. Repeat for 3×, 4×, 5×, 6×.',
+      'Plot effort force vs N. Does F × N stay equal to the weight mg (≈ 980 N)?',
+      'Divide rope pulled by load lifted for each row. What number do you get, and why?',
+      'Set load = 200 kg and repeat one N. Does the distance ratio change? Does the force?',
+    ],
+    predict: 'If you double the number of supporting rope segments, what happens to the effort force, and to the rope you must pull to lift the load 1 m?',
+    source: () => ({
+      N: params.N,
+      weight: params.weight,
+      F: effortForce(),
+      pulled: params.pulled,
+      lifted: loadHeight(),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();
