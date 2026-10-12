@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 234 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free and open source.
+> 234 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -544,6 +544,16 @@ Open to PRs in any of these directions:
 
 ---
 
+
+## License
+
+**Free for non-commercial use.** The code, simulations, artwork, and translations are released under the [PolyForm Noncommercial License 1.0.0](LICENSE). Students, teachers, schools, universities, charities, public research bodies, and government institutions may use, copy, modify, translate, and share everything here at no cost, as long as the copyright notice and a copy of (or link to) the license travel with it.
+
+**Commercial use needs a separate license.** If you want to put any of these simulations into a paid product, a subscription platform, an ad-supported service, or any other commercial offering, see [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) for what is covered and how to request a license. Commercial licenses are non-exclusive and priced per request.
+
+**Contributions.** By submitting a pull request you agree that your contribution is licensed to the project under the same PolyForm Noncommercial License 1.0.0, and that the project maintainer may also include it in commercial licenses of the project. This keeps the whole collection licensable as one piece. All current content is by the maintainer alone.
+
+---
 
 ## Acknowledgements
 

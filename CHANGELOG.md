@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-> Notes for the next release go here.
+### Added — explicit license
+
+- **`LICENSE`** — the project is now released under the [PolyForm Noncommercial License 1.0.0](LICENSE), with a required copyright notice. Until now the repository had no license file, which legally meant all rights reserved despite the README calling it open source.
+- **`COMMERCIAL-LICENSE.md`** — explains what counts as commercial use, how to request a commercial license, and the standard non-exclusive terms.
+- **README "License" section** and a contribution clause so the collection stays licensable as one piece.
+
+### Changed
+
+- Tagline, footer text (EN/ID), and `package.json` now say "free for non-commercial use" instead of "free and open source".
 
 ---
 
