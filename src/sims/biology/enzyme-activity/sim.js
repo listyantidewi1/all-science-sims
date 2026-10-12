@@ -209,6 +209,15 @@ export function mount(rootEl) {
   });
   const drag = dragHandle(cv.canvas, {
     hitTest: (sx, sy) => chartHit(sx, sy),
+    handles: () => {
+      if (!charts.T || !charts.pH) return [];
+      const act = activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor);
+      const cT = charts.T, cP = charts.pH;
+      return [
+        { id: 'T', x: cT.x + ((params.T - cT.min) / (cT.max - cT.min)) * cT.w, y: cT.y + cT.h - act * (cT.h - 10) - 4, label: 'Temperature marker' },
+        { id: 'pH', x: cP.x + ((params.pH - cP.min) / (cP.max - cP.min)) * cP.w, y: cP.y + cP.h - act * (cP.h - 10) - 4, label: 'pH marker' },
+      ];
+    },
     onDrag(id, sx) {
       const c = charts[id];
       const v = c.min + ((sx - c.x) / c.w) * (c.max - c.min);

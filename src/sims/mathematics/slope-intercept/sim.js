@@ -163,6 +163,15 @@ export function mount(rootEl) {
       const yv = -7 + ((chart.y + chart.h - sy) / chart.h) * 14;
       params[id] = { x: Math.round(xv * 4) / 4, y: Math.round(yv * 4) / 4 };
     },
+    handles: () => {
+      if (!chart) return [];
+      const x2 = (xv) => chart.x + ((xv - (-10)) / 20) * chart.w;
+      const y2 = (yv) => chart.y + chart.h - ((yv - (-7)) / 14) * chart.h;
+      return [
+        { id: 'p1', x: x2(params.p1.x), y: y2(params.p1.y), label: 'Point 1' },
+        { id: 'p2', x: x2(params.p2.x), y: y2(params.p2.y), label: 'Point 2' },
+      ];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

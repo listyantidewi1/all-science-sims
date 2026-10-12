@@ -117,13 +117,14 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const pos = localPos(e);
     const p = points();
     if (Math.hypot(pos.x - p.B.x, pos.y - p.B.y) < 16) drag = 'B';
     else if (Math.hypot(pos.x - p.C.x, pos.y - p.C.y) < 16) drag = 'C';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const pos = localPos(e);
     const o = center();
@@ -133,7 +134,7 @@ export function mount(rootEl) {
       params.a = Math.max(0.5, Math.min(8, (o.y - pos.y) / SCALE));
     }
   });
-  window.addEventListener('mouseup', () => { drag = null; });
+  window.addEventListener('pointerup', () => { drag = null; });
 
   // controls
   const presetRow = document.createElement('div');

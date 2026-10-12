@@ -174,6 +174,12 @@ export function mount(rootEl) {
 
   const drag = dragHandle(cv.canvas, {
     hitTest: (sx, sy) => chart && sx >= chart.x && sx <= chart.x + chart.w && sy >= chart.y && sy <= chart.y + chart.h ? 'co2' : null,
+    handles: () => {
+      if (!chart) return [];
+      const x = chart.x + ((params.co2 - 200) / 1300) * chart.w;
+      const y = chart.y + chart.h - ((pHFromCO2(params.co2) - 7.4) / (8.3 - 7.4)) * (chart.h - 16) - 8;
+      return [{ id: 'co2', x, y, label: 'Atmospheric CO2 marker (pH curve)' }];
+    },
     onDrag(_id, sx) {
       params.co2 = Math.round(Math.max(200, Math.min(1500, 200 + ((sx - chart.x) / chart.w) * 1300)));
       cS.value = params.co2;

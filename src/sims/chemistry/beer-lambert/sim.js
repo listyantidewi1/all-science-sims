@@ -252,6 +252,11 @@ export function mount(rootEl) {
       const { x, y, w, h } = chartRect;
       return (sxh >= x && sxh <= x + w && syh >= y && syh <= y + h) ? 'wl' : null;
     },
+    handles: () => {
+      if (!chartRect) return [];
+      const { x, y, w, h } = chartRect;
+      return [{ id: 'wl', x: x + ((params.wavelength - 380) / 400) * w, y: y + h / 2, label: 'Wavelength marker' }];
+    },
     onDrag(_id, sxh) {
       if (!chartRect) return;
       const wl = Math.max(380, Math.min(780, 380 + ((sxh - chartRect.x) / chartRect.w) * 400));

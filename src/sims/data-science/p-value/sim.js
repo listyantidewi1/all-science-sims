@@ -191,6 +191,12 @@ export function mount(rootEl) {
       if (sx >= chart.x && sx <= chart.x + chart.w && sy >= chart.y && sy <= chart.y + chart.h) return 'z';
       return null;
     },
+    handles: () => {
+      if (!chart) return [];
+      const x = chart.x + ((params.z - (-4)) / 8) * chart.w;
+      const y = chart.y + chart.h - (pdf(params.z) / 0.45) * (chart.h - 16) - 8;
+      return [{ id: 'z', x: Math.max(chart.x, Math.min(chart.x + chart.w, x)), y, label: 'Observed z marker' }];
+    },
     onDrag(_id, sx) {
       params.z = -4 + ((sx - chart.x) / chart.w) * 8;
       zS.value = params.z;

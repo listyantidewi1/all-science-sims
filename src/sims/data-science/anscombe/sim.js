@@ -115,7 +115,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     for (let i = 0; i < 4; i++) {
       const r = panelRect(i, cv.width, cv.height);
@@ -133,7 +134,7 @@ export function mount(rootEl) {
       }
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragInfo) return;
     const p = localPos(e);
     const r = panelRect(dragInfo.set, cv.width, cv.height);
@@ -142,7 +143,7 @@ export function mount(rootEl) {
       y: Math.max(Y_MIN, Math.min(Y_MAX, s2y(r, p.y))),
     };
   });
-  window.addEventListener('mouseup', () => { dragInfo = null; cv.canvas.style.cursor = 'pointer'; });
+  window.addEventListener('pointerup', () => { dragInfo = null; cv.canvas.style.cursor = 'pointer'; });
 
   // controls
   const statsT = toggle({ label: 'Show statistics in each panel', value: showStats, onChange: (v) => { showStats = v; } });

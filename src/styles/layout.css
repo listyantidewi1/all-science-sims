@@ -598,3 +598,65 @@ main {
   font-size: var(--type-sm);
   border-top: 1px solid var(--color-border);
 }
+
+/* Keyboard-accessible drag handles (see src/lib/handle.js). The layer never
+   intercepts the pointer; its buttons exist for Tab focus and screen readers. */
+.handle-a11y {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.handle-a11y__btn {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+  will-change: transform;
+}
+.handle-a11y__btn:focus-visible {
+  outline: 3px solid var(--accent, var(--color-accent));
+  outline-offset: 2px;
+  background: color-mix(in srgb, var(--accent, var(--color-accent)) 25%, transparent);
+}
+
+/* Share panel (sim aside) */
+.share__row { display: flex; gap: var(--space-2); align-items: flex-start; margin-bottom: var(--space-2); }
+.share__field {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  font: 12px/1.4 var(--font-mono);
+  color: var(--color-muted);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-1);
+  resize: none;
+}
+.share__copy { white-space: nowrap; font-size: var(--type-sm); }
+.share__fine { font-size: 12px; }
+
+/* Embed mode: #/embed/<subject>/<sim> inside an <iframe> */
+.is-embed .site-header,
+.is-embed .site-footer { display: none; }
+.is-embed main { max-width: none; padding: 0; }
+.is-embed .sim-stage { border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+.embed-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: 6px var(--space-3);
+  font-size: 12px;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.embed-bar__title { font-weight: 700; color: var(--color-fg); }
+.embed-bar__link { margin-left: auto; color: var(--accent, var(--color-accent)); font-weight: 600; }

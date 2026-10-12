@@ -170,7 +170,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const cx = cv.width * 0.34 / 2;
     const equil = cv.height / 2 + 20;
@@ -182,7 +183,7 @@ export function mount(rootEl) {
       cv.canvas.style.cursor = 'grabbing';
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const p = localPos(e);
     const equil = cv.height / 2 + 20;
@@ -190,7 +191,7 @@ export function mount(rootEl) {
     y = Math.max(-2.5, Math.min(2.5, y));
     vy = 0;
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     if (dragging) { dragging = false; cv.canvas.style.cursor = 'grab'; vy = 0; t = 0; history = []; }
   });
 

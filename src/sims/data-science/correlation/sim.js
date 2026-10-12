@@ -108,6 +108,7 @@ export function mount(rootEl) {
       }
       return null;
     },
+    handles: () => points.map((p, i) => ({ id: i, x: p.x, y: p.y, label: `Data point ${i + 1}` })),
     onStart(id) { activeIdx = id; },
     onDrag(id, sx, sy) {
       points[id].x = Math.max(40, Math.min(cv.width - 30, sx));
@@ -120,7 +121,7 @@ export function mount(rootEl) {
 
   // Add on empty-space click; remove on right-click
   cv.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;

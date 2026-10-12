@@ -153,7 +153,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const cx = cv.width / 2, cy = cv.height / 2;
     const earthR = Math.min(cv.width, cv.height) * 0.18;
@@ -167,7 +168,7 @@ export function mount(rootEl) {
     else if (params.showSun && Math.hypot(p.x - sx, p.y - sy) < 40) drag = 'sun';
     if (drag) cv.canvas.style.cursor = 'grabbing';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     const cx = cv.width / 2, cy = cv.height / 2;
@@ -175,7 +176,7 @@ export function mount(rootEl) {
     if (drag === 'moon') params.moonAngle = ang;
     else if (drag === 'sun') params.sunAngle = ang;
   });
-  window.addEventListener('mouseup', () => { drag = null; cv.canvas.style.cursor = 'grab'; });
+  window.addEventListener('pointerup', () => { drag = null; cv.canvas.style.cursor = 'grab'; });
 
   // controls
   const moonS = slider({ label: 'Moon angle (°)', min: 0, max: 359, step: 1, value: 0,

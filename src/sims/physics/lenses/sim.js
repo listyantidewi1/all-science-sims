@@ -232,7 +232,8 @@ export function mount(rootEl) {
     };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const cx = cv.width / 2;
     const cy = cv.height / 2;
@@ -244,7 +245,7 @@ export function mount(rootEl) {
       cv.canvas.style.cursor = 'grabbing';
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     const cx = cv.width / 2;
@@ -259,7 +260,7 @@ export function mount(rootEl) {
       objHS.value = params.objH;
     }
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     drag = null;
     cv.canvas.style.cursor = 'grab';
   });

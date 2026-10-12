@@ -164,13 +164,14 @@ export function mount(rootEl) {
   // Drag the bob to set position. While dragging, freeze velocity at zero.
   let dragging = false;
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     dragging = true;
     cv.canvas.style.cursor = 'grabbing';
     handleDrag(e);
   });
-  window.addEventListener('mousemove', (e) => { if (dragging) handleDrag(e); });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointermove', (e) => { if (dragging) handleDrag(e); });
+  window.addEventListener('pointerup', () => {
     if (dragging) {
       dragging = false;
       cv.canvas.style.cursor = 'grab';

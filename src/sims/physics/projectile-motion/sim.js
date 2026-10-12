@@ -263,21 +263,22 @@ export function mount(rootEl) {
     angleS.value = Math.round(clamped);
   }
   cv.canvas.style.cursor = 'crosshair';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
     dragging = true;
     aimAt(sx, sy);
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
     aimAt(sx, sy);
   });
-  window.addEventListener('mouseup', () => { dragging = false; });
+  window.addEventListener('pointerup', () => { dragging = false; });
 
   const animator = loop((dt) => {
     step(dt);

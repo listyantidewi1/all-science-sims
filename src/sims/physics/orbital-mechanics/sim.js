@@ -137,7 +137,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'crosshair';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     if (mode === 'idle' || mode === 'flying') {
       body = { x: p.x, y: p.y, vx: 0, vy: 0 };
@@ -146,10 +147,10 @@ export function mount(rootEl) {
       aimEnd = p;
     }
   });
-  cv.canvas.addEventListener('mousemove', (e) => {
+  cv.canvas.addEventListener('pointermove', (e) => {
     if (mode === 'aiming') aimEnd = localPos(e);
   });
-  cv.canvas.addEventListener('mouseup', (e) => {
+  cv.canvas.addEventListener('pointerup', (e) => {
     if (mode === 'aiming') {
       const p = localPos(e);
       const dx = p.x - body.x, dy = p.y - body.y;

@@ -67,20 +67,21 @@ export function mount(rootEl) {
     return { x, y };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const { x, y } = cellAt(e);
     if (x < 0 || x >= W || y < 0 || y >= H) return;
     const idx = y * W + x;
     painting = grid[idx] ? 2 : 1;
     grid[idx] = painting === 1 ? 1 : 0;
   });
-  cv.canvas.addEventListener('mousemove', (e) => {
+  cv.canvas.addEventListener('pointermove', (e) => {
     if (!painting) return;
     const { x, y } = cellAt(e);
     if (x < 0 || x >= W || y < 0 || y >= H) return;
     grid[y * W + x] = painting === 1 ? 1 : 0;
   });
-  window.addEventListener('mouseup', () => { painting = 0; });
+  window.addEventListener('pointerup', () => { painting = 0; });
 
   function placeGlider(x, y) {
     const cells = [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]];

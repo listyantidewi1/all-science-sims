@@ -168,11 +168,15 @@ export function mount(rootEl) {
     };
   });
   const drag = dragHandle(cv.canvas, {
-    hitTest: (sx, sy) => findFund(sx, sy),
+    hitTest: (sx, sy) => { const i = findFund(sx, sy); return i < 0 ? null : i; },
     onDrag(idx, sx, sy) {
       const f = params.funds[idx];
       f.sigma = plot.s2sigma(sx);
       f.mu = plot.s2mu(sy);
+    },
+    handles: () => {
+      if (!plot) return [];
+      return params.funds.map((f, i) => ({ id: i, x: plot.x2(f.sigma), y: plot.y2(f.mu), label: `${f.name} (risk, return)` }));
     },
     cursor: 'crosshair',
     hoverCursor: 'grab',

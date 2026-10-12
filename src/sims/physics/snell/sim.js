@@ -180,8 +180,9 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', () => { drag = true; });
-  window.addEventListener('mousemove', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', () => { drag = true; });
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     const cx = cv.width / 2, cy = cv.height / 2;
@@ -190,7 +191,7 @@ export function mount(rootEl) {
     const ang = Math.atan2(dx, dy) * 180 / Math.PI;
     params.angle = Math.max(0, Math.min(89, ang));
   });
-  window.addEventListener('mouseup', () => { drag = false; });
+  window.addEventListener('pointerup', () => { drag = false; });
 
   // controls
   const m1 = select({

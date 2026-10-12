@@ -162,7 +162,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const moonSx = params.moonX * cv.width;
     const moonSy = lineY() + params.moonY;
@@ -171,7 +172,7 @@ export function mount(rootEl) {
     else if (Math.hypot(p.x - earthSx, p.y - lineY()) < params.earthR + 8) drag = 'earth';
     if (drag) cv.canvas.style.cursor = 'grabbing';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     if (drag === 'moon') {
@@ -181,7 +182,7 @@ export function mount(rootEl) {
       params.earthX = Math.max(0.3, Math.min(0.95, p.x / cv.width));
     }
   });
-  window.addEventListener('mouseup', () => { drag = null; cv.canvas.style.cursor = 'grab'; });
+  window.addEventListener('pointerup', () => { drag = null; cv.canvas.style.cursor = 'grab'; });
 
   // controls
   const moonRS = slider({ label: 'Moon size', min: 5, max: 20, step: 0.5, value: params.moonR,

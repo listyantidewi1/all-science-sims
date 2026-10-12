@@ -146,11 +146,11 @@ export function mount(rootEl) {
     const rect = cv.canvas.getBoundingClientRect();
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
-  cv.canvas.addEventListener('mousemove', (e) => {
+  cv.canvas.addEventListener('pointermove', (e) => {
     const p = localPos(e);
     cursor = { x: p.x, y: p.y, inside: true };
   });
-  cv.canvas.addEventListener('mouseleave', () => { cursor.inside = false; });
+  cv.canvas.addEventListener('pointerleave', () => { cursor.inside = false; });
 
   // controls
   const IS = slider({ label: 'Current I (A)', min: 0, max: 20, step: 0.1, value: params.current, format: (v) => v.toFixed(1),

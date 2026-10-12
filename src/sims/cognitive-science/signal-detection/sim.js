@@ -205,6 +205,12 @@ export function mount(rootEl) {
       if (sx >= chartTop.x && sx <= chartTop.x + chartTop.w && sy >= chartTop.y && sy <= chartTop.y + chartTop.h) return 'beta';
       return null;
     },
+    handles: () => {
+      if (!chartTop) return [];
+      const xMin = -3, xMax = 3 + params.dPrime;
+      const x = chartTop.x + ((params.criterion - xMin) / (xMax - xMin)) * chartTop.w;
+      return [{ id: 'beta', x: Math.max(chartTop.x, Math.min(chartTop.x + chartTop.w, x)), y: chartTop.y + chartTop.h / 2, label: 'Criterion line (beta)' }];
+    },
     onDrag(_id, sx) {
       const xMin = -3, xMax = 3 + params.dPrime;
       const u = (sx - chartTop.x) / chartTop.w;

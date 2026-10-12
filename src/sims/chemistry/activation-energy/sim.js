@@ -150,6 +150,15 @@ export function mount(rootEl) {
       if (sx > x2(0.8) && sx < x2(0.95)) return 'product';
       return null;
     },
+    handles: () => {
+      if (!chartRect) return [];
+      const x2 = (xx) => chartRect.x + xx * chartRect.w;
+      const y2 = (E) => chartRect.y + chartRect.h - ((E - (-80)) / 200) * chartRect.h;
+      return [
+        { id: 'peak', x: x2(0.5), y: y2(effEa()), label: 'Transition state peak (activation energy)' },
+        { id: 'product', x: x2(0.875), y: y2(params.deltaH), label: 'Products plateau (enthalpy change)' },
+      ];
+    },
     onDrag(id, _sx, sy) {
       const Eval = -80 + ((chartRect.y + chartRect.h - sy) / chartRect.h) * 200;
       if (id === 'peak') {

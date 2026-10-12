@@ -140,12 +140,13 @@ export function mount(rootEl) {
 
   // drag
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     dragLast = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     cv.canvas.style.cursor = 'grabbing';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragLast) return;
     const rect = cv.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left, y = e.clientY - rect.top;
@@ -154,7 +155,7 @@ export function mount(rootEl) {
     pitch = Math.max(-1.4, Math.min(1.4, pitch));
     dragLast = { x, y };
   });
-  window.addEventListener('mouseup', () => { dragLast = null; cv.canvas.style.cursor = 'grab'; });
+  window.addEventListener('pointerup', () => { dragLast = null; cv.canvas.style.cursor = 'grab'; });
 
   const animator = loop((dt) => {
     if (params.autoRotate && !dragLast) yaw += dt * 0.3;

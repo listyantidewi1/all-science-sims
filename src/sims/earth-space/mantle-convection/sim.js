@@ -143,14 +143,15 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) / rect.width, y: (e.clientY - rect.top) / rect.height };
   }
   cv.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     mouse = pos(e);
     mouseHot = e.button !== 2;
   });
-  cv.canvas.addEventListener('mousemove', (e) => {
+  cv.canvas.addEventListener('pointermove', (e) => {
     if (mouse) mouse = pos(e);
   });
-  window.addEventListener('mouseup', () => { mouse = null; });
+  window.addEventListener('pointerup', () => { mouse = null; });
 
   const RaS = slider({ label: 'Rayleigh-like number', min: 500, max: 50000, step: 250, value: params.Ra,
     onInput: (v) => { params.Ra = v; } });

@@ -171,6 +171,18 @@ export function mount(rootEl) {
         params.R = Math.max(0.005, Math.min(2, xT - params.holdEnd));
       }
     },
+    handles: () => {
+      if (!chart) return [];
+      const x2 = (t) => chart.x + (t / HORIZON) * chart.w;
+      const y2 = (v) => chart.y + chart.h - v * (chart.h - 16) - 8;
+      const tA = params.A, tDend = params.A + params.D, tS = params.holdEnd, tEnd = Math.min(HORIZON, params.holdEnd + params.R);
+      return [
+        { id: 'A', x: x2(tA), y: y2(1), label: 'Attack end' },
+        { id: 'D', x: x2(tDend), y: y2(params.S), label: 'Decay end and sustain level' },
+        { id: 'S', x: x2(tS), y: y2(params.S), label: 'Key release time' },
+        { id: 'R', x: x2(tEnd), y: y2(0), label: 'Release end' },
+      ];
+    },
     cursor: 'pointer',
     hoverCursor: 'grab',
   });

@@ -121,6 +121,15 @@ export function mount(rootEl) {
         m2S.value = params.m2;
       }
     },
+    handles: () => {
+      if (!chart) return [];
+      const x2 = (xv) => chart.x + ((xv - (-10)) / 20) * chart.w;
+      const y2 = (yv) => chart.y + chart.h - ((yv - (-8)) / 16) * chart.h;
+      return [
+        { id: 'p1', x: x2(3), y: y2(params.m1 * 3 + params.b1), label: 'Line 1 control point' },
+        { id: 'p2', x: x2(3), y: y2(params.m2 * 3 + params.b2), label: 'Line 2 control point' },
+      ];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

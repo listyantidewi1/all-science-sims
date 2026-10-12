@@ -118,7 +118,8 @@ export function mount(rootEl) {
   }
   cv.canvas.style.cursor = 'pointer';
   cv.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const idx = findPoint(p.x, p.y);
     if (e.button === 2) {
@@ -135,13 +136,13 @@ export function mount(rootEl) {
       }
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (drag < 0) return;
     const p = localPos(e);
     const v = s2wX(p.x, cv.width);
     points[drag] = Math.max(X_MIN, Math.min(X_MAX, v));
   });
-  window.addEventListener('mouseup', () => { drag = -1; });
+  window.addEventListener('pointerup', () => { drag = -1; });
 
   // controls
   const symB = button({ label: 'Symmetric data', primary: true, onClick: () => {

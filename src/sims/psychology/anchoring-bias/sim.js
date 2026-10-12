@@ -155,6 +155,13 @@ export function mount(rootEl) {
       params.anchor = v / q.truth;
       regenerate();
     },
+    handles: () => {
+      if (!chartRect) return [];
+      const q = QUESTIONS[params.qIdx];
+      const lo = q.truth * 0.05, hi = q.truth * 20;
+      const ax = chartRect.x + (Math.log(q.truth * params.anchor) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) * chartRect.w;
+      return [{ id: 'anchor', x: ax, y: chartRect.y + chartRect.h / 2, label: 'Anchor value' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

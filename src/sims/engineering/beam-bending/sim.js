@@ -232,6 +232,10 @@ export function mount(rootEl) {
       params.a = Math.max(0.01, Math.min(params.L - 0.01, x));
       aS.value = params.a;
     },
+    handles: () => {
+      if (!beam) return [];
+      return [{ id: 'load', x: beam.px(params.a), y: beam.y - 30, label: 'Load position along the beam' }];
+    },
     cursor: 'pointer',
     hoverCursor: 'grab',
   });

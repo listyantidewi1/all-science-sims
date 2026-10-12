@@ -157,6 +157,10 @@ export function mount(rootEl) {
       }
       return null;
     },
+    handles: () => species.map((s) => {
+      const p = pos(s);
+      return { id: s.id, x: p.x, y: p.y, label: `${s.name} (species node)` };
+    }),
     onStart(id, sx, sy) { dragSpeciesId = id; dragStart = { sx, sy }; movedDuringDrag = false; },
     onDrag(id, sx, sy) {
       const s = findSpecies(id);

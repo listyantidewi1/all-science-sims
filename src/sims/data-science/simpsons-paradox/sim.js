@@ -73,7 +73,8 @@ export function mount(rootEl) {
   function s2wY(sy, H) { return ((H - 30 - sy) / (H - 60)) * 12; }
 
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     let best = -1, bestD = 30;
     for (let g = 0; g < groups.length; g++) {
@@ -84,14 +85,14 @@ export function mount(rootEl) {
     }
     if (best >= 0) dragG = best;
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (dragG < 0) return;
     const p = localPos(e);
     groups[dragG].cx = Math.max(0, Math.min(12, s2wX(p.x, cv.width)));
     groups[dragG].cy = Math.max(0, Math.min(12, s2wY(p.y, cv.height)));
     regenerate();
   });
-  window.addEventListener('mouseup', () => { dragG = -1; });
+  window.addEventListener('pointerup', () => { dragG = -1; });
 
   function draw() {
     const ctx = cv.ctx;

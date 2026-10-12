@@ -229,6 +229,10 @@ export function mount(rootEl) {
       params.freq = Math.round(Math.max(50, Math.min(50000, freqAt(sx))));
       fS.value = params.freq;
     },
+    handles: () => {
+      if (!respChart) return [];
+      return [{ id: 'freq', x: respChart.x2(params.freq), y: respChart.y2(current(params.freq)), label: 'Drive frequency marker' }];
+    },
     cursor: 'crosshair',
     hoverCursor: 'ew-resize',
   });

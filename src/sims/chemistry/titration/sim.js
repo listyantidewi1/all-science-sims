@@ -354,6 +354,12 @@ export function mount(rootEl) {
       if (sx >= x && sx <= x + w && sy >= y && sy <= y + h) return 'scrub';
       return null;
     },
+    handles: () => {
+      if (!chartRect) return [];
+      const { x, y, w, h, x2, y2 } = chartRect;
+      const py = Math.max(y, Math.min(y + h, y2(pHAt(params.titrantAdded, params))));
+      return [{ id: 'scrub', x: Math.max(x, Math.min(x + w, x2(params.titrantAdded))), y: py, label: 'Titrant volume marker' }];
+    },
     onStart() { pumping = 0; },
     onDrag(_id, sx) {
       params.titrantAdded = chartRect.s2v(sx);

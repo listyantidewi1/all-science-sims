@@ -140,14 +140,24 @@ export function mount(rootEl) {
   });
 
   // Drag the vertex to set b and c (a fixed); drag the parabola top to fly it around.
+  const vertexScreen = () => {
+    const v = vertex();
+    return {
+      x: chart.x + ((v.x - (-10)) / 20) * chart.w,
+      y: chart.y + chart.h - ((v.y - (-10)) / 20) * chart.h,
+    };
+  };
   const drag = dragHandle(cv.canvas, {
     hitTest(sx, sy) {
       if (!chart) return null;
-      const v = vertex();
-      const x2 = (xx) => chart.x + ((xx - (-10)) / 20) * chart.w;
-      const y2 = (yy) => chart.y + chart.h - ((yy - (-10)) / 20) * chart.h;
-      if (Math.hypot(sx - x2(v.x), sy - y2(v.y)) < 16) return 'vertex';
+      const p = vertexScreen();
+      if (Math.hypot(sx - p.x, sy - p.y) < 16) return 'vertex';
       return null;
+    },
+    handles: () => {
+      if (!chart) return [];
+      const p = vertexScreen();
+      return [{ id: 'vertex', x: p.x, y: p.y, label: 'Parabola vertex' }];
     },
     onDrag(_id, sx, sy) {
       const xMin = -10, xMax = 10, yMin = -10, yMax = 10;

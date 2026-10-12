@@ -238,7 +238,8 @@ export function mount(rootEl) {
 
   cv.canvas.style.cursor = 'crosshair';
   cv.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
@@ -256,7 +257,7 @@ export function mount(rootEl) {
       state.dragging = state.charges.length - 1;
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
@@ -266,7 +267,7 @@ export function mount(rootEl) {
       if (c) { c.x = state.cursor.x; c.y = state.cursor.y; }
     }
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     state.dragging = null;
     cv.canvas.style.cursor = 'crosshair';
   });

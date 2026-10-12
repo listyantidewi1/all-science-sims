@@ -144,7 +144,8 @@ export function mount(rootEl) {
     };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const idx = findBall(p.x, p.y);
     if (idx >= 0) {
@@ -152,7 +153,7 @@ export function mount(rootEl) {
       cv.canvas.style.cursor = 'grabbing';
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (dragging < 0) return;
     const p = localPos(e);
     const dx = p.x - pivots[dragging];
@@ -161,7 +162,7 @@ export function mount(rootEl) {
     balls[dragging].theta = Math.max(-1.4, Math.min(1.4, ang));
     balls[dragging].omega = 0;
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     if (dragging >= 0) {
       balls[dragging].omega = 0;
       dragging = -1;

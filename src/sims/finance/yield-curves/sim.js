@@ -103,7 +103,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     let best = -1, bestD = 18;
     for (let i = 0; i < curve.length; i++) {
@@ -112,13 +113,13 @@ export function mount(rootEl) {
     }
     if (best >= 0) drag = best;
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (drag < 0) return;
     const p = localPos(e);
     const newY = ((cv.height - 50 - p.y) / (cv.height - 80)) * (Y_MAX - Y_MIN);
     curve[drag].y = Math.max(0, Math.min(Y_MAX, newY));
   });
-  window.addEventListener('mouseup', () => { drag = -1; });
+  window.addEventListener('pointerup', () => { drag = -1; });
 
   // controls
   const presetRow = document.createElement('div');

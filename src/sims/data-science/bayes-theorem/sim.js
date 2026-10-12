@@ -178,6 +178,17 @@ export function mount(rootEl) {
       if (sx >= x && sx < x + cols * dotSize && sy >= y && sy < y + rows * dotSize) return 'prev';
       return null;
     },
+    handles: () => {
+      if (!dotRect) return [];
+      const { x, y, dotSize, cols, rows } = dotRect;
+      const idx = Math.max(0, Math.min(cols * rows - 1, Math.round(params.population * params.prevalence)));
+      return [{
+        id: 'prev',
+        x: x + (idx % cols) * dotSize + dotSize / 2,
+        y: y + Math.floor(idx / cols) * dotSize + dotSize / 2,
+        label: 'Prevalence boundary (sick / healthy)',
+      }];
+    },
     onDrag(_id, sx, sy) {
       const idx = Math.max(0, dotIndexAt(sx, sy));
       // Each dot is one in N; idx maps to the prevalence threshold.

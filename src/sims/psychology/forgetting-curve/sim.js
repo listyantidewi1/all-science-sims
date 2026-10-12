@@ -150,6 +150,15 @@ export function mount(rootEl) {
       params.reviews[idx] = t;
       params.reviews.sort((a, b) => a - b);
     },
+    handles: () => {
+      if (!chart) return [];
+      return params.reviews.map((r, i) => ({
+        id: i,
+        x: chart.x + (r / params.horizon) * chart.w,
+        y: chart.y + 10,
+        label: `Review ${i + 1} (day ${r.toFixed(1)})`,
+      }));
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

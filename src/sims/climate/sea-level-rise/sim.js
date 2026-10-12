@@ -220,6 +220,12 @@ export function mount(rootEl) {
   // Drag the hypso line vertically to set sea level.
   const drag = dragHandle(cv.canvas, {
     hitTest: (sx, sy) => hypsRect && sx >= hypsRect.x && sx <= hypsRect.x + hypsRect.w && sy >= hypsRect.y && sy <= hypsRect.y + hypsRect.h ? 'sl' : null,
+    handles: () => {
+      if (!hypsRect) return [];
+      const E_MIN = -5, E_MAX = 60;
+      const y = hypsRect.y + hypsRect.h - ((params.seaLevel - E_MIN) / (E_MAX - E_MIN)) * (hypsRect.h - 16) - 8;
+      return [{ id: 'sl', x: hypsRect.x + hypsRect.w / 2, y, label: 'Sea level line (drag up or down)' }];
+    },
     onDrag(_id, _sx, sy) {
       const E_MIN = -5, E_MAX = 60;
       const e = E_MIN + ((hypsRect.y + hypsRect.h - 8 - sy) / (hypsRect.h - 16)) * (E_MAX - E_MIN);

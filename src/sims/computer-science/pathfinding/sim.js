@@ -160,7 +160,8 @@ export function mount(rootEl) {
     const y = Math.floor(((e.clientY - rect.top) / rect.height) * ROWS);
     return { x, y };
   }
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const { x, y } = cellAt(e);
     if (!inBounds(x, y)) return;
     if (x === state.start.x && y === state.start.y) { state.dragMode = 'start'; return; }
@@ -170,7 +171,7 @@ export function mount(rootEl) {
     if (state.drawing === 1) state.walls.add(k); else state.walls.delete(k);
     reset();
   });
-  cv.canvas.addEventListener('mousemove', (e) => {
+  cv.canvas.addEventListener('pointermove', (e) => {
     const { x, y } = cellAt(e);
     if (!inBounds(x, y)) return;
     if (state.dragMode === 'start') { state.start = { x, y }; reset(); return; }
@@ -182,7 +183,7 @@ export function mount(rootEl) {
       reset();
     }
   });
-  window.addEventListener('mouseup', () => { state.drawing = 0; state.dragMode = null; });
+  window.addEventListener('pointerup', () => { state.drawing = 0; state.dragMode = null; });
 
   // controls
   const algoSel = select({

@@ -211,6 +211,10 @@ export function mount(rootEl) {
       doS.value = params.d_o;
       hS.value = params.objectHeight;
     },
+    handles: () => {
+      if (!geom) return [];
+      return [{ id: 'obj', x: geom.cx - params.d_o, y: geom.cy - params.objectHeight, label: 'Object arrow tip (distance and height)' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

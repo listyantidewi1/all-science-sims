@@ -150,14 +150,15 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     if (Math.hypot(p.x - source.x, p.y - source.y) < 16) dragging = 'source';
     else if (Math.hypot(p.x - observer.x, p.y - observer.y) < 18) dragging = 'observer';
     if (dragging) cv.canvas.style.cursor = 'grabbing';
   });
   let prevPos = null;
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const p = localPos(e);
     if (dragging === 'source') {
@@ -174,7 +175,7 @@ export function mount(rootEl) {
       observer.y = p.y;
     }
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     dragging = null;
     prevPos = null;
     cv.canvas.style.cursor = 'pointer';

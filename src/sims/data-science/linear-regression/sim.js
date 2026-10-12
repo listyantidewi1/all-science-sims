@@ -167,7 +167,8 @@ export function mount(rootEl) {
     }
     return best;
   }
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const c = cursor(e);
     if (c.x < X_MIN || c.x > X_MAX || c.y < Y_MIN || c.y > Y_MAX) return;
     if (e.button === 2) {
@@ -185,7 +186,7 @@ export function mount(rootEl) {
       cv.canvas.style.cursor = 'grabbing';
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (draggingIdx < 0) return;
     const c = cursor(e);
     state.points[draggingIdx] = {
@@ -193,7 +194,7 @@ export function mount(rootEl) {
       y: Math.max(Y_MIN, Math.min(Y_MAX, c.y)),
     };
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     draggingIdx = -1;
     cv.canvas.style.cursor = 'crosshair';
   });

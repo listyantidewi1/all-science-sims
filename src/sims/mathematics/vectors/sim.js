@@ -138,20 +138,21 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const aS = w2s(params.a, cv.width, cv.height);
     const bS = w2s(params.b, cv.width, cv.height);
     if (Math.hypot(p.x - aS.x, p.y - aS.y) < 18) drag = 'a';
     else if (Math.hypot(p.x - bS.x, p.y - bS.y) < 18) drag = 'b';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     const w = s2w(p.x, p.y, cv.width, cv.height);
     params[drag] = w;
   });
-  window.addEventListener('mouseup', () => { drag = null; });
+  window.addEventListener('pointerup', () => { drag = null; });
 
   // controls
   const sumT = toggle({ label: 'Show a + b', value: params.showSum, onChange: (v) => { params.showSum = v; } });

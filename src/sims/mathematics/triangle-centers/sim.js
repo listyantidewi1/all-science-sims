@@ -150,20 +150,21 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     for (const k of ['A', 'B', 'C']) {
       const s = w2s(params[k], cv.width, cv.height);
       if (Math.hypot(p.x - s.x, p.y - s.y) < 18) { drag = k; return; }
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     const w = s2w(p.x, p.y, cv.width, cv.height);
     params[drag] = { x: Math.max(0.05, Math.min(0.95, w.x)), y: Math.max(0.05, Math.min(0.95, w.y)) };
   });
-  window.addEventListener('mouseup', () => { drag = null; });
+  window.addEventListener('pointerup', () => { drag = null; });
 
   // controls
   const cT = toggle({ label: 'Centroid (G, green)', value: params.showCentroid, onChange: (v) => { params.showCentroid = v; } });

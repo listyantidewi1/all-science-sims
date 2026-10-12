@@ -124,6 +124,7 @@ export function mount(rootEl) {
     ctx.setLineDash([]);
 
     // current drive marker
+    driveMarker = { x: f2x(params.drive), y: dB2y(gainDB(params.drive)) };
     ctx.fillStyle = '#ef4444';
     ctx.beginPath();
     ctx.arc(f2x(params.drive), dB2y(gainDB(params.drive)), 6, 0, Math.PI * 2);
@@ -197,6 +198,7 @@ export function mount(rootEl) {
     };
   });
 
+  let driveMarker = null; // screen position of the red drive-frequency dot, recorded by drawBode
   const drag = dragHandle(cv.canvas, {
     hitTest(sx, sy) {
       if (!bodeChart) return null;
@@ -207,6 +209,14 @@ export function mount(rootEl) {
       const u = (sx - bodeChart.x) / bodeChart.w;
       params.drive = Math.round(fMin * Math.pow(fMax / fMin, Math.max(0, Math.min(1, u))));
       driveS.value = params.drive;
+    },
+    handles: () => {
+      if (!bodeChart || !driveMarker) return [];
+      const { x, y, w, h } = bodeChart;
+      // The marker can sit below the chart when gain < -50 dB; keep the handle inside the hit area.
+      const hx = Math.max(x, Math.min(x + w, driveMarker.x));
+      const hy = Math.max(y, Math.min(y + h, driveMarker.y));
+      return [{ id: 'drive', x: hx, y: hy, label: 'Drive frequency marker' }];
     },
     cursor: 'crosshair',
     hoverCursor: 'ew-resize',

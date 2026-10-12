@@ -105,13 +105,14 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', () => { drag = true; });
-  window.addEventListener('mousemove', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', () => { drag = true; });
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     params.z = s2w(p.x, p.y, cv.width, cv.height);
   });
-  window.addEventListener('mouseup', () => { drag = false; });
+  window.addEventListener('pointerup', () => { drag = false; });
 
   // controls
   const sqT = toggle({ label: 'Show z²', value: params.showSquare, onChange: (v) => { params.showSquare = v; } });

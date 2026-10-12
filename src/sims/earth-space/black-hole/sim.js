@@ -141,18 +141,19 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     drag = true;
     const p = localPos(e);
     star.x = p.x / cv.width; star.y = p.y / cv.height;
     cv.canvas.style.cursor = 'grabbing';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     star.x = p.x / cv.width; star.y = p.y / cv.height;
   });
-  window.addEventListener('mouseup', () => { drag = false; cv.canvas.style.cursor = 'grab'; });
+  window.addEventListener('pointerup', () => { drag = false; cv.canvas.style.cursor = 'grab'; });
 
   // controls
   const mS = slider({ label: 'Black hole mass', min: 20, max: 200, step: 1, value: params.mass,

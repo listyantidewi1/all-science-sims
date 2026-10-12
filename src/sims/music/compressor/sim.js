@@ -163,6 +163,13 @@ export function mount(rootEl) {
       params.threshold = Math.max(-60, Math.min(0, dbMin + u * (dbMax - dbMin)));
       threshS.value = params.threshold;
     },
+    handles: () => {
+      if (!curveChart) return [];
+      const dbMin = -60, dbMax = 0;
+      const tx = curveChart.x + ((params.threshold - dbMin) / (dbMax - dbMin)) * curveChart.w;
+      const ty = curveChart.y + curveChart.h - ((params.threshold - dbMin) / (dbMax - dbMin)) * curveChart.h;
+      return [{ id: 'threshold', x: tx, y: ty, label: 'Threshold point' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

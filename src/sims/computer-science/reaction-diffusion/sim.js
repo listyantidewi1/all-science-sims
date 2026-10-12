@@ -80,9 +80,10 @@ export function mount(rootEl) {
     const rect = cv.canvas.getBoundingClientRect();
     return { x: (e.clientX - rect.left) / rect.width, y: (e.clientY - rect.top) / rect.height };
   }
-  cv.canvas.addEventListener('mousedown', (e) => { mouse = pos(e); });
-  cv.canvas.addEventListener('mousemove', (e) => { if (mouse) mouse = pos(e); });
-  window.addEventListener('mouseup', () => { mouse = null; });
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => { mouse = pos(e); });
+  cv.canvas.addEventListener('pointermove', (e) => { if (mouse) mouse = pos(e); });
+  window.addEventListener('pointerup', () => { mouse = null; });
 
   // controls
   const FS = slider({ label: 'Feed rate F', min: 0.005, max: 0.08, step: 0.001, value: params.F, format: (v) => v.toFixed(3),

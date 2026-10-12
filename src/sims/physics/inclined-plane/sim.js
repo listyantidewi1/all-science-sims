@@ -202,6 +202,10 @@ export function mount(rootEl) {
       angS.value = params.angleDeg;
       state.s = 0; state.v = 0; state.sliding = false;
     },
+    handles: () => {
+      const geom = rampGeom(cv.width, cv.height);
+      return [{ id: 'angle', x: geom.topX, y: geom.topY, label: 'Ramp angle (top of ramp)' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

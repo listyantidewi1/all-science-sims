@@ -245,19 +245,20 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     drag = true;
     const p = localPos(e);
     params.T = Math.max(T_MIN, Math.min(T_MAX, s2T(p.x, cv.width)));
     params.P = Math.max(1e-4, Math.min(1000, s2P(p.y, cv.height)));
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     params.T = Math.max(T_MIN, Math.min(T_MAX, s2T(p.x, cv.width)));
     params.P = Math.max(1e-4, Math.min(1000, s2P(p.y, cv.height)));
   });
-  window.addEventListener('mouseup', () => { drag = false; });
+  window.addEventListener('pointerup', () => { drag = false; });
 
   // controls (presets)
   const presetRow = document.createElement('div');

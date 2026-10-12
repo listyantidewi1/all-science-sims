@@ -132,6 +132,14 @@ export function mount(rootEl) {
       params.f = Math.max(20, Math.min(20000, 20 + u * (20000 - 20)));
       fS.value = params.f;
     },
+    handles: () => {
+      if (!chart) return [];
+      const fMin = 20, fMax = 20000;
+      const melMin = hzToMel(fMin), melMax = hzToMel(fMax);
+      const hx = chart.x + ((params.f - fMin) / (fMax - fMin)) * chart.w;
+      const hy = chart.y + chart.h - ((hzToMel(params.f) - melMin) / (melMax - melMin)) * (chart.h - 16) - 8;
+      return [{ id: 'f', x: hx, y: hy, label: 'Frequency marker' }];
+    },
     cursor: 'crosshair',
     hoverCursor: 'ew-resize',
   });

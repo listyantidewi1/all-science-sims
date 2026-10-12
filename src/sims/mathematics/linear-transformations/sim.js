@@ -135,19 +135,20 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const e1S = w2s(params.e1, cv.width, cv.height);
     const e2S = w2s(params.e2, cv.width, cv.height);
     if (Math.hypot(p.x - e1S.x, p.y - e1S.y) < 18) drag = 'e1';
     else if (Math.hypot(p.x - e2S.x, p.y - e2S.y) < 18) drag = 'e2';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     params[drag] = s2w(p.x, p.y, cv.width, cv.height);
   });
-  window.addEventListener('mouseup', () => { drag = null; });
+  window.addEventListener('pointerup', () => { drag = null; });
 
   // controls
   const shapeT = toggle({ label: 'Show unit-square image', value: params.showShape, onChange: (v) => { params.showShape = v; } });

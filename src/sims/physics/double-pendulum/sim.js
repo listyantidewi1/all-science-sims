@@ -147,7 +147,8 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'grab';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const p = localPos(e);
     const cx = cv.width / 2, cy = cv.height * 0.32;
     const scale = Math.min(cv.width, cv.height) * 0.18;
@@ -156,7 +157,7 @@ export function mount(rootEl) {
     else if (Math.hypot(p.x - a.x1, p.y - a.y1) < 18) dragging = 'p1';
     if (dragging) cv.canvas.style.cursor = 'grabbing';
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const p = localPos(e);
     const cx = cv.width / 2, cy = cv.height * 0.32;
@@ -175,7 +176,7 @@ export function mount(rootEl) {
     B = [A[0] + 1e-5, 0, A[2], 0];
     trailA = []; trailB = [];
   });
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('pointerup', () => {
     dragging = null;
     cv.canvas.style.cursor = 'grab';
   });

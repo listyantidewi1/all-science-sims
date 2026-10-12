@@ -156,17 +156,18 @@ export function mount(rootEl) {
     return { x: (e.clientX - rect.left) * cv.width / rect.width, y: (e.clientY - rect.top) * cv.height / rect.height };
   }
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     drag = true;
     const p = localPos(e);
     params.alt = s2alt(p.y, cv.height);
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const p = localPos(e);
     params.alt = s2alt(p.y, cv.height);
   });
-  window.addEventListener('mouseup', () => { drag = false; });
+  window.addEventListener('pointerup', () => { drag = false; });
 
   // controls
   const altS = slider({ label: 'Altitude (km)', min: 0, max: ALT_MAX, step: 0.1, value: params.alt, format: (v) => v.toFixed(1),

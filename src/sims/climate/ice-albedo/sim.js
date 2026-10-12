@@ -42,6 +42,7 @@ export function mount(rootEl) {
   };
 
   let chartRect = null;
+  let ballPos = null; // screen position of the red state ball, recorded by draw
 
   function step(dt) {
     const yearsPerSec = 5e6;
@@ -119,6 +120,7 @@ export function mount(rootEl) {
     // Current state ball
     const tx = x2(params.T);
     const ty = y2(fluxOf(params.T));
+    ballPos = { x: tx, y: ty };
     ctx.fillStyle = '#ef4444';
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 3;
@@ -174,6 +176,7 @@ export function mount(rootEl) {
       if (sy >= chartRect.y && sy <= chartRect.y + chartRect.h) return 'T';
       return null;
     },
+    handles: () => (ballPos ? [{ id: 'T', x: ballPos.x, y: ballPos.y, label: 'Planet temperature (drag left or right)' }] : []),
     onDrag(_id, sx) {
       params.T = Math.max(220, Math.min(320, 220 + ((sx - chartRect.x) / chartRect.w) * 100));
       tS.value = params.T;

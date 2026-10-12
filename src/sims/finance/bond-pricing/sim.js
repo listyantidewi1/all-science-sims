@@ -221,6 +221,11 @@ export function mount(rootEl) {
       params.yield = yr;
       yS.value = yr;
     },
+    handles: () => {
+      if (!priceChart) return [];
+      const p = bondPrice(Math.max(0.001, params.yield), params.years, params.couponRate, params.face);
+      return [{ id: 'yield', x: priceChart.x2(params.yield), y: priceChart.y2(p), label: 'Market yield marker' }];
+    },
     cursor: 'crosshair',
     hoverCursor: 'ew-resize',
   });

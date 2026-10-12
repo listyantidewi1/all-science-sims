@@ -305,6 +305,11 @@ export function mount(rootEl) {
       params.loadX = layout.s2w(sx);
       lxS.value = params.loadX;
     },
+    handles: () => {
+      if (!layout) return [];
+      const lp = layout.w2s(params.loadX, 0);
+      return [{ id: 'load', x: lp.x, y: lp.y - 30, label: 'Load position along the deck' }];
+    },
     cursor: 'pointer',
     hoverCursor: 'grab',
   });

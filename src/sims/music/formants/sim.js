@@ -172,6 +172,12 @@ export function mount(rootEl) {
       f1S.value = params.F1; f2S.value = params.F2;
       syncAudio();
     },
+    handles: () => {
+      if (!plot) return [];
+      const cx = plot.x + ((plot.F2max - params.F2) / (plot.F2max - plot.F2min)) * plot.w;
+      const cy = plot.y + ((params.F1 - plot.F1min) / (plot.F1max - plot.F1min)) * plot.h;
+      return [{ id: 'F', x: cx, y: cy, label: 'Formant point (F1, F2)' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

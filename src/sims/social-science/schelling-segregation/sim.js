@@ -170,6 +170,10 @@ export function mount(rootEl) {
     hitTest(sx, sy) { return cellAt(sx, sy) ? 'paint' : null; },
     onStart(_id, sx, sy) { paint(sx, sy); },
     onDrag(_id, sx, sy) { paint(sx, sy); },
+    handles: () => {
+      const cx = cv.width / 2, cy = cv.height / 2;
+      return cellAt(cx, cy) ? [{ id: 'paint', x: cx, y: cy, label: 'Paint cell at grid center' }] : [];
+    },
     cursor: 'crosshair',
     hoverCursor: 'crosshair',
     grabbingCursor: 'crosshair',

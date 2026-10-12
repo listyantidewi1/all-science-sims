@@ -293,7 +293,8 @@ export function mount(rootEl) {
   }
 
   cv.canvas.style.cursor = 'pointer';
-  cv.canvas.addEventListener('mousedown', (e) => {
+  cv.canvas.style.touchAction = 'none'; // let touch drags reach the canvas instead of scrolling
+  cv.canvas.addEventListener('pointerdown', (e) => {
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
@@ -304,7 +305,7 @@ export function mount(rootEl) {
       autoT.value = false;
     }
   });
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener('pointermove', (e) => {
     if (!state.dragging) return;
     const rect = cv.canvas.getBoundingClientRect();
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
@@ -314,7 +315,7 @@ export function mount(rootEl) {
     // ang is screen angle from Earth. State.angle relates via angle = ang - π.
     state.angle = ((ang - Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
   });
-  window.addEventListener('mouseup', () => { state.dragging = false; });
+  window.addEventListener('pointerup', () => { state.dragging = false; });
 
   function step(dt) {
     if (state.autoplay && !state.dragging) {

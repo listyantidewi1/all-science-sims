@@ -195,6 +195,14 @@ export function mount(rootEl) {
       lastDragY = sy;
       params.pulled = Math.max(0, Math.min(ROPE_MAX, params.pulled + dy / span * ROPE_MAX));
     },
+    handles: () => {
+      const W = cv.width, H = cv.height;
+      const ceilY = 60, floorY = H - 80;
+      const rightX = W * 0.5 + 80;
+      const handX = rightX + 60;
+      const handY = ceilY + 60 + (params.pulled / ROPE_MAX) * (floorY - ceilY - 80);
+      return [{ id: 'grip', x: handX, y: handY, label: 'Rope grip (drag down to pull)' }];
+    },
     cursor: 'grab',
     hoverCursor: 'grab',
   });

@@ -303,6 +303,16 @@ export function mount(rootEl) {
       if (params.strain > m.epsNeckEnd) fractured = true;
       eS.value = params.strain;
     },
+    handles: () => {
+      if (!chartRect) return [];
+      const m = MATERIALS[params.matKey];
+      const xMax = m.epsNeckEnd * 1.1;
+      const yMax = Math.max(m.sigU, m.sigY) * 1.2;
+      const { x, y, w, h } = chartRect;
+      const hx = x + (Math.min(params.strain, xMax) / xMax) * w;
+      const hy = y + h - (Math.max(0, stressAt(params.strain, m)) / yMax) * (h - 16) - 8;
+      return [{ id: 'strain', x: hx, y: hy, label: 'Strain (current point on the stress-strain curve)' }];
+    },
     cursor: 'crosshair',
     hoverCursor: 'ew-resize',
   });

@@ -88,6 +88,7 @@ export function mount(rootEl) {
 
     // Mass
     const mw = 70, mh = 50;
+    massPos = { x: cx, y: massY + mh / 2 };
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(cx - mw / 2, massY, mw, mh);
     ctx.strokeStyle = '#fff';
@@ -205,6 +206,7 @@ export function mount(rootEl) {
   });
 
   // Drag the mass to change weight
+  let massPos = null; // screen position of the hanging mass, recorded by drawSpring
   const drag = dragHandle(cv.canvas, {
     hitTest(sx, sy) {
       const W = cv.width, H = cv.height;
@@ -219,6 +221,7 @@ export function mount(rootEl) {
       params.mass = Math.max(0.1, Math.min(20, dragStartMass + dy / 30));
       mS.value = params.mass;
     },
+    handles: () => (massPos ? [{ id: 'mass', x: massPos.x, y: massPos.y, label: 'Hanging mass (drag down to add weight)' }] : []),
     cursor: 'grab',
     hoverCursor: 'grab',
   });
