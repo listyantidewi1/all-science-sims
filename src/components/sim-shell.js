@@ -1,5 +1,7 @@
 import { t, tr, getLocale } from '../i18n/index.js';
 import { SUBJECT_BY_ID } from '../catalog/subjects.js';
+import { SIMS } from '../catalog/index.js';
+import { simCard } from './sim-card.js';
 import { serializeParams } from '../lib/params.js';
 import { gradeLabel } from '../lib/levels.js';
 
@@ -37,16 +39,16 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
     : '';
   heading.innerHTML = `<h1 style="margin:0;display:inline-flex;align-items:center;flex-wrap:wrap">${tr(sim.title)}${labBadge}${gradeBadge}</h1>`;
 
-  const grid = document.createElement('div');
-  grid.className = 'sim-shell';
-
   const stageEl = document.createElement('div');
   stageEl.className = 'sim-stage';
 
-  const aside = document.createElement('aside');
+  // Explanatory text sits BELOW the stage so the canvas and its controls get
+  // the full width (controls move beside the canvas on wide screens).
+  const aside = document.createElement('section');
   aside.className = 'sim-aside';
 
   const intro = document.createElement('div');
+  intro.className = 'sim-aside__card';
   intro.innerHTML = `
     <h3>${t('sim.about')}</h3>
     <p>${tr(sim.description)}</p>
@@ -56,7 +58,7 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
   // Objectives and "try this" live in a lazily loaded details.js next to the
   // manifest, so the catalog stays small. Render them when they arrive.
   const detailsHost = document.createElement('div');
-  detailsHost.className = 'sim-details';
+  detailsHost.className = 'sim-details sim-aside__card';
   aside.appendChild(detailsHost);
   const renderDetails = (d) => {
     const parts = [];
@@ -67,6 +69,7 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
       }
     }
     detailsHost.innerHTML = parts.join('');
+    detailsHost.style.display = parts.length ? '' : 'none';
   };
   if (typeof sim.details === 'function') {
     sim.details().then((mod) => renderDetails(mod.default ?? mod)).catch((e) => console.warn('details failed to load', e));
@@ -76,10 +79,30 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
 
   aside.appendChild(buildSharePanel(sim, stageEl));
 
-  grid.append(stageEl, aside);
-  root.append(crumbs, heading, grid);
+  root.append(crumbs, heading, stageEl, aside, buildRelated(sim));
 
   return { root, stageEl };
+}
+
+/** Up to four other sims: same subject sharing a topic first, then same subject. */
+function buildRelated(sim) {
+  const wrap = document.createElement('section');
+  wrap.className = 'sim-related';
+  const topics = new Set(sim.topics || []);
+  const score = (s) => (s.topics || []).filter((tp) => topics.has(tp)).length;
+  const pool = SIMS.filter((s) => s !== sim && s.subject === sim.subject);
+  const picks = pool
+    .map((s, i) => ({ s, k: score(s), i }))
+    .sort((a, b) => b.k - a.k || Math.abs(a.i - pool.indexOf(sim)) - Math.abs(b.i - pool.indexOf(sim)))
+    .slice(0, 4)
+    .map((x) => x.s);
+  if (!picks.length) return wrap;
+  wrap.innerHTML = `<div class="section-title"><h2>${t('sim.related')}</h2></div>`;
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  for (const s of picks) grid.appendChild(simCard(s));
+  wrap.appendChild(grid);
+  return wrap;
 }
 
 /** Absolute URL of this deployment's index page (works on GitHub Pages subpaths and file://). */
@@ -118,10 +141,10 @@ async function copyText(text, btn, doneLabel) {
  * control values, or copy an <iframe> snippet for LMS / blog embedding.
  */
 function buildSharePanel(sim, stageEl) {
-  const wrap = document.createElement('div');
-  wrap.className = 'share';
+  const wrap = document.createElement('details');
+  wrap.className = 'share sim-aside__card';
   wrap.innerHTML = `
-    <h3>${t('share.title')}</h3>
+    <summary><h3>${t('share.title')}</h3></summary>
     <p>${t('share.hint')}</p>
     <div class="share__row">
       <input class="share__field" type="text" readonly aria-label="${t('share.linkLabel')}" />

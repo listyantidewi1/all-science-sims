@@ -82,7 +82,7 @@ export function renderHome(main) {
   main.appendChild(subjTitle);
 
   const grid = document.createElement('div');
-  grid.className = 'grid';
+  grid.className = 'grid grid--subjects';
   function renderSubjects() {
     grid.innerHTML = '';
     for (const s of SUBJECTS) {

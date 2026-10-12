@@ -14,8 +14,10 @@ export function simCard(sim) {
   const fav = isFavorite(key);
   a.innerHTML = `
     <span class="sim-card__tag">${subjName}</span>
-    ${sim.hasLab ? `<span class="sim-card__lab" title="${t('lab.badgeTitle')}">🧪 ${t('lab.badge')}</span>` : ''}
-    ${gradeLabel(sim) ? `<span class="sim-card__grade" title="${t('level.badgeTitle')}">${gradeLabel(sim)}</span>` : ''}
+    <span class="sim-card__badges">
+      ${gradeLabel(sim) ? `<span class="sim-card__grade" title="${t('level.badgeTitle')}">${gradeLabel(sim)}</span>` : ''}
+      ${sim.hasLab ? `<span class="sim-card__lab" title="${t('lab.badgeTitle')}">🧪 ${t('lab.badge')}</span>` : ''}
+    </span>
     <button type="button" class="sim-card__fav${fav ? ' is-on' : ''}"
       aria-label="${t('fav.toggle')}" aria-pressed="${fav}">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">

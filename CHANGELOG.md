@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-> Notes for the next release go here.
+### Changed — UI polish
+
+- **Sim page layout**: on screens 1024 px and wider the controls panel sits beside the canvas instead of below it, so sliders are visible without scrolling; the panel matches the canvas height and scrolls internally when its content is taller. The description, objectives, and try-this text moved from a side column to a row of cards under the stage, and the Share panel is collapsed by default.
+- **Related simulations**: each sim page ends with up to four sims from the same subject, ranked by shared topics.
+- **Cards**: the grade and lab badges sit on one row instead of stretching across the card.
+- **Phones**: the header keeps the brand on one line (logo only under 480 px) so the language toggle stays on screen; subject tiles show two per row; lab tables scroll sideways instead of clipping.
 
 ---
 

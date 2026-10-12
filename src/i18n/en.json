@@ -52,5 +52,6 @@
   "level.all": "All levels",
   "level.grade": "Grade {{n}}",
   "level.grades": "Grades {{a}}–{{b}}",
-  "level.badgeTitle": "Suggested school grades (1–12; University = beyond school)"
+  "level.badgeTitle": "Suggested school grades (1–12; University = beyond school)",
+  "sim.related": "Related simulations"
 }

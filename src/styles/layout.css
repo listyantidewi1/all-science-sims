@@ -697,3 +697,81 @@ main {
   vertical-align: middle;
   white-space: nowrap;
 }
+
+/* ---------- UI polish (1.18.1) ---------- */
+
+/* Sim page: stage first, controls beside the canvas on wide screens,
+   explanatory text in a row underneath, related sims at the end. */
+.sim-stage { margin-bottom: var(--space-5); }
+.sim-stage > .sim-start { grid-column: 1 / -1; }
+.sim-controls > * { min-width: 0; }
+@media (min-width: 1024px) {
+  body:not(.is-embed) .sim-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+  /* The controls pane takes the canvas's height (it contributes nothing to
+     the row height itself) and scrolls internally when its content is taller. */
+  body:not(.is-embed) .sim-stage > .sim-controls {
+    border-top: 0;
+    border-left: 1px solid var(--color-border);
+    height: 0;
+    min-height: max(100%, 420px);
+    overflow-y: auto;
+    align-self: stretch;
+  }
+}
+.sim-aside {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+@media (min-width: 900px) {
+  .sim-aside { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+.sim-aside__card {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+.sim-aside__card h3 { margin-top: 0; }
+.sim-aside__card > div + div h3 { margin-top: var(--space-4); }
+.share > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.share > summary::-webkit-details-marker { display: none; }
+.share > summary::before { content: '▸'; color: var(--color-muted); font-size: 12px; transition: transform 120ms ease; }
+.share[open] > summary::before { transform: rotate(90deg); }
+.share > summary h3 { margin: 0; display: inline; }
+.share > p:first-of-type { margin-top: var(--space-3); }
+.sim-related { margin-top: var(--space-6); }
+
+/* Cards: badges on one row, never stretched */
+.sim-card__badges { display: flex; flex-wrap: wrap; gap: 4px; align-self: flex-start; margin-bottom: var(--space-2); }
+.sim-card__badges > * { margin-left: 0; }
+.sim-card .sim-card__tag { margin-bottom: 4px; }
+
+/* Header on phones: keep the brand on one line, let the nav shrink */
+.brand > span:last-child { white-space: nowrap; }
+@media (max-width: 720px) {
+  .site-header__inner { gap: var(--space-3); padding: 0 var(--space-4); }
+  .brand { font-size: var(--type-md); }
+  .nav { gap: 2px; }
+  .nav a, .nav-dropdown__toggle { padding: 6px 8px; }
+}
+@media (max-width: 480px) {
+  .brand > span:last-child { display: none; }
+}
+
+/* Subject tiles: two per row on phones instead of a long single column */
+@media (max-width: 720px) {
+  .grid--subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .grid--subjects .subject-card { padding: var(--space-3); border-radius: var(--radius-2); }
+  .grid--subjects .subject-card h3 { font-size: var(--type-md); margin: var(--space-2) 0 2px; }
+  .grid--subjects .subject-card p { font-size: 12px; margin: 0; }
+  .grid--subjects .subject-card .icon { width: 36px; height: 36px; font-size: 18px; }
+}

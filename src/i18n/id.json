@@ -52,5 +52,6 @@
   "level.all": "Semua jenjang",
   "level.grade": "Kelas {{n}}",
   "level.grades": "Kelas {{a}}–{{b}}",
-  "level.badgeTitle": "Saran kelas sekolah (1–12; Perguruan tinggi = setelah sekolah)"
+  "level.badgeTitle": "Saran kelas sekolah (1–12; Perguruan tinggi = setelah sekolah)",
+  "sim.related": "Simulasi terkait"
 }
