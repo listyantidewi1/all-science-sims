@@ -3,6 +3,8 @@ import { SUBJECTS, SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { SIMS, simsBySubject, findSim } from '../catalog/index.js';
 import { simCard } from '../components/sim-card.js';
 import { getFavorites, onFavoritesChange } from '../lib/store.js';
+import { levelFilter } from '../components/level-filter.js';
+import { LEVELS, getLevelFilter, onLevelFilterChange, simMatchesLevel } from '../lib/levels.js';
 
 // One pick per subject — the order matches SUBJECTS so the featured grid
 // reads top-to-bottom in the same sequence as the subject tiles above.
@@ -55,6 +57,12 @@ export function renderHome(main) {
   const searchInput = searchWrap.querySelector('input');
   const searchCount = searchWrap.querySelector('.search__count');
 
+  // Level chips — filter everything below by school level.
+  const levelCounts = Object.fromEntries(LEVELS.map((l) => [l.id, SIMS.filter((s) => simMatchesLevel(s, l.id)).length]));
+  const chips = levelFilter({ counts: levelCounts });
+  main.appendChild(chips.el);
+  const byLevel = (list) => list.filter((s) => simMatchesLevel(s, getLevelFilter()));
+
   // Containers
   const resultsTitle = document.createElement('div');
   resultsTitle.className = 'section-title';
@@ -75,23 +83,28 @@ export function renderHome(main) {
 
   const grid = document.createElement('div');
   grid.className = 'grid';
-  for (const s of SUBJECTS) {
-    const a = document.createElement('a');
-    a.className = 'subject-card';
-    a.href = `#/${s.id}`;
-    a.dataset.subject = s.id;
-    a.style.setProperty('--accent', `var(--subj-${s.id})`);
-    const count = simsBySubject(s.id).length;
-    a.innerHTML = `
-      <span class="icon" aria-hidden="true">${s.icon}</span>
-      <h3>${tr(s.name)}</h3>
-      <p>${tr(s.description)}</p>
-      <p style="margin-top:8px;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent)">
-        ${t('subject.simsCount', { n: count })}
-      </p>
-    `;
-    grid.appendChild(a);
+  function renderSubjects() {
+    grid.innerHTML = '';
+    for (const s of SUBJECTS) {
+      const count = byLevel(simsBySubject(s.id)).length;
+      if (count === 0 && getLevelFilter() !== 'all') continue;
+      const a = document.createElement('a');
+      a.className = 'subject-card';
+      a.href = `#/${s.id}`;
+      a.dataset.subject = s.id;
+      a.style.setProperty('--accent', `var(--subj-${s.id})`);
+      a.innerHTML = `
+        <span class="icon" aria-hidden="true">${s.icon}</span>
+        <h3>${tr(s.name)}</h3>
+        <p>${tr(s.description)}</p>
+        <p style="margin-top:8px;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent)">
+          ${t('subject.simsCount', { n: count })}
+        </p>
+      `;
+      grid.appendChild(a);
+    }
   }
+  renderSubjects();
   main.appendChild(grid);
 
   // Favorites section — appears only if any are starred.
@@ -105,10 +118,10 @@ export function renderHome(main) {
 
   function renderFavorites() {
     const keys = getFavorites();
-    const sims = keys.map((k) => {
+    const sims = byLevel(keys.map((k) => {
       const [s, i] = k.split('/');
       return findSim(s, i);
-    }).filter(Boolean);
+    }).filter(Boolean));
     favGrid.innerHTML = '';
     if (sims.length === 0) {
       favTitle.style.display = 'none';
@@ -130,11 +143,19 @@ export function renderHome(main) {
 
   const fGrid = document.createElement('div');
   fGrid.className = 'grid';
-  for (const key of FEATURED_IDS) {
-    const [subj, id] = key.split('/');
-    const sim = findSim(subj, id);
-    if (sim) fGrid.appendChild(simCard(sim));
+  function renderFeatured() {
+    fGrid.innerHTML = '';
+    const level = getLevelFilter();
+    // Curated picks when browsing everything; otherwise one sim per subject at that level.
+    const picks = level === 'all'
+      ? FEATURED_IDS.map((key) => { const [subj, id] = key.split('/'); return findSim(subj, id); })
+      : SUBJECTS.map((s) => byLevel(simsBySubject(s.id))[0]);
+    for (const sim of picks.filter(Boolean)) fGrid.appendChild(simCard(sim));
+    const empty = fGrid.childElementCount === 0;
+    fTitle.style.display = empty ? 'none' : '';
+    fGrid.style.display = empty ? 'none' : '';
   }
+  renderFeatured();
   main.appendChild(fGrid);
 
   // Search wiring
@@ -149,7 +170,7 @@ export function renderHome(main) {
       renderFavorites();
       return;
     }
-    const hits = SIMS.filter((s) => matchSim(s, q));
+    const hits = byLevel(SIMS).filter((s) => matchSim(s, q));
     resultsGrid.innerHTML = '';
     for (const sim of hits) resultsGrid.appendChild(simCard(sim));
     resultsTitle.style.display = '';
@@ -161,10 +182,16 @@ export function renderHome(main) {
   // Re-render favorites grid in search mode if user toggles a star
   // (simply re-apply the search to refresh stars on cards).
   const offSearchFav = onFavoritesChange(() => { if (searchInput.value.trim()) applySearch(); });
+  const offLevel = onLevelFilterChange(() => {
+    renderSubjects();
+    renderFavorites();
+    renderFeatured();
+    if (searchInput.value.trim()) applySearch();
+  });
 
   // Cleanup when route changes (main is re-rendered, listeners would otherwise leak across navigations).
   // Wire to hashchange — main.js re-renders on route change.
-  const cleanup = () => { offFav(); offSearchFav(); window.removeEventListener('hashchange', cleanup); };
+  const cleanup = () => { offFav(); offSearchFav(); offLevel(); chips.destroy(); window.removeEventListener('hashchange', cleanup); };
   window.addEventListener('hashchange', cleanup, { once: true });
 
   // Locale-aware rendering: getLocale used implicitly via tr/t — main re-renders on locale change.

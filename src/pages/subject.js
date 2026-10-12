@@ -2,6 +2,8 @@ import { t, tr } from '../i18n/index.js';
 import { SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { simsBySubject } from '../catalog/index.js';
 import { simCard } from '../components/sim-card.js';
+import { levelFilter } from '../components/level-filter.js';
+import { LEVELS, getLevelFilter, onLevelFilterChange, simMatchesLevel } from '../lib/levels.js';
 
 function matchSim(sim, q) {
   const hay = [
@@ -20,7 +22,8 @@ export function renderSubject(main, subjectId) {
     return;
   }
 
-  const sims = simsBySubject(subjectId);
+  const allSims = simsBySubject(subjectId);
+  let sims = allSims.filter((s) => simMatchesLevel(s, getLevelFilter()));
 
   const crumbs = document.createElement('nav');
   crumbs.className = 'crumbs';
@@ -51,6 +54,10 @@ export function renderSubject(main, subjectId) {
   const searchInput = searchWrap.querySelector('input');
   const searchCount = searchWrap.querySelector('.search__count');
 
+  const levelCounts = Object.fromEntries(LEVELS.map((l) => [l.id, allSims.filter((s) => simMatchesLevel(s, l.id)).length]));
+  const chips = levelFilter({ counts: levelCounts });
+  main.appendChild(chips.el);
+
   const titleRow = document.createElement('div');
   titleRow.className = 'section-title';
   titleRow.innerHTML = `<h2>${t('subject.simsCount', { n: sims.length })}</h2>`;
@@ -70,7 +77,7 @@ export function renderSubject(main, subjectId) {
   }
   render(sims);
 
-  searchInput.addEventListener('input', () => {
+  function applySearch() {
     const q = searchInput.value.trim().toLowerCase();
     if (!q) {
       titleRow.querySelector('h2').textContent = t('subject.simsCount', { n: sims.length });
@@ -82,5 +89,12 @@ export function renderSubject(main, subjectId) {
     titleRow.querySelector('h2').textContent = t('subject.simsCount', { n: hits.length });
     searchCount.textContent = t('search.matches', { n: hits.length });
     render(hits);
+  }
+  searchInput.addEventListener('input', applySearch);
+  const offLevel = onLevelFilterChange(() => {
+    sims = allSims.filter((s) => simMatchesLevel(s, getLevelFilter()));
+    applySearch();
   });
+  const cleanup = () => { offLevel(); chips.destroy(); window.removeEventListener('hashchange', cleanup); };
+  window.addEventListener('hashchange', cleanup, { once: true });
 }

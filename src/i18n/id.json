@@ -47,5 +47,10 @@
   "share.embedHint": "Tambahkan autostart=1 pada URL untuk melewati tombol mulai. Sematan tetap menampilkan bilah atribusi; lihat LICENSE untuk penggunaan komersial.",
   "embed.credit": "dari All-Science Sims",
   "embed.openFull": "Buka versi lengkap",
-  "embed.startHint": "Klik untuk memulai simulasi."
+  "embed.startHint": "Klik untuk memulai simulasi.",
+  "level.filterLabel": "Jenjang sekolah",
+  "level.all": "Semua jenjang",
+  "level.grade": "Kelas {{n}}",
+  "level.grades": "Kelas {{a}}–{{b}}",
+  "level.badgeTitle": "Saran kelas sekolah (1–12; Perguruan tinggi = setelah sekolah)"
 }

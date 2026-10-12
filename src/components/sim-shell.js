@@ -1,6 +1,7 @@
 import { t, tr, getLocale } from '../i18n/index.js';
 import { SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { serializeParams } from '../lib/params.js';
+import { gradeLabel } from '../lib/levels.js';
 
 /**
  * Wraps a sim with the surrounding chrome: breadcrumbs, stage container,
@@ -31,7 +32,10 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
   const labBadge = sim.hasLab
     ? `<span class="sim-card__lab" style="margin-left:12px;font-size:12px;padding:4px 12px" title="${t('lab.badgeTitle')}">🧪 ${t('lab.badge')}</span>`
     : '';
-  heading.innerHTML = `<h1 style="margin:0;display:inline-flex;align-items:center;flex-wrap:wrap">${tr(sim.title)}${labBadge}</h1>`;
+  const gradeBadge = gradeLabel(sim)
+    ? `<span class="sim-card__grade" style="margin-left:8px;font-size:12px;padding:4px 12px" title="${t('level.badgeTitle')}">${gradeLabel(sim)}</span>`
+    : '';
+  heading.innerHTML = `<h1 style="margin:0;display:inline-flex;align-items:center;flex-wrap:wrap">${tr(sim.title)}${labBadge}${gradeBadge}</h1>`;
 
   const grid = document.createElement('div');
   grid.className = 'sim-shell';

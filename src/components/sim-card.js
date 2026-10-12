@@ -1,6 +1,7 @@
 import { tr, t } from '../i18n/index.js';
 import { SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { isFavorite, toggleFavorite } from '../lib/store.js';
+import { gradeLabel } from '../lib/levels.js';
 
 export function simCard(sim) {
   const a = document.createElement('a');
@@ -14,6 +15,7 @@ export function simCard(sim) {
   a.innerHTML = `
     <span class="sim-card__tag">${subjName}</span>
     ${sim.hasLab ? `<span class="sim-card__lab" title="${t('lab.badgeTitle')}">🧪 ${t('lab.badge')}</span>` : ''}
+    ${gradeLabel(sim) ? `<span class="sim-card__grade" title="${t('level.badgeTitle')}">${gradeLabel(sim)}</span>` : ''}
     <button type="button" class="sim-card__fav${fav ? ' is-on' : ''}"
       aria-label="${t('fav.toggle')}" aria-pressed="${fav}">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">

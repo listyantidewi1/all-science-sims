@@ -47,5 +47,10 @@
   "share.embedHint": "Add autostart=1 to the URL to skip the start button. Embedding keeps the attribution bar; see the LICENSE for commercial use.",
   "embed.credit": "from All-Science Sims",
   "embed.openFull": "Open full version",
-  "embed.startHint": "Click to launch the simulation."
+  "embed.startHint": "Click to launch the simulation.",
+  "level.filterLabel": "School level",
+  "level.all": "All levels",
+  "level.grade": "Grade {{n}}",
+  "level.grades": "Grades {{a}}–{{b}}",
+  "level.badgeTitle": "Suggested school grades (1–12; University = beyond school)"
 }

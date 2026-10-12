@@ -660,3 +660,40 @@ main {
 }
 .embed-bar__title { font-weight: 700; color: var(--color-fg); }
 .embed-bar__link { margin-left: auto; color: var(--accent, var(--color-accent)); font-weight: 600; }
+
+/* School-level chips and grade badges */
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  font-size: var(--type-sm); font-weight: 600;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.chip:hover { color: var(--color-fg); border-color: var(--color-accent); }
+.chip.is-active {
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+}
+.chip__hint { font-weight: 400; font-size: var(--type-xs); opacity: 0.8; }
+.chip__count {
+  font-size: var(--type-xs); font-variant-numeric: tabular-nums;
+  padding: 1px 7px; border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-fg) 8%, transparent);
+}
+.sim-card__grade {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 8px; margin-left: 4px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, #6366f1 14%, transparent);
+  color: #6366f1;
+  border: 1px solid color-mix(in srgb, #6366f1 35%, transparent);
+  vertical-align: middle;
+  white-space: nowrap;
+}
