@@ -255,12 +255,20 @@ import anchoringBias     from '../sims/psychology/anchoring-bias/manifest.js';
 import forgettingCurve   from '../sims/psychology/forgetting-curve/manifest.js';
 import aschConformity    from '../sims/psychology/asch-conformity/manifest.js';
 import classicalConditioning from '../sims/psychology/classical-conditioning/manifest.js';
+import serialPosition    from '../sims/psychology/serial-position/manifest.js';
+import operantConditioning from '../sims/psychology/operant-conditioning/manifest.js';
+import webersLaw         from '../sims/psychology/webers-law/manifest.js';
+import bystanderEffect   from '../sims/psychology/bystander-effect/manifest.js';
 import opticalIllusions  from '../sims/cognitive-science/optical-illusions/manifest.js';
 import visualSearch      from '../sims/cognitive-science/visual-search/manifest.js';
 import mentalRotation    from '../sims/cognitive-science/mental-rotation/manifest.js';
 import digitSpan         from '../sims/cognitive-science/digit-span/manifest.js';
 import signalDetection   from '../sims/cognitive-science/signal-detection/manifest.js';
 import changeBlindness   from '../sims/cognitive-science/change-blindness/manifest.js';
+import posnerCueing      from '../sims/cognitive-science/posner-cueing/manifest.js';
+import flankerTask       from '../sims/cognitive-science/flanker-task/manifest.js';
+import nBack             from '../sims/cognitive-science/n-back/manifest.js';
+import driftDiffusion    from '../sims/cognitive-science/drift-diffusion/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -334,6 +342,10 @@ export const SIMS = [
   // 1.10.0
   stroopTest, reactionTime, anchoringBias, forgettingCurve, aschConformity, classicalConditioning,
   opticalIllusions, visualSearch, mentalRotation, digitSpan, signalDetection, changeBlindness,
+
+  // 1.17.0
+  serialPosition, operantConditioning, webersLaw, bystanderEffect,
+  posnerCueing, flankerTask, nBack, driftDiffusion,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
