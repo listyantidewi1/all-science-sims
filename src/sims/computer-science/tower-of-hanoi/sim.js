@@ -25,8 +25,10 @@ export function mount(rootEl) {
     plan = [];
     if (autoTimer) clearInterval(autoTimer);
     autoTimer = null;
-    autoB.label = 'Auto-solve';
+    // autoB is created further down; the first reset() runs before it exists.
+    if (autoB) autoB.label = 'Auto-solve';
   }
+  let autoB = null;
   reset();
 
   function legalMove(from, to) {
@@ -134,7 +136,7 @@ export function mount(rootEl) {
   const NS = slider({ label: 'Number of disks', min: 2, max: 8, step: 1, value: params.N,
     onInput: (v) => { params.N = v; reset(); } });
   const resetB = button({ label: 'Reset', onClick: reset });
-  const autoB = button({ label: 'Auto-solve', primary: true, onClick: () => {
+  autoB = button({ label: 'Auto-solve', primary: true, onClick: () => {
     if (autoTimer) {
       clearInterval(autoTimer);
       autoTimer = null;
