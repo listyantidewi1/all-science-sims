@@ -289,6 +289,10 @@ import statesOfMatter    from '../sims/chemistry/states-of-matter/manifest.js';
 import lightAndShadows   from '../sims/physics/light-and-shadows/manifest.js';
 import soundVibrations   from '../sims/physics/sound-vibrations/manifest.js';
 import magnets           from '../sims/physics/magnets/manifest.js';
+import density           from '../sims/chemistry/density/manifest.js';
+import particleModel     from '../sims/chemistry/particle-model/manifest.js';
+import heatTransfer      from '../sims/physics/heat-transfer/manifest.js';
+import speedDistanceTime from '../sims/physics/speed-distance-time/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -373,6 +377,7 @@ export const SIMS = [
   electromagnet, separatingMixtures, physicalChemicalChange, breathingLungs,
   simpleCircuit, plantGrowth, lifeCycles, dayAndNight,
   statesOfMatter, lightAndShadows, soundVibrations, magnets,
+  density, particleModel, heatTransfer, speedDistanceTime,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
