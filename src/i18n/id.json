@@ -1,7 +1,7 @@
 {
   "site.title": "All-Science Sims",
   "site.tagline": "Satu tempat untuk simulasi sains interaktif dan laboratorium virtual.",
-  "site.description": "Jelajahi simulasi interaktif untuk fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, dan ilmu sosial.",
+  "site.description": "Jelajahi simulasi interaktif dan laboratorium virtual untuk 14 mata pelajaran: fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, ilmu sosial, matematika, keuangan, teknik, musik, iklim, psikologi, dan ilmu kognitif.",
   "nav.home": "Beranda",
   "nav.about": "Tentang",
   "lang.en": "EN",
@@ -35,7 +35,7 @@
   "install.button": "Pasang aplikasi",
   "footer.text": "Gratis untuk penggunaan non-komersial · lisensi komersial tersedia. Dibangun dengan JavaScript murni — tanpa pelacakan, berjalan offline setelah dimuat.",
   "about.title": "Tentang",
-  "about.body": "All-Science Sims adalah koleksi gratis simulasi interaktif sisi-klien yang mencakup fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, dan ilmu sosial. Setiap simulasi dibuat tangan dengan JavaScript murni, berjalan sepenuhnya di peramban Anda, dan tersedia dalam Bahasa Inggris atau Bahasa Indonesia. Bermanfaat untuk pelajar, pengajar, pembelajar mandiri, dan siapa pun yang ingin tahu tentang sains.",
+  "about.body": "All-Science Sims adalah koleksi simulasi interaktif dan laboratorium virtual sisi-klien untuk 14 mata pelajaran: fisika, kimia, biologi, ilmu bumi & antariksa, ilmu komputer, ilmu data, ilmu sosial, matematika, keuangan & ekonomi, teknik, musik & akustik, iklim & keberlanjutan, psikologi, dan ilmu kognitif. Setiap simulasi dibuat tangan dengan JavaScript murni, berjalan sepenuhnya di peramban Anda, tersedia dalam Bahasa Inggris atau Bahasa Indonesia, dan dapat dibagikan sebagai tautan atau disematkan di halaman web mana pun. Gratis untuk pelajar, pengajar, pembelajar mandiri, dan siapa pun yang ingin tahu tentang sains; penggunaan komersial memerlukan lisensi.",
   "share.title": "Bagikan pengaturan ini",
   "share.hint": "Tautan ini mereproduksi nilai slider dan sakelar saat ini. Kode sematan menampilkan simulasi di halaman web atau LMS mana pun.",
   "share.linkLabel": "Tautan ke simulasi ini dengan pengaturan saat ini",
