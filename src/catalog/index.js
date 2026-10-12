@@ -277,6 +277,10 @@ import earthquakeWaves   from '../sims/earth-space/earthquake-waves/manifest.js'
 import energyTransfers   from '../sims/physics/energy-transfers/manifest.js';
 import ratioProportion   from '../sims/mathematics/ratio-proportion/manifest.js';
 import airPressureWeather from '../sims/earth-space/air-pressure-weather/manifest.js';
+import electromagnet     from '../sims/physics/electromagnet/manifest.js';
+import separatingMixtures from '../sims/chemistry/separating-mixtures/manifest.js';
+import physicalChemicalChange from '../sims/chemistry/physical-chemical-change/manifest.js';
+import breathingLungs    from '../sims/biology/breathing-lungs/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -358,6 +362,7 @@ export const SIMS = [
   // 1.18.0 — primary and middle school
   floatingSinking, pushPullFriction, digestiveSystem, weatherStation,
   earthquakeWaves, energyTransfers, ratioProportion, airPressureWeather,
+  electromagnet, separatingMixtures, physicalChemicalChange, breathingLungs,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
