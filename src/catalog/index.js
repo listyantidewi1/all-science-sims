@@ -269,6 +269,10 @@ import posnerCueing      from '../sims/cognitive-science/posner-cueing/manifest.
 import flankerTask       from '../sims/cognitive-science/flanker-task/manifest.js';
 import nBack             from '../sims/cognitive-science/n-back/manifest.js';
 import driftDiffusion    from '../sims/cognitive-science/drift-diffusion/manifest.js';
+import floatingSinking   from '../sims/physics/floating-sinking/manifest.js';
+import pushPullFriction  from '../sims/physics/push-pull-friction/manifest.js';
+import digestiveSystem   from '../sims/biology/digestive-system/manifest.js';
+import weatherStation    from '../sims/earth-space/weather-station/manifest.js';
 
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
@@ -346,6 +350,9 @@ export const SIMS = [
   // 1.17.0
   serialPosition, operantConditioning, webersLaw, bystanderEffect,
   posnerCueing, flankerTask, nBack, driftDiffusion,
+
+  // 1.18.0 — primary and middle school
+  floatingSinking, pushPullFriction, digestiveSystem, weatherStation,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
