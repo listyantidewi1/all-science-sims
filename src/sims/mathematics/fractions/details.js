@@ -1,0 +1,26 @@
+// Long-form text for the sim page aside. Kept out of manifest.js so the
+// home page does not download every sim's objectives up front.
+export default {
+  objectives: {
+    en: [
+      'Connect a/b to "a parts out of b equal pieces".',
+      'Find common denominators when adding or comparing fractions.',
+      'Convert improper fractions to mixed numbers (and back).',
+    ],
+    id: [
+      'Menghubungkan a/b dengan "a bagian dari b potongan sama".',
+      'Mencari penyebut sama saat menambah atau membandingkan pecahan.',
+      'Mengonversi pecahan tak biasa ke bilangan campuran (dan sebaliknya).',
+    ],
+  },  tryThis: {
+    en: [
+      '1/2 + 1/3 — common denominator 6 → 3/6 + 2/6 = 5/6.',
+      '7/4 — improper; equals 1¾.',
+      'Compare 5/8 vs 3/5 — common denom 40, so 25/40 vs 24/40.',
+    ],
+    id: [
+      '1/2 + 1/3 — penyebut sama 6 → 3/6 + 2/6 = 5/6.',
+      '7/4 — tak biasa; setara dengan 1¾.',
+      'Bandingkan 5/8 vs 3/5 — penyebut sama 40, jadi 25/40 vs 24/40.',
+    ],
+  },};

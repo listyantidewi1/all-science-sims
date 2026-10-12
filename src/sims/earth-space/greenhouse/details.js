@@ -1,0 +1,26 @@
+// Long-form text for the sim page aside. Kept out of manifest.js so the
+// home page does not download every sim's objectives up front.
+export default {
+  objectives: {
+    en: [
+      'Distinguish visible light (incoming) from infrared (outgoing).',
+      'Explain how more greenhouse gas raises surface temperature.',
+      'Recognize the energy-balance argument behind climate models.',
+    ],
+    id: [
+      'Membedakan cahaya tampak (masuk) dari inframerah (keluar).',
+      'Menjelaskan mengapa lebih banyak gas rumah kaca menaikkan suhu permukaan.',
+      'Mengenali argumen keseimbangan energi di balik model iklim.',
+    ],
+  },  tryThis: {
+    en: [
+      'Drop CO₂ to 0 — what happens to surface temperature?',
+      'Push CO₂ very high — does the temperature rise without limit?',
+      'Compare today\'s ~420 ppm with the pre-industrial ~280 ppm.',
+    ],
+    id: [
+      'Turunkan CO₂ ke 0 — apa yang terjadi pada suhu permukaan?',
+      'Naikkan CO₂ sangat tinggi — apakah suhu naik tanpa batas?',
+      'Bandingkan ~420 ppm saat ini dengan ~280 ppm pra-industri.',
+    ],
+  },};

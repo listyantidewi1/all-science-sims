@@ -52,3 +52,11 @@ test('unknown sim shows a not-found message instead of crashing', async ({ page 
   await expect(page.locator('main')).toContainText(/not found/i);
   expect(errors).toEqual([]);
 });
+
+test('sim page loads objectives and try-this from the lazy details module', async ({ page }) => {
+  await page.goto('/#/biology/mitosis');
+  const aside = page.locator('.sim-aside');
+  await expect(aside.getByRole('heading', { name: 'Learning objectives' })).toBeVisible();
+  await expect(aside.getByRole('heading', { name: 'Try this' })).toBeVisible();
+  await expect(aside.locator('.sim-details li')).toHaveCount(6);
+});

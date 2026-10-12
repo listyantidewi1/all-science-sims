@@ -49,30 +49,25 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
   `;
   aside.appendChild(intro);
 
-  if (sim.objectives) {
-    const objectives = tr(sim.objectives);
-    const objList = Array.isArray(objectives) ? objectives : [];
-    if (objList.length) {
-      const obj = document.createElement('div');
-      obj.innerHTML = `
-        <h3>${t('sim.objectives')}</h3>
-        <ul>${objList.map((o) => `<li>${o}</li>`).join('')}</ul>
-      `;
-      aside.appendChild(obj);
+  // Objectives and "try this" live in a lazily loaded details.js next to the
+  // manifest, so the catalog stays small. Render them when they arrive.
+  const detailsHost = document.createElement('div');
+  detailsHost.className = 'sim-details';
+  aside.appendChild(detailsHost);
+  const renderDetails = (d) => {
+    const parts = [];
+    for (const [key, labelKey] of [['objectives', 'sim.objectives'], ['tryThis', 'sim.tryThis']]) {
+      const list = tr(d?.[key]);
+      if (Array.isArray(list) && list.length) {
+        parts.push(`<div><h3>${t(labelKey)}</h3><ul>${list.map((o) => `<li>${o}</li>`).join('')}</ul></div>`);
+      }
     }
-  }
-
-  if (sim.tryThis) {
-    const tryThis = tr(sim.tryThis);
-    const tryList = Array.isArray(tryThis) ? tryThis : [];
-    if (tryList.length) {
-      const tt = document.createElement('div');
-      tt.innerHTML = `
-        <h3>${t('sim.tryThis')}</h3>
-        <ul>${tryList.map((o) => `<li>${o}</li>`).join('')}</ul>
-      `;
-      aside.appendChild(tt);
-    }
+    detailsHost.innerHTML = parts.join('');
+  };
+  if (typeof sim.details === 'function') {
+    sim.details().then((mod) => renderDetails(mod.default ?? mod)).catch((e) => console.warn('details failed to load', e));
+  } else {
+    renderDetails(sim);
   }
 
   aside.appendChild(buildSharePanel(sim, stageEl));
