@@ -8,6 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['mechanics', 'simple-machines'],
+  grade: [5, 6, 7, 8, 9],
   hasLab: true,
   load: () => import('./sim.js'),
 };

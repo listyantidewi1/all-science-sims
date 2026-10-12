@@ -8,6 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['fluid-dynamics'],
+  grade: [10, 11, 12, 13],
   hasLab: true,
   load: () => import('./sim.js'),
 };

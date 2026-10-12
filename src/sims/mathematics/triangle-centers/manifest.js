@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['geometry', 'triangles'],
+  grade: [8, 9, 10, 11],
   load: () => import('./sim.js'),
 };

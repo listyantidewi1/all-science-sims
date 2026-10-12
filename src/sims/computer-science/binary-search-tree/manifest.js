@@ -8,6 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['data-structures', 'trees'],
-  grade: [10, 11, 12],
+  grade: [11, 12, 13],
   load: () => import('./sim.js'),
 };

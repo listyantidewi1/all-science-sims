@@ -8,7 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['gases', 'thermodynamics'],
-  grade: [10, 11],
+  grade: [10, 11, 12],
   hasLab: true,
   load: () => import('./sim.js'),
 };

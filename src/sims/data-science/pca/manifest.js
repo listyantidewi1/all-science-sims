@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['linear-algebra', 'unsupervised'],
+  grade: [13],
   load: () => import('./sim.js'),
 };

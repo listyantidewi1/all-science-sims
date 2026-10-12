@@ -8,6 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['decision-making', 'computational-modeling'],
+  grade: [13],
   hasLab: true,
   load: () => import('./sim.js'),
 };

@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['memory', 'working-memory'],
+  grade: [8, 9, 10, 11, 12],
   load: () => import('./sim.js'),
 };

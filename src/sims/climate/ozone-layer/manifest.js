@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['atmospheric-chemistry'],
+  grade: [9, 10, 11, 12],
   load: () => import('./sim.js'),
 };

@@ -8,6 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['attention', 'cognitive-control'],
+  grade: [8, 9, 10, 11, 12],
   hasLab: true,
   load: () => import('./sim.js'),
 };

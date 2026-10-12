@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['evolution', 'public-health'],
+  grade: [9, 10, 11, 12],
   load: () => import('./sim.js'),
 };

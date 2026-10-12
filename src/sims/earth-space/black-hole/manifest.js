@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['general-relativity', 'lensing'],
+  grade: [11, 12, 13],
   load: () => import('./sim.js'),
 };

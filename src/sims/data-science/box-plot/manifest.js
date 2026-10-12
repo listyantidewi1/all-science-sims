@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['statistics', 'data-viz'],
+  grade: [6, 7, 8, 9, 10],
   load: () => import('./sim.js'),
 };

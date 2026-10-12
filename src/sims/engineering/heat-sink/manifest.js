@@ -8,6 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['thermodynamics', 'electronics-cooling'],
+  grade: [12, 13],
   hasLab: true,
   load: () => import('./sim.js'),
 };

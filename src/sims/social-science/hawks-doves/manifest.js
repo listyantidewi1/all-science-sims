@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['evolution', 'game-theory'],
+  grade: [11, 12, 13],
   load: () => import('./sim.js'),
 };

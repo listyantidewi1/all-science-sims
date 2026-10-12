@@ -8,7 +8,7 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['economics', 'markets'],
-  grade: [11, 12],
+  grade: [9, 10, 11, 12],
   hasLab: true,
   load: () => import('./sim.js'),
 };
