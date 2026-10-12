@@ -9,15 +9,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added — explicit license
+> Notes for the next release go here.
 
-- **`LICENSE`** — the project is now released under the [PolyForm Noncommercial License 1.0.0](LICENSE), with a required copyright notice. Until now the repository had no license file, which legally meant all rights reserved despite the README calling it open source.
-- **`COMMERCIAL-LICENSE.md`** — explains what counts as commercial use, how to request a commercial license, and the standard non-exclusive terms.
-- **README "License" section** and a contribution clause so the collection stays licensable as one piece.
+---
+
+## [1.17.0] — Tests, accessibility, deep links, embedding, 8 new sims, 30 new labs
+
+The first release after the project gained an explicit license. The theme is making the collection safe to maintain and easy to reuse: every sim is now exercised by CI, works on touch screens and keyboards, can be shared as a preset link or embedded in another page, and the two smallest subjects grew.
+
+### Added — tests and CI
+
+- **Playwright smoke test for every sim** ([tests/sims.spec.js](tests/sims.spec.js)): open the page, press Start, let the loop run, fail on any uncaught exception or `console.error`. New catalog entries are covered automatically.
+- **Page, keyboard, embed, and lab tests** — home grid and search, every subject page, language toggle, lazy details, not-found path, keyboard nudging of a drag handle, embed route, `autostart`, deep-link presets, share link, `lang`, and a Record check on all 100 lab panels.
+- **GitHub Actions workflow** ([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs the build and the suite on every push and pull request. `npm test` runs it locally.
+
+### Added — eight new simulations (234 → 242)
+
+- **Psychology**: Serial Position Effect, Operant Conditioning (FR/VR/FI/VI schedules with a cumulative record), Weber's Law (adaptive staircase, Weber fraction fit), Bystander Effect (agent-based, with Darley & Latané 1968 reference points).
+- **Cognitive science**: Posner Spatial Cueing, Eriksen Flanker Task, N-Back Working Memory, Drift-Diffusion Decisions. All eight have lab panels and bilingual text.
+
+### Added — 30 more virtual labs (70 → 100)
+
+Action potential, network epidemic, ecosystem, buffer pH, Bohr atom, stoichiometry, solar panel, Daisyworld, sorting visualizer, Big-O, hash tables, k-means, bias-variance, confusion matrix, Hohmann transfer, tides, PID controller, pulley system, Black-Scholes, CAPM, Riemann sums, Newton's method, beat frequencies, harmonic series, diffraction, RLC resonance, Schelling segregation, Bass diffusion, Stroop test, visual search. Labs that need a trial before recording say so on the Record button instead of doing nothing.
+
+### Added — deep links, embedding, sharing
+
+- Every slider, toggle, and dropdown registers a URL key (explicit `key` or a slug of its label). `#/<subject>/<sim>?key=value` opens the sim preset ([src/lib/params.js](src/lib/params.js)). Reserved: `autostart=1` skips the Start gate, `lang=en|id` sets the language.
+- `#/embed/<subject>/<sim>` renders the stage only with a one-line credit bar, for `<iframe>` use in an LMS or blog.
+- A **Share panel** in each sim's aside shows the live deep link and an iframe snippet with copy buttons.
+
+### Added — accessibility and touch
+
+- **Keyboard-accessible drag handles**: `dragHandle` takes a `handles()` callback and places an invisible focusable button over every handle — Tab reaches it, arrow keys nudge it (Shift for larger steps), screen readers announce its label. All 33 sims using the helper supply handles.
+- **Pointer events everywhere**: the 40 sims that still listened for mouse events only now use pointer events with `touch-action: none`, so dragging works on phones and tablets. `dragHandle` sets the same and handles `pointercancel`.
 
 ### Changed
 
-- Tagline, footer text (EN/ID), and `package.json` now say "free for non-commercial use" instead of "free and open source".
+- **Home bundle 134 KB → 78 KB gzipped**: objectives and try-this text moved from each manifest into a lazily loaded `details.js` beside it.
+- **Canvas text now renders at the intended size**: 903 `ctx.font` strings used `var(--font-sans)` / `var(--font-mono)`, which the canvas API ignores (falling back to 10px sans-serif). They now use real font stacks. Three `fillStyle` values that used CSS variables (also ignored) read the computed color instead.
+- **Vite 5 → 8**. Node 20.19+ required for development only.
+- README: documents deep links, embedding, keyboard use, labs, testing, the new manifest format, and all 14 subjects; catalog tables synced with the manifests (76 rows were missing, and the Psychology and Cognitive Science sections did not exist). About page and meta description list all 14 subjects. Service worker cache key bumped.
+
+### Fixed
+
+- **Tower of Hanoi never loaded**: `reset()` touched the Auto-solve button before it was declared, throwing on start. Found by the new smoke test on its first run.
+- The Sharpe ratio sim's drag hit-test returned `-1` instead of `null` on a miss.
+- The locale listener is registered before the first render, so a `?lang=` deep link works on initial load.
 
 ---
 

@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 234 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
+> 242 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **234 original simulations** across 14 subjects — see [Catalog](#catalog) below.
+- **242 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -366,6 +366,10 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Ebbinghaus Forgetting Curve | Memory fades exponentially without rehearsal — the original 1885 finding from Hermann Ebbinghaus. |
 | Asch Line Conformity | Solomon Asch's 1951 experiment: subjects look at three lines and pick which one matches a target. |
 | Classical Conditioning (Pavlov) | Pavlov rang a bell every time he fed his dog. |
+| Serial Position Effect | Study a list of words shown one at a time, then type every word you can remember. |
+| Operant Conditioning | A Skinner box with a lever, a food dispenser and a hungry rat. |
+| Weber's Law | Two lines (or two circles) appear side by side — say which is bigger. |
+| Bystander Effect | Someone collapses in front of N bystanders. |
 
 ---
 
@@ -379,6 +383,10 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 | Digit Span (Working Memory) | A sequence of digits flashes on the screen. |
 | Signal Detection Theory | Two overlapping distributions: noise alone (no signal) vs noise + signal. |
 | Change Blindness | Two scenes flicker back and forth with a brief blank between them — one element is different. |
+| Posner Spatial Cueing | Fixate the cross while one of two boxes briefly brightens, then a target dot appears in one box. |
+| Eriksen Flanker Task | Report the direction of the central arrow while ignoring the arrows beside it. |
+| N-Back Working Memory | A stream of letters (or lit squares on a 3×3 grid) appears one at a time. |
+| Drift-Diffusion Decisions | Watch dozens of noisy evidence traces race from a starting point toward an upper (correct) or lower (error) boundary. |
 
 ---
 
