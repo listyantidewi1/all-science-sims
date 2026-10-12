@@ -1,5 +1,6 @@
 import { createCanvas } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Each algorithm yields step descriptors so the renderer can highlight them.
 // Step shape: { type: 'compare'|'swap'|'set'|'mark', i, j?, value?, range? }
@@ -214,6 +215,39 @@ export function mount(rootEl) {
   const shuffleB = button({ label: 'Shuffle', onClick: newArray });
 
   ctrlPanel.append(sizeS.el, speedS.el, algoSel.el, row(playB, shuffleB));
+
+  // Lab — algorithm and array size vs comparison / swap / write counts of a completed sort.
+  const lab = labPanel({
+    title: 'Sorting lab — n vs comparisons and swaps',
+    filename: 'sorting-visualizer-lab.csv',
+    columns: [
+      { key: 'algo',     label: 'algorithm' },
+      { key: 'n',        label: 'n' },
+      { key: 'compares', label: 'compares' },
+      { key: 'swaps',    label: 'swaps' },
+      { key: 'writes',   label: 'writes' },
+    ],
+    procedure: [
+      'Pick Bubble sort, array size 10, steps/second 400. Click Run and wait until every bar is green, then Record.',
+      'Repeat for n = 20, 40, 80 (Shuffle gives a new array each time). Does doubling n double or quadruple the compares?',
+      'Switch to Merge sort and repeat n = 10, 20, 40, 80. Compare its growth with Bubble sort.',
+      'Do the same for Quick sort. Shuffle and re-run at n = 40 three times — how much do the counts vary?',
+      'Plot compares vs n for each algorithm. Which curves look like n², which like n log n?',
+    ],
+    predict: 'Going from n = 40 to n = 80, by what factor will Bubble sort\'s comparisons grow? And Merge sort\'s?',
+    source: () => {
+      const done = !state.iter && state.arr.length > 0 && state.sorted.size === state.arr.length;
+      if (!done) throw new Error('Run the sort to completion first');
+      return {
+        algo: ALGOS[state.algo].name,
+        n: state.arr.length,
+        compares: state.counts.compare,
+        swaps: state.counts.swap,
+        writes: state.counts.set,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   newArray();
 

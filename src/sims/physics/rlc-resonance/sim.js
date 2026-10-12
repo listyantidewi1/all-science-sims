@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -203,6 +204,37 @@ export function mount(rootEl) {
   } });
 
   ctrlPanel.append(RS.el, LS.el, CS.el, fS.el, row(tuneB));
+
+  // Lab — L, C, R vs resonant frequency, bandwidth and Q.
+  const lab = labPanel({
+    title: 'RLC resonance lab — f₀ = 1/(2π√(LC))',
+    filename: 'rlc-resonance-lab.csv',
+    columns: [
+      { key: 'R',  label: 'R (Ω)' },
+      { key: 'L',  label: 'L (mH)', format: (v) => v.toFixed(1) },
+      { key: 'C',  label: 'C (µF)', format: (v) => v.toFixed(1) },
+      { key: 'f0', label: 'f₀ (Hz)', format: (v) => v.toFixed(1) },
+      { key: 'bw', label: 'bandwidth Δf (Hz)', format: (v) => v.toFixed(1) },
+      { key: 'Q',  label: 'Q = f₀/Δf', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set R = 50 Ω, L = 50 mH, C = 10 µF. Press "Tune to f₀" and record.',
+      'Change C to 2.5, 5, 20 and 40 µF, recording each. f₀ should scale as 1/√C — quartering C doubles f₀.',
+      'Return C to 10 µF and set L to 12.5, 25, 100 and 200 mH. The same 1/√L scaling applies.',
+      'Now vary R: 10, 50, 100, 200, 500 Ω. f₀ does not move, but the peak broadens — Q drops and the bandwidth Δf = R/(2πL) grows.',
+      'Plot f₀ vs 1/√(LC) (L in H, C in F). The slope should be 1/(2π) ≈ 0.159.',
+    ],
+    predict: 'If you double L and halve C, what happens to f₀? What happens to the sharpness (Q) of the peak?',
+    source: () => ({
+      R: params.R,
+      L: params.L * 1000,
+      C: params.C * 1e6,
+      f0: f0(),
+      bw: params.R / (2 * Math.PI * params.L),
+      Q: Math.sqrt(params.L / params.C) / params.R,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   function inResp(sx, sy) {
     return respChart && sx >= respChart.x && sx <= respChart.x + respChart.w &&

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Bass model:
 //   dN/dt = (p + q * N(t)/M) * (M - N(t))
@@ -25,8 +26,9 @@ export function mount(rootEl) {
   let N = 0;
   let t = 0;
   let history = []; // {t, N, dN}
+  let peak = null;  // {t, rate, N} — fastest adoption seen so far in this run (read by the lab)
 
-  function reset() { N = 0; t = 0; history = [{ t: 0, N: 0, dN: 0 }]; }
+  function reset() { N = 0; t = 0; history = [{ t: 0, N: 0, dN: 0 }]; peak = null; }
   reset();
 
   function step(dt) {
@@ -40,6 +42,11 @@ export function mount(rootEl) {
     }
     const last = history[history.length - 1];
     const dN = N - last.N;
+    const span = t - last.t;
+    if (span > 0) {
+      const rate = dN / span;
+      if (!peak || rate > peak.rate) peak = { t, rate, N };
+    }
     history.push({ t, N, dN });
     if (history.length > 1500) history.shift();
   }
@@ -106,6 +113,40 @@ export function mount(rootEl) {
   }
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
   ctrlPanel.append(pS.el, qS.el, MS.el, speedS.el, presetRow, row(resetB));
+
+  // Lab — p and q vs when adoption peaks and how fast it is at the peak.
+  const lab = labPanel({
+    title: 'Bass diffusion lab — p, q vs the adoption peak',
+    filename: 'bass-diffusion-lab.csv',
+    columns: [
+      { key: 'p',        label: 'p (innovation)', format: (v) => v.toFixed(3) },
+      { key: 'q',        label: 'q (imitation)', format: (v) => v.toFixed(3) },
+      { key: 'M',        label: 'M' },
+      { key: 'tPeak',    label: 'time of peak', format: (v) => v.toFixed(2) },
+      { key: 'peakRate', label: 'peak rate (adopters / unit time)', format: (v) => v.toFixed(1) },
+      { key: 'fracPeak', label: 'N/M at peak (%)', format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Set p = 0.030, q = 0.400, M = 1000. Press Reset and wait until the "New adopters" curve has clearly peaked and is falling. Record.',
+      'Keep q = 0.400 and set p to 0.005, 0.010, 0.060, 0.100, pressing Reset each time and waiting past the peak. Record each. How does p shift the peak time?',
+      'Return p to 0.030 and set q to 0.100, 0.200, 0.600, 0.900. Reset, wait past the peak, record each. Higher q should bring an earlier, taller peak.',
+      'Try the presets (Smartphone, VCR, Slow burner, Mass marketing). With "Mass marketing" (q ≈ p) is there a peak at all, or does adoption start at its maximum?',
+      'Plot time of peak vs q. Theory predicts t* = ln(q/p)/(p + q) and that N/M at the peak is about 50% when q ≫ p.',
+    ],
+    predict: 'Will raising the imitation rate q make the adoption peak come earlier or later, and will it be taller or lower?',
+    source: () => {
+      if (!peak) throw new Error('Let the simulation run first');
+      return {
+        p: params.p,
+        q: params.q,
+        M: params.M,
+        tPeak: peak.t,
+        peakRate: peak.rate,
+        fracPeak: (peak.N / params.M) * 100,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.1, dt)); draw(); });
   animator.start();

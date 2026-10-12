@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['neuroscience', 'physiology'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

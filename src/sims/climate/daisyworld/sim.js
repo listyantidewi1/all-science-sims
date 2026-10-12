@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 // Lovelock & Watson Daisyworld (1983), simplified.
@@ -215,6 +216,37 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset planet', primary: true, onClick: reset });
 
   ctrlPanel.append(LS.el, autoT.el, onlyWT.el, onlyBT.el, row(resetB));
+
+  // Lab — solar luminosity vs planetary temperature and daisy coverage (homeostasis).
+  const lab = labPanel({
+    title: 'Daisyworld lab — luminosity vs temperature',
+    filename: 'daisyworld-lab.csv',
+    columns: [
+      { key: 'L',       label: 'L (×S₀)',       format: (v) => v.toFixed(3) },
+      { key: 'daisies', label: 'daisies' },
+      { key: 'T',       label: 'T (°C)',         format: (v) => v.toFixed(2) },
+      { key: 'Tbare',   label: 'bare-planet T (°C)', format: (v) => v.toFixed(2) },
+      { key: 'white',   label: 'white (%)',      format: (v) => v.toFixed(1) },
+      { key: 'black',   label: 'black (%)',      format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Turn off "Auto-sweep luminosity", click "Reset planet", set L = 0.700. Wait until T stops changing, then Record.',
+      'Raise L in steps of 0.1 up to 1.500, waiting for T to settle and recording each step.',
+      'Plot T and bare-planet T against L on the same axes. Over which range of L do the daisies hold T nearly flat?',
+      'Reset, enable "Disable black daisies", and repeat L = 0.7, 0.9, 1.1, 1.3. Then do the same with only black daisies.',
+      'Reset with both species and sweep L downward from 1.5 to 0.7. Do you get the same T at the same L (hysteresis)?',
+    ],
+    predict: 'As L rises from 0.8 to 1.4, will planetary temperature rise steadily like the bare planet, stay nearly flat, or jump suddenly?',
+    source: () => ({
+      L: params.L,
+      daisies: params.onlyWhite ? 'white only' : params.onlyBlack ? 'black only' : 'both',
+      T: state.T - 273.15,
+      Tbare: Math.pow(params.L * S0 * (1 - Ag) / sigma, 0.25) - 273.15,
+      white: state.αw * 100,
+      black: state.αb * 100,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(Math.min(0.05, dt)); draw(); });
   animator.start();

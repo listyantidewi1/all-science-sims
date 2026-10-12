@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 // Element symbols up to Kr
 const ELEMENTS = [
@@ -131,6 +132,39 @@ export function mount(rootEl) {
   }
 
   ctrlPanel.append(zS.el, animT.el, presetRow);
+
+  // Lab — atomic number vs shell structure (number of shells, valence electrons, periodicity).
+  const lab = labPanel({
+    title: 'Bohr shells lab — Z vs electron shells',
+    filename: 'bohr-atom-lab.csv',
+    columns: [
+      { key: 'z',       label: 'Z' },
+      { key: 'element', label: 'element' },
+      { key: 'shells',  label: 'shells (2, 8, 8, 18)' },
+      { key: 'valence', label: 'valence e⁻' },
+      { key: 'noble',   label: 'full outer shell?' },
+    ],
+    procedure: [
+      'Set Z = 1 and Record. Step Z up one at a time to Z = 10, recording each element.',
+      'Look at the valence column: it counts 1, 2 ... up to 8, then a new shell opens. Where does it reset?',
+      'Record Z = 11 to 18. Compare each row with the row 8 above it (e.g. Na vs Li). What repeats?',
+      'Record the noble gases He, Ne, Ar, Kr (Z = 2, 10, 18, 36). What do they have in common?',
+      'Plot valence electrons vs Z. The sawtooth is the origin of the periodic table columns.',
+    ],
+    predict: 'Which elements will have the same number of valence electrons as sodium (Z = 11)?',
+    source: () => {
+      const shells = shellsForZ(params.z);
+      const valence = shells[shells.length - 1] || 0;
+      return {
+        z: params.z,
+        element: ELEMENTS[params.z] || '?',
+        shells: shells.join(', '),
+        valence,
+        noble: [2, 10, 18, 36].includes(params.z) ? 'yes' : 'no',
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => {
     if (params.animate) t += dt;

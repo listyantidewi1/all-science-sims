@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const COLORS = [
   { name: 'RED',    hex: '#ef4444' },
@@ -135,6 +136,39 @@ export function mount(rootEl) {
   });
   const resetB = button({ label: 'Reset trials', primary: true, onClick: () => { state.trials = []; } });
   ctrlPanel.append(modeSel.el, row(resetB));
+
+  // Lab — condition vs mean reaction time; the difference is the Stroop interference.
+  const lab = labPanel({
+    title: 'Stroop lab — reaction time by condition',
+    filename: 'stroop-test-lab.csv',
+    columns: [
+      { key: 'mode',   label: 'mode' },
+      { key: 'n',      label: 'n correct (cong / incong)' },
+      { key: 'cong',   label: 'congruent mean (ms)', format: (v) => v.toFixed(0) },
+      { key: 'incong', label: 'incongruent mean (ms)', format: (v) => v.toFixed(0) },
+      { key: 'diff',   label: 'interference (ms)', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Select Congruent mode and press "Reset trials". Answer 10 trials as fast as you can, then record.',
+      'Switch to Incongruent mode, press "Reset trials", answer 10 trials and record.',
+      'Switch to Mixed mode, press "Reset trials" and answer 20 trials. This row has both means and their difference — the Stroop interference.',
+      'Repeat the Mixed block two more times (Reset between blocks). Does the interference shrink with practice?',
+      'Ask a classmate to do a Mixed block and record their row. Compare interference across people.',
+    ],
+    predict: 'How many milliseconds slower will you be when the ink colour and the word disagree?',
+    source: () => {
+      if (state.trials.length === 0) throw new Error('Answer some trials first');
+      const s = stats();
+      return {
+        mode: params.mode,
+        n: `${s.congN} / ${s.incongN}`,
+        cong: s.congAvg,
+        incong: s.incongAvg,
+        diff: (s.congAvg != null && s.incongAvg != null) ? s.incongAvg - s.congAvg : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

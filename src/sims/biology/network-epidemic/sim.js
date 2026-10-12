@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -20,6 +21,7 @@ export function mount(rootEl) {
 
   let nodes = [];   // {x, y, state: 'S'|'I'|'R'}
   let edges = [];   // [a, b]
+  let stats = { steps: 0, peakI: 1, peakStep: 0 }; // outbreak bookkeeping for the lab panel
 
   function buildNetwork() {
     nodes = [];
@@ -37,6 +39,7 @@ export function mount(rootEl) {
     }
     // start one infection
     nodes[Math.floor(Math.random() * params.n)].state = 'I';
+    stats = { steps: 0, peakI: 1, peakStep: 0 };
   }
   buildNetwork();
 
@@ -52,6 +55,10 @@ export function mount(rootEl) {
       if (nodes[i].state === 'I' && Math.random() < params.pRecover) newStates[i] = 'R';
     }
     for (let i = 0; i < nodes.length; i++) nodes[i].state = newStates[i];
+    stats.steps++;
+    let I = 0;
+    for (const n of nodes) if (n.state === 'I') I++;
+    if (I > stats.peakI) { stats.peakI = I; stats.peakStep = stats.steps; }
   }
 
   function relax(dt) {
@@ -127,6 +134,42 @@ export function mount(rootEl) {
     onInput: (v) => { params.speed = v; } });
   const resetB = button({ label: 'Rebuild network', primary: true, onClick: buildNetwork });
   ctrlPanel.append(nS.el, dS.el, pIS.el, pRS.el, speedS.el, row(resetB));
+
+  // Lab — network / transmission parameters vs peak infected and final outbreak size.
+  const lab = labPanel({
+    title: 'Network epidemic lab — peak and final size',
+    filename: 'network-epidemic-lab.csv',
+    columns: [
+      { key: 'n',        label: 'nodes' },
+      { key: 'deg',      label: 'avg degree',   format: (v) => v.toFixed(1) },
+      { key: 'pInfect',  label: 'p_infect',     format: (v) => v.toFixed(2) },
+      { key: 'pRecover', label: 'p_recover',    format: (v) => v.toFixed(2) },
+      { key: 'peakI',    label: 'peak infected' },
+      { key: 'finalR',   label: 'final size (R)' },
+    ],
+    procedure: [
+      'Keep nodes = 80, avg degree = 4, p_recover = 0.05. Set p_infect = 0.05, click "Rebuild network".',
+      'Wait until I = 0 (the outbreak is over), then Record. Rebuild and repeat 2-3 times — note the spread.',
+      'Repeat for p_infect = 0.10, 0.20, 0.40, 0.80. How do peak infected and final size change?',
+      'Fix p_infect = 0.15 and vary avg degree 1, 2, 4, 8 (rebuild each time). Is there a degree below which outbreaks fizzle?',
+      'Plot final size vs p_infect. Is it a smooth curve or a sharp threshold?',
+    ],
+    predict: 'Doubling p_infect from 0.1 to 0.2 — will the final outbreak size roughly double, or saturate?',
+    source: () => {
+      const counts = { S: 0, I: 0, R: 0 };
+      for (const n of nodes) counts[n.state]++;
+      if (counts.I > 0) throw new Error('Wait until I = 0 (outbreak over)');
+      return {
+        n: nodes.length,
+        deg: params.avgDeg,
+        pInfect: params.pInfect,
+        pRecover: params.pRecover,
+        peakI: stats.peakI,
+        finalR: counts.R,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   let acc = 0;
   const animator = loop((dt) => {

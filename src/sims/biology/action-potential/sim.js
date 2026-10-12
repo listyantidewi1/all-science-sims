@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -29,6 +30,10 @@ export function mount(rootEl) {
   let history = []; // {t, Vmv}
   const a = 0.7, b = 0.8, tau = 12;
 
+  // Lab bookkeeping: stats of the most recent stimulus pulse (read by the lab panel).
+  let lastPulse = null; // { strength, width, t0, peak, crossT }
+  const MEASURE_WINDOW = 50; // ms after the pulse during which peak / latency are tracked
+
   function step(dt) {
     // dt is seconds; convert to ms (and slow down so it's watchable: 1 real second ≈ 60 ms simulated)
     const dt_ms = dt * 60;
@@ -41,6 +46,11 @@ export function mount(rootEl) {
       V += dV;
       Wv += dW;
       t_ms += h;
+      if (lastPulse && t_ms - lastPulse.t0 <= MEASURE_WINDOW) {
+        const mv = vMv(V);
+        if (mv > lastPulse.peak) lastPulse.peak = mv;
+        if (lastPulse.crossT == null && mv >= params.threshold) lastPulse.crossT = t_ms - lastPulse.t0;
+      }
     }
     history.push({ t: t_ms, V });
     if (history.length > 1000) history.shift();
@@ -49,6 +59,7 @@ export function mount(rootEl) {
   function fire(strength) {
     stim = strength;
     stimUntil = t_ms + params.pulseWidth;
+    lastPulse = { strength: strength / 0.05, width: params.pulseWidth, t0: t_ms, peak: vMv(V), crossT: null };
   }
 
   function vMv(V) { return V * 30 - 40; } // convert to mV
@@ -203,6 +214,38 @@ export function mount(rootEl) {
     setTimeout(() => fire(params.pulseStrength * 0.05), 80);
   } });
   ctrlPanel.append(strS.el, widS.el, row(fireB, subB, doubleB));
+
+  // Lab — stimulus strength vs all-or-nothing spike (peak voltage, latency to threshold).
+  const lab = labPanel({
+    title: 'Action potential lab — threshold & all-or-nothing',
+    filename: 'action-potential-lab.csv',
+    columns: [
+      { key: 'strength', label: 'pulse strength', format: (v) => v.toFixed(1) },
+      { key: 'width',    label: 'width (ms)',     format: (v) => v.toFixed(1) },
+      { key: 'peak',     label: 'peak V_m (mV)',  format: (v) => v.toFixed(1) },
+      { key: 'spike',    label: 'spike?' },
+      { key: 'latency',  label: 'latency to threshold (ms)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set pulse strength = 2, width = 1.0 ms. Click "Fire pulse", wait for the trace to settle, then Record.',
+      'Repeat at strength 5, 10, 15, 20, 40. Find where "spike?" flips from no to yes — that is the threshold.',
+      'Compare peak V_m for strength 20 vs 40. Does a stronger stimulus give a taller spike?',
+      'Fix strength = 10 and vary width 0.2, 0.5, 1, 2, 5 ms. Can a weak but long pulse still reach threshold?',
+      'Look at latency: as strength increases above threshold, does the spike come sooner?',
+    ],
+    predict: 'If you double the stimulus strength above threshold, will the spike peak double too, or stay the same?',
+    source: () => {
+      if (!lastPulse) throw new Error('Fire a pulse first');
+      return {
+        strength: lastPulse.strength,
+        width: lastPulse.width,
+        peak: lastPulse.peak,
+        spike: lastPulse.peak > 0 ? 'yes' : 'no',
+        latency: lastPulse.crossT,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

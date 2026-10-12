@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const REACTIONS = {
   combustion_methane: {
@@ -193,6 +194,42 @@ export function mount(rootEl) {
     }
   }
   rebuildSliders();
+
+  // Lab — reactant masses vs limiting reagent, product yield and leftover excess.
+  const lab = labPanel({
+    title: 'Limiting reagent lab — reactant mass vs yield',
+    filename: 'stoichiometry-lab.csv',
+    columns: [
+      { key: 'rxn',      label: 'reaction' },
+      { key: 'm1',       label: 'reactant 1 (g)', format: (v) => v.toFixed(1) },
+      { key: 'm2',       label: 'reactant 2 (g)', format: (v) => v.toFixed(1) },
+      { key: 'limiting', label: 'limiting reagent' },
+      { key: 'yieldG',   label: 'product 1 yield (g)', format: (v) => v.toFixed(2) },
+      { key: 'leftover', label: 'excess left (g)',     format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Methane combustion: set CH₄ = 10.0 g and O₂ = 10.0 g. Record.',
+      'Keep CH₄ = 10 g; set O₂ = 20, 30, 40, 50, 60 g, recording each. Which reagent is limiting at each step?',
+      'Plot CO₂ yield vs O₂ mass. Where does the curve stop rising? Compare with 10 g CH₄ × (2 × 32.00) / 16.04.',
+      'Switch to the Haber reaction. Set N₂ = 28 g and vary H₂ = 2, 4, 6, 8 g. Find the mass where neither reagent is in excess.',
+      'For one row, check by hand: moles of limiting reagent × coefficient ratio × molar mass of product = yield.',
+    ],
+    predict: 'With CH₄ fixed at 10 g, will the CO₂ yield keep rising as you add more O₂, or level off — and at what O₂ mass?',
+    source: () => {
+      const c = compute();
+      const r = c.r;
+      const excessIdx = c.limitingIdx === 0 ? 1 : 0;
+      return {
+        rxn: r.reactants.map((rt) => rt.formula).join(' + '),
+        m1: params.grams[0],
+        m2: params.grams[1],
+        limiting: r.reactants[c.limitingIdx].formula,
+        yieldG: c.productGrams[0],
+        leftover: c.leftoverGrams[excessIdx],
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['ac-circuits', 'resonance'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

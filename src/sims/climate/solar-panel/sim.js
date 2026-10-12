@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 import { hoverProbe, drawCrosshair } from '../../../lib/chart.js';
 
 // Approximate clear-sky solar irradiance vs hour-of-day at given latitude, day-of-year, panel tilt.
@@ -228,6 +229,37 @@ export function mount(rootEl) {
   const ruleB = button({ label: 'Tilt = latitude', primary: true, onClick: () => { params.tilt = Math.abs(params.lat); tiltS.value = params.tilt; } });
 
   ctrlPanel.append(latS.el, tiltS.el, dayS.el, clS.el, row(ruleB));
+
+  // Lab — panel tilt (and sun angle via latitude / day) vs noon power and daily yield.
+  const lab = labPanel({
+    title: 'Solar panel lab — tilt vs power output',
+    filename: 'solar-panel-lab.csv',
+    columns: [
+      { key: 'lat',   label: 'latitude (°)' },
+      { key: 'tilt',  label: 'tilt (°)' },
+      { key: 'day',   label: 'day of year' },
+      { key: 'cloud', label: 'cloud',            format: (v) => `${(v * 100).toFixed(0)}%` },
+      { key: 'noon',  label: 'noon power (W/m²)', format: (v) => v.toFixed(0) },
+      { key: 'daily', label: 'daily yield (kWh/m²)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set latitude 35°, day 172 (June 21), cloud 0%. Set tilt = 0° and Record.',
+      'Repeat for tilt 15, 30, 45, 60, 75, 90°. Plot daily yield vs tilt — which tilt is best in summer?',
+      'Change day to 355 (Dec 21) and repeat the tilt sweep. Does the best tilt move up or down?',
+      'Click "Tilt = latitude" and record for days 80, 172, 266, 355. Is one fixed tilt a good year-round compromise?',
+      'Set latitude 0° and then 60° (tilt = latitude each time, day 172). How does daily yield compare?',
+    ],
+    predict: 'At latitude 35° on June 21, will the best panel tilt be greater than, equal to, or less than 35°?',
+    source: () => ({
+      lat: params.lat,
+      tilt: params.tilt,
+      day: params.day,
+      cloud: params.cloud,
+      noon: panelOutput(params.lat, params.day, 12, params.tilt, params.cloud),
+      daily: computeDailyEnergy(params.day) / 1000,
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

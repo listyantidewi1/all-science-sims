@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -149,6 +150,35 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset additions', onClick: () => { params.addedAcid = 0; params.addedBase = 0; acidS.value = 0; baseS.value = 0; } });
 
   ctrlPanel.append(haS.el, aS.el, pkaS.el, acidS.el, baseS.el, presetRow, row(resetB));
+
+  // Lab — added strong acid/base vs buffer pH (Henderson-Hasselbalch, buffer capacity).
+  const lab = labPanel({
+    title: 'Buffer lab — pH vs added strong acid / base',
+    filename: 'buffer-ph-lab.csv',
+    columns: [
+      { key: 'pKa',   label: 'pKa',       format: (v) => v.toFixed(2) },
+      { key: 'HA',    label: '[HA]₀ (M)', format: (v) => v.toFixed(3) },
+      { key: 'A',     label: '[A⁻]₀ (M)', format: (v) => v.toFixed(3) },
+      { key: 'added', label: 'strong added (M, +base / −acid)', format: (v) => v.toFixed(3) },
+      { key: 'pH',    label: 'pH',        format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Pick Acetate (pKa 4.75), set [HA] = [A⁻] = 0.100 M, no additions. Record — pH should equal pKa.',
+      'Add strong acid 0.020, 0.050, 0.080, 0.095 M (record each). How fast does pH fall as [A⁻] runs out?',
+      'Click "Reset additions", then add strong base 0.020, 0.050, 0.080, 0.095 M and record each.',
+      'Double the buffer: [HA] = [A⁻] = 0.200 M, add acid 0.080 M, record. Compare with the 0.100 M row — buffer capacity.',
+      'Switch to Phosphate (7.21) and repeat step 2. Plot pH vs added acid for both buffers.',
+    ],
+    predict: 'With [HA] = [A⁻] = 0.1 M, by how much will pH change when you add 0.05 M strong acid — about 0.5, about 1, or more?',
+    source: () => ({
+      pKa: params.pKa,
+      HA: params.HA,
+      A: params.A,
+      added: params.addedBase - params.addedAcid,
+      pH: pH(),
+    }),
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

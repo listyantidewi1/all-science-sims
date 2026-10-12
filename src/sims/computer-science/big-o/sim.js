@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, toggle, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const FUNCS = [
   { name: 'O(1)',       f: (n) => 1,                       color: '#10b981' },
@@ -106,6 +107,42 @@ export function mount(rootEl) {
     onInput: (v) => { params.n = v; } });
   const logT = toggle({ label: 'Log scale', value: params.logScale, onChange: (v) => { params.logScale = v; } });
   ctrlPanel.append(nMaxS.el, nS.el, logT.el);
+
+  // Lab — n vs operation counts for the growth functions above.
+  const fmtCount = (v) => (v > 1e9 ? v.toExponential(2) : v.toLocaleString(undefined, { maximumFractionDigits: 2 }));
+  const fnByName = (name) => FUNCS.find((f) => f.name === name).f;
+  const lab = labPanel({
+    title: 'Big-O lab — n vs operation counts',
+    filename: 'big-o-lab.csv',
+    columns: [
+      { key: 'n',      label: 'n' },
+      { key: 'logn',   label: 'log₂ n',  format: fmtCount },
+      { key: 'nlogn',  label: 'n log n', format: fmtCount },
+      { key: 'n2',     label: 'n²',      format: fmtCount },
+      { key: 'exp',    label: '2ⁿ',      format: fmtCount },
+      { key: 'fact',   label: 'n!',      format: fmtCount },
+    ],
+    procedure: [
+      'Set n (current) = 1 and Record. Then record n = 2, 4, 8, 16, 30.',
+      'Between consecutive rows n doubles. For each column, by what factor did the count grow?',
+      'Which column grows by a constant factor when n doubles (polynomial)? Which grows by a factor that itself grows (exponential)?',
+      'Toggle the log scale off and on. Which curves disappear off the top of the chart first?',
+      'If one operation takes 1 ns, how long would 2ⁿ and n! take at n = 30? Compare with n log n.',
+    ],
+    predict: 'When n doubles from 8 to 16, by what factor do n², 2ⁿ and n! each grow?',
+    source: () => {
+      const n = params.n;
+      return {
+        n,
+        logn: fnByName('O(log n)')(n),
+        nlogn: fnByName('O(n log n)')(n),
+        n2: fnByName('O(n²)')(n),
+        exp: fnByName('O(2ⁿ)')(n),
+        fact: fnByName('O(n!)')(n),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

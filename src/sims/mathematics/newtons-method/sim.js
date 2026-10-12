@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { select, slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const FUNCS = {
   cubic1: { label: 'x³ − 2x − 5',     f: (x) => x * x * x - 2 * x - 5,      df: (x) => 3 * x * x - 2 },
@@ -145,6 +146,41 @@ export function mount(rootEl) {
   const clearB = button({ label: 'Clear', onClick: () => { history = []; } });
 
   ctrlPanel.append(kindSel.el, itS.el, row(clearB));
+
+  // Lab — starting point vs iterations needed and which root is found.
+  const lab = labPanel({
+    title: "Newton's method lab — start point vs convergence",
+    filename: 'newtons-method-lab.csv',
+    columns: [
+      { key: 'func',  label: 'f(x)' },
+      { key: 'x0',    label: 'start x₀', format: (v) => v.toFixed(3) },
+      { key: 'iters', label: 'iterations' },
+      { key: 'root',  label: 'root found', format: (v) => v.toFixed(6) },
+      { key: 'fAbs',  label: '|f(root)|', format: (v) => v.toExponential(2) },
+    ],
+    procedure: [
+      'Choose f(x) = x³ − 2x − 5 and max iterations = 8. Click near x = 2.5 to start, then record.',
+      'Click at x ≈ 1.5, 0.5 and −2 and record each. Does every start reach the same root? How many steps did each need?',
+      'Switch to x³ − x (three roots). Click at x ≈ 0.6, 0.5 and 0.45 and record — tiny changes in x₀ can land on different roots.',
+      'Set max iterations to 3 and record a run from x ≈ 2.5. Compare |f(root)| with the 8-iteration run.',
+      'Plot iterations vs |x₀ − root|. Near a root each step roughly doubles the number of correct digits.',
+    ],
+    predict: 'If you start twice as far from the root, will Newton need twice as many iterations, or only a few more?',
+    source: () => {
+      const xs = history.filter((h) => !h.tangentFrom).map((h) => h.x);
+      if (xs.length === 0) throw new Error('Click the graph to pick x₀ first');
+      const fn = FUNCS[params.kind];
+      const root = xs[xs.length - 1];
+      return {
+        func: fn.label,
+        x0: xs[0],
+        iters: xs.length - 1,
+        root,
+        fAbs: Math.abs(fn.f(root)),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

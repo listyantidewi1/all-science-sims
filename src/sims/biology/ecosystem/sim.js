@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const W_CELLS = 50, H_CELLS = 30;
 
@@ -29,6 +30,7 @@ export function mount(rootEl) {
   let foxes = [];
   let history = []; // { rabbits, foxes }
   let tick = 0;
+  let peakR = 0, peakF = 0; // population peaks since reset (for the lab panel)
 
   function reset() {
     grass = new Float32Array(W_CELLS * H_CELLS);
@@ -43,6 +45,8 @@ export function mount(rootEl) {
     }
     history = [];
     tick = 0;
+    peakR = 0;
+    peakF = 0;
   }
   reset();
 
@@ -98,6 +102,8 @@ export function mount(rootEl) {
 
     history.push({ r: rabbits.length, f: foxes.length });
     if (history.length > 400) history.shift();
+    if (rabbits.length > peakR) peakR = rabbits.length;
+    if (foxes.length > peakF) peakF = foxes.length;
     tick++;
   }
 
@@ -168,6 +174,42 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', primary: true, onClick: reset });
 
   ctrlPanel.append(grassS.el, fEnergy.el, rRepro.el, fRepro.el, speedS.el, graphT.el, row(resetB));
+
+  // Lab — ecosystem parameters vs population peaks and long-run (windowed mean) populations.
+  const lab = labPanel({
+    title: 'Predator-prey lab — peaks and equilibrium',
+    filename: 'ecosystem-lab.csv',
+    columns: [
+      { key: 'grass', label: 'grass regrowth', format: (v) => v.toFixed(3) },
+      { key: 'foxE',  label: 'fox E / rabbit' },
+      { key: 'meanR', label: 'mean rabbits', format: (v) => v.toFixed(1) },
+      { key: 'meanF', label: 'mean foxes',   format: (v) => v.toFixed(1) },
+      { key: 'peakR', label: 'peak rabbits' },
+      { key: 'peakF', label: 'peak foxes' },
+    ],
+    procedure: [
+      'Keep defaults (grass 0.040, fox energy 20). Click Reset, let it run ~30 s at speed 4, then Record.',
+      'Reset and repeat twice more with the same settings. How much do the means and peaks vary between runs?',
+      'Set grass regrowth to 0.010, 0.020, 0.080, 0.150 (Reset each time, same wait). How do rabbit and fox numbers respond?',
+      'Back to grass 0.040; set fox energy / rabbit to 8, 12, 30, 50. At which values do foxes or rabbits go extinct?',
+      'Plot mean foxes vs mean rabbits. Does more grass mean more rabbits, more foxes, or both?',
+    ],
+    predict: 'If grass regrows twice as fast, will the rabbit population double, or will the foxes eat the difference?',
+    source: () => {
+      const n = history.length;
+      let sr = 0, sf = 0;
+      for (const p of history) { sr += p.r; sf += p.f; }
+      return {
+        grass: params.grassGrow,
+        foxE: params.foxFromRabbit,
+        meanR: n ? sr / n : rabbits.length,
+        meanF: n ? sf / n : foxes.length,
+        peakR,
+        peakF,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   let frameAcc = 0;
   const animator = loop((dt) => {

@@ -2,6 +2,7 @@ import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row, toggle } from '../../../lib/controls.js';
 import { hoverProbe, drawTooltip } from '../../../lib/chart.js';
 import { dragHandle } from '../../../lib/handle.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const SIZE = 50;
 
@@ -218,6 +219,52 @@ export function mount(rootEl) {
   const clearB = button({ label: 'Clear all', onClick: () => { grid = new Uint8Array(SIZE * SIZE); happiness = computeHappiness(); stepsTaken = 0; } });
 
   ctrlPanel.append(tolS.el, densS.el, fracS.el, speedS.el, paintSel.el, runT.el, row(resetB, clearB));
+
+  // Lab — tolerance vs how segregated the settled grid ends up.
+  // Similarity index = mean fraction of same-colour neighbours over all occupied cells.
+  function meanSimilarity() {
+    let sum = 0, count = 0;
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        if (grid[y * SIZE + x] === 0) continue;
+        const [same, total] = neighborsSame(x, y);
+        if (total === 0) continue;
+        sum += same / total;
+        count++;
+      }
+    }
+    return count === 0 ? null : sum / count;
+  }
+  const lab = labPanel({
+    title: 'Schelling lab — tolerance vs segregation',
+    filename: 'schelling-segregation-lab.csv',
+    columns: [
+      { key: 'tol',     label: 'tolerance (%)', format: (v) => v.toFixed(0) },
+      { key: 'density', label: 'density', format: (v) => v.toFixed(2) },
+      { key: 'happy',   label: 'happy (%)', format: (v) => v.toFixed(1) },
+      { key: 'sim',     label: 'mean same-colour neighbours (%)', format: (v) => v.toFixed(1) },
+      { key: 'moves',   label: 'moves to settle' },
+    ],
+    procedure: [
+      'Set tolerance 30%, density 0.85, red share 0.50. Press Reset and let it run until Happy reaches 100% and the move counter stops. Record.',
+      'Repeat at tolerance 40%, 50%, 60% and 70%, pressing Reset each time and waiting until it settles. Record each.',
+      'Try tolerance 80%. Does it ever settle? Record after about 30 s and note the happiness.',
+      'Plot mean same-colour neighbours (%) vs tolerance. Even a 30% preference typically yields 70%+ same-colour neighbours.',
+      'Set density to 0.70 and repeat tolerance 40% and 60%. With more empty cells, do agents settle in fewer or more moves?',
+    ],
+    predict: 'If every agent is content with just 30% similar neighbours, what fraction of similar neighbours will the settled grid actually show?',
+    source: () => {
+      const sim = meanSimilarity();
+      return {
+        tol: params.tolerance * 100,
+        density: params.density,
+        happy: happiness * 100,
+        sim: sim == null ? null : sim * 100,
+        moves: stepsTaken,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop((dt) => { step(dt); draw(); });
   animator.start();

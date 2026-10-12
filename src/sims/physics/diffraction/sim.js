@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, toggle } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -174,6 +175,43 @@ export function mount(rootEl) {
   const wT = toggle({ label: 'Show wave ripples', value: params.showWaves, onChange: (v) => { params.showWaves = v; } });
 
   ctrlPanel.append(NS.el, wS.el, sS.el, lamS.el, LS.el, wT.el);
+
+  // Lab — slit geometry and wavelength vs fringe spacing and first-minimum angle.
+  const lab = labPanel({
+    title: 'Diffraction lab — Δy = λL/d, sin θ₁ = λ/a',
+    filename: 'diffraction-lab.csv',
+    columns: [
+      { key: 'a',      label: 'slit width a (µm)' },
+      { key: 'd',      label: 'separation d (µm)' },
+      { key: 'lam',    label: 'λ (nm)' },
+      { key: 'L',      label: 'L (m)', format: (v) => v.toFixed(2) },
+      { key: 'fringe', label: 'fringe Δy (mm)', format: (v) => v.toFixed(3) },
+      { key: 'theta1', label: '1st minimum θ₁ (°)', format: (v) => v.toFixed(2) },
+    ],
+    procedure: [
+      'Set 2 slits, width 30 µm, separation 200 µm, L = 1.00 m. Record at λ = 400 nm, then 500, 600 and 700 nm.',
+      'Back at λ = 600 nm, set separation d to 100, 200, 300, 400 and 500 µm, recording each. Δy should scale as 1/d.',
+      'Now vary slit width a: 10, 20, 40, 80, 160 µm. Δy does not change, but the first-minimum angle θ₁ (the width of the bright envelope) shrinks.',
+      'Set L = 0.50 m, then 2.00 m, and record. Δy doubles with L while θ₁ stays the same.',
+      'Plot Δy vs λ and Δy vs 1/d — both should be straight lines through the origin. (With 1 slit there are no fringes, so Δy is blank.)',
+    ],
+    predict: 'Will red light (700 nm) give wider or narrower fringes than blue (450 nm)? What happens to the central bright band if the slits are made narrower?',
+    source: () => {
+      const a = params.slitWidth * 1e-6;
+      const d = params.slitSep * 1e-6;
+      const lam = params.wavelength * 1e-9;
+      const ratio = lam / a;
+      return {
+        a: params.slitWidth,
+        d: params.slitSep,
+        lam: params.wavelength,
+        L: params.L,
+        fringe: params.N >= 2 ? (lam * params.L / d) * 1000 : null,
+        theta1: ratio < 1 ? Math.asin(ratio) * 180 / Math.PI : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

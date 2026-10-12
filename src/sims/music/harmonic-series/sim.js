@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const N = 8; // first 8 harmonics
 
@@ -172,6 +173,40 @@ export function mount(rootEl) {
 
   const playB = button({ label: '▶ Play', primary: true, onClick: () => { playing ? stopAudio() : startAudio(); } });
   ctrlPanel.appendChild(row(playB));
+
+  // Lab — fundamental vs the frequencies of its harmonics.
+  const lab = labPanel({
+    title: 'Harmonic series lab — f_n = n · f₀',
+    filename: 'harmonic-series-lab.csv',
+    columns: [
+      { key: 'f0',     label: 'f₀ (Hz)', format: (v) => v.toFixed(0) },
+      { key: 'active', label: 'active harmonics' },
+      { key: 'h2',     label: 'H2 octave (Hz)', format: (v) => v.toFixed(0) },
+      { key: 'h3',     label: 'H3 fifth above (Hz)', format: (v) => v.toFixed(0) },
+      { key: 'top',    label: 'highest active (Hz)', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Preset Sine, f₀ = 220 Hz. Record. H2 = 440 Hz is one octave up; H3 = 660 Hz is an octave plus a perfect fifth.',
+      'Set f₀ to 110, 330 and 440 Hz, recording each. Every harmonic is an integer multiple of f₀, so H2/f₀ = 2 and H3/H2 = 1.5 never change.',
+      'Preset Sawtooth (all harmonics), then Square (odd only). Record each and compare the highest active harmonic and the waveform shape.',
+      'Preset Clarinet, set f₀ = 600 Hz and record — the 7th harmonic is now 4200 Hz. Press Play and listen to how the timbre changes with f₀.',
+      'Compute the ratios between consecutive harmonics: 2/1, 3/2, 4/3, 5/4 … These are the octave, fifth, fourth and major third of just intonation.',
+    ],
+    predict: 'If you double f₀, what happens to the frequency of each harmonic, and what happens to the ratios between them?',
+    source: () => {
+      const f0 = params.fundamental;
+      const activeIdx = [];
+      for (let n = 0; n < N; n++) if (Math.abs(params.weights[n]) > 0.005) activeIdx.push(n);
+      return {
+        f0,
+        active: activeIdx.length ? activeIdx.map((n) => `H${n + 1}`).join(' ') : 'none',
+        h2: f0 * 2,
+        h3: f0 * 3,
+        top: activeIdx.length ? f0 * (activeIdx[activeIdx.length - 1] + 1) : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

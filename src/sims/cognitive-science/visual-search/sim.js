@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -126,6 +127,39 @@ export function mount(rootEl) {
   const reB = button({ label: 'New trial', primary: true, onClick: makeTrial });
   const resetB = button({ label: 'Reset stats', onClick: () => { state.trials = []; } });
   ctrlPanel.append(modeSel.el, NS.el, row(reB, resetB));
+
+  // Lab — set size and search type vs mean reaction time (only trials at the current N and mode).
+  const lab = labPanel({
+    title: 'Visual search lab — RT vs set size',
+    filename: 'visual-search-lab.csv',
+    columns: [
+      { key: 'mode',   label: 'search type' },
+      { key: 'N',      label: 'set size N' },
+      { key: 'n',      label: 'trials' },
+      { key: 'meanRT', label: 'mean RT (ms)', format: (v) => v.toFixed(0) },
+      { key: 'bestRT', label: 'fastest RT (ms)', format: (v) => v.toFixed(0) },
+    ],
+    procedure: [
+      'Feature search, N = 8. Click the red O as fast as you can; click again for the next trial. Do 5 trials, then record.',
+      'Still in Feature search, set N = 16, 32 and 60. Do 5 trials at each and record. Only trials at the current N and mode are averaged.',
+      'Switch to Conjunction search and repeat N = 8, 16, 32, 60 with 5 trials each, recording each.',
+      'Plot mean RT vs N for both search types. Feature search should be nearly flat; conjunction search should rise roughly linearly.',
+      'Estimate the slope of the conjunction line in ms per item — classic lab values are 20–40 ms/item.',
+    ],
+    predict: 'Will doubling the number of distractors double your search time in feature search? In conjunction search?',
+    source: () => {
+      const rts = state.trials.filter((t) => t.mode === params.mode && t.N === params.N).map((t) => t.ms);
+      if (rts.length === 0) throw new Error('No trials yet at this N and search type');
+      return {
+        mode: params.mode,
+        N: params.N,
+        n: rts.length,
+        meanRT: rts.reduce((a, b) => a + b, 0) / rts.length,
+        bestRT: Math.min(...rts),
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

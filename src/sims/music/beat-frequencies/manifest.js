@@ -8,5 +8,6 @@ export default {
   },
   details: () => import('./details.js'),
   topics: ['acoustics', 'waves'],
+  hasLab: true,
   load: () => import('./sim.js'),
 };

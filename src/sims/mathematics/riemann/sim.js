@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 const FUNCS = {
   parab:  { label: 'x²',                   f: (x) => x * x,                       integral: (a, b) => (b ** 3 - a ** 3) / 3 },
@@ -137,6 +138,40 @@ export function mount(rootEl) {
   });
 
   ctrlPanel.append(kindSel.el, aS.el, bS.el, NS.el, ruleSel.el);
+
+  // Lab — how fast each rule converges as N grows.
+  const lab = labPanel({
+    title: 'Riemann sum lab — rectangles vs error',
+    filename: 'riemann-lab.csv',
+    columns: [
+      { key: 'setup',  label: 'f(x) on [a, b]' },
+      { key: 'rule',   label: 'rule' },
+      { key: 'N',      label: 'N rectangles' },
+      { key: 'approx', label: 'Riemann sum', format: (v) => v.toFixed(5) },
+      { key: 'err',    label: 'error (sum − exact)', format: (v) => v.toExponential(2) },
+    ],
+    procedure: [
+      'Choose f(x) = x², a = −1, b = 2, Left rule. Set N = 4 and record; then N = 8, 16, 32, 64, 128.',
+      'Switch to the Right rule and repeat the same N values. Compare the sign of the error with the Left rule.',
+      'Repeat with Midpoint and Trapezoidal. Which rule gets below 0.001 error with the fewest rectangles?',
+      'Plot |error| vs N on log-log axes. Left/Right fall like 1/N; Midpoint/Trapezoidal like 1/N².',
+      'Try e^(−x²): no closed-form exact value exists, so the error column is blank — compare the sums at N = 50 and N = 200 instead.',
+    ],
+    predict: 'When you double N, by what factor do you expect the error to shrink for the Left rule? And for the Midpoint rule?',
+    source: () => {
+      const fn = FUNCS[params.kind];
+      const approx = rsum();
+      const exact = fn.integral ? fn.integral(params.a, params.b) : null;
+      return {
+        setup: `${fn.label} on [${params.a.toFixed(1)}, ${params.b.toFixed(1)}]`,
+        rule: params.rule,
+        N: params.N,
+        approx,
+        err: exact != null ? approx - exact : null,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();

@@ -1,5 +1,6 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
+import { labPanel } from '../../../lib/lab.js';
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -140,6 +141,38 @@ export function mount(rootEl) {
   const matchB = button({ label: 'Match f₂ → f₁', onClick: () => { params.f2 = params.f1; f2S.value = params.f1; if (playing) osc2.frequency.value = params.f1; } });
   const playB = button({ label: '▶ Play', primary: true, onClick: () => { playing ? stopAudio() : startAudio(); } });
   ctrlPanel.append(f1S.el, f2S.el, wS.el, row(matchB, playB));
+
+  // Lab — two frequencies vs the beat they produce.
+  const lab = labPanel({
+    title: 'Beat frequency lab — f_beat = |f₁ − f₂|',
+    filename: 'beat-frequencies-lab.csv',
+    columns: [
+      { key: 'f1',     label: 'f₁ (Hz)', format: (v) => v.toFixed(1) },
+      { key: 'f2',     label: 'f₂ (Hz)', format: (v) => v.toFixed(1) },
+      { key: 'beat',   label: 'beat (Hz)', format: (v) => v.toFixed(2) },
+      { key: 'period', label: 'beat period (s)', format: (v) => v.toFixed(3) },
+      { key: 'mean',   label: 'mean pitch (Hz)', format: (v) => v.toFixed(1) },
+    ],
+    procedure: [
+      'Set f₁ = 220 Hz and f₂ = 222 Hz with a 1.00 s window. Count the envelope bulges in the sum panel, then record.',
+      'Move f₂ to 224, 226 and 230 Hz, recording each. Does the number of bulges per second match f₂ − f₁?',
+      'Put f₂ below f₁ (e.g. 216 Hz) and record. Does it matter which tone is higher?',
+      'Press "Match f₂ → f₁" and record — the beat should vanish.',
+      'Set f₂ = 221 Hz, click Play and time the wobble with a stopwatch; compare with the beat period column.',
+    ],
+    predict: 'If f₂ is 3 Hz above f₁, how many beats per second will you hear? What if it is 3 Hz below?',
+    source: () => {
+      const beat = Math.abs(params.f1 - params.f2);
+      return {
+        f1: params.f1,
+        f2: params.f2,
+        beat,
+        period: beat > 0 ? 1 / beat : null,
+        mean: (params.f1 + params.f2) / 2,
+      };
+    },
+  });
+  ctrlPanel.appendChild(lab.el);
 
   const animator = loop(() => draw());
   animator.start();
