@@ -53,5 +53,14 @@
   "level.grade": "Grade {{n}}",
   "level.grades": "Grades {{a}}–{{b}}",
   "level.badgeTitle": "Suggested school grades (1–12; University = beyond school)",
-  "sim.related": "Related simulations"
+  "sim.related": "Related simulations",
+  "learn.title": "Learn more",
+  "learn.hint": "The science behind this simulation, for students and teachers",
+  "learn.background": "The science behind it",
+  "learn.keyIdeas": "Key ideas",
+  "learn.vocabulary": "Vocabulary",
+  "learn.misconceptions": "Common misconceptions",
+  "learn.realWorld": "In the real world",
+  "learn.questions": "Check yourself",
+  "learn.showAnswer": "Show answer"
 }

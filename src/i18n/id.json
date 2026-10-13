@@ -53,5 +53,14 @@
   "level.grade": "Kelas {{n}}",
   "level.grades": "Kelas {{a}}–{{b}}",
   "level.badgeTitle": "Saran kelas sekolah (1–12; Perguruan tinggi = setelah sekolah)",
-  "sim.related": "Simulasi terkait"
+  "sim.related": "Simulasi terkait",
+  "learn.title": "Pelajari lebih lanjut",
+  "learn.hint": "Sains di balik simulasi ini, untuk siswa dan guru",
+  "learn.background": "Sains di baliknya",
+  "learn.keyIdeas": "Gagasan utama",
+  "learn.vocabulary": "Kosakata",
+  "learn.misconceptions": "Miskonsepsi umum",
+  "learn.realWorld": "Di dunia nyata",
+  "learn.questions": "Uji pemahaman",
+  "learn.showAnswer": "Lihat jawaban"
 }

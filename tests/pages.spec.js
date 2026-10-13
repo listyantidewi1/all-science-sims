@@ -60,3 +60,16 @@ test('sim page loads objectives and try-this from the lazy details module', asyn
   await expect(aside.getByRole('heading', { name: 'Try this' })).toBeVisible();
   await expect(aside.locator('.sim-details li')).toHaveCount(6);
 });
+
+test('sim page renders the Learn section from details.js', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto('/#/physics/pendulum');
+  const learn = page.locator('.learn');
+  await expect(learn.getByRole('heading', { name: 'The science behind it' })).toBeVisible();
+  await expect(learn.locator('.learn__figure svg')).toBeVisible();
+  await expect(learn.locator('.learn__questions li')).toHaveCount(3);
+  await learn.getByRole('heading', { name: 'Check yourself' }).click();
+  await page.locator('.learn__questions details summary').first().click();
+  await expect(learn.locator('.learn__questions details[open] p')).toBeVisible();
+  expect(errors).toEqual([]);
+});

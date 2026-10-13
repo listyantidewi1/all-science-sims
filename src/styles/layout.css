@@ -730,6 +730,7 @@ main {
   background: none;
   border: 0;
   box-shadow: none;
+  position: static;   /* the old side-column rule made it sticky */
 }
 @media (min-width: 900px) {
   .sim-aside { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
@@ -775,3 +776,46 @@ main {
   .grid--subjects .subject-card p { font-size: 12px; margin: 0; }
   .grid--subjects .subject-card .icon { width: 36px; height: 36px; font-size: 18px; }
 }
+
+/* Learn section (details.js `learn` block) */
+.learn { margin-top: var(--space-6); }
+.learn__section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+  margin-bottom: var(--space-3);
+}
+.learn__section > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--space-3) var(--space-4);
+}
+.learn__section > summary::-webkit-details-marker { display: none; }
+.learn__section > summary::before { content: '▸'; color: var(--color-muted); font-size: 12px; transition: transform 120ms ease; }
+.learn__section[open] > summary::before { transform: rotate(90deg); }
+.learn__section > summary h3 { margin: 0; font-size: var(--type-md); }
+.learn__body { padding: 0 var(--space-4) var(--space-4); color: var(--color-muted); line-height: 1.6; }
+.learn__body p { margin: 0 0 var(--space-3); }
+.learn__science { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 900px) { .learn__science { grid-template-columns: 340px minmax(0, 1fr); align-items: start; } }
+.learn__figure {
+  margin: 0; padding: var(--space-3);
+  background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-2);
+  color: var(--color-fg);
+}
+.learn__figure svg { width: 100%; height: auto; display: block; }
+.learn__figure figcaption { margin-top: var(--space-2); font-size: var(--type-xs); color: var(--color-muted); line-height: 1.5; }
+.learn__ideas li, .learn__body ul li { margin-bottom: 6px; }
+.learn__vocab { margin: 0; display: grid; gap: 8px; }
+.learn__vocab dt { font-weight: 700; color: var(--color-fg); display: inline; }
+.learn__vocab dt::after { content: ' — '; font-weight: 400; color: var(--color-muted); }
+.learn__vocab dd { display: inline; margin: 0; }
+.learn__myths { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.learn__myth { display: block; color: var(--color-fg); }
+.learn__myth::before { content: '✗ '; color: var(--color-danger); font-weight: 700; }
+.learn__fix { display: block; padding-left: 1.4em; }
+.learn__fix::before { content: '✓ '; margin-left: -1.4em; color: var(--color-ok); font-weight: 700; }
+.learn__questions li { margin-bottom: var(--space-3); }
+.learn__questions li > p { color: var(--color-fg); margin-bottom: 4px; }
+.learn__questions details > summary { cursor: pointer; font-size: var(--type-sm); color: var(--color-accent); }
+.learn__questions details > p { margin: 6px 0 0; padding-left: var(--space-3); border-left: 2px solid var(--color-border); }

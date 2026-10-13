@@ -2,6 +2,7 @@ import { t, tr, getLocale } from '../i18n/index.js';
 import { SUBJECT_BY_ID } from '../catalog/subjects.js';
 import { SIMS } from '../catalog/index.js';
 import { simCard } from './sim-card.js';
+import { buildLearn } from './learn.js';
 import { serializeParams } from '../lib/params.js';
 import { gradeLabel } from '../lib/levels.js';
 
@@ -60,7 +61,11 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
   const detailsHost = document.createElement('div');
   detailsHost.className = 'sim-details sim-aside__card';
   aside.appendChild(detailsHost);
+  const learnHost = document.createElement('div');
   const renderDetails = (d) => {
+    const learnEl = buildLearn(d?.learn);
+    learnHost.innerHTML = '';
+    if (learnEl) learnHost.appendChild(learnEl);
     const parts = [];
     for (const [key, labelKey] of [['objectives', 'sim.objectives'], ['tryThis', 'sim.tryThis']]) {
       const list = tr(d?.[key]);
@@ -79,7 +84,7 @@ export function buildSimShell(sim, query = new URLSearchParams()) {
 
   aside.appendChild(buildSharePanel(sim, stageEl));
 
-  root.append(crumbs, heading, stageEl, aside, buildRelated(sim));
+  root.append(crumbs, heading, stageEl, aside, learnHost, buildRelated(sim));
 
   return { root, stageEl };
 }
