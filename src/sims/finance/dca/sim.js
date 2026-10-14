@@ -42,10 +42,11 @@ export function mount(rootEl) {
       // Lump sum: buy total at month 0
       const lumpShares = params.total / prices[0];
       const lumpFinal = lumpShares * prices[params.horizon];
-      // DCA: buy total/months each month for `months` months
-      const monthly = params.total / params.months;
+      // DCA: buy total/months each month for `months` months (never beyond the horizon)
+      const months = Math.max(1, Math.min(params.months, params.horizon));
+      const monthly = params.total / months;
       let dcaShares = 0;
-      for (let i = 0; i < params.months; i++) {
+      for (let i = 0; i < months; i++) {
         dcaShares += monthly / prices[i];
       }
       const dcaFinal = dcaShares * prices[params.horizon];
@@ -74,7 +75,7 @@ export function mount(rootEl) {
     ctx.strokeRect(padX, padY, gW, gH);
 
     const bins = 40;
-    const binW = (maxD - minD) / bins;
+    const binW = (maxD - minD) / bins || 1; // guard: all diffs equal (e.g. 1-month spread)
     const counts = new Array(bins).fill(0);
     for (const d of diffs) {
       const idx = Math.min(bins - 1, Math.max(0, Math.floor((d - minD) / binW)));
@@ -122,10 +123,17 @@ export function mount(rootEl) {
     onInput: (v) => { params.mu = v; } });
   const sgS = slider({ label: 'Volatility σ (annual)', min: 0.05, max: 0.50, step: 0.005, value: params.sigma, format: (v) => `${(v*100).toFixed(1)}%`,
     onInput: (v) => { params.sigma = v; } });
+  // The DCA spread can never exceed the horizon: moving one slider past the other drags it along.
   const mS = slider({ label: 'DCA spread (months)', min: 1, max: 24, step: 1, value: params.months,
-    onInput: (v) => { params.months = v; } });
+    onInput: (v) => {
+      params.months = v;
+      if (params.horizon < v) { params.horizon = v; hS.value = v; }
+    } });
   const hS = slider({ label: 'Horizon (months)', min: 12, max: 60, step: 1, value: params.horizon,
-    onInput: (v) => { params.horizon = v; } });
+    onInput: (v) => {
+      params.horizon = v;
+      if (params.months > v) { params.months = v; mS.value = v; }
+    } });
   const reB = button({ label: 'Resimulate', primary: true, onClick: simulate });
 
   ctrlPanel.append(muS.el, sgS.el, mS.el, hS.el, row(reB));

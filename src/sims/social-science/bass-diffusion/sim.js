@@ -28,7 +28,7 @@ export function mount(rootEl) {
   let history = []; // {t, N, dN}
   let peak = null;  // {t, rate, N} — fastest adoption seen so far in this run (read by the lab)
 
-  function reset() { N = 0; t = 0; history = [{ t: 0, N: 0, dN: 0 }]; peak = null; }
+  function reset() { N = 0; t = 0; history = [{ t: 0, N: 0, dN: 0, rate: 0 }]; peak = null; }
   reset();
 
   function step(dt) {
@@ -43,11 +43,10 @@ export function mount(rootEl) {
     const last = history[history.length - 1];
     const dN = N - last.N;
     const span = t - last.t;
-    if (span > 0) {
-      const rate = dN / span;
-      if (!peak || rate > peak.rate) peak = { t, rate, N };
-    }
-    history.push({ t, N, dN });
+    // Adoption rate dN/dt from consecutive steps and the actual simulated time elapsed.
+    const rate = span > 0 ? dN / span : 0;
+    if (span > 0 && (!peak || rate > peak.rate)) peak = { t, rate, N };
+    history.push({ t, N, dN, rate });
     if (history.length > 1500) history.shift();
   }
 
@@ -64,8 +63,8 @@ export function mount(rootEl) {
       params.M, '#10b981', 'Cumulative adopters N(t)');
 
     // adoption rate (instantaneous) on right
-    drawSeries(ctx, halfW + 30, 30, halfW - 60, H - 60, history.map((h) => ({ t: h.t, v: h.dN * 60 })),
-      Math.max(...history.map((h) => h.dN * 60), 0.01), '#ec4899', 'New adopters / unit time');
+    drawSeries(ctx, halfW + 30, 30, halfW - 60, H - 60, history.map((h) => ({ t: h.t, v: h.rate })),
+      Math.max(...history.map((h) => h.rate), 0.01), '#ec4899', 'New adopters / unit time');
 
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(8, 8, 320, 28);

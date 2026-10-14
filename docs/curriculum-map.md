@@ -499,7 +499,7 @@ Generated from the manifests; regenerate after adding sims.
 | [Inflation Eraser](https://all-science-sims.vercel.app/#/finance/inflation) | Grades 9–12 | C3 Economics · KS4 Maths · Merdeka Fase E |
 | [Progressive Tax Brackets](https://all-science-sims.vercel.app/#/finance/tax-brackets) | Grades 9–12 | C3 Economics · KS4 Maths · Merdeka Fase E |
 | [Dollar-Cost Averaging vs Lump Sum](https://all-science-sims.vercel.app/#/finance/dca) | Grades 10–12 · University | C3 Economics · A-level Economics · University |
-| [Bond Pricing & Yield Curve](https://all-science-sims.vercel.app/#/finance/bond-pricing) | Grades 11–12 · University | A-level Economics · AP Macroeconomics · University |
+| [Bond Pricing & Maturity](https://all-science-sims.vercel.app/#/finance/bond-pricing) | Grades 11–12 · University | A-level Economics · AP Macroeconomics · University |
 | [NPV / Discounted Cash Flow](https://all-science-sims.vercel.app/#/finance/npv) | Grades 11–12 · University | A-level Business/Economics · University · AP/IB Higher |
 | [Phillips Curve](https://all-science-sims.vercel.app/#/finance/phillips-curve) | Grades 11–12 · University | AP Macroeconomics · A-level Economics · University |
 | [CAPM & Beta](https://all-science-sims.vercel.app/#/finance/capm) | Grade 12 · University | University · AP/IB Higher |
@@ -708,7 +708,7 @@ Generated from the manifests; regenerate after adding sims.
 | [Portfolio Efficient Frontier](https://all-science-sims.vercel.app/#/finance/efficient-frontier) | Grade 12 · University | University · AP/IB Higher |
 | [Dollar-Cost Averaging vs Lump Sum](https://all-science-sims.vercel.app/#/finance/dca) | Grades 10–12 · University | C3 Economics · A-level Economics · University |
 | [Black-Scholes Option Pricing](https://all-science-sims.vercel.app/#/finance/black-scholes) | University | University · AP/IB Higher |
-| [Bond Pricing & Yield Curve](https://all-science-sims.vercel.app/#/finance/bond-pricing) | Grades 11–12 · University | A-level Economics · AP Macroeconomics · University |
+| [Bond Pricing & Maturity](https://all-science-sims.vercel.app/#/finance/bond-pricing) | Grades 11–12 · University | A-level Economics · AP Macroeconomics · University |
 | [NPV / Discounted Cash Flow](https://all-science-sims.vercel.app/#/finance/npv) | Grades 11–12 · University | A-level Business/Economics · University · AP/IB Higher |
 | [Phillips Curve](https://all-science-sims.vercel.app/#/finance/phillips-curve) | Grades 11–12 · University | AP Macroeconomics · A-level Economics · University |
 | [CAPM & Beta](https://all-science-sims.vercel.app/#/finance/capm) | Grade 12 · University | University · AP/IB Higher |

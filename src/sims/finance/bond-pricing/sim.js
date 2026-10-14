@@ -40,7 +40,7 @@ export function mount(rootEl) {
 
     // Left: price vs yield curve
     drawPriceVsYield(ctx, 30, 30, halfW - 60, H - 60);
-    // Right: yield curve (price for 1..30 year maturities)
+    // Right: price vs maturity (price for 1..30 year maturities at the current yield)
     drawYieldCurve(ctx, halfW + 30, 30, halfW - 60, H - 60);
 
     const price = bondPrice(params.yield, params.years, params.couponRate, params.face);

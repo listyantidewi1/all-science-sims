@@ -17,12 +17,12 @@ export default {
     en: [
       'N=2 bidders — average revenue should match in both formats.',
       'N=10 — does first-price approach valuation?',
-      'Try truth-telling in first-price — does it win less revenue?',
+      'Try truth-telling in first-price — does the seller\'s revenue rise toward the highest value?',
     ],
     id: [
       'N=2 penawar — pendapatan rata-rata sama di kedua format.',
       'N=10 — apakah harga pertama mendekati nilai sejati?',
-      'Coba jujur di harga pertama — apakah pendapatan turun?',
+      'Coba jujur di harga pertama — apakah pendapatan penjual naik mendekati nilai tertinggi?',
     ],
   },
 

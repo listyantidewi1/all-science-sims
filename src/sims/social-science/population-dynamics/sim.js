@@ -21,16 +21,29 @@ export function mount(rootEl) {
 
   function reset() { prey = 10; pred = 5; t = 0; history = []; }
 
+  // Right-hand side of the Lotka-Volterra system.
+  function deriv(x, y) {
+    return [
+      params.alpha * x - params.beta * x * y,
+      params.delta * x * y - params.gamma * y,
+    ];
+  }
+
   function step(realDt) {
-    const sub = 30; // sub-steps per frame for stability
+    const sub = 30; // sub-steps per frame
+    const h = params.dt;
     for (let s = 0; s < sub; s++) {
-      const dx = params.alpha * prey - params.beta * prey * pred;
-      const dy = params.delta * prey * pred - params.gamma * pred;
-      prey += dx * params.dt;
-      pred += dy * params.dt;
+      // Classical RK4: forward Euler makes the neutrally stable orbits spiral
+      // outward; RK4 keeps the closed loops closed over many cycles.
+      const k1 = deriv(prey, pred);
+      const k2 = deriv(prey + 0.5 * h * k1[0], pred + 0.5 * h * k1[1]);
+      const k3 = deriv(prey + 0.5 * h * k2[0], pred + 0.5 * h * k2[1]);
+      const k4 = deriv(prey + h * k3[0], pred + h * k3[1]);
+      prey += (h / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+      pred += (h / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
       if (prey < 0) prey = 0;
       if (pred < 0) pred = 0;
-      t += params.dt;
+      t += h;
     }
     history.push({ t, prey, pred });
     if (history.length > 1500) history.shift();

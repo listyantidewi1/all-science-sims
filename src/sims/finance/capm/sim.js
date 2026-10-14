@@ -42,7 +42,7 @@ export function mount(rootEl) {
 
   function regress() {
     const n = points.length;
-    if (n === 0) return { beta: 0, alpha: 0, r2: 0 };
+    if (n === 0) return { beta: 0, alpha: 0, intercept: 0, r2: 0 };
     let sm = 0, si = 0;
     for (const p of points) { sm += p.rm; si += p.ri; }
     const mm = sm / n, mi = si / n;
@@ -53,9 +53,13 @@ export function mount(rootEl) {
       vi += (p.ri - mi) ** 2;
     }
     const beta = vm > 0 ? cov / vm : 0;
-    const alpha = mi - beta * mm;
+    // Jensen's alpha on excess returns: α = (R_i − R_f) − β (R_m − R_f); zero when CAPM holds exactly.
+    const rf = params.rfMonthly;
+    const alpha = (mi - rf) - beta * (mm - rf);
+    // Intercept of the fitted line in raw-return space (for plotting): R_i = intercept + β R_m.
+    const intercept = mi - beta * mm;
     const r2 = (vm > 0 && vi > 0) ? (cov * cov) / (vm * vi) : 0;
-    return { beta, alpha, r2 };
+    return { beta, alpha, intercept, r2 };
   }
 
   function draw() {
@@ -93,8 +97,8 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#ec4899';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(x2(-ext), y2(reg.alpha + reg.beta * (-ext)));
-    ctx.lineTo(x2(ext), y2(reg.alpha + reg.beta * ext));
+    ctx.moveTo(x2(-ext), y2(reg.intercept + reg.beta * (-ext)));
+    ctx.lineTo(x2(ext), y2(reg.intercept + reg.beta * ext));
     ctx.stroke();
 
     // reference line slope=1

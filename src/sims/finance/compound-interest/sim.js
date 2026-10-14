@@ -17,7 +17,6 @@ export function mount(rootEl) {
     rate: 0.07,     // annual rate
     years: 30,
     monthly: 0,     // monthly contribution
-    compoundsPerYear: 12,
   };
 
   function compute() {
@@ -32,8 +31,7 @@ export function mount(rootEl) {
     for (let m = 1; m <= months; m++) {
       compoundBal = compoundBal * (1 + rMonthly) + params.monthly;
       principalCum += params.monthly;
-      simpleBal = params.P + (params.P + principalCum - params.P) + params.P * params.rate * m / 12 + params.monthly * (m * (m + 1)) / 2 * rMonthly / m;
-      // Simpler simple model: total = P + monthly contributions + simple interest on full timeline
+      // Simple model: total = P + monthly contributions + simple interest on full timeline
       simpleBal = principalCum + params.P * params.rate * (m / 12) + (params.monthly * m * params.rate * (m / 12) / 2);
       const year = m / 12;
       if (m % 12 === 0 || m === months) {
@@ -183,7 +181,7 @@ export function mount(rootEl) {
 
   // Lab — verify A = P(1+r)^t and the impact of monthly contributions.
   const lab = labPanel({
-    title: 'Compound interest lab — A = P(1+r)ᵗ + monthly',
+    title: 'Compound interest lab — A = P(1+r/12)^(12t) + monthly',
     filename: 'compound-interest-lab.csv',
     columns: [
       { key: 'P',     label: 'P ($)',  format: (v) => v.toFixed(0) },
@@ -195,7 +193,7 @@ export function mount(rootEl) {
       { key: 'gap',      label: 'compound − simple', format: (v) => v.toFixed(0) },
     ],
     procedure: [
-      'Set P = 1000, r = 7%, monthly = 0, years = 10. Record. Compound: $1967, simple: $1700.',
+      'Set P = 1000, r = 7%, monthly = 0, years = 10. Record. Compound (monthly compounding): $2010, simple: $1700.',
       'Now years = 30. Record. Compound diverges from simple — that\'s exponential growth.',
       'Set P = 0, monthly = 100, r = 7%, years = 30. Record. Total contribution = $36k, compound = ~$122k.',
       'r = 4% (conservative) vs r = 8% (S&P avg) — over 30 years, the gap is huge.',

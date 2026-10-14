@@ -1,11 +1,14 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
 
-// Brackets: array of {limit, rate} where the rate applies up to limit
+// Brackets: array of {limit, rate} where the rate applies up to limit.
+// `range` is the income slider's range/step and default for that schedule.
 const SCHEDULES = {
   us2024single: {
     name: 'US 2024 (single filer)',
     currency: '$',
+    locale: 'en-US',
+    range: { max: 1000000, step: 1000, income: 80000 },
     brackets: [
       { limit: 11600, rate: 0.10 },
       { limit: 47150, rate: 0.12 },
@@ -19,6 +22,8 @@ const SCHEDULES = {
   id2024: {
     name: 'Indonesia 2024',
     currency: 'Rp ',
+    locale: 'id-ID',
+    range: { max: 2000000000, step: 1000000, income: 150000000 },
     brackets: [
       { limit: 60000000, rate: 0.05 },
       { limit: 250000000, rate: 0.15 },
@@ -30,6 +35,8 @@ const SCHEDULES = {
   flat20: {
     name: 'Flat 20%',
     currency: '$',
+    locale: 'en-US',
+    range: { max: 1000000, step: 1000, income: 80000 },
     brackets: [{ limit: Infinity, rate: 0.20 }],
   },
 };
@@ -44,6 +51,19 @@ export function mount(rootEl) {
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
 
   const params = { schedule: 'us2024single', income: 80000 };
+
+  // Currency formatting for the current schedule.
+  function money(v) {
+    const s = SCHEDULES[params.schedule];
+    return `${s.currency}${Math.round(v).toLocaleString(s.locale)}`;
+  }
+  function moneyShort(v) {
+    const s = SCHEDULES[params.schedule];
+    const fmt = (n) => Number(n.toFixed(n >= 100 ? 0 : 1)).toLocaleString(s.locale);
+    if (v >= 1e9) return `${s.currency}${fmt(v / 1e9)}B`;
+    if (v >= 1e6) return `${s.currency}${fmt(v / 1e6)}M`;
+    return `${s.currency}${fmt(v / 1e3)}k`;
+  }
 
   function calcTax(income) {
     const sched = SCHEDULES[params.schedule].brackets;
@@ -97,7 +117,7 @@ export function mount(rootEl) {
       ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
       ctx.fillText(`${(b.rate * 100).toFixed(0)}%`, x2(lower) + 4, padY + 18);
       ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
-      ctx.fillText(b.limit === Infinity ? '∞' : `${sched.currency}${(b.limit / 1000).toFixed(0)}k`,
+      ctx.fillText(b.limit === Infinity ? '∞' : moneyShort(b.limit),
         x2(lower) + 4, padY + 36);
       lower = upper;
     }
@@ -111,7 +131,7 @@ export function mount(rootEl) {
     ctx.stroke();
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(`${sched.currency}${params.income.toLocaleString()}`, incomeX + 4, padY - 12);
+    ctx.fillText(money(params.income), incomeX + 4, padY - 12);
 
     // Tax breakdown
     const tax = calcTax(params.income);
@@ -154,8 +174,8 @@ export function mount(rootEl) {
       ctx.fillStyle = '#fff';
       ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
       if (w > 60) {
-        ctx.fillText(`${sched.currency}${s.slice.toLocaleString()}`, xx + 4, padY2 + 22);
-        ctx.fillText(`tax ${sched.currency}${taxPart.toFixed(0)}`, xx + 4, padY2 + 38);
+        ctx.fillText(money(s.slice), xx + 4, padY2 + 22);
+        ctx.fillText(`tax ${money(taxPart)}`, xx + 4, padY2 + 38);
       }
       xx += w;
     }
@@ -165,10 +185,10 @@ export function mount(rootEl) {
 
     // Bottom totals
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(8, H - 32, 480, 24);
+    ctx.fillRect(8, H - 32, W - 16, 24);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(`Total tax: ${sched.currency}${tax.toFixed(0)}    Effective: ${(effective*100).toFixed(2)}%    Marginal: ${(marg*100).toFixed(0)}%    Take-home: ${sched.currency}${(params.income - tax).toFixed(0)}`, 16, H - 14);
+    ctx.fillText(`Total tax: ${money(tax)}    Effective: ${(effective*100).toFixed(2)}%    Marginal: ${(marg*100).toFixed(0)}%    Take-home: ${money(params.income - tax)}`, 16, H - 14);
   }
 
   // controls
@@ -176,9 +196,21 @@ export function mount(rootEl) {
     label: 'Tax schedule',
     options: Object.entries(SCHEDULES).map(([k, v]) => ({ value: k, label: v.name })),
     value: params.schedule,
-    onChange: (v) => { params.schedule = v; },
+    onChange: (v) => {
+      const prev = SCHEDULES[params.schedule];
+      const next = SCHEDULES[v];
+      params.schedule = v;
+      // Each schedule has its own income range/step (Rp amounts are ~10,000× $ amounts):
+      // update the existing slider in place so the `income` deep-link key is unchanged.
+      const input = incS.el.querySelector('input[type="range"]');
+      input.min = 0; input.max = next.range.max; input.step = next.range.step;
+      if (prev.currency !== next.currency || params.income > next.range.max) params.income = next.range.income;
+      incS.value = params.income;
+    },
   });
-  const incS = slider({ label: 'Income', min: 0, max: 1000000, step: 1000, value: params.income,
+  const initRange = SCHEDULES[params.schedule].range;
+  const incS = slider({ label: 'Income', min: 0, max: initRange.max, step: initRange.step, value: params.income,
+    format: (v) => money(v),
     onInput: (v) => { params.income = v; } });
   ctrlPanel.append(schedSel.el, incS.el);
 

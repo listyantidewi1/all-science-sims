@@ -333,7 +333,7 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Progressive Tax Brackets | US 2024 single, Indonesia 2024, and flat rate; effective vs marginal rate visualized. |
 | DCA vs Lump Sum | Hundreds of GBM paths; histogram of (lump-sum − DCA) shows which strategy wins more often. |
 | Black-Scholes Option Pricing | Live call and put prices vs stock price, plus payoff diagrams at expiry. |
-| Bond Pricing & Yield Curve | Coupon, yield, maturity → price; inverse relationship and the yield-curve bar chart for 1–30 year maturities. |
+| Bond Pricing & Maturity | Coupon, yield, maturity → price; the inverse price–yield relationship and a price-vs-maturity bar chart for 1–30 year bonds. |
 | NPV / Discounted Cash Flow | Bar chart of nominal vs discounted cash flows; NPV-vs-rate curve with IRR detection. |
 | Phillips Curve | Expectations-augmented Phillips curve; current operating point + natural rate of unemployment. |
 | CAPM & Beta | Scatter of stock vs market returns; regression beta + CAPM expected return. |

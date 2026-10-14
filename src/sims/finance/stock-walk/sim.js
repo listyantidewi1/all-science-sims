@@ -143,7 +143,7 @@ export function mount(rootEl) {
       { key: 'finalMax',  label: 'max final', format: (v) => v.toFixed(2) },
     ],
     procedure: [
-      'Defaults: μ = 8%, σ = 20%, 5 years, 30 paths. Click "New paths". Record.',
+      'Defaults: μ = 8%, σ = 20%, 5 years, 30 paths. Click "Resimulate". Record.',
       'Observe: many paths grow above S₀, some drop below. Wide spread.',
       'Increase σ to 40% — fan-out is dramatic; some paths look catastrophic.',
       'Drop σ to 5% — paths bunch tightly around the mean drift.',

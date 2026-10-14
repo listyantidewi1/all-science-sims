@@ -16,12 +16,12 @@ export default {
   tryThis: {
     en: [
       'Switch from uniform to Pareto — does Gini jump?',
-      'Drag any individual\'s income up — see the curve bend.',
+      'Choose Pareto and slide α down toward 1.05 — see the curve bend further from the diagonal.',
       'How rich would the top 1% be at Gini = 0.6?',
     ],
     id: [
       'Beralih dari uniform ke Pareto — apakah Gini melonjak?',
-      'Geser pendapatan satu individu naik — kurva ikut menekuk.',
+      'Pilih Pareto dan geser α turun menuju 1,05 — kurva menekuk makin jauh dari diagonal.',
       'Seberapa kaya 1% teratas pada Gini = 0,6?',
     ],
   },

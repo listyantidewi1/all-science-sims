@@ -49,11 +49,13 @@ export function mount(rootEl) {
     // Punishment: each player can pay punishCost to subtract punishStrength from each free-rider (below average contribution)
     if (params.punishment) {
       const avgC = contribs.reduce((s, v) => s + v, 0) / contribs.length;
+      const isFreeRider = contribs.map((c) => c < avgC * 0.8);
+      const anyPunished = isFreeRider.some(Boolean);
       for (let i = 0; i < players.length; i++) {
-        if (contribs[i] < avgC * 0.8) {
+        if (isFreeRider[i]) {
           payoffs[i] -= params.punishStrength;
-        } else {
-          // pay cost to punish
+        } else if (anyPunished) {
+          // pay the cost to punish — only in rounds where someone is actually punished
           payoffs[i] -= params.punishCost * 0.3;
         }
       }

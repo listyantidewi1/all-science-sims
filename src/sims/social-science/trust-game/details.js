@@ -15,14 +15,14 @@ export default {
   },
   tryThis: {
     en: [
-      'Trust 100%, return 33% — both players profit equally.',
+      'Trust 100%, return 50% — both players end with $15 (the Equal split preset). Returning 33% only gives Player 1 their $10 back.',
       "Trust 100%, return 0 — Player 2 wins big, but the game collapses if repeated.",
       "Trust 0% — total welfare = $10 forever.",
     ],
     id: [
-      'Kepercayaan 100%, kembalikan 33% — keduanya untung sama.',
+      'Kepercayaan 100%, kembalikan 50% — keduanya berakhir dengan $15 (preset Equal split). Mengembalikan 33% hanya mengembalikan $10 milik Pemain 1.',
       'Kepercayaan 100%, kembalikan 0 — Pemain 2 untung besar, tapi permainan runtuh jika diulang.',
-      'Kepercayaan 0% — kesejahteraan total = Rp100rb selamanya.',
+      'Kepercayaan 0% — kesejahteraan total = $10 selamanya.',
     ],
   },
 

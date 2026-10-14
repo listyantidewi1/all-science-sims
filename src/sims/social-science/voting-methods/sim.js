@@ -59,7 +59,9 @@ export function mount(rootEl) {
     for (const b of ballots) for (const c of b.ranking) candidates.add(c);
     const eliminated = new Set();
     const rounds = [];
-    while (candidates.size - eliminated.size > 1) {
+    // Count each ballot for its highest-ranked surviving candidate, so the
+    // totals carry transferred votes from eliminated candidates.
+    function tally() {
       const counts = {};
       for (const c of candidates) if (!eliminated.has(c)) counts[c] = 0;
       for (const b of ballots) {
@@ -67,16 +69,23 @@ export function mount(rootEl) {
           if (!eliminated.has(c)) { counts[c] += b.count; break; }
         }
       }
+      return counts;
+    }
+    let counts = tally();
+    while (candidates.size - eliminated.size > 1) {
       rounds.push({ ...counts });
       const total = Object.values(counts).reduce((s, v) => s + v, 0);
       const sorted = Object.entries(counts).sort((a, b) => a[1] - b[1]);
       const top = sorted[sorted.length - 1];
       if (top[1] > total / 2) return { final: counts, rounds };
+      // Every remaining candidate has the same count: nobody can be eliminated — a tie.
+      if (top[1] === sorted[0][1]) return { final: counts, rounds };
       eliminated.add(sorted[0][0]);
+      counts = tally();
     }
-    const final = {};
-    for (const c of candidates) if (!eliminated.has(c)) final[c] = 1;
-    return { final, rounds };
+    // Everyone else was eliminated: the survivor's count is their transferred total.
+    rounds.push({ ...counts });
+    return { final: counts, rounds };
   }
 
   function borda(ballots) {
@@ -90,8 +99,15 @@ export function mount(rootEl) {
     return counts;
   }
 
-  function winner(counts) {
-    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  // All candidates sharing the top count (more than one means a tie).
+  function winners(counts) {
+    const entries = Object.entries(counts);
+    if (!entries.length) return [];
+    const max = Math.max(...entries.map(([, v]) => v));
+    return entries.filter(([, v]) => v === max).map(([c]) => c);
+  }
+  function winnerLabel(ws) {
+    return ws.length === 1 ? `winner: ${ws[0]}` : `Tie: ${ws.join(', ')}`;
   }
 
   function renderBallots() {
@@ -146,7 +162,7 @@ export function mount(rootEl) {
     const ro = runoff(ballots);
     const irvR = irv(ballots);
     const bord = borda(ballots);
-    function block(title, counts, winnerKey) {
+    function block(title, counts, winnerKeys) {
       let html = `<div style="background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2);padding:var(--space-3)">
         <h3 style="margin:0 0 8px;font-size:var(--type-md)">${title}</h3>
         <div style="display:grid;gap:6px">
@@ -155,7 +171,7 @@ export function mount(rootEl) {
       for (const c of NAMES) {
         const v = counts[c] || 0;
         const idx = NAMES.indexOf(c);
-        const isW = winnerKey === c;
+        const isW = winnerKeys.includes(c);
         html += `<div style="display:flex;align-items:center;gap:8px">
           <span style="width:18px;font-weight:700;color:${COLORS[idx]}">${c}</span>
           <div style="flex:1;background:rgba(120,130,150,0.15);border-radius:4px;overflow:hidden;height:14px">
@@ -168,10 +184,11 @@ export function mount(rootEl) {
       return html;
     }
     let html = '';
-    html += block(`Plurality — winner: ${winner(plur)}`, plur, winner(plur));
-    html += block(`Two-round runoff — winner: ${winner(ro)}`, ro, winner(ro));
-    html += block(`Instant runoff (IRV) — winner: ${winner(irvR.final)}`, irvR.final, winner(irvR.final));
-    html += block(`Borda count — winner: ${winner(bord)}`, bord, winner(bord));
+    const wPlur = winners(plur), wRo = winners(ro), wIrv = winners(irvR.final), wBord = winners(bord);
+    html += block(`Plurality — ${winnerLabel(wPlur)}`, plur, wPlur);
+    html += block(`Two-round runoff — ${winnerLabel(wRo)}`, ro, wRo);
+    html += block(`Instant runoff (IRV) — ${winnerLabel(wIrv)}`, irvR.final, wIrv);
+    html += block(`Borda count — ${winnerLabel(wBord)}`, bord, wBord);
     resultsWrap.innerHTML = html;
   }
 

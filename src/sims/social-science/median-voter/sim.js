@@ -42,12 +42,17 @@ export function mount(rootEl) {
   function tally() {
     const wins = new Array(params.candidates.length).fill(0);
     for (const v of voters) {
-      let best = 0, bestD = Infinity;
+      let bestD = Infinity;
       for (let i = 0; i < params.candidates.length; i++) {
         const d = Math.abs(v - params.candidates[i].x);
-        if (d < bestD) { bestD = d; best = i; }
+        if (d < bestD) bestD = d;
       }
-      wins[best]++;
+      // A voter equidistant from several candidates is split equally between them.
+      const tied = [];
+      for (let i = 0; i < params.candidates.length; i++) {
+        if (Math.abs(v - params.candidates[i].x) === bestD) tied.push(i);
+      }
+      for (const i of tied) wins[i] += 1 / tied.length;
     }
     return wins;
   }

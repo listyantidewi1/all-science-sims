@@ -20,7 +20,7 @@ export default {
       'Drop coupon to 0 — what is a zero-coupon bond worth?',
     ],
     id: [
-      'Kupon = yield → harga sama dengan nilai nominal (Rp1.000.000).',
+      'Kupon = yield → harga sama dengan nilai nominal ($1000).',
       'Yield naik dari 4% ke 6% — berapa harga obligasi 10-tahun turun?',
       'Turunkan kupon ke 0 — berapa harga obligasi tanpa kupon?',
     ],
