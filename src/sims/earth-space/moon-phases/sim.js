@@ -3,9 +3,13 @@ import { slider, toggle, button, row } from '../../../lib/controls.js';
 import { labPanel } from '../../../lib/lab.js';
 
 // Convention: Sun is to the right (positive x). Sunlight travels in -x direction.
-// Moon angle θ measured CCW from +x axis around Earth.
-// θ = 0    → Moon on far side (full)
-// θ = π/2  → first quarter (right half lit when seen from Earth)... actually let's compute properly.
+// The top-down view looks down on Earth's NORTH pole, so the Moon orbits
+// counter-clockwise on screen. Phase angle θ (state.angle) grows with time:
+// θ = 0    → Moon opposite the Sun (full)
+// θ = π    → Moon between Earth and Sun (new)
+// θ = 3π/2 → first quarter: Moon at the top of the screen, RIGHT half lit as seen
+//            from Earth (northern-hemisphere convention: waxing = lit on the right)
+// θ = π/2  → last quarter: Moon at the bottom, LEFT half lit.
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -103,11 +107,11 @@ export function mount(rootEl) {
     ctx.arc(cx, cy, orbitR, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Moon position. θ=0: full (far from sun, i.e., to the LEFT in our setup since sun is on right)
-    // Easier: place sun on the right; Moon at θ=0 is opposite to Sun (left of Earth) → full.
-    // θ=π: between Sun and Earth → new.
+    // Moon position. θ=0: full (opposite the Sun, i.e. to the LEFT since the Sun is on the right).
+    // θ=π: between Sun and Earth → new. Screen y points down, so the sine is negated to make
+    // increasing θ run counter-clockwise on screen (view from above the north pole).
     const mx = cx + Math.cos(state.angle + Math.PI) * orbitR;
-    const my = cy + Math.sin(state.angle + Math.PI) * orbitR;
+    const my = cy - Math.sin(state.angle + Math.PI) * orbitR;
     drawMoon3D(ctx, mx, my, 18, state.angle);
 
     // Vector from Sun direction = +x (right)
@@ -217,7 +221,8 @@ export function mount(rootEl) {
     // Phase from Earth's perspective:
     // angle = 0 → full (entire visible disc lit)
     // angle = π → new (entire visible disc dark)
-    // angle = π/2 → last quarter (left half lit) [observer at Earth, Sun at right, Moon "above"]
+    // angle = 3π/2 → first quarter (RIGHT half lit), angle = π/2 → last quarter (LEFT half lit)
+    // [northern-hemisphere view: the waxing Moon is lit on the right]
     // For a visually pleasing rendering, we draw the lit fraction as an ellipse-on-circle composite.
 
     // First fill dark moon
@@ -228,7 +233,7 @@ export function mount(rootEl) {
 
     // Compute phase: cos(angle) from -1 to 1, where 1=full, -1=new
     const k = Math.cos(angle);
-    const litRight = Math.sin(angle) >= 0; // determines which side waxes
+    const litRight = Math.sin(angle) <= 0; // waxing (π..2π) → lit on the right, waning → left
     // The terminator is an ellipse with x-radius = r * |k|.
     ctx.save();
     ctx.beginPath();
@@ -287,7 +292,7 @@ export function mount(rootEl) {
     const orbitR = Math.min(leftW, H) * 0.35;
     return {
       x: cx + Math.cos(state.angle + Math.PI) * orbitR,
-      y: cy + Math.sin(state.angle + Math.PI) * orbitR,
+      y: cy - Math.sin(state.angle + Math.PI) * orbitR,
       cx, cy, orbitR,
     };
   }
@@ -311,8 +316,8 @@ export function mount(rootEl) {
     const sx = (e.clientX - rect.left) * cv.width / rect.width;
     const sy = (e.clientY - rect.top) * cv.height / rect.height;
     const { cx, cy } = moonScreenPos();
-    const ang = Math.atan2(sy - cy, sx - cx);
-    // ang is screen angle from Earth. State.angle relates via angle = ang - π.
+    const ang = Math.atan2(-(sy - cy), sx - cx); // y negated: CCW on screen = increasing angle
+    // ang is the (y-up) angle from Earth. State.angle relates via angle = ang - π.
     state.angle = ((ang - Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
   });
   window.addEventListener('pointerup', () => { state.dragging = false; });

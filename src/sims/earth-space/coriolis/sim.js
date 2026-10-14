@@ -1,5 +1,8 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row, toggle, select } from '../../../lib/controls.js';
+import { getLocale } from '../../../i18n/index.js';
+
+const T = (en, id) => (getLocale() === 'id' ? id : en);
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -11,7 +14,8 @@ export function mount(rootEl) {
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
 
   const params = {
-    omega: 0.6,    // rad/s rotation rate (positive = CCW)
+    omega: 0.6,    // rad/s rotation rate (positive = counterclockwise on screen, like the
+                   // northern hemisphere seen from above the pole → deflection to the right)
     speed: 200,    // ball speed
     view: 'rotating', // 'inertial' | 'rotating'
     showTrails: true,
@@ -53,10 +57,12 @@ export function mount(rootEl) {
     ball.t += dt;
     ball.history.push({ x: ball.x, y: ball.y });
 
-    // Compute rotating-frame coordinates: rotate (-theta) about center
+    // Compute rotating-frame coordinates by undoing the disk's rotation. The disk
+    // is drawn with ctx.rotate(-theta), which on the y-down canvas is a visual
+    // counterclockwise turn, so undoing it is a rotation by +theta in canvas coords.
     const c = center();
     const dx = ball.x - c.cx, dy = ball.y - c.cy;
-    const cosT = Math.cos(-theta), sinT = Math.sin(-theta);
+    const cosT = Math.cos(theta), sinT = Math.sin(theta);
     const rx = dx * cosT - dy * sinT;
     const ry = dx * sinT + dy * cosT;
     ball.histRot.push({ x: rx, y: ry });
@@ -84,11 +90,19 @@ export function mount(rootEl) {
     }
 
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(8, 8, 280, 28);
+    ctx.fillRect(8, 8, 330, 46);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     const view = params.view === 'inertial' ? 'Inertial (outside) view' : 'Rotating (on-disk) view';
     ctx.fillText(view, 16, 28);
+    ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    const sense = params.omega > 0
+      ? T('Disk turns counterclockwise (northern hemisphere) → ball veers right', 'Piringan berputar berlawanan arah jarum jam (belahan utara) → bola membelok ke kanan')
+      : params.omega < 0
+        ? T('Disk turns clockwise (southern hemisphere) → ball veers left', 'Piringan berputar searah jarum jam (belahan selatan) → bola membelok ke kiri')
+        : T('Disk not turning → no deflection', 'Piringan tidak berputar → tidak ada pembelokan');
+    ctx.fillText(sense, 16, 46);
 
     ctx.fillStyle = 'rgba(120,130,150,0.7)';
     ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
@@ -99,7 +113,7 @@ export function mount(rootEl) {
     // Rotating disk
     ctx.save();
     ctx.translate(c.cx, c.cy);
-    ctx.rotate(theta);
+    ctx.rotate(-theta); // canvas y points down: negative angle = counterclockwise on screen
     // disk body
     ctx.fillStyle = '#1f2937';
     ctx.beginPath();

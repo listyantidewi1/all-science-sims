@@ -16,17 +16,31 @@ export function mount(rootEl) {
     albedo: 0.30,     // fraction reflected
   };
 
-  // Equilibrium surface temperature using a simple greybody model.
-  // T_s^4 = (1/(1-eps/2)) * S(1-A)/(4σ)
-  // where eps is effective IR absorptivity (function of CO2 ppm).
+  // Equilibrium surface temperature = bare-planet (no greenhouse) temperature
+  // from the energy balance  σT^4 = S(1-A)/4,  plus a greenhouse warming that
+  // grows with the logarithm of CO₂ (radiative forcing ∝ ln CO₂), tuned so
+  // that 280 ppm with albedo 0.30 gives Earth's +15 °C and each doubling of
+  // CO₂ adds ≈ 3 °C (the real-world climate sensitivity). Below ~20 ppm the
+  // log term is blended linearly to zero so that 0 ppm gives the bare-planet
+  // ≈ −18 °C instead of −∞.
+  const S = 1361;        // solar constant (W/m²)
+  const sigma = 5.67e-8; // Stefan-Boltzmann
+  const SENS = 3.0;      // °C per doubling of CO₂
+  const BLEND = 20;      // ppm below which the log law is ramped to zero
+  function bareK(albedo) {
+    return Math.pow((S * (1 - albedo)) / (4 * sigma), 0.25);
+  }
+  const GH280 = 15 - (bareK(0.30) - 273.15);   // greenhouse warming at 280 ppm (≈ 33.6 °C)
+  function ghWarming(co2) {
+    if (co2 >= BLEND) return GH280 + SENS * Math.log2(co2 / 280);
+    return (co2 / BLEND) * (GH280 + SENS * Math.log2(BLEND / 280));
+  }
   function tempK() {
-    const S = 1361;        // solar constant
-    const sigma = 5.67e-8; // Stefan-Boltzmann
-    const eps = Math.tanh((params.co2) / 600); // 0..~1
-    const numerator = (S * (1 - params.albedo)) / 4;
-    const denom = sigma * (1 - eps / 2);
-    const T4 = numerator / denom;
-    return Math.pow(T4, 0.25);
+    return bareK(params.albedo) + ghWarming(params.co2);
+  }
+  // Visual-only absorptivity of the green layer (fraction of IR particles turned back).
+  function layerAbsorptivity() {
+    return Math.tanh(params.co2 / 600);
   }
   const sunPhotons = [];     // visible photons going down
   const irPhotons = [];      // IR photons (some go up, some bounce around)
@@ -67,7 +81,7 @@ export function mount(rootEl) {
       } else if (p.y < 0 && p.v < 0) sunPhotons.splice(i, 1);
     }
 
-    const eps = Math.tanh(params.co2 / 600);
+    const eps = layerAbsorptivity();
     for (let i = irPhotons.length - 1; i >= 0; i--) {
       const p = irPhotons[i];
       p.y += p.vy * dt;
@@ -104,7 +118,7 @@ export function mount(rootEl) {
 
     // greenhouse gas layer
     const ghLayer = H * 0.3;
-    const eps = Math.tanh(params.co2 / 600);
+    const eps = layerAbsorptivity();
     ctx.fillStyle = `rgba(80, 200, 100, ${0.05 + eps * 0.25})`;
     ctx.fillRect(0, ghLayer - 80, W, 160);
 
@@ -195,8 +209,8 @@ export function mount(rootEl) {
       { key: 'T_C',   label: 'T (°C)',    format: (v) => v.toFixed(1) },
     ],
     procedure: [
-      'Hold albedo = 0.30 (Earth-like). Sweep CO₂: 280 (pre-ind), 420 (today), 560, 800, 1200. Record.',
-      'See temperature rise as CO₂ increases — that\'s the greenhouse effect.',
+      'Hold albedo = 0.30 (Earth-like). Sweep CO₂: 280 (pre-ind), 420 (today), 560, 1120. Record.',
+      'See temperature rise as CO₂ increases — that\'s the greenhouse effect. Each doubling (280→560→1120) adds about the same ≈3 °C.',
       'Now hold CO₂ = 420. Sweep albedo: 0.20 (more absorbing), 0.30, 0.40, 0.50 (more reflective).',
       'A higher albedo means more sunlight reflected → cooler planet.',
       'Snowball Earth: albedo ~0.6, very cold. Venus: thick CO₂, very hot.',

@@ -18,8 +18,10 @@ export function mount(rootEl) {
   let drag = false;
 
   function bh() { return { cx: cv.width / 2, cy: cv.height / 2 }; }
+  // Horizon radius r_s = 2GM/c² scales with M; the Einstein radius θE scales with √M.
+  // Both are normalised so that the default mass (80) gives R_horizon = 40, R_Einstein = 120.
   function horizonR() { return params.mass * 0.5; }
-  function einsteinR() { return params.mass * 1.5; }
+  function einsteinR() { return 1.5 * Math.sqrt(80 * params.mass); }
 
   // Approximate lensed image position (a thin-lens model).
   // For a point source at angle β behind the lens, image angles θ satisfy

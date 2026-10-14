@@ -85,10 +85,10 @@ export function mount(rootEl) {
 
     // Diagnose eclipse
     const text = diagnose(sunSx, cy, params.sunR, earthSx, cy, params.earthR, moonSx, moonSy, params.moonR);
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(8, 8, 280, 30);
-    ctx.fillStyle = '#fff';
     ctx.font = 'bold 14px system-ui, -apple-system, Roboto, sans-serif';
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(8, 8, Math.max(280, ctx.measureText(text).width + 16), 30);
+    ctx.fillStyle = '#fff';
     ctx.fillText(text, 16, 28);
 
     // hint
@@ -129,19 +129,35 @@ export function mount(rootEl) {
   }
 
   function diagnose(sx, sy, sR, ex, ey, eR, mx, my, mR) {
-    // Solar eclipse: moon between sun and earth, intercepts line from sun to earth
-    // Lunar eclipse: earth between sun and moon, earth shadow falls on moon
-    function pointBetween(p1, p2, q, tol) {
-      const dx = p2.x - p1.x, dy = p2.y - p1.y;
-      const len = Math.hypot(dx, dy);
-      const t = ((q.x - p1.x) * dx + (q.y - p1.y) * dy) / (len * len);
-      if (t < 0 || t > 1) return null;
-      const px = p1.x + dx * t, py = p1.y + dy * t;
-      return Math.hypot(q.x - px, q.y - py);
-    }
-    const sunToEarth = pointBetween({x:sx,y:sy}, {x:ex,y:ey}, {x:mx,y:my}, 30);
-    if (sunToEarth != null && sunToEarth < mR + 6 && Math.hypot(mx - sx, my - sy) < Math.hypot(ex - sx, ey - sy)) {
-      return 'Solar eclipse — Moon shadows Earth';
+    // Solar eclipse: Moon between Sun and Earth. The Moon's umbra is a cone of
+    // length L = mR·d/(sR − mR) behind the Moon (d = Sun–Moon distance); past its
+    // tip the cone re-opens as the antumbra. Measured at Earth's near surface:
+    //   total   — the umbra itself reaches Earth
+    //   annular — the umbra ends short of Earth and only the antumbra reaches it
+    //             (the Moon looks too small to cover the Sun: a ring remains)
+    //   partial — only the penumbra touches Earth
+    // Lunar eclipse: Earth between Sun and Moon, Earth's shadow falls on the Moon.
+    const dSM = Math.hypot(mx - sx, my - sy);
+    const dSE = Math.hypot(ex - sx, ey - sy);
+    if (dSM > 0 && dSM < dSE) {
+      const ux = (mx - sx) / dSM, uy = (my - sy) / dSM;        // shadow axis, Sun → Moon
+      const along = (ex - mx) * ux + (ey - my) * uy;            // Earth centre, distance behind Moon
+      const perp = Math.abs(-(ex - mx) * uy + (ey - my) * ux);  // Earth centre, offset from axis
+      if (along > 0) {
+        const t = Math.max(0, along - eR);                      // Moon → Earth's near surface
+        const umbraLen = sR > mR ? (mR * dSM) / (sR - mR) : Infinity;
+        const penumbraHalf = mR + (t * (sR + mR)) / dSM;        // penumbra half-width at Earth
+        if (perp < eR + penumbraHalf) {
+          if (t < umbraLen) {
+            const umbraHalf = mR * (1 - t / umbraLen);
+            if (perp < eR + umbraHalf) return 'Total solar eclipse — umbra reaches Earth';
+          } else {
+            const antumbraHalf = mR * (t / umbraLen - 1);
+            if (perp < eR + antumbraHalf) return 'Annular solar eclipse — umbra falls short of Earth';
+          }
+          return 'Partial solar eclipse — only the penumbra touches Earth';
+        }
+      }
     }
     const earthShadowDir = { x: (ex - sx), y: (ey - sy) };
     const len = Math.hypot(earthShadowDir.x, earthShadowDir.y);
@@ -194,7 +210,8 @@ export function mount(rootEl) {
     params.moonX = 0.85; params.moonY = 0;
   } });
   const tiltB = button({ label: 'Tilt off-axis', onClick: () => {
-    params.moonY = 30 + Math.random() * 40;
+    // far enough that even the penumbra misses Earth (but kept inside the canvas)
+    params.moonY = Math.min(cv.height / 2 - 30, 70 + Math.random() * 40);
   } });
 
   ctrlPanel.append(moonRS.el, row(solarB, lunarB, tiltB));

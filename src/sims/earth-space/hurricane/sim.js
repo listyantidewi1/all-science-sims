@@ -18,25 +18,34 @@ export function mount(rootEl) {
 
   let particles = [];
 
+  // Saffir–Simpson category thresholds (1-minute sustained wind, m/s).
+  const SS_THRESHOLDS = [33, 43, 50, 58, 70];
+
+  // Maximum sustained wind (m/s) that the three ingredients allow.
+  function maxWind() {
+    if (params.sst < 26.5) return 0;                 // too cool: no cyclone forms
+    if (Math.abs(params.latitude) < 5) return 0;     // no Coriolis: no spin
+    // Potential intensity vs SST (empirical DeMaria & Kaplan 1994 fit, m/s):
+    // ≈58 m/s at 26.5 °C, 67 at 28 °C, 84 at 30 °C, 108 at 32 °C.
+    const vPot = 28.2 + 55.8 * Math.exp(0.1813 * (params.sst - 30));
+    const sstRamp = Math.min(1, params.sst - 26);    // storms just above the threshold stay weak
+    const coriolisFactor = Math.min(1, Math.abs(params.latitude) / 15);
+    const shearFactor = Math.max(0, 1 - params.shear / 16);
+    return vPot * sstRamp * coriolisFactor * shearFactor;
+  }
+  // 0..1 visual strength (spin speed, number of cloud bands, eye size, colours)
   function intensity() {
-    if (params.sst < 26.5) return 0;
-    if (Math.abs(params.latitude) < 5) return 0;
-    const sstFactor = (params.sst - 26) / 6;
-    const coriolisFactor = Math.min(1, Math.abs(params.latitude) / 25);
-    const shearFactor = Math.max(0, 1 - params.shear / 20);
-    return Math.max(0, Math.min(1, sstFactor * coriolisFactor * shearFactor));
+    return Math.max(0, Math.min(1, maxWind() / 80));
   }
 
   function category() {
-    const i = intensity();
-    if (i < 0.05) return { name: 'Tropical disturbance', winds: 0 };
-    if (i < 0.2) return { name: 'Tropical depression', winds: 50 };
-    if (i < 0.4) return { name: 'Tropical storm', winds: 80 };
-    if (i < 0.55) return { name: 'Cat 1', winds: 130 };
-    if (i < 0.7) return { name: 'Cat 2', winds: 165 };
-    if (i < 0.82) return { name: 'Cat 3', winds: 200 };
-    if (i < 0.92) return { name: 'Cat 4', winds: 230 };
-    return { name: 'Cat 5', winds: 270 };
+    const v = maxWind();
+    if (v <= 0) return { name: 'Tropical disturbance', winds: 0 };
+    if (v < 17) return { name: 'Tropical depression', winds: v };
+    if (v < SS_THRESHOLDS[0]) return { name: 'Tropical storm', winds: v };
+    let cat = 1;
+    while (cat < 5 && v >= SS_THRESHOLDS[cat]) cat++;
+    return { name: `Cat ${cat}`, winds: v };
   }
 
   function spawn() {
@@ -131,7 +140,7 @@ export function mount(rootEl) {
     ctx.fillText(cat.name, 16, 30);
     ctx.fillStyle = '#fff';
     ctx.font = '12px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(`Sustained winds ~${cat.winds} km/h`, 16, 50);
+    ctx.fillText(`Sustained winds ~${cat.winds.toFixed(0)} m/s (${(cat.winds * 3.6).toFixed(0)} km/h)`, 16, 50);
     ctx.font = '10px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillStyle = 'rgba(255,255,255,0.7)';
     ctx.fillText(`SST ${params.sst}°C   lat ${params.latitude}°   shear ${params.shear} m/s`, 16, 64);

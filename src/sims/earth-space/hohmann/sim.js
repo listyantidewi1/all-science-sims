@@ -17,8 +17,10 @@ export function mount(rootEl) {
     speed: 0.4,
   };
 
-  // Use μ_sun = 1 (canonical units)
+  // Use μ_sun = 1 (canonical units: distance in AU, time unit = 1/(2π) yr, so
+  // Earth's period is 2π). Times are divided by 2π to display in years.
   const mu = 1;
+  const YEARS_PER_TIME_UNIT = 1 / (2 * Math.PI);
   let t = 0;
   let phase = 0; // 0: on r1, 1: on transfer, 2: on r2
   let phaseT = 0;
@@ -37,8 +39,12 @@ export function mount(rootEl) {
     return vCirc2 - vTrans2;
   }
   function transferTime() {
+    // half the transfer ellipse's period, in canonical time units
     const a = (params.r1 + params.r2) / 2;
     return Math.PI * Math.sqrt(a * a * a / mu);
+  }
+  function transferYears() {
+    return transferTime() * YEARS_PER_TIME_UNIT;
   }
 
   function step(dt) {
@@ -149,7 +155,7 @@ export function mount(rootEl) {
 
     // Info
     const dv1 = dvBurn1(), dv2 = dvBurn2();
-    const tT = transferTime();
+    const tT = transferYears();
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 320, 76);
     ctx.fillStyle = '#fff';
@@ -202,7 +208,7 @@ export function mount(rootEl) {
         dv1,
         dv2,
         dvTotal: Math.abs(dv1) + Math.abs(dv2),
-        tT: transferTime(),
+        tT: transferYears(),
       };
     },
   });

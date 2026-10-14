@@ -1,5 +1,8 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { getLocale } from '../../../i18n/index.js';
+
+const T = (en, id) => (getLocale() === 'id' ? id : en);
 
 // Background star catalog — illustrative samples from various populations
 const CATALOG = [
@@ -54,7 +57,8 @@ function lifePath(M, stage) {
   }
   if (stage === 3) {
     if (M < 8) return { T: 25000, L: 0.001 };                  // white dwarf
-    return { T: 50000, L: 0.0001 };                            // neutron star pulse
+    // young neutron star: ~10⁶ K surface, ~0.1 L☉ — far beyond the hot edge of the axis
+    return { T: 1e6, L: 0.1 };
   }
   return ms;
 }
@@ -143,9 +147,11 @@ export function mount(rootEl) {
       ctx.fillText(name, xx + 5, yy - 5);
     }
 
-    // Current selected star
+    // Current selected star (a neutron star is hotter than the axis allows: park it
+    // at the hot edge of the frame and say so)
     const cur = lifePath(params.mass, params.stage);
-    const cx = x2(cur.T, W), cy = y2(cur.L, H);
+    const offScale = cur.T > T_HIGH;
+    const cx = offScale ? 60 + 12 : x2(cur.T, W), cy = y2(cur.L, H);
     ctx.fillStyle = tempColor(cur.T);
     ctx.beginPath();
     ctx.arc(cx, cy, 12 + Math.log10(Math.max(0.001, cur.L)) * 1.5, 0, Math.PI * 2);
@@ -155,6 +161,11 @@ export function mount(rootEl) {
     ctx.beginPath();
     ctx.arc(cx, cy, 16, 0, Math.PI * 2);
     ctx.stroke();
+    if (offScale) {
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 11px system-ui, -apple-system, Roboto, sans-serif';
+      ctx.fillText(T('◄ beyond the axis: neutron star, T ≈ 10⁶ K', '◄ di luar sumbu: bintang neutron, T ≈ 10⁶ K'), cx + 22, cy + 4);
+    }
 
     // axis labels
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
@@ -172,7 +183,7 @@ export function mount(rootEl) {
     const stages = ['Main sequence', 'Red giant', params.mass < 8 ? 'AGB / planetary' : 'Supergiant', params.mass < 8 ? 'White dwarf' : 'Neutron star'];
     ctx.fillText(`${params.mass.toFixed(1)} M☉ — ${stages[params.stage]}`, 16, 26);
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(`T = ${cur.T.toFixed(0)} K    L = ${cur.L.toExponential(2)} L☉`, 16, 44);
+    ctx.fillText(`T ${offScale ? '≈ 10⁶ (off axis)' : '= ' + cur.T.toFixed(0)} K    L = ${cur.L.toExponential(2)} L☉`, 16, 44);
   }
 
   // controls

@@ -67,8 +67,9 @@ export function mount(rootEl) {
         if (p.x > cv.width) p.x = 0;
         if (p.y < CLOUD_LEVEL() - 60) p.y = CLOUD_LEVEL() - 60;
         if (p.y > CLOUD_LEVEL() + 30) p.y = CLOUD_LEVEL() + 30;
-        // chance to precipitate, higher with cooler/lower sun (approximation)
-        if (p.timer > 4 + (1 - params.solar) * 4 && Math.random() < 0.01) {
+        // chance to precipitate, higher with cooler/lower sun (approximation):
+        // a cloud particle must wait 4 s (dim sun) to 8 s (full sun) before it may rain out
+        if (p.timer > 4 + params.solar * 4 && Math.random() < 0.01) {
           p.state = 'rain';
           p.timer = 0;
         }

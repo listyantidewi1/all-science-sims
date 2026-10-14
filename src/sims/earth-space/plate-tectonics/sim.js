@@ -1,5 +1,8 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { getLocale } from '../../../i18n/index.js';
+
+const T = (en, id) => (getLocale() === 'id' ? id : en);
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -23,8 +26,11 @@ export function mount(rootEl) {
 
   function reset() { t = 0; mountainHeight = 0; riftWidth = 0; earthquakes = []; }
 
-  function maybeQuake(x, y) {
-    if (Math.random() < 0.1) earthquakes.push({ x, y, age: 0 });
+  // Earthquakes per second at plate speed 1 (illustrative, not physics): most at the
+  // subduction zone, then the transform fault, fewest at the ridge.
+  const QUAKE_RATE = { convergent: 5, transform: 2.5, divergent: 0.6 };
+  function maybeQuake(x, y, dt) {
+    if (Math.random() < QUAKE_RATE[params.type] * params.speed * dt) earthquakes.push({ x, y, age: 0 });
   }
 
   function step(dt) {
@@ -32,13 +38,15 @@ export function mount(rootEl) {
     t += dt * params.speed;
     if (params.type === 'convergent') {
       mountainHeight = Math.min(60, mountainHeight + dt * params.speed * 6);
-      maybeQuake(cv.width / 2 + (Math.random() - 0.5) * 80, cv.height / 2 - mountainHeight * Math.random());
+      // quakes along the sinking slab, from the trench down to ~110 px depth
+      const s = Math.random();
+      maybeQuake(cv.width / 2 - 30 + s * 90 + (Math.random() - 0.5) * 20, cv.height / 2 + s * 110, dt);
     } else if (params.type === 'divergent') {
       riftWidth = Math.min(140, riftWidth + dt * params.speed * 8);
-      if (Math.random() < 0.04) maybeQuake(cv.width / 2 + (Math.random() - 0.5) * riftWidth, cv.height / 2);
+      maybeQuake(cv.width / 2 + (Math.random() - 0.5) * riftWidth, cv.height / 2, dt);
     } else {
-      // transform — frequent shallow quakes along boundary
-      if (Math.random() < 0.2) maybeQuake(cv.width / 2 + (Math.random() - 0.5) * 4, cv.height / 2 + (Math.random() - 0.5) * 30);
+      // transform — shallow quakes along boundary
+      maybeQuake(cv.width / 2 + (Math.random() - 0.5) * 4, cv.height / 2 + (Math.random() - 0.5) * 30, dt);
     }
     earthquakes.forEach((q) => q.age += dt);
     earthquakes = earthquakes.filter((q) => q.age < 1.5);
@@ -97,6 +105,34 @@ export function mount(rootEl) {
       // arrows
       drawArrow(ctx, W / 2 - 200, surfaceY - 40, W / 2 - 80, surfaceY - 40, '#fff');
       drawArrow(ctx, W / 2 + 240, surfaceY - 60, W / 2 + 140, surfaceY - 60, '#fff');
+      // volcanic arc above the slab: water released from the sinking plate melts the
+      // mantle above it and the magma rises through the continental plate
+      const vx = W / 2 + 160, baseY = surfaceY - mountainHeight / 2;
+      const vh = 22 + mountainHeight * 0.4;
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 + 45, surfaceY + 75);
+      ctx.lineTo(vx, baseY - vh + 6);
+      ctx.stroke();
+      ctx.fillStyle = '#7c2d12';
+      ctx.beginPath();
+      ctx.moveTo(vx - 26, baseY);
+      ctx.lineTo(vx, baseY - vh);
+      ctx.lineTo(vx + 26, baseY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(vx, baseY - vh, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(148,163,184,0.6)';
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(vx - 6 + i * 6 + 3 * Math.sin(t + i), baseY - vh - 10 - i * 9, 6 + i * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      label(ctx, T('Volcanic arc', 'Busur vulkanik'), vx - 30, baseY - vh - 44);
       label(ctx, 'Subduction', W / 2 + 60, surfaceY + 90);
       label(ctx, 'Mountains', W / 2 + 90, surfaceY - mountainHeight - 10);
     } else if (params.type === 'divergent') {

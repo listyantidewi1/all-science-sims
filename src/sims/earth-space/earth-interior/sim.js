@@ -10,10 +10,14 @@ const LAYERS = [
   { name: 'Inner core',    start: 5150, end: 6371,  color: '#fef9c3', state: 'solid Fe/Ni' },
 ];
 
+// Temperature in kelvin (the readout converts to °C). Approximate straight-line
+// geotherm: 288 K (15 °C) at the surface, ~25 K/km through the crust to ~1163 K
+// at the Moho, then gently up to ~1900 K at 660 km so the curve is continuous.
+const T_SURFACE_K = 288;
+const T_MOHO_K = T_SURFACE_K + 35 * 25;
 function tempAt(depth) {
-  // Approximate
-  if (depth < 35) return 15 + depth * 25;
-  if (depth < 660) return 900 + (depth - 35) * 1.6;
+  if (depth < 35) return T_SURFACE_K + depth * 25;
+  if (depth < 660) return T_MOHO_K + (depth - 35) * ((1900 - T_MOHO_K) / (660 - 35));
   if (depth < 2890) return 1900 + (depth - 660) * 0.6;
   if (depth < 5150) return 3300 + (depth - 2890) * 0.5;
   return 4500 + (depth - 5150) * 0.8;
