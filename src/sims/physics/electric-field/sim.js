@@ -175,9 +175,10 @@ export function mount(rootEl) {
 
   function drawFieldLines(ctx, W, H) {
     ctx.lineWidth = 1.2;
-    const linesPerCharge = 12;
     for (const c of state.charges) {
       if (c.q === 0) continue;
+      // Line density represents field strength: 8 lines per unit charge, at least 4.
+      const linesPerCharge = Math.max(4, Math.round(8 * Math.abs(c.q)));
       const sign = c.q > 0 ? 1 : -1;
       ctx.strokeStyle = c.q > 0 ? 'rgba(239,68,68,0.85)' : 'rgba(59,130,246,0.85)';
       for (let i = 0; i < linesPerCharge; i++) {

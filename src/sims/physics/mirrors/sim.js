@@ -56,7 +56,7 @@ export function mount(rootEl) {
     const cx_ = cx - 2 * f;
     ctx.fillStyle = '#fbbf24';
     dotLabel(ctx, fx, cy, 'F');
-    if (params.type === 'concave') dotLabel(ctx, cx_, cy, 'C');
+    dotLabel(ctx, cx_, cy, 'C');   // behind the mirror for a convex one
 
     // Object — vertical arrow
     const objX = cx - params.d_o;
@@ -72,8 +72,8 @@ export function mount(rootEl) {
       drawArrow(ctx, imgX, cy, imgX, cy - imgH, di > 0 ? '#10b981' : '#a855f7', di > 0 ? 'real' : 'virtual');
     }
 
-    // Two principal rays
-    drawPrincipalRays(ctx, cx, cy, objX, objY, fx, di, imgX);
+    // Principal rays: parallel, through F, through C (virtual extensions dashed for convex)
+    drawPrincipalRays(ctx, cx, cy, objX, objY, fx, cx_, di, imgX);
 
     // Readout
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
@@ -98,15 +98,18 @@ export function mount(rootEl) {
 
   function drawMirror(ctx, cx, cy) {
     const R = Math.abs(2 * params.f);
-    const arcX = params.type === 'concave' ? cx + R : cx - R;
+    // The reflecting face points left (toward the object). A concave mirror is the right-hand
+    // part of a circle centred at C on the left (shape ")"); a convex mirror is the left-hand
+    // part of a circle centred behind the mirror (shape "(").
+    const arcX = params.type === 'concave' ? cx - R : cx + R;
     const halfAng = 0.5;
     ctx.strokeStyle = '#cbd5e1';
     ctx.lineWidth = 4;
     ctx.beginPath();
     if (params.type === 'concave') {
-      ctx.arc(arcX, cy, R, Math.PI - halfAng, Math.PI + halfAng);
-    } else {
       ctx.arc(arcX, cy, R, -halfAng, halfAng);
+    } else {
+      ctx.arc(arcX, cy, R, Math.PI - halfAng, Math.PI + halfAng);
     }
     ctx.stroke();
     // hatching on the back side
@@ -138,52 +141,47 @@ export function mount(rootEl) {
     ctx.fillText(label, x2 + 6, y2 - 2);
   }
 
-  function drawPrincipalRays(ctx, cx, cy, objX, objY, fx, di, imgX) {
-    // Ray 1 — parallel from object tip to mirror, then through F
-    ctx.strokeStyle = 'rgba(251,191,36,0.7)';
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.moveTo(objX, objY); ctx.lineTo(cx, objY);
-    ctx.stroke();
-    ctx.beginPath();
-    if (params.type === 'concave') {
-      ctx.moveTo(cx, objY); ctx.lineTo(fx, cy);
-      // continue beyond
-      const dx = fx - cx, dy = cy - objY;
-      ctx.lineTo(fx + dx * 1.2, cy + dy * 1.2);
-    } else {
-      // For convex, parallel ray reflects as if coming from F (which is behind)
-      const dx = cx - fx, dy = objY - cy;
-      // Reflected ray goes leftward from mirror with slope (cy - objY)/(cx - fx)
-      const slope = (objY - cy) / (cx - fx);
-      // ray from (cx, objY) heading left
-      ctx.moveTo(cx, objY);
-      ctx.lineTo(cx - 200, objY + slope * (cx - (cx - 200)));
-      // dashed extension behind mirror to F
-      ctx.stroke();
-      ctx.strokeStyle = 'rgba(251,191,36,0.4)';
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(cx, objY); ctx.lineTo(fx, cy);
-      ctx.stroke();
+  function drawPrincipalRays(ctx, cx, cy, objX, objY, fx, cX, di, imgX) {
+    const convex = params.type === 'convex';
+    const imgY = Number.isFinite(di) ? cy - params.objectHeight * magnification() : null;
+    const seg = (color, x1, y1, x2, y2, dash = false) => {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = dash ? 1.2 : 1.4;
+      ctx.setLineDash(dash ? [4, 4] : []);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
       ctx.setLineDash([]);
-      return;
-    }
-    ctx.stroke();
+    };
+    const dashColor = (c) => c.replace(/0\.7\)$/, '0.45)');
 
-    // Ray 2 — through F to mirror, then parallel
-    ctx.strokeStyle = 'rgba(168,139,250,0.7)';
-    ctx.beginPath();
-    ctx.moveTo(objX, objY); ctx.lineTo(fx, cy);
-    // continue to mirror
-    const slope2 = (cy - objY) / (fx - objX);
-    const xMirror = cx;
-    const yMirror = objY + slope2 * (xMirror - objX);
-    ctx.lineTo(xMirror, yMirror);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(xMirror, yMirror); ctx.lineTo(0, yMirror);
-    ctx.stroke();
+    // Ray 1 — parallel to the axis, reflects through F (concave) or as if coming from F (convex).
+    const c1 = 'rgba(251,191,36,0.7)';
+    seg(c1, objX, objY, cx, objY);
+    const sl1 = (cy - objY) / (fx - cx);               // slope of the line through (cx, objY) and F
+    seg(c1, cx, objY, 0, objY + sl1 * (0 - cx));       // reflected ray travels left along that line
+    if (convex) seg(dashColor(c1), cx, objY, fx, cy, true);   // virtual extension back to F
+
+    // Ray 2 — along the line through the tip and F (aimed at F behind a convex mirror), reflects parallel.
+    const c2 = 'rgba(168,139,250,0.7)';
+    if (Math.abs(fx - objX) > 1) {
+      const sl2 = (cy - objY) / (fx - objX);
+      const yM = objY + sl2 * (cx - objX);
+      seg(c2, objX, objY, cx, yM);
+      seg(c2, cx, yM, 0, yM);
+      if (convex) {
+        seg(dashColor(c2), cx, yM, fx, cy, true);                       // where the incident ray was heading
+        if (imgY != null) seg(dashColor(c2), cx, yM, imgX, yM, true);   // extension back to the virtual image
+      }
+    }
+
+    // Ray 3 — along the line through the tip and C; it meets the mirror normally and retraces its path.
+    const c3 = 'rgba(56,189,248,0.7)';
+    if (Math.abs(cX - objX) > 1) {
+      const sl3 = (cy - objY) / (cX - objX);
+      const yM = objY + sl3 * (cx - objX);
+      seg(c3, objX, objY, cx, yM);
+      seg(c3, cx, yM, 0, objY + sl3 * (0 - objX));
+      if (convex) seg(dashColor(c3), cx, yM, cX, cy, true);            // virtual extension back to C
+    }
   }
 
   function dotLabel(ctx, x, y, label) {

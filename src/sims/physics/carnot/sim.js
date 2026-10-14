@@ -170,10 +170,19 @@ export function mount(rootEl) {
   }
 
   // controls
+  // The cold reservoir must stay colder than the hot one (T_c < T_h), or η ≤ 0 and the
+  // cycle degenerates. Keep a gap of at least one T_h slider step.
+  const MIN_GAP = 10;
   const ThS = slider({ label: 'Hot reservoir T_h (K)', min: 300, max: 2000, step: 10, value: params.Th,
-    onInput: (v) => { params.Th = v; } });
+    onInput: (v) => {
+      params.Th = v;
+      if (params.Tc > v - MIN_GAP) { params.Tc = v - MIN_GAP; TcS.value = params.Tc; }
+    } });
   const TcS = slider({ label: 'Cold reservoir T_c (K)', min: 50, max: 500, step: 5, value: params.Tc,
-    onInput: (v) => { params.Tc = v; } });
+    onInput: (v) => {
+      params.Tc = Math.min(v, params.Th - MIN_GAP);
+      if (params.Tc !== v) TcS.value = params.Tc;
+    } });
   const v1S = slider({ label: 'V₁ (m³)', min: 0.5, max: 2, step: 0.05, value: params.V1, format: (v) => v.toFixed(2),
     onInput: (v) => { params.V1 = v; } });
   const v2S = slider({ label: 'V₂ (m³)', min: 1, max: 5, step: 0.1, value: params.V2, format: (v) => v.toFixed(2),

@@ -115,14 +115,22 @@ export function mount(rootEl) {
     ctx.lineWidth = 2;
     ctx.beginPath();
     let maxI = 0;
-    const samples = 300;
+    // One sample per screen pixel row, each averaged over SUB sub-samples within that row,
+    // so fringes narrower than a pixel blur into their mean instead of aliasing into false bands.
+    const samples = Math.max(300, Math.ceil(H));
+    const SUB = 8;
+    const rowH = H / (samples - 1);
     const ys = [];
     const Is = [];
     for (let i = 0; i < samples; i++) {
       const yScreen = i / (samples - 1) * H;
-      const dy = yScreen - cy;
-      const theta = Math.atan(dy / (params.L * 800));
-      const I = intensity(theta);
+      let I = 0;
+      for (let k = 0; k < SUB; k++) {
+        const dy = yScreen - cy + ((k + 0.5) / SUB - 0.5) * rowH;
+        const theta = Math.atan(dy / (params.L * 800));
+        I += intensity(theta);
+      }
+      I /= SUB;
       ys.push(yScreen);
       Is.push(I);
       if (I > maxI) maxI = I;

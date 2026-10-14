@@ -43,8 +43,11 @@ export function mount(rootEl) {
       ctx.stroke();
     }
 
-    // Field arrows on a polar-ish grid
-    const sign = params.direction === 'out' ? 1 : -1;
+    // Field arrows on a polar-ish grid.
+    // Tangent (−sin ang, cos ang) runs toward increasing `ang`, which on a y-down canvas is
+    // CLOCKWISE as the viewer sees it. Current out of the page must circulate counterclockwise
+    // (right-hand rule), so 'out' takes the negative tangent.
+    const sign = params.direction === 'out' ? -1 : 1;
     const I = params.current;
     for (let r = 30; r < Math.min(W, H) / 2 - 20; r += 36) {
       const arrows = Math.max(8, Math.floor(r / 6));

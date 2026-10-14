@@ -15,7 +15,6 @@ export function mount(rootEl) {
     L: 200,        // string length, px
     g: 1500,       // gravity, px/s² (visual scale)
     damping: 0.0,  // air drag
-    restitution: 1.0, // for collisions; 1 = perfectly elastic
   };
 
   // Each ball: theta (rad, 0 = down), omega (rad/s).

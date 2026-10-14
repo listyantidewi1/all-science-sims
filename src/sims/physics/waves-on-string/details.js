@@ -17,12 +17,12 @@ export default {
     en: [
       'Find the lowest frequency that gives a clean standing wave.',
       'Switch to a free end — does the lowest mode have a node there?',
-      'Double the tension — what frequency now resonates the same mode?',
+      'Double the wave speed (which would take four times the tension) — what frequency now resonates the same mode?',
     ],
     id: [
       'Cari frekuensi terendah yang menghasilkan gelombang berdiri rapi.',
       'Ubah ke ujung bebas — apakah moda terendah memiliki simpul di sana?',
-      'Gandakan tegangan — pada frekuensi berapa moda yang sama beresonansi?',
+      'Gandakan kelajuan gelombang (yang membutuhkan empat kali tegangan) — pada frekuensi berapa moda yang sama beresonansi?',
     ],
   },
 

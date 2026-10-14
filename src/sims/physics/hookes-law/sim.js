@@ -28,11 +28,18 @@ export function mount(rootEl) {
 
   let chartRect = null;
 
+  // Past the elastic limit the spring yields: it stretches MORE for each extra newton,
+  // so the tangent stiffness drops to YIELD_FRAC · k (a simple bilinear plastic model).
+  const YIELD_FRAC = 0.3;
+  function forceOf(spring, x) {
+    if (x <= params.elasticLimit) return spring.k * x;
+    return spring.k * params.elasticLimit + YIELD_FRAC * spring.k * (x - params.elasticLimit);
+  }
   function stretchOf(spring, force) {
-    // Linear up to the elastic-limit force; then sub-linear (real spring softening).
+    // Linear up to the elastic-limit force; then the softer plastic slope (inverse of forceOf).
     const elasticForce = spring.k * params.elasticLimit;
     if (force <= elasticForce) return force / spring.k;
-    return params.elasticLimit + Math.sqrt((force - elasticForce) / spring.k) * 0.3;
+    return params.elasticLimit + (force - elasticForce) / (YIELD_FRAC * spring.k);
   }
 
   function draw() {
@@ -119,6 +126,13 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fff';
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`F = mg = ${force.toFixed(2)} N`, 16, 46);
+    if (x_m > params.elasticLimit) {
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fillRect(8, 60, 220, 20);
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
+      ctx.fillText('beyond elastic limit — yielding', 16, 74);
+    }
   }
 
   function drawChart(ctx, x, y, w, h) {
@@ -158,10 +172,8 @@ export function mount(rootEl) {
       const N = 100;
       for (let s = 0; s <= N; s++) {
         const xx = (s / N) * xMax;
-        // Inverse: F as a function of x
-        let F;
-        if (xx <= params.elasticLimit) F = sp.k * xx;
-        else F = sp.k * params.elasticLimit + ((xx - params.elasticLimit) / 0.3) ** 2 * sp.k;
+        // F as a function of x (linear, then the softer yield slope)
+        const F = forceOf(sp, xx);
         const sx = x2(xx), sy = y2(Math.min(Fmax, F));
         if (s === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
       }
@@ -199,9 +211,7 @@ export function mount(rootEl) {
     if (sx < x || sx > x + w || sy < y || sy > y + h) return null;
     const xx = ((sx - x) / w) * 1.2;
     const sp = SPRINGS[params.activeIdx];
-    let F;
-    if (xx <= params.elasticLimit) F = sp.k * xx;
-    else F = sp.k * params.elasticLimit + ((xx - params.elasticLimit) / 0.3) ** 2 * sp.k;
+    const F = forceOf(sp, xx);
     return { x: sx, y: sy, label: [`x = ${(xx * 100).toFixed(1)} cm`, `F = ${F.toFixed(1)} N`] };
   });
 

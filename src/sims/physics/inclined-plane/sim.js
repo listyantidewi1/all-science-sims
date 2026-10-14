@@ -22,29 +22,39 @@ export function mount(rootEl) {
     showFBD: true,
   };
 
-  let state = { s: 0, v: 0, sliding: false }; // s = distance up the ramp from bottom
+  const RAMP_M = 10;                    // ramp length in metres (drawn to fit the canvas)
+  // s = distance DOWN the ramp from the top (m), v = down-slope velocity (m/s).
+  let state = { s: 0, v: 0, sliding: false, atBottom: false };
 
   function dynamics(dt) {
+    if (state.atBottom) { state.v = 0; return; }
     const theta = params.angleDeg * Math.PI / 180;
-    const par = g * Math.sin(theta);
-    const perp = g * Math.cos(theta);
-    const requiredStaticF = params.mass * par;
-    const maxStaticF = params.muS * params.mass * perp;
+    const par = g * Math.sin(theta);          // down-slope gravity component (per kg)
+    const perp = g * Math.cos(theta);         // normal force (per kg)
 
     if (!state.sliding) {
-      // Stick if pull ≤ static-friction max
-      if (requiredStaticF <= maxStaticF) {
+      // Static friction holds the block while mg sin θ ≤ μ_s mg cos θ.
+      if (par <= params.muS * perp) {
         state.v = 0;
         return;
       }
       state.sliding = true;
     }
-    // Kinetic regime
-    const a = par - params.muK * perp;
-    state.v += a * dt;
+    // Kinetic regime: friction μ_k N opposes the velocity (down-slope pull is +par).
+    const dir = state.v !== 0 ? Math.sign(state.v) : 1;
+    const a = par - dir * params.muK * perp;
+    const vNew = state.v + a * dt;
+    // If friction would reverse the velocity, the block has come to rest; re-check static.
+    if (state.v !== 0 && Math.sign(vNew) !== Math.sign(state.v)) {
+      state.v = 0;
+      state.sliding = false;
+      return;
+    }
+    state.v = vNew;
     state.s += state.v * dt;
-    // Bounce on the bottom
-    if (state.s < 0) { state.s = 0; state.v = 0; state.sliding = false; }
+    // Reached the bottom of the ramp — the block stops against the ground.
+    if (state.s >= RAMP_M) { state.s = RAMP_M; state.v = 0; state.sliding = false; state.atBottom = true; }
+    if (state.s < 0) { state.s = 0; state.v = 0; state.sliding = false; state.atBottom = false; }
   }
 
   function rampGeom(W, H) {
@@ -59,12 +69,14 @@ export function mount(rootEl) {
     return { baseX, baseY, topX, topY, rampLen, theta };
   }
 
+  const blockSz = 36;
   function blockPos(geom) {
-    // Position along ramp from baseX,baseY by state.s (in pixels here).
-    const u = state.s / geom.rampLen;
+    // Foot of the block (centre of its bottom edge) measured DOWN the ramp from the top.
+    const travel = geom.rampLen - blockSz;                     // px the block can travel
+    const dPx = blockSz / 2 + (state.s / RAMP_M) * travel;     // px from the top, down-slope
     return {
-      x: geom.baseX + (geom.topX - geom.baseX) * u,
-      y: geom.baseY + (geom.topY - geom.baseY) * u,
+      x: geom.topX - Math.cos(geom.theta) * dPx,
+      y: geom.topY + Math.sin(geom.theta) * dPx,
     };
   }
 
@@ -99,27 +111,29 @@ export function mount(rootEl) {
     ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`θ = ${params.angleDeg.toFixed(1)}°`, geom.baseX + 32, geom.baseY - 6);
 
-    // Block
+    // Block — sits on the ramp surface, tilted with it.
     const bp = blockPos(geom);
-    const blockSz = 36;
     ctx.save();
     ctx.translate(bp.x, bp.y);
-    ctx.rotate(geom.theta);
-    ctx.translate(0, -blockSz / 2);
+    ctx.rotate(-geom.theta);                 // local +x runs up-slope, local −y is the outward normal
     ctx.fillStyle = '#0ea5e9';
-    ctx.fillRect(0, -blockSz, blockSz, blockSz);
+    ctx.fillRect(-blockSz / 2, -blockSz, blockSz, blockSz);
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
-    ctx.strokeRect(0, -blockSz, blockSz, blockSz);
+    ctx.strokeRect(-blockSz / 2, -blockSz, blockSz, blockSz);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 11px ui-monospace, Menlo, Consolas, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText(`${params.mass} kg`, blockSz / 2, -blockSz / 2 + 4);
+    ctx.fillText(`${params.mass} kg`, 0, -blockSz / 2 + 4);
     ctx.textAlign = 'left';
     ctx.restore();
 
     // Force vectors (free-body)
-    if (params.showFBD) drawFBD(ctx, bp, geom);
+    if (params.showFBD) {
+      // Forces are drawn from the block's centre.
+      const c = { x: bp.x - Math.sin(geom.theta) * blockSz / 2, y: bp.y - Math.cos(geom.theta) * blockSz / 2 };
+      drawFBD(ctx, c, geom);
+    }
 
     // Readout panel
     const theta = geom.theta;
@@ -130,12 +144,16 @@ export function mount(rootEl) {
     const a = state.sliding ? g * (Math.sin(theta) - params.muK * Math.cos(theta)) : 0;
 
     ctx.fillStyle = 'rgba(0,0,0,0.55)';
-    ctx.fillRect(8, 8, 320, 100);
+    ctx.fillRect(8, 8, 360, 116);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Slide threshold: θ_s = ${slideAngle.toFixed(1)}°`, 16, 26);
-    ctx.fillStyle = state.sliding ? '#ef4444' : '#10b981';
-    ctx.fillText(state.sliding ? 'sliding' : 'static (stuck)', 16, 44);
+    const status = state.atBottom ? 'stopped at the bottom — press Reset' : state.sliding ? 'sliding down' : 'static (stuck)';
+    ctx.fillStyle = state.atBottom ? '#94a3b8' : state.sliding ? '#ef4444' : '#10b981';
+    ctx.fillText(status, 16, 44);
+    ctx.fillStyle = 'rgba(120,130,150,0.85)';
+    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
+    ctx.fillText(`s = ${state.s.toFixed(2)} m down the ${RAMP_M} m ramp    v = ${state.v.toFixed(2)} m/s`, 16, 110);
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`F‖ = mg sin θ = ${par.toFixed(2)} N`, 16, 62);
@@ -157,14 +175,18 @@ export function mount(rootEl) {
     const nx = bp.x - Math.sin(theta) * nMag;
     const ny = bp.y - Math.cos(theta) * nMag;
     arrow(ctx, bp.x, bp.y, nx, ny, '#10b981', `N`);
-    // Friction along ramp opposing motion (or opposing gravity-component if static)
+    // Friction along the ramp surface. It opposes the velocity when sliding, and opposes
+    // the down-slope pull mg sin θ when static (then it is exactly mg sin θ, up to μ_s N).
     const par = params.mass * g * Math.sin(theta);
-    const fMagStatic = state.sliding ? params.muK * params.mass * g * Math.cos(theta) : Math.min(par, params.muS * params.mass * g * Math.cos(theta));
-    const fMag = fMagStatic * scale;
-    // Friction acts opposite to motion direction along ramp surface — up the ramp when block is trying to slide down.
-    const fx = bp.x - Math.cos(theta) * fMag;
-    const fy = bp.y + Math.sin(theta) * fMag;
-    arrow(ctx, bp.x, bp.y, fx, fy, '#a855f7', `f`);
+    const N = params.mass * g * Math.cos(theta);
+    const fMagN = state.sliding ? params.muK * N : Math.min(par, params.muS * N);
+    const fMag = fMagN * scale;
+    // Up-slope unit vector on screen is (cos θ, −sin θ). Friction points up-slope unless the
+    // block is moving up the ramp (v < 0), in which case it points down-slope.
+    const upSlope = state.v < 0 ? -1 : 1;
+    const fx = bp.x + Math.cos(theta) * fMag * upSlope;
+    const fy = bp.y - Math.sin(theta) * fMag * upSlope;
+    if (fMag > 0.5) arrow(ctx, bp.x, bp.y, fx, fy, '#a855f7', `f`);
   }
 
   function arrow(ctx, x1, y1, x2, y2, color, label) {
@@ -200,7 +222,7 @@ export function mount(rootEl) {
       if (dx <= 0) return;
       params.angleDeg = Math.max(0, Math.min(85, Math.atan2(dy, dx) * 180 / Math.PI));
       angS.value = params.angleDeg;
-      state.s = 0; state.v = 0; state.sliding = false;
+      state.s = 0; state.v = 0; state.sliding = false; state.atBottom = false;
     },
     handles: () => {
       const geom = rampGeom(cv.width, cv.height);
@@ -212,7 +234,7 @@ export function mount(rootEl) {
 
   // controls
   const angS = slider({ label: 'Ramp angle θ (°)', min: 0, max: 85, step: 0.5, value: params.angleDeg, format: (v) => v.toFixed(1),
-    onInput: (v) => { params.angleDeg = v; state.s = 0; state.v = 0; state.sliding = false; } });
+    onInput: (v) => { params.angleDeg = v; state.s = 0; state.v = 0; state.sliding = false; state.atBottom = false; } });
   const mS = slider({ label: 'Mass (kg)', min: 0.5, max: 50, step: 0.5, value: params.mass, format: (v) => v.toFixed(1),
     onInput: (v) => { params.mass = v; } });
   const muSS = slider({ label: 'μ_s (static)', min: 0, max: 1.5, step: 0.01, value: params.muS, format: (v) => v.toFixed(2),
@@ -220,7 +242,7 @@ export function mount(rootEl) {
   const muKS = slider({ label: 'μ_k (kinetic)', min: 0, max: 1.5, step: 0.01, value: params.muK, format: (v) => v.toFixed(2),
     onInput: (v) => { params.muK = Math.min(v, params.muS); } });
   const fbdT = toggle({ label: 'Show free-body diagram', value: params.showFBD, onChange: (v) => { params.showFBD = v; } });
-  const resetB = button({ label: 'Reset', primary: true, onClick: () => { state = { s: 0, v: 0, sliding: false }; } });
+  const resetB = button({ label: 'Reset', primary: true, onClick: () => { state = { s: 0, v: 0, sliding: false, atBottom: false }; } });
 
   ctrlPanel.append(angS.el, mS.el, muSS.el, muKS.el, fbdT.el, row(resetB));
 

@@ -94,14 +94,15 @@ export function mount(rootEl) {
     ctx.fill();
     ctx.fillStyle = '#fff';
     ctx.font = '11px system-ui, -apple-system, Roboto, sans-serif';
-    ctx.fillText('observer', observer.x - 26, observer.y + 28);
+    ctx.fillText('observer (at rest)', observer.x - 44, observer.y + 28);
     ctx.fillStyle = '#fff';
     ctx.fillText('source', source.x - 18, source.y - 16);
 
     // Compute observed frequency at the observer
     // A ring emitted at (x0,y0,t0) with current radius r and "speed" c approaches obs at speed
     //   c * cos(α), where α is angle between (obs−source_at_emit) and source velocity.
-    // Approx instantaneous: f_obs = f_src * c / (c + v_src · n̂_obs−src)
+    // Approx instantaneous: f_obs = f_src * c / (c + v_src · n̂_obs−src). The observer is
+    // treated as stationary (it can be repositioned, but has no velocity of its own).
     const dx = observer.x - source.x;
     const dy = observer.y - source.y;
     const r = Math.hypot(dx, dy);

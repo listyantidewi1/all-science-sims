@@ -138,7 +138,7 @@ export function mount(rootEl) {
     onInput: (v) => { params.freq = v; },
   });
   const spdS = slider({
-    label: 'Wave speed', min: 20, max: 200, step: 1, value: params.speed,
+    label: 'Wave speed (stands in for tension)', key: 'wave-speed', min: 20, max: 200, step: 1, value: params.speed,
     onInput: (v) => { params.speed = v; reset(); },
   });
   const dampS = slider({

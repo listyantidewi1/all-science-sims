@@ -17,12 +17,12 @@ export default {
     en: [
       'Pass the source close to the observer — when does pitch flip?',
       'Push speed past sound speed — does a Mach cone appear?',
-      'Move the observer instead — same effect or different?',
+      'Drag the observer to a new spot — the readout treats it as standing still there, so only the source\'s motion shifts the pitch.',
     ],
     id: [
       'Lewatkan sumber dekat pengamat — kapan nada berubah?',
       'Naikkan kecepatan melewati kecepatan suara — apakah muncul kerucut Mach?',
-      'Gerakkan pengamat bukan sumber — efeknya sama atau beda?',
+      'Seret pengamat ke tempat lain — tampilan menganggapnya diam di sana, jadi hanya gerak sumber yang menggeser nada.',
     ],
   },
 
