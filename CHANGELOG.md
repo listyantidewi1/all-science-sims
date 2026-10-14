@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.1] — Simulation accuracy pass
+
 ### Fixed — simulation accuracy pass (about 80 fixes across 75 sims)
 
 A review of every simulation against its new Learn text turned up a list of physics, chemistry, biology and maths errors. The significant ones:
