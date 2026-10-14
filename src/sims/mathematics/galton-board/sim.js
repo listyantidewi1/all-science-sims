@@ -41,13 +41,13 @@ export function mount(rootEl) {
       const targetY = (b.row + 1) * (cv.height * 0.7) / (params.rows + 1);
       if (b.y > targetY) {
         b.row++;
-        if (Math.random() < params.bias) b.slot++;
-        if (b.row > params.rows) {
+        if (b.row <= params.rows) {
+          // one left/right choice per peg row: exactly `rows` choices, so slot ∈ 0..rows
+          if (Math.random() < params.bias) b.slot++;
+        } else {
+          // passed the last peg row: land in bin 0..rows
           bins[b.slot]++;
           balls.splice(i, 1);
-          if (bins.reduce((s, v) => s + v, 0) > 8000) {
-            // cap memory
-          }
           continue;
         }
       }

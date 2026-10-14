@@ -19,10 +19,11 @@ export function mount(rootEl) {
 
   const params = { tilt: 20 };  // degrees of plane from horizontal
 
+  const TOL = 1; // degrees; the same tolerance decides both the label and the drawn curve
   function classify(deg) {
-    if (deg < 1) return 'Circle';
-    if (deg < 44) return 'Ellipse';
-    if (Math.abs(deg - 45) < 1) return 'Parabola';
+    if (deg < TOL) return 'Circle';
+    if (Math.abs(deg - 45) < TOL) return 'Parabola';
+    if (deg < 45) return 'Ellipse';
     return 'Hyperbola';
   }
 
@@ -115,15 +116,16 @@ export function mount(rootEl) {
     ctx.lineWidth = 2.5;
     ctx.strokeStyle = '#fbbf24';
     ctx.beginPath();
-    if (t < 1) {
+    const kind = classify(t);
+    if (kind === 'Circle') {
       // circle
       ctx.arc(cx, cy, Math.min(w, h) * 0.3, 0, Math.PI * 2);
-    } else if (t < 44) {
+    } else if (kind === 'Ellipse') {
       // ellipse — squashed by cos(tilt)
       const a = Math.min(w, h) * 0.35;
       const b = a * Math.cos(t * Math.PI / 180);
       ctx.ellipse(cx, cy, a, b, 0, 0, Math.PI * 2);
-    } else if (Math.abs(t - 45) < 1.5) {
+    } else if (kind === 'Parabola') {
       // parabola y = x²/2 (rotated to face right)
       const k = 0.04;
       let started = false;

@@ -1,6 +1,10 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { select, slider, button, row } from '../../../lib/controls.js';
 import { labPanel } from '../../../lib/lab.js';
+import { getLocale } from '../../../i18n/index.js';
+
+const T = (en, id) => (getLocale() === 'id' ? id : en);
+const TOL = 1e-10; // converged when |f(x)| < TOL or |Δx| < TOL
 
 const FUNCS = {
   cubic1: { label: 'x³ − 2x − 5',     f: (x) => x * x * x - 2 * x - 5,      df: (x) => 3 * x * x - 2 },
@@ -20,6 +24,7 @@ export function mount(rootEl) {
 
   const params = { kind: 'cubic1', maxIter: 8 };
   let history = []; // {x, y}
+  let converged = false;
 
   const X_MIN = -3, X_MAX = 3, Y_MIN = -8, Y_MAX = 8;
   function w2sX(x, W) { return 40 + ((x - X_MIN) / (X_MAX - X_MIN)) * (W - 60); }
@@ -29,18 +34,22 @@ export function mount(rootEl) {
   function iterate(x0) {
     const fn = FUNCS[params.kind];
     history = [];
+    converged = false;
     let x = x0;
     history.push({ x, y: fn.f(x) });
+    if (Math.abs(fn.f(x)) < TOL) { converged = true; return; }
     for (let i = 0; i < params.maxIter; i++) {
       const f = fn.f(x), df = fn.df(x);
-      if (Math.abs(df) < 1e-9) break;
+      if (Math.abs(df) < 1e-9) break; // flat tangent: no Newton step (not converged)
       const next = x - f / df;
+      if (!Number.isFinite(next)) break;
       // record line from (x, f(x)) → (next, 0) → (next, f(next))
       history.push({ x: next, y: 0, tangentFrom: { x, y: f } });
       const nextY = fn.f(next);
       history.push({ x: next, y: nextY });
+      const dx = Math.abs(next - x);
       x = next;
-      if (Math.abs(f) < 1e-10) break;
+      if (Math.abs(nextY) < TOL || dx < TOL) { converged = true; break; }
     }
   }
 
@@ -118,12 +127,15 @@ export function mount(rootEl) {
     // info
     const xs = history.filter((h) => !h.tangentFrom).map((h) => h.x);
     const lastX = xs.length ? xs[xs.length - 1] : null;
-    ctx.fillStyle = 'rgba(0,0,0,0.55)';
-    ctx.fillRect(8, 8, 320, 28);
-    ctx.fillStyle = '#fff';
+    let info;
+    if (lastX == null) info = T('Click anywhere to start', 'Klik di mana saja untuk mulai');
+    else if (converged) info = `${T('Converged to', 'Konvergen ke')} x ≈ ${lastX.toFixed(6)}    f = ${fn.f(lastX).toExponential(2)}`;
+    else info = `${T('Did not converge', 'Tidak konvergen')} (${xs.length - 1} ${T('steps', 'langkah')}): x ≈ ${lastX.toFixed(6)}    f = ${fn.f(lastX).toExponential(2)}`;
     ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(lastX != null ? `Converged to x ≈ ${lastX.toFixed(6)}    f = ${fn.f(lastX).toExponential(2)}` : 'Click anywhere to start',
-      16, 28);
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(8, 8, Math.max(320, ctx.measureText(info).width + 16), 28);
+    ctx.fillStyle = '#fff';
+    ctx.fillText(info, 16, 28);
   }
 
   cv.canvas.style.cursor = 'crosshair';

@@ -1,5 +1,8 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, select, button, row } from '../../../lib/controls.js';
+import { getLocale } from '../../../i18n/index.js';
+
+const T = (en, id) => (getLocale() === 'id' ? id : en);
 
 const KINDS = {
   cubic:    { label: 'Cubic ax³+bx²+cx+d', f: (p, x) => p.a * x * x * x + p.b * x * x + p.c * x + p.d, params: ['a', 'b', 'c', 'd'] },
@@ -99,14 +102,23 @@ export function mount(rootEl) {
     });
     ctrlPanel.appendChild(kindSel.el);
     const used = KINDS[params.kind].params;
+    const isTrig = params.kind === 'sine' || params.kind === 'cosine';
+    // sine/cosine sliders are stored as a, b, c, d but play the roles of A, ω, φ, d in the formula
+    const TRIG_LABELS = {
+      a: T('A (amplitude)', 'A (amplitudo)'),
+      b: T('ω (angular frequency)', 'ω (frekuensi sudut)'),
+      c: T('φ (phase)', 'φ (fase)'),
+      d: T('d (vertical shift)', 'd (geseran tegak)'),
+    };
     for (const name of used) {
-      const isFreq = (params.kind === 'sine' || params.kind === 'cosine') && name === 'b';
+      const isFreq = isTrig && name === 'b';
       const isExpoB = params.kind === 'expo' && name === 'b';
       const min = isFreq ? 0 : isExpoB ? -2 : -5;
       const max = isFreq ? 6 : isExpoB ? 2 : 5;
       const step = isExpoB ? 0.05 : 0.1;
       const s = slider({
-        label: name, min, max, step, value: params[name] || 0, format: (v) => v.toFixed(2),
+        label: isTrig ? TRIG_LABELS[name] : name, key: name, // key keeps the deep-link params a, b, c, d
+        min, max, step, value: params[name] || 0, format: (v) => v.toFixed(2),
         onInput: (v) => { params[name] = v; },
       });
       ctrlPanel.appendChild(s.el);

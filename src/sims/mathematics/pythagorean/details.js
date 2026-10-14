@@ -16,12 +16,12 @@ export default {
     en: [
       'Make a 3-4-5 triangle — exact integer sides.',
       'Make a 5-12-13 triangle.',
-      'Drag the right-angle vertex — the squares deform but always add up.',
+      'Drag the red dots at B and C — the squares deform but always add up.',
     ],
     id: [
       'Buat segitiga 3-4-5 — sisi bilangan bulat.',
       'Buat segitiga 5-12-13.',
-      'Geser titik sudut siku-siku — persegi berubah bentuk tapi selalu pas.',
+      'Geser titik merah di B dan C — persegi berubah bentuk tapi selalu pas.',
     ],
   },
   // "Learn" section: the mathematics behind the sim, for students and teachers.
@@ -29,12 +29,12 @@ export default {
     background: {
       en: [
         'A right triangle has one corner that is a perfect square corner, 90 degrees. The two sides that meet at that corner are called the legs, and the longest side, opposite the right angle, is the hypotenuse. The Pythagorean theorem says: if you draw a square on each side, the area of the square on the hypotenuse is exactly equal to the areas of the two smaller squares added together. In the simulation the yellow triangle has its right angle at the bottom-left, the pink and blue squares sit on the legs, and the green square sits on the hypotenuse.',
-        'Drag the red dot at B to change the horizontal leg b, or the red dot at C to change the vertical leg a; both can go from 0.5 to 8 units. The simulation measures the hypotenuse, redraws all three squares, and prints the three areas: the two small areas always add up to the big one. For a = 3 and b = 4 the squares have areas 9 and 16, which add to 25, and 25 is the area of a square with side 5, so the hypotenuse is 5. That is the famous 3-4-5 triangle. The preset buttons load the shapes of the 3-4-5, 5-12-13 and 8-15-17 triangles, shrunk by one and a half times so they fit on the screen, so the numbers shown for 3-4-5 are 2, 2.67 and 3.33; the proportions are the same.',
+        'Drag the red dot at B to change the horizontal leg b, or the red dot at C to change the vertical leg a; both can go from 0.5 to 16 units. The simulation measures the hypotenuse, redraws all three squares, and prints the three areas: the two small areas always add up to the big one. For a = 3 and b = 4 the squares have areas 9 and 16, which add to 25, and 25 is the area of a square with side 5, so the hypotenuse is 5. That is the famous 3-4-5 triangle. The preset buttons load the 3-4-5, 5-12-13 and 8-15-17 triangles with their exact whole-number sides; the drawing shrinks so that the larger ones still fit on the screen, while the numbers stay as they are.',
         'The theorem works in reverse too: if the two small squares add up to the big square, the corner between the legs must be a right angle. This simulation always keeps the corner at A square, so it cannot show what happens for other triangles; for them the two small squares add up to more or less than the big one, and a different rule is needed. The drawing uses unit lengths with no particular unit, so the same picture works for centimetres, metres or kilometres.',
       ],
       id: [
         'Segitiga siku-siku punya satu sudut yang benar-benar siku, 90 derajat. Dua sisi yang bertemu di sudut itu disebut kaki, dan sisi terpanjang, yang berhadapan dengan sudut siku-siku, disebut sisi miring. Teorema Pythagoras berbunyi: jika kamu menggambar persegi pada setiap sisi, luas persegi pada sisi miring tepat sama dengan luas dua persegi yang lebih kecil dijumlahkan. Dalam simulasi, segitiga kuning bersudut siku-siku di kiri bawah, persegi merah muda dan biru berada pada kedua kaki, dan persegi hijau berada pada sisi miring.',
-        'Seret titik merah di B untuk mengubah kaki mendatar b, atau titik merah di C untuk mengubah kaki tegak a; keduanya bisa dari 0,5 sampai 8 satuan. Simulasi mengukur sisi miring, menggambar ulang ketiga persegi, dan mencetak ketiga luasnya: dua luas kecil selalu berjumlah sama dengan luas besar. Untuk a = 3 dan b = 4 perseginya berluas 9 dan 16, yang berjumlah 25, dan 25 adalah luas persegi bersisi 5, jadi sisi miringnya 5. Itulah segitiga 3-4-5 yang terkenal. Tombol preset memuat bentuk segitiga 3-4-5, 5-12-13, dan 8-15-17 yang diperkecil satu setengah kali agar muat di layar, sehingga angka yang tampil untuk 3-4-5 adalah 2, 2,67, dan 3,33; perbandingannya tetap sama.',
+        'Seret titik merah di B untuk mengubah kaki mendatar b, atau titik merah di C untuk mengubah kaki tegak a; keduanya bisa dari 0,5 sampai 16 satuan. Simulasi mengukur sisi miring, menggambar ulang ketiga persegi, dan mencetak ketiga luasnya: dua luas kecil selalu berjumlah sama dengan luas besar. Untuk a = 3 dan b = 4 perseginya berluas 9 dan 16, yang berjumlah 25, dan 25 adalah luas persegi bersisi 5, jadi sisi miringnya 5. Itulah segitiga 3-4-5 yang terkenal. Tombol preset memuat segitiga 3-4-5, 5-12-13, dan 8-15-17 dengan sisi bilangan bulat yang tepat; gambarnya diperkecil agar yang besar tetap muat di layar, sementara angkanya tidak berubah.',
         'Teorema ini juga berlaku sebaliknya: jika dua persegi kecil berjumlah sama dengan persegi besar, sudut di antara kedua kaki pasti siku-siku. Simulasi ini selalu menjaga sudut di A tetap siku, sehingga tidak bisa menunjukkan apa yang terjadi pada segitiga lain; pada segitiga lain dua persegi kecil berjumlah lebih besar atau lebih kecil dari persegi besar, dan dibutuhkan aturan yang berbeda. Gambar memakai panjang satuan tanpa satuan tertentu, jadi gambar yang sama berlaku untuk sentimeter, meter, atau kilometer.',
       ],
     },

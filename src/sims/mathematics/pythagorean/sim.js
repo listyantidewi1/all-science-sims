@@ -19,15 +19,23 @@ export function mount(rootEl) {
   };
   let drag = null; // 'B' (horizontal extent) | 'C' (vertical extent)
 
-  const SCALE = 30;
+  const MAX_SCALE = 30, MAX_LEG = 16;
+  let dragScale = null; // scale frozen during a drag so the handle stays under the pointer
   function center() { return { x: cv.width * 0.45, y: cv.height * 0.55 }; }
+  // Pixels per unit: shrink the drawing (never the numbers) so the triangle and all three
+  // outward squares fit the stage. They extend a left of A, b below A, and a+b right of / above A.
+  function scale() {
+    if (dragScale != null) return dragScale;
+    const o = center(), a = params.a, b = params.b, m = 24;
+    return Math.min(MAX_SCALE, (o.x - m) / a, (cv.height - o.y - m) / b, (cv.width - o.x - m) / (a + b), (o.y - m) / (a + b));
+  }
 
   function points() {
-    const o = center();
+    const o = center(), s = scale();
     return {
       A: { x: o.x, y: o.y },
-      B: { x: o.x + params.b * SCALE, y: o.y },
-      C: { x: o.x, y: o.y - params.a * SCALE },
+      B: { x: o.x + params.b * s, y: o.y },
+      C: { x: o.x, y: o.y - params.a * s },
     };
   }
 
@@ -38,6 +46,7 @@ export function mount(rootEl) {
     ctx.fillRect(0, 0, W, H);
 
     const p = points();
+    const SCALE = scale();
     const a = params.a, b = params.b, c = Math.hypot(a, b);
     const aPx = a * SCALE, bPx = b * SCALE, cPx = c * SCALE;
 
@@ -54,15 +63,15 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#ec4899';
     ctx.strokeRect(p.A.x - aPx, p.C.y, aPx, aPx);
 
-    // Square on hypotenuse — rotated
+    // Square on hypotenuse — rotated; local +y (after rotate) points away from A, so the square sits outside
     const hypAngle = Math.atan2(p.C.y - p.B.y, p.C.x - p.B.x);
     ctx.save();
     ctx.translate(p.B.x, p.B.y);
     ctx.rotate(hypAngle);
     ctx.fillStyle = 'rgba(16,185,129,0.35)';
-    ctx.fillRect(0, 0, cPx, -cPx);
+    ctx.fillRect(0, 0, cPx, cPx);
     ctx.strokeStyle = '#10b981';
-    ctx.strokeRect(0, 0, cPx, -cPx);
+    ctx.strokeRect(0, 0, cPx, cPx);
     ctx.restore();
 
     // Triangle on top
@@ -123,25 +132,27 @@ export function mount(rootEl) {
     const p = points();
     if (Math.hypot(pos.x - p.B.x, pos.y - p.B.y) < 16) drag = 'B';
     else if (Math.hypot(pos.x - p.C.x, pos.y - p.C.y) < 16) drag = 'C';
+    if (drag) dragScale = scale();
   });
   window.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const pos = localPos(e);
     const o = center();
+    const s = scale();
     if (drag === 'B') {
-      params.b = Math.max(0.5, Math.min(8, (pos.x - o.x) / SCALE));
+      params.b = Math.max(0.5, Math.min(MAX_LEG, (pos.x - o.x) / s));
     } else if (drag === 'C') {
-      params.a = Math.max(0.5, Math.min(8, (o.y - pos.y) / SCALE));
+      params.a = Math.max(0.5, Math.min(MAX_LEG, (o.y - pos.y) / s));
     }
   });
-  window.addEventListener('pointerup', () => { drag = null; });
+  window.addEventListener('pointerup', () => { drag = null; dragScale = null; });
 
   // controls
   const presetRow = document.createElement('div');
   presetRow.className = 'ctrl-row';
   for (const [name, a, b] of [['3-4-5', 4, 3], ['5-12-13', 12, 5], ['8-15-17', 15, 8], ['Isosceles', 4, 4]]) {
-    const btn = button({ label: name, onClick: () => { params.a = a / 1.5; params.b = b / 1.5; } });
-    // Adjust scale if too big
+    // exact integer sides; scale() shrinks the drawing so the larger triples still fit
+    const btn = button({ label: name, onClick: () => { params.a = a; params.b = b; } });
     presetRow.appendChild(btn.el);
   }
   ctrlPanel.append(presetRow);

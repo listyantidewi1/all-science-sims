@@ -53,6 +53,23 @@ export function mount(rootEl) {
     ctx.moveTo(cx, cy); ctx.lineTo(px, cy);
     ctx.stroke();
 
+    // tangent segment: on the tangent line x = 1 the extended radius cuts off a length tan θ
+    if (Math.abs(Math.cos(t)) > 0.01) {
+      const tx = cx + R;
+      const tanPx = Math.max(-(cy - 10), Math.min(cy - 10, Math.tan(t) * R)); // clipped to the stage
+      ctx.strokeStyle = 'rgba(236,72,153,0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + tanPx / Math.tan(t), cy - tanPx); ctx.stroke(); // extended radius
+      ctx.setLineDash([]);
+      ctx.strokeStyle = '#ec4899';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(tx, cy); ctx.lineTo(tx, cy - tanPx); ctx.stroke();
+      ctx.fillStyle = '#ec4899';
+      ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';
+      ctx.fillText('tan θ', tx + 6, cy - tanPx / 2);
+    }
+
     // radius
     ctx.strokeStyle = '#fbbf24';
     ctx.lineWidth = 2;
@@ -135,8 +152,8 @@ export function mount(rootEl) {
     ctx.fillRect(8, 8, 320, 60);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 12px ui-monospace, Menlo, Consolas, monospace';
-    const deg = (t * 180 / Math.PI) % 360;
-    ctx.fillText(`θ = ${deg.toFixed(1)}° (${(t / Math.PI).toFixed(3)}π)`, 16, 26);
+    const deg = (((t * 180 / Math.PI) % 360) + 360) % 360; // readout reduced to one turn: [0, 360) and [0, 2π)
+    ctx.fillText(`θ = ${deg.toFixed(1)}° (${(deg / 180).toFixed(3)}π)`, 16, 26);
     ctx.fillStyle = '#10b981';
     ctx.fillText(`sin θ = ${sinV.toFixed(3)}`, 16, 44);
     ctx.fillStyle = '#0ea5e9';
@@ -159,7 +176,8 @@ export function mount(rootEl) {
     const halfW = cv.width * 0.45;
     const cx = halfW / 2 + 30, cy = cv.height / 2;
     if (p.x > halfW) return; // dragging on the right wave panel: ignore
-    params.theta = Math.atan2(cy - p.y, p.x - cx);
+    const th = Math.atan2(cy - p.y, p.x - cx);
+    params.theta = th < 0 ? th + 2 * Math.PI : th; // keep θ in [0, 2π) when dragging
   });
   window.addEventListener('pointerup', () => { drag = false; });
 
@@ -177,7 +195,7 @@ export function mount(rootEl) {
   ctrlPanel.append(tS.el, presetRow);
 
   const animator = loop(() => {
-    tS.value = (params.theta * 180 / Math.PI + 360) % 720;
+    tS.value = (((params.theta * 180 / Math.PI) % 720) + 720) % 720;
     draw();
   });
   animator.start();

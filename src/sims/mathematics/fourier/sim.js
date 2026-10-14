@@ -3,7 +3,9 @@ import { slider, select, toggle } from '../../../lib/controls.js';
 
 // Fourier series for various waveforms (period 2π)
 function squareTarget(x) { return Math.sin(x) >= 0 ? 1 : -1; }
-function sawTarget(x) { let t = ((x / Math.PI) % 2 + 2) % 2; return t - 1; }
+// Sawtooth x/π on (−π, π): rises from −1 at −π to 1 at π, jumps at odd multiples of π
+function sawTarget(x) { let t = ((x / Math.PI + 1) % 2 + 2) % 2; return t - 1; }
+// Triangle: peak +1 at x = 0, trough −1 at x = ±π (even function → cosine series)
 function triTarget(x) { let t = ((x / Math.PI) % 2 + 2) % 2; return Math.abs(t - 1) * 2 - 1; }
 
 function squarePartial(x, N) {
@@ -13,22 +15,24 @@ function squarePartial(x, N) {
 }
 function sawPartial(x, N) {
   let s = 0;
-  for (let n = 1; n <= N; n++) s += Math.sin(n * x) / n * (n % 2 === 0 ? 1 : -1) * -1;
+  for (let n = 1; n <= N; n++) s += (n % 2 === 0 ? -1 : 1) * Math.sin(n * x) / n; // (−1)^(n+1)
   return s * 2 / Math.PI;
 }
 function triPartial(x, N) {
   let s = 0;
-  for (let n = 0; n < N; n++) {
-    const k = 2 * n + 1;
-    s += Math.cos(k * x) / (k * k) * (n % 2 === 0 ? 1 : -1);
-  }
+  for (let k = 1; k <= N; k += 2) s += Math.cos(k * x) / (k * k); // odd harmonics up to N, like the square wave
   return s * 8 / (Math.PI * Math.PI);
 }
 
+// n-th term of each series (with its Fourier coefficient); 0 when the harmonic is absent
+function squareTerm(x, n) { return n % 2 === 1 ? (4 / Math.PI) * Math.sin(n * x) / n : 0; }
+function sawTerm(x, n) { return (2 / Math.PI) * (n % 2 === 0 ? -1 : 1) * Math.sin(n * x) / n; }
+function triTerm(x, n) { return n % 2 === 1 ? (8 / (Math.PI * Math.PI)) * Math.cos(n * x) / (n * n) : 0; }
+
 const SHAPES = {
-  square: { label: 'Square wave',    target: squareTarget, partial: squarePartial },
-  saw:    { label: 'Sawtooth wave',  target: sawTarget,    partial: sawPartial },
-  triangle:{ label: 'Triangle wave', target: triTarget,    partial: triPartial },
+  square: { label: 'Square wave',    target: squareTarget, partial: squarePartial, term: squareTerm },
+  saw:    { label: 'Sawtooth wave',  target: sawTarget,    partial: sawPartial,    term: sawTerm },
+  triangle:{ label: 'Triangle wave', target: triTarget,    partial: triPartial,    term: triTerm },
 };
 
 export function mount(rootEl) {
@@ -80,14 +84,16 @@ export function mount(rootEl) {
     if (params.showHarmonics) {
       ctx.lineWidth = 1;
       const N = params.N;
+      const term = SHAPES[params.shape].term;
       for (let n = 1; n <= N; n++) {
+        if (term(1, n) === 0) continue; // harmonic absent from this series (sin n, cos n ≠ 0 for integer n)
         ctx.strokeStyle = `hsla(${(n * 50) % 360}, 70%, 60%, 0.3)`;
         ctx.beginPath();
         let s = false;
         for (let i = 0; i <= 600; i++) {
           const x = X_MIN + (i / 600) * (X_MAX - X_MIN);
-          // crude: just show sin(n*x)/n  for square (works visually for any partial)
-          const y = Math.sin(n * x) / n;
+          // the actual n-th term of the series, scaled by its Fourier coefficient
+          const y = term(x, n);
           const sx = w2sX(x, W), sy = w2sY(y, H);
           if (!s) { ctx.moveTo(sx, sy); s = true; } else ctx.lineTo(sx, sy);
         }
