@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.0] — Learn more on every simulation, UI polish
+
+### Added — "Learn more" on every simulation
+
+- Each sim's `details.js` gains a `learn` block: the science behind the sim in plain language (pitched to its grade range), an explanatory inline-SVG diagram with caption, key ideas, vocabulary, common misconceptions with corrections, real-world connections, and check-yourself questions with hidden answers. All bilingual.
+- The sim page renders it as collapsible panels under the stage ([src/components/learn.js](src/components/learn.js)); `scripts/validate-learn.mjs` checks the block's shape.
+- Fixed the About/Objectives/Share cards floating over later content: the old side-column rule had left the aside sticky.
+
 ### Changed — UI polish
 
 - **Sim page layout**: on screens 1024 px and wider the controls panel sits beside the canvas instead of below it, so sliders are visible without scrolling; the panel matches the canvas height and scrolls internally when its content is taller. The description, objectives, and try-this text moved from a side column to a row of cards under the stage, and the Share panel is collapsed by default.

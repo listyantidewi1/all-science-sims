@@ -1,5 +1,5 @@
 // Bumping CACHE invalidates the previous cache on activation.
-const CACHE = 'ass-cache-v3';
+const CACHE = 'ass-cache-v4';
 const PRECACHE = ['./', './favicon.svg', './manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {

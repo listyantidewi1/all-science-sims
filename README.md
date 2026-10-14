@@ -16,6 +16,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
 - **Every sim labelled by school level** — a suggested grade range on each card and page, and Primary / Middle / High school / University filter chips on the home and subject pages. See [By school level](#by-school-level) and the [curriculum map](docs/curriculum-map.md).
+- **Learn more on every sim** — the science behind it in plain language, an explanatory diagram, key ideas, vocabulary, common misconceptions, real-world connections, and check-yourself questions, pitched to the sim's grade range, in both languages.
 - **Virtual labs** — many sims carry a lab panel: follow a procedure, make a prediction, record measurements into a table, export CSV. Data auto-saves on the device.
 - **Deep links and embedding** — every control has a URL key, so `#/physics/pendulum?length-m=2` opens the sim preset. `#/embed/...` gives a stage-only view for an `<iframe>` in any LMS or blog. See [Sharing, deep links, and embedding](#sharing-deep-links-and-embedding).
 - **Touch and keyboard friendly** — pointer events everywhere, so dragging works on phones and tablets; every drag handle is reachable with Tab and nudged with the arrow keys.
@@ -496,7 +497,8 @@ Most sims accept several kinds of input:
 - **Direct manipulation on the canvas** — drag handles, click switches, draw walls. Look for `crosshair` / `grab` cursor changes to discover what's interactive. Right-click typically removes the nearest item. Works with touch too.
 - **Keyboard** — sliders take the arrow keys as usual. Drag handles are focusable: press Tab until the handle highlights, then nudge it with the arrow keys (hold Shift for bigger steps).
 - **Lab panel** (sims with the 🧪 badge) — a procedure checklist, a prediction box, and a data table with Record / Clear / Export CSV. Entries persist on the device until cleared.
-- **Share** (bottom of the aside) — copy a link that reproduces your current settings, or copy an `<iframe>` snippet.
+- **Share** (under the stage) — copy a link that reproduces your current settings, or copy an `<iframe>` snippet.
+- **Learn more** (further down) — collapsible panels: *The science behind it* with a diagram, *Key ideas*, *Vocabulary*, *Common misconceptions*, *In the real world*, and *Check yourself* questions whose answers are hidden until clicked. Teachers can use the misconceptions and questions directly in class.
 
 The "Try this" prompts in the sidebar are good starting points if you're not sure what to explore.
 
@@ -607,8 +609,19 @@ export default {
 export default {
   objectives: { en: ['…', '…', '…'], id: ['…', '…', '…'] },
   tryThis:    { en: ['…', '…', '…'], id: ['…', '…', '…'] },
+  learn: {                                   // the "Learn more" section
+    background:     { en: ['paragraph', '…'], id: ['…'] },
+    figure:         { caption: { en: '…', id: '…' }, svg: (lang) => `<svg viewBox="0 0 360 240">…</svg>` },
+    keyIdeas:       { en: ['…'], id: ['…'] },
+    vocabulary:     { en: [['term', 'definition']], id: [['…', '…']] },
+    misconceptions: { en: [['myth', 'correction']], id: [['…', '…']] },
+    realWorld:      { en: ['…'], id: ['…'] },
+    questions:      { en: [{ q: '…', a: '…' }], id: [{ q: '…', a: '…' }] },
+  },
 };
 ```
+
+See [src/sims/physics/pendulum/details.js](src/sims/physics/pendulum/details.js) for a complete example and run `node scripts/validate-learn.mjs src/sims/<subject>/<id>/details.js` to check the block's shape. Figures are inline SVG using `currentColor` so they work in both themes.
 
 ### 3. Write the sim
 
