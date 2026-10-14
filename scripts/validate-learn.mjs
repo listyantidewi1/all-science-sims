@@ -25,6 +25,7 @@ for (const f of process.argv.slice(2)) {
       if (typeof svg !== 'string' || !/^\s*<svg[\s>]/.test(svg) || !/<\/svg>\s*$/.test(svg)) fail(f, `figure.svg(${lang}) must return an <svg>…</svg> string`);
       else {
         if (!/viewBox=/.test(svg)) fail(f, 'figure svg needs a viewBox');
+        if (/\b(NaN|-?Infinity)\b/.test(svg)) fail(f, `figure svg (${lang}) contains NaN/Infinity coordinates`);
         if (/&(?!(amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/.test(svg)) fail(f, `figure.svg(${lang}) has an unescaped & (use &amp;)`);
         const open = (svg.match(/<([a-zA-Z][\w:-]*)\b[^>]*?(?<!\/)>/g) || []).map((t) => t.match(/<([a-zA-Z][\w:-]*)/)[1]);
         const close = (svg.match(/<\/([a-zA-Z][\w:-]*)>/g) || []).map((t) => t.match(/<\/([a-zA-Z][\w:-]*)>/)[1]);

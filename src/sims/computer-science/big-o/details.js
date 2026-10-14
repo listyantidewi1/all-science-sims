@@ -50,7 +50,7 @@ export default {
         const L = (en, id) => (lang === 'id' ? id : en);
         const X = (n) => 40 + n * 13.5, Y = (lg) => 215 - lg * 9.5;
         const fact = (n) => { let p = 1; for (let i = 2; i <= n; i++) p *= i; return p; };
-        const line = (f, col) => `<polyline fill="none" stroke="${col}" stroke-width="2.2" points="${Array.from({ length: 20 }, (_, i) => i + 1).map((n) => `${X(n).toFixed(1)},${Y(Math.log10(f(n))).toFixed(1)}`).join(' ')}"/>`;
+        const line = (f, col) => `<polyline fill="none" stroke="${col}" stroke-width="2.2" points="${Array.from({ length: 20 }, (_, i) => i + 1).map((n) => `${X(n).toFixed(1)},${Y(Math.log10(Math.max(1, f(n)))).toFixed(1)}`).join(' ')}"/>`;
         return `
 <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${L('Growth of complexity classes on a log scale', 'Pertumbuhan kelas kompleksitas pada skala log')}">
   <style>text{font:12px system-ui,sans-serif;fill:currentColor}.s{font-size:10px;opacity:.75}.m{fill:none;stroke:currentColor;stroke-width:1;opacity:.35}.lb{font-size:11px;font-weight:700}</style>
