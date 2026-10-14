@@ -17,12 +17,12 @@ export default {
     en: [
       'Depth 1 — single split. How accurate?',
       'Depth 8 — nearly perfect on training. Overfit?',
-      'Add noise to the data — depth 8 still overfits, but accuracy on the true function drops.',
+      'Lower the number of points to 20 and click Resample a few times — at depth 8 the boundaries jump around with every new sample (high variance).',
     ],
     id: [
       'Kedalaman 1 — satu pembagian. Seberapa akurat?',
       'Kedalaman 8 — hampir sempurna untuk data latih. Overfit?',
-      'Tambah derau pada data — kedalaman 8 tetap overfit, tapi akurasi pada fungsi sejatinya turun.',
+      'Turunkan jumlah titik ke 20 dan klik Resample beberapa kali — pada kedalaman 8 batas-batasnya melompat-lompat setiap sampel baru (varian tinggi).',
     ],
   },
 

@@ -164,7 +164,7 @@ export function mount(rootEl) {
       { key: 'ciHigh', label: 'CI high (97.5%)', format: (v) => v.toFixed(4) },
     ],
     procedure: [
-      'Set true μ = 5, σ = 2, n = 30, B = 2000. Click "New sample". Wait for bootstrap.',
+      'Set true μ = 5, σ = 2, n = 30, B = 2000. Click "New random sample". Wait for bootstrap.',
       'Record the sample mean and 95% CI (2.5% and 97.5% percentiles of bootMeans).',
       'Repeat 5 times. Notice the sample mean varies; the CI usually contains μ = 5.',
       'Drop n to 10 — CI gets much wider.',

@@ -104,8 +104,10 @@ export function mount(rootEl) {
     }
     ctx.stroke();
 
-    // fitted polynomial
-    const coefs = fitPoly(points, params.degree);
+    // fitted polynomial — cap the degree at n − 2 so the normal equations
+    // always have more points than coefficients (degree ≥ n − 1 is singular).
+    const degree = Math.min(params.degree, points.length - 2);
+    const coefs = fitPoly(points, degree);
     ctx.strokeStyle = '#ec4899';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -146,15 +148,19 @@ export function mount(rootEl) {
     ctx.fillRect(8, 8, 280, 56);
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
-    ctx.fillText(`Polynomial degree ${params.degree}`, 16, 26);
+    ctx.fillText(`Polynomial degree ${params.degree}` + (degree < params.degree ? `  (fitted ${degree}: only ${points.length} points)` : ''), 16, 26);
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
     ctx.fillText(`Train MSE: ${trainErr.toFixed(3)}`, 16, 44);
     ctx.fillText(`Test MSE (vs true curve): ${testErr.toFixed(3)}`, 16, 60);
 
-    // verdict
+    // verdict from the errors themselves: underfitting when the train error cannot
+    // get down to the noise floor σ² (the model misses the shape); otherwise
+    // overfitting when the test error is well above the train error (the model
+    // follows the noise); good fit otherwise.
     let verdict = '';
-    if (params.degree <= 1) verdict = 'Underfitting (high bias)';
-    else if (params.degree >= 8) verdict = 'Overfitting (high variance)';
+    const noiseVar = params.noise * params.noise;
+    if (trainErr > noiseVar + 0.1) verdict = 'Underfitting (high bias)';
+    else if (testErr > 1.5 * trainErr + 0.02 && testErr > 0.05) verdict = 'Overfitting (high variance)';
     else verdict = 'Good fit';
     ctx.fillStyle = verdict.includes('Under') ? '#fbbf24' : verdict.includes('Over') ? '#ef4444' : '#10b981';
     ctx.font = 'bold 12px system-ui, -apple-system, Roboto, sans-serif';

@@ -20,9 +20,8 @@ export function mount(rootEl) {
     inside = 0; total = 0; darts = []; history = [];
   }
 
-  function step(dt) {
-    if (!params.running) return;
-    const n = Math.max(1, Math.round(params.rate * dt));
+  // Throw exactly n darts, regardless of whether the animation is running.
+  function throwDarts(n) {
     for (let i = 0; i < n; i++) {
       const x = Math.random();
       const y = Math.random();
@@ -34,6 +33,11 @@ export function mount(rootEl) {
     }
     if (total > 0) history.push(4 * inside / total);
     if (history.length > 600) history.shift();
+  }
+
+  function step(dt) {
+    if (!params.running) return;
+    throwDarts(Math.max(1, Math.round(params.rate * dt)));
   }
 
   function draw() {
@@ -116,9 +120,7 @@ export function mount(rootEl) {
   const rateS = slider({ label: 'Darts / second', min: 10, max: 5000, step: 10, value: params.rate,
     onInput: (v) => { params.rate = v; } });
   const runT = toggle({ label: 'Running', value: params.running, onChange: (v) => { params.running = v; } });
-  const burstB = button({ label: 'Throw 1000', primary: true, onClick: () => {
-    for (let i = 0; i < 1000; i++) step(0.01);
-  } });
+  const burstB = button({ label: 'Throw 1000', primary: true, onClick: () => throwDarts(1000) });
   const resetB = button({ label: 'Reset', onClick: reset });
   ctrlPanel.append(rateS.el, runT.el, row(burstB, resetB));
 

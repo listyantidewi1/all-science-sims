@@ -82,7 +82,8 @@ export function mount(rootEl) {
     if (params.dist === 'normal') return [params.p1 - 4 * params.p2, params.p1 + 4 * params.p2];
     if (params.dist === 'uniform') return [params.p1 - 0.1, params.p2 + 0.1];
     if (params.dist === 'exponential') return [0, 5 / Math.max(0.01, params.p1)];
-    if (params.dist === 'binomial') return [0, Math.round(params.p2)];
+    // Discrete: shift the range by half a unit so each unit-wide bin is centred on an integer.
+    if (params.dist === 'binomial') return [-0.5, Math.round(params.p2) + 0.5];
     return [0, 1];
   }
 
@@ -214,7 +215,19 @@ export function mount(rootEl) {
     if (params.dist === 'exponential') { params.p1 = 1;   params.p2 = 1; }
     if (params.dist === 'binomial')    { params.p1 = 0.5; params.p2 = 20; }
   }
+  // Slider ranges depend on the distribution: Binomial needs p in [0, 1] and an
+  // integer n (1..50); the others keep the generic continuous ranges.
+  const p1In = p1S.el.querySelector('input');
+  const p2In = p2S.el.querySelector('input');
+  function setRange(input, min, max, step) { input.min = min; input.max = max; input.step = step; }
   function rebuildParams() {
+    if (params.dist === 'binomial') {
+      setRange(p1In, 0, 1, 0.01);
+      setRange(p2In, 1, 50, 1);
+    } else {
+      setRange(p1In, -5, 10, 0.05);
+      setRange(p2In, 0.01, 5, 0.01);
+    }
     p1S.value = params.p1;
     p2S.value = params.p2;
   }

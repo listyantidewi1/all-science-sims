@@ -3,8 +3,8 @@ export default {
   subject: 'data-science',
   title: { en: 'Time Series Smoothing', id: 'Penghalusan Deret Waktu' },
   description: {
-    en: 'Noisy data over time. Compare moving average, exponential smoothing (EMA), and Savitzky-Golay filter on the same series. Each strikes a different bargain between responsiveness and noise rejection.',
-    id: 'Data berisik sepanjang waktu. Bandingkan rata-rata bergerak, penghalusan eksponensial (EMA), dan filter Savitzky-Golay pada deret yang sama. Tiap metode menukar respons dengan penolakan derau secara berbeda.',
+    en: 'Noisy data over time. Compare a centred or trailing moving average with exponential smoothing (EMA) on the same series. Each strikes a different bargain between noise rejection, lag and responsiveness.',
+    id: 'Data berisik sepanjang waktu. Bandingkan rata-rata bergerak terpusat atau membuntut dengan penghalusan eksponensial (EMA) pada deret yang sama. Tiap metode menukar penolakan derau, lag, dan respons secara berbeda.',
   },
   details: () => import('./details.js'),
   topics: ['time-series', 'signal-processing'],

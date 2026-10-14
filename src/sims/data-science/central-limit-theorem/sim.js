@@ -131,7 +131,8 @@ export function mount(rootEl) {
       const mu = sum / values.length;
       let varc = 0; for (const v of values) varc += (v - mu) ** 2;
       const sigma = Math.sqrt(varc / values.length);
-      // Normal density scaled to match histogram peak
+      // Normal density on the same scale as the bars: bar height ∝ count ≈ N·binWidth·pdf,
+      // so pdf / (max / (N·binWidth)) maps the curve onto the count axis.
       const peak = max / values.length / (range[1] - range[0]) * bins;
       ctx.strokeStyle = '#10b981';
       ctx.lineWidth = 2.5;
@@ -141,7 +142,7 @@ export function mount(rootEl) {
         const xv = range[0] + (i / N) * (range[1] - range[0]);
         const d = Math.exp(-0.5 * ((xv - mu) / sigma) ** 2) / (sigma * Math.sqrt(2 * Math.PI));
         const sx = x + ((xv - range[0]) / (range[1] - range[0])) * w;
-        const sy = y + h - (d / peak) * (h - 16) * 0.5;
+        const sy = y + h - (d / peak) * (h - 16);
         if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
       }
       ctx.stroke();

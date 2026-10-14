@@ -22,6 +22,7 @@ export function mount(rootEl) {
     n: 200,
     noise: 0.4,
     window: 10,
+    trailing: false, // false: centred window (offline); true: past readings only (live, lags ~w/2)
     alpha: 0.2,
     showMA: true,
     showEMA: true,
@@ -45,11 +46,11 @@ export function mount(rootEl) {
   }
   regen();
 
-  function movingAverage(values, w) {
+  function movingAverage(values, w, trailing) {
     const out = [];
     for (let i = 0; i < values.length; i++) {
-      const lo = Math.max(0, i - Math.floor(w / 2));
-      const hi = Math.min(values.length, i + Math.ceil(w / 2));
+      const lo = trailing ? Math.max(0, i - w + 1) : Math.max(0, i - Math.floor(w / 2));
+      const hi = trailing ? i + 1 : Math.min(values.length, i + Math.ceil(w / 2));
       let s = 0;
       for (let j = lo; j < hi; j++) s += values[j];
       out.push(s / (hi - lo));
@@ -108,7 +109,7 @@ export function mount(rootEl) {
 
     // MA
     if (params.showMA) {
-      const ma = movingAverage(values, params.window);
+      const ma = movingAverage(values, params.window, params.trailing);
       ctx.strokeStyle = '#0ea5e9';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -143,7 +144,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0ea5e9';
     ctx.fillRect(16, 44 - 6, 12, 4);
     ctx.fillStyle = '#fff';
-    ctx.fillText(`moving average (w=${params.window})`, 36, 44);
+    ctx.fillText(`moving average (w=${params.window}${params.trailing ? ', trailing' : ''})`, 36, 44);
     ctx.fillStyle = '#ec4899';
     ctx.fillRect(16, 62 - 6, 12, 4);
     ctx.fillStyle = '#fff';
@@ -165,12 +166,14 @@ export function mount(rootEl) {
     onInput: (v) => { params.noise = v; regen(); } });
   const wS = slider({ label: 'Moving-average window', min: 1, max: 60, step: 1, value: params.window,
     onInput: (v) => { params.window = v; } });
+  const trailT = toggle({ label: 'Trailing moving average (past readings only)', value: params.trailing,
+    onChange: (v) => { params.trailing = v; } });
   const aS = slider({ label: 'EMA α', min: 0.01, max: 1, step: 0.01, value: params.alpha, format: (v) => v.toFixed(2),
     onInput: (v) => { params.alpha = v; } });
   const trueT = toggle({ label: 'Show true signal', value: params.showTrue, onChange: (v) => { params.showTrue = v; } });
   const reB = button({ label: 'Resample noise', primary: true, onClick: regen });
 
-  ctrlPanel.append(pSel.el, noiseS.el, wS.el, aS.el, trueT.el, row(reB));
+  ctrlPanel.append(pSel.el, noiseS.el, wS.el, trailT.el, aS.el, trueT.el, row(reB));
 
   const animator = loop(() => draw());
   animator.start();

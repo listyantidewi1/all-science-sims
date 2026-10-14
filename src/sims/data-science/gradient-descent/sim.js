@@ -150,7 +150,9 @@ export function mount(rootEl) {
     particle.vy = params.momentum * particle.vy - params.lr * gy;
     particle.x += particle.vx;
     particle.y += particle.vy;
-    if (Math.abs(particle.x) > RANGE * 1.2 || Math.abs(particle.y) > RANGE * 1.2) {
+    // Guard: a blown-up step (NaN / Infinity) or leaving the drawn area removes the marble.
+    if (!Number.isFinite(particle.x) || !Number.isFinite(particle.y)
+        || Math.abs(particle.x) > RANGE * 1.2 || Math.abs(particle.y) > RANGE * 1.2) {
       particle = null; return;
     }
     particle.history.push({ x: particle.x, y: particle.y });
@@ -172,7 +174,7 @@ export function mount(rootEl) {
     value: params.surface,
     onChange: (v) => { params.surface = v; particle = null; },
   });
-  const lrS = slider({ label: 'Learning rate', min: 0.001, max: 0.5, step: 0.001, value: params.lr, format: (v) => v.toFixed(3),
+  const lrS = slider({ label: 'Learning rate', min: 0.001, max: 1.5, step: 0.001, value: params.lr, format: (v) => v.toFixed(3),
     onInput: (v) => { params.lr = v; } });
   const momS = slider({ label: 'Momentum', min: 0, max: 0.95, step: 0.01, value: params.momentum, format: (v) => v.toFixed(2),
     onInput: (v) => { params.momentum = v; } });
@@ -194,7 +196,7 @@ export function mount(rootEl) {
     ],
     procedure: [
       'Convex bowl, lr = 0.1, momentum = 0. Click somewhere off-center; let it converge. Record.',
-      'Reset; lr = 0.5 — overshoots, may oscillate or diverge. Record outcome.',
+      'Reset; lr = 1.3 — overshoots and zig-zags across the centre before settling. Record outcome.',
       'lr = 0.01 — slow but stable. Record steps to convergence.',
       'Now Rosenbrock (banana). Bowl-shaped lr fails; momentum helps a lot.',
       'Multi-modal: gradient descent gets stuck in local minima. Try different start points.',
