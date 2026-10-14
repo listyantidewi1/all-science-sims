@@ -5,19 +5,31 @@ import { dragHandle } from '../../../lib/handle.js';
 import { labPanel } from '../../../lib/lab.js';
 
 const ENZYMES = {
-  pepsin:    { name: 'Pepsin (stomach)',         optT: 37, sigT: 8,  optPH: 2.0, sigPH: 1.0, color: '#ef4444' },
-  trypsin:   { name: 'Trypsin (small intestine)',optT: 37, sigT: 8,  optPH: 8.0, sigPH: 1.0, color: '#3b82f6' },
-  amylase:   { name: 'Salivary amylase',         optT: 37, sigT: 7,  optPH: 7.0, sigPH: 0.8, color: '#10b981' },
-  catalase:  { name: 'Catalase (liver)',         optT: 37, sigT: 8,  optPH: 7.4, sigPH: 0.6, color: '#f59e0b' },
+  pepsin:    { name: 'Pepsin (stomach)',         optT: 37, optPH: 2.0, sigPH: 1.0, color: '#ef4444' },
+  trypsin:   { name: 'Trypsin (small intestine)',optT: 37, optPH: 8.0, sigPH: 1.0, color: '#3b82f6' },
+  amylase:   { name: 'Salivary amylase',         optT: 37, optPH: 7.0, sigPH: 0.8, color: '#10b981' },
+  catalase:  { name: 'Catalase (liver)',         optT: 37, optPH: 7.4, sigPH: 0.6, color: '#f59e0b' },
 };
 
-function activity(enz, T, pH, denatured = false, inhibitor = 0) {
-  if (denatured) return 0;
-  const tFactor = Math.exp(-Math.pow((T - enz.optT) / enz.sigT, 2));
+// Temperature response: a gradual, reversible kinetic rise below the optimum
+// (rate doubles every 10 °C, Q10 = 2) multiplied by a steep, sigmoidal loss of
+// folded enzyme above it. Denaturation is half complete DENAT_OFFSET degrees
+// above the optimum and essentially total ~20 °C above it, so the curve is
+// skewed: slow on the cold side, a cliff on the hot side.
+const DENAT_OFFSET = 9;   // °C above the optimum where half the enzyme is denatured
+const DENAT_WIDTH = 3;    // °C; steepness of the denaturation step
+const sigmoid = (x) => 1 / (1 + Math.exp(-x));
+
+function temperatureFactor(enz, T) {
+  const kinetic = Math.min(1, Math.pow(2, (T - enz.optT) / 10));
+  const folded = (t) => 1 - sigmoid((t - (enz.optT + DENAT_OFFSET)) / DENAT_WIDTH);
+  return kinetic * folded(T) / folded(enz.optT);   // normalised so the optimum reads 100 %
+}
+
+function activity(enz, T, pH, inhibitor = 0) {
+  const tFactor = temperatureFactor(enz, T);
   const pFactor = Math.exp(-Math.pow((pH - enz.optPH) / enz.sigPH, 2));
-  // sharp drop above 60 °C (denaturation) regardless of optimum
-  const denat = T > 55 ? Math.max(0, 1 - (T - 55) / 10) : 1;
-  return tFactor * pFactor * denat * (1 - inhibitor);
+  return tFactor * pFactor * (1 - inhibitor);
 }
 
 export function mount(rootEl) {
@@ -49,14 +61,14 @@ export function mount(rootEl) {
     // Temperature curve
     charts.T = { x: 30, y: 30, w: halfW - 50, h: H - 60, min: 0, max: 100 };
     drawCurve(ctx, 30, 30, halfW - 50, H - 60, 'T (°C)', 0, 100, params.T,
-      (T) => activity(ENZYMES[params.enzyme], T, params.pH, false, params.inhibitor),
-      (enz, T) => activity(enz, T, params.pH, false, params.inhibitor));
+      (T) => activity(ENZYMES[params.enzyme], T, params.pH, params.inhibitor),
+      (enz, T) => activity(enz, T, params.pH, params.inhibitor));
 
     // pH curve
     charts.pH = { x: halfW + 20, y: 30, w: halfW - 50, h: H - 60, min: 0, max: 14 };
     drawCurve(ctx, halfW + 20, 30, halfW - 50, H - 60, 'pH', 0, 14, params.pH,
-      (pH) => activity(ENZYMES[params.enzyme], params.T, pH, false, params.inhibitor),
-      (enz, pH) => activity(enz, params.T, pH, false, params.inhibitor));
+      (pH) => activity(ENZYMES[params.enzyme], params.T, pH, params.inhibitor),
+      (enz, pH) => activity(enz, params.T, pH, params.inhibitor));
 
     const probe = hover.get();
     if (probe) {
@@ -65,7 +77,7 @@ export function mount(rootEl) {
     }
 
     // Big readout
-    const act = activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor);
+    const act = activity(ENZYMES[params.enzyme], params.T, params.pH, params.inhibitor);
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(8, 8, 220, 38);
     ctx.fillStyle = '#fff';
@@ -180,7 +192,7 @@ export function mount(rootEl) {
       T: params.T,
       pH: params.pH,
       inh: params.inhibitor,
-      rate: activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor),
+      rate: activity(ENZYMES[params.enzyme], params.T, params.pH, params.inhibitor),
     }),
   });
   ctrlPanel.appendChild(lab.el);
@@ -198,8 +210,8 @@ export function mount(rootEl) {
     const c = charts[k];
     const v = c.min + ((sx - c.x) / c.w) * (c.max - c.min);
     const a = k === 'T'
-      ? activity(ENZYMES[params.enzyme], v, params.pH, false, params.inhibitor)
-      : activity(ENZYMES[params.enzyme], params.T, v, false, params.inhibitor);
+      ? activity(ENZYMES[params.enzyme], v, params.pH, params.inhibitor)
+      : activity(ENZYMES[params.enzyme], params.T, v, params.inhibitor);
     return {
       kind: k,
       x: sx,
@@ -211,7 +223,7 @@ export function mount(rootEl) {
     hitTest: (sx, sy) => chartHit(sx, sy),
     handles: () => {
       if (!charts.T || !charts.pH) return [];
-      const act = activity(ENZYMES[params.enzyme], params.T, params.pH, false, params.inhibitor);
+      const act = activity(ENZYMES[params.enzyme], params.T, params.pH, params.inhibitor);
       const cT = charts.T, cP = charts.pH;
       return [
         { id: 'T', x: cT.x + ((params.T - cT.min) / (cT.max - cT.min)) * cT.w, y: cT.y + cT.h - act * (cT.h - 10) - 4, label: 'Temperature marker' },

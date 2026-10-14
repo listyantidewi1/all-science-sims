@@ -18,7 +18,7 @@ export function mount(rootEl) {
   const params = {
     bgHue: 120,        // background hue
     selection: 1.0,    // selection strength (k)
-    mutation: 6,       // stddev of hue mutation per offspring
+    mutation: 6,       // half-width (±) of the uniform hue mutation per offspring
     capacity: 80,
     selectionOn: true,
   };
@@ -145,7 +145,7 @@ export function mount(rootEl) {
     onInput: (v) => { params.selection = v; },
   });
   const mutS = slider({
-    label: 'Mutation σ (hue °)', min: 0, max: 30, step: 0.5, value: params.mutation, format: (v) => v.toFixed(1),
+    label: 'Mutation step (± hue °)', key: 'mutation-hue', min: 0, max: 30, step: 0.5, value: params.mutation, format: (v) => `±${v.toFixed(1)}`,
     onInput: (v) => { params.mutation = v; },
   });
   const popS = slider({

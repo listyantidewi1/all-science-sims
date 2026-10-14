@@ -191,8 +191,8 @@ export function mount(rootEl) {
       { key: 'sR',      label: 'salt R',       format: (v) => v.toFixed(0) },
       { key: 'wL',      label: 'water L',      format: (v) => v.toFixed(0) },
       { key: 'wR',      label: 'water R',      format: (v) => v.toFixed(0) },
-      { key: 'cL',      label: '[salt] L (g/100ml)', format: (v) => v.toFixed(2) },
-      { key: 'cR',      label: '[salt] R (g/100ml)', format: (v) => v.toFixed(2) },
+      { key: 'cL',      label: '% solute L',   format: (v) => v.toFixed(1) },
+      { key: 'cR',      label: '% solute R',   format: (v) => v.toFixed(1) },
       { key: 'flow',    label: 'predicted flow' },
     ],
     procedure: [
@@ -204,15 +204,14 @@ export function mount(rootEl) {
     ],
     predict: 'A cell sits in a hypertonic solution. Will it gain or lose water? What if hypotonic?',
     source: () => {
-      const cL = params.saltLeft / Math.max(1, params.waterLeft) * 100;
-      const cR = params.saltRight / Math.max(1, params.waterRight) * 100;
+      // Live counts: water particles move between sides as the sim runs, so
+      // read them from the particle arrays (the same numbers the canvas shows).
+      const sL = countSide(saltParticles, 'left'), sR = countSide(saltParticles, 'right');
+      const wL = countSide(waterParticles, 'left'), wR = countSide(waterParticles, 'right');
+      const cL = sL / Math.max(1, wL + sL) * 100;   // % solute, as in the on-canvas readout
+      const cR = sR / Math.max(1, wR + sR) * 100;
       return {
-        sL: params.saltLeft,
-        sR: params.saltRight,
-        wL: params.waterLeft,
-        wR: params.waterRight,
-        cL,
-        cR,
+        sL, sR, wL, wR, cL, cR,
         flow: cL > cR ? 'R → L' : cL < cR ? 'L → R' : 'equilibrium',
       };
     },

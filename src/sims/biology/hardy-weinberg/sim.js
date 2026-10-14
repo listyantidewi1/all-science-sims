@@ -47,29 +47,32 @@ export function mount(rootEl) {
     }
     const total = AA + Aa + aa;
     const p = total > 0 ? (2 * AA + Aa) / (2 * total) : 0;
-    history.push({ p, AA: AA / total, Aa: Aa / total, aa: aa / total });
+    history.push(total > 0
+      ? { p, AA: AA / total, Aa: Aa / total, aa: aa / total }
+      : { p: 0, AA: 0, Aa: 0, aa: 0 });
     if (history.length > 200) history.shift();
   }
 
   function generation() {
     const fitness = [params.fitAA, params.fitAa, params.fitaa];
-    // weighted alleles in mating pool: each individual contributes alleles weighted by fitness
-    const allelePool = [];
-    for (const g of pop) {
-      const w = fitness[g];
-      const samples = Math.max(1, Math.round(w * 4));  // contribute ~w copies
-      for (let i = 0; i < samples; i++) {
-        if (g === 0) { allelePool.push(1); allelePool.push(1); }
-        else if (g === 1) { allelePool.push(1); allelePool.push(0); }
-        else { allelePool.push(0); allelePool.push(0); }
-      }
-    }
-    if (allelePool.length === 0) return;
+    // Fitness-proportional (weighted) sampling of parents: each gamete comes
+    // from an individual chosen with probability proportional to its relative
+    // fitness, so fitness 0 means that genotype leaves no offspring at all.
+    const cum = new Array(pop.length);
+    let totalW = 0;
+    for (let i = 0; i < pop.length; i++) { totalW += fitness[pop[i]]; cum[i] = totalW; }
+    if (totalW <= 0) { pop = []; record(); return; }   // nobody can reproduce: extinction
+    const pickParent = () => {
+      const r = Math.random() * totalW;
+      let lo = 0, hi = cum.length - 1;
+      while (lo < hi) { const mid = (lo + hi) >> 1; if (cum[mid] > r) hi = mid; else lo = mid + 1; }
+      return pop[lo];
+    };
+    // A parent passes on one of its two alleles at random: AA → A, aa → a, Aa → A or a.
+    const gamete = (g) => (g === 0 ? 1 : g === 2 ? 0 : (Math.random() < 0.5 ? 1 : 0));
     const next = [];
     for (let i = 0; i < params.N; i++) {
-      const a1 = allelePool[Math.floor(Math.random() * allelePool.length)];
-      const a2 = allelePool[Math.floor(Math.random() * allelePool.length)];
-      const sum = a1 + a2;
+      const sum = gamete(pickParent()) + gamete(pickParent());
       next.push(sum === 2 ? 0 : sum === 1 ? 1 : 2);
     }
     pop = next;

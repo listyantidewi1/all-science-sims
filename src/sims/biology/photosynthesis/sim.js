@@ -13,7 +13,7 @@ export function mount(rootEl) {
 
   const params = {
     light: 0.6,    // 0..1
-    co2: 0.04,     // fraction (0..0.1, real atmosphere ~0.04%)
+    co2: 0.04,     // percent of air by volume (0..0.1 %); ordinary air ~0.04 % = 400 ppm
     temp: 25,      // °C
   };
   let bubbles = [];
@@ -22,7 +22,7 @@ export function mount(rootEl) {
   function rate() {
     // Light: saturating
     const fL = 1 - Math.exp(-params.light * 4);
-    // CO2: similar saturation, real air ~0.04 (4%) max for sim
+    // CO2: similar saturation; 0.04 % (air) gives ~70 % of maximum, 0.1 % (greenhouse) ~95 %
     const fC = 1 - Math.exp(-params.co2 * 30);
     // Temperature: bell curve around 25 with sharp drop above 40
     const fT = Math.exp(-Math.pow((params.temp - 25) / 12, 2)) * (params.temp > 50 ? 0.05 : 1);
@@ -128,13 +128,13 @@ export function mount(rootEl) {
     ctx.font = '12px system-ui, -apple-system, Roboto, sans-serif';
     ctx.fillText(`Limiting factor: ${limitingFactor()}`, 16, 48);
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillText(`Light ${(params.light*100).toFixed(0)}%   CO₂ ${(params.co2*100).toFixed(1)}%   T ${params.temp}°C`, 16, 65);
+    ctx.fillText(`Light ${(params.light*100).toFixed(0)}%   CO₂ ${params.co2.toFixed(3)}% (${Math.round(params.co2 * 10000)} ppm)   T ${params.temp}°C`, 16, 65);
   }
 
   // controls
   const lightS = slider({ label: 'Light intensity', min: 0, max: 1, step: 0.01, value: params.light, format: (v) => `${(v*100).toFixed(0)}%`,
     onInput: (v) => { params.light = v; } });
-  const co2S = slider({ label: 'CO₂ concentration', min: 0, max: 0.1, step: 0.001, value: params.co2, format: (v) => `${(v*100).toFixed(1)}%`,
+  const co2S = slider({ label: 'CO₂ concentration (% of air)', key: 'co2-concentration', min: 0, max: 0.1, step: 0.001, value: params.co2, format: (v) => `${v.toFixed(3)}% (${Math.round(v * 10000)} ppm)`,
     onInput: (v) => { params.co2 = v; } });
   const tS = slider({ label: 'Temperature (°C)', min: 0, max: 60, step: 1, value: params.temp,
     onInput: (v) => { params.temp = v; } });
@@ -157,15 +157,15 @@ export function mount(rootEl) {
     filename: 'photosynthesis-lab.csv',
     columns: [
       { key: 'light', label: 'light',     format: (v) => v.toFixed(2) },
-      { key: 'co2',   label: 'CO₂',        format: (v) => v.toFixed(3) },
+      { key: 'co2',   label: 'CO₂ (%)',    format: (v) => v.toFixed(3) },
       { key: 'T',     label: 'T (°C)' },
       { key: 'rate',  label: 'rel. rate',  format: (v) => v.toFixed(3) },
     ],
     procedure: [
-      'Hold CO₂ = 0.04, T = 25 °C. Sweep light: 0.1, 0.3, 0.5, 0.7, 1.0. Record.',
+      'Hold CO₂ = 0.04 % (ordinary air), T = 25 °C. Sweep light: 0.1, 0.3, 0.5, 0.7, 1.0. Record.',
       'Note saturation: at high light, more light barely helps. The plant becomes light-saturated.',
-      'Now hold light = 1.0 high. Sweep CO₂: 0.005, 0.01, 0.02, 0.05, 0.1. Record.',
-      'Hold light = 1.0, CO₂ = 0.05. Sweep T: 5, 15, 25, 35, 45 °C. Find the optimum (~25°C).',
+      'Now hold light = 1.0 high. Sweep CO₂: 0.005, 0.01, 0.02, 0.05, 0.1 %. Record.',
+      'Hold light = 1.0, CO₂ = 0.05 %. Sweep T: 5, 15, 25, 35, 45 °C. Find the optimum (~25°C).',
       'Above ~40°C, enzymes denature; below 5°C, kinetics stall. Plot rate vs T.',
     ],
     predict: 'A greenhouse can boost growth by raising CO₂ AND adding light. Why isn\'t increasing T past 30 °C as helpful?',

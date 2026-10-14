@@ -190,24 +190,42 @@ export function mount(rootEl) {
     if (affNF / nonFounder.length > 0.6) autoRecOk = false;
     results.push({ mode: 'autosomal-recessive', label: 'Autosomal recessive', ok: autoRecOk });
 
-    // X-linked recessive: more males affected; no male-to-male transmission
-    const affMales = [...aff].filter((id) => ALL_PEOPLE.find((p) => p.id === id).sex === 'M').length;
-    const affFemales = [...aff].filter((id) => ALL_PEOPLE.find((p) => p.id === id).sex === 'F').length;
+    const byId = (id) => ALL_PEOPLE.find((x) => x.id === id);
+    const fatherOf = (p) => p.parents && byId(p.parents.find((id) => byId(id).sex === 'M'));
+    const motherOf = (p) => p.parents && byId(p.parents.find((id) => byId(id).sex === 'F'));
+
+    // X-linked recessive: more males affected; a son gets his X only from his
+    // mother, so no father-to-son transmission; an affected mother (X^a X^a)
+    // gives every son an X^a, so all her sons are affected; an affected
+    // daughter (X^a X^a) must have received an X^a from her father, so he is affected.
+    const affMales = [...aff].filter((id) => byId(id).sex === 'M').length;
+    const affFemales = [...aff].filter((id) => byId(id).sex === 'F').length;
     let xRecOk = aff.size === 0 || affMales >= affFemales;
-    // Forbid male-to-male
     for (const p of ALL_PEOPLE) {
-      if (!aff.has(p.id) || p.sex !== 'M' || !p.parents) continue;
-      const dad = ALL_PEOPLE.find((x) => p.parents.includes(x.id) && x.sex === 'M');
-      if (dad && aff.has(dad.id)) xRecOk = false;
+      if (!p.parents) continue;
+      const dad = fatherOf(p), mum = motherOf(p);
+      if (p.sex === 'M') {
+        if (aff.has(p.id) && dad && aff.has(dad.id)) xRecOk = false;       // male-to-male
+        if (mum && aff.has(mum.id) && !aff.has(p.id)) xRecOk = false;      // affected mother → all sons affected
+      } else if (aff.has(p.id) && dad && !aff.has(dad.id)) {
+        xRecOk = false;                                                    // affected daughter needs affected father
+      }
     }
     results.push({ mode: 'x-linked-recessive', label: 'X-linked recessive', ok: xRecOk });
 
-    // X-linked dominant: every affected has affected parent (similar to dominant)
+    // X-linked dominant: every affected person has an affected parent; an
+    // affected father (X^A Y) gives his X to every daughter and none to his
+    // sons, so all his daughters are affected and his sons are affected only
+    // if their mother is.
     let xDomOk = true;
     for (const p of ALL_PEOPLE) {
-      if (!aff.has(p.id) || !p.parents) continue;
-      const parentsAff = p.parents.some((id) => aff.has(id));
-      if (!parentsAff) xDomOk = false;
+      if (!p.parents) continue;
+      const dad = fatherOf(p), mum = motherOf(p);
+      if (aff.has(p.id) && !p.parents.some((id) => aff.has(id))) xDomOk = false;
+      if (dad && aff.has(dad.id)) {
+        if (p.sex === 'F' && !aff.has(p.id)) xDomOk = false;               // affected father → all daughters affected
+        if (p.sex === 'M' && aff.has(p.id) && !(mum && aff.has(mum.id))) xDomOk = false; // no father-to-son transmission
+      }
     }
     results.push({ mode: 'x-linked-dominant', label: 'X-linked dominant', ok: xDomOk });
 

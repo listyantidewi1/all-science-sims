@@ -19,9 +19,17 @@ export function mount(rootEl) {
   let t = 0;
   let nextBeat = 0;
 
-  // Build a P-QRS-T waveform sample for one beat (in seconds along beat)
+  // The P-QRS-T template is defined over a fixed 0.8 s (a 75 bpm beat), so the
+  // waves keep the same duration as the heart slows and only the flat stretch
+  // between T and the next P lengthens. When the period gets too short for the
+  // template (above ~130 bpm) the template is squeezed to fit the beat.
+  const TEMPLATE_S = 0.8;
+  const WAVE_END = 0.55;   // phase at which the T wave ends
+  function templateDur(period) { return Math.min(TEMPLATE_S, period * 0.95 / WAVE_END); }
+
+  // Build a P-QRS-T waveform sample for one beat
   function ecgWave(phase) {
-    // phase 0..1 within a beat
+    // phase 0..1 within the template (1 = 0.8 s at rates up to ~130 bpm)
     if (phase < 0.05) return 0;
     if (phase < 0.12) return 0.15 * Math.sin((phase - 0.05) / 0.07 * Math.PI);  // P
     if (phase < 0.20) return 0;
@@ -49,7 +57,7 @@ export function mount(rootEl) {
     // compute current sample
     const period = 60 / params.bpm;
     const sinceLast = t - (nextBeat - period);
-    const phase = sinceLast / period;
+    const phase = sinceLast / templateDur(period);
     const v = ecgWave(phase);
     history.push({ t, v });
     if (history.length > 1500) history.shift();
@@ -76,7 +84,8 @@ export function mount(rootEl) {
 
   function drawHeart(ctx, x, y, w, h) {
     const cx = x + w / 2, cy = y + h / 2;
-    const phase = (((t - (nextBeat - 60 / params.bpm)) % (60 / params.bpm)) / (60 / params.bpm)) || 0;
+    const period = 60 / params.bpm;
+    const phase = ((t - (nextBeat - period)) / templateDur(period)) || 0;
     // beat throb: contract during QRS
     const beat = (phase > 0.20 && phase < 0.30) ? 1 + 0.15 * Math.sin((phase - 0.20) / 0.10 * Math.PI) : 1;
     const r = Math.min(w, h) * 0.32 * beat;

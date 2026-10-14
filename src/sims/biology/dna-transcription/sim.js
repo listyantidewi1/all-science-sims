@@ -21,8 +21,16 @@ const CODON_TABLE = {
 
 const BASE_COLOR = { A: '#ef4444', T: '#3b82f6', U: '#06b6d4', G: '#10b981', C: '#f59e0b' };
 
-function dnaToRna(d) {
-  return d.replace(/[ATGC]/g, (b) => ({ A: 'U', T: 'A', G: 'C', C: 'G' }[b] || b));
+const DNA_COMPLEMENT = { A: 'T', T: 'A', G: 'C', C: 'G' };
+
+/** The typed strand is the coding (sense) strand 5'→3'. The template strand is its complement, read 3'→5'. */
+function templateStrand(coding) {
+  return coding.replace(/[ATGC]/g, (b) => DNA_COMPLEMENT[b] || b);
+}
+
+/** mRNA has the same sequence as the coding strand, with U in place of T (it is the complement of the template). */
+function codingToRna(coding) {
+  return coding.replace(/T/g, 'U');
 }
 
 export function mount(rootEl) {
@@ -35,7 +43,7 @@ export function mount(rootEl) {
   rootEl.appendChild(ctrlPanel);
 
   const state = {
-    dna: 'ATGGCATTGGCCGAATAA',
+    dna: 'ATGGCATTGGCCGAATAA',   // coding strand 5'→3': Met-Ala-Leu-Ala-Glu-stop
     progress: 0,           // index in DNA
     autoplay: true,
     speed: 2.5,            // bases per second
@@ -45,6 +53,7 @@ export function mount(rootEl) {
   dnaInput.type = 'text';
   dnaInput.value = state.dna;
   dnaInput.spellcheck = false;
+  dnaInput.setAttribute('aria-label', "DNA coding strand (5' to 3')");
   dnaInput.style.cssText = `
     width: 100%; font-family: var(--font-mono); font-size: 14px;
     padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px;
@@ -82,71 +91,89 @@ export function mount(rootEl) {
     ">${b}</span>`;
   }
 
+  const emptySlot = `<span style="display:inline-flex;width:28px;height:32px;margin:1px;border-radius:6px;border:1px dashed var(--color-border)"></span>`;
+
   function render() {
     const dna = state.dna;
-    const fullRna = dnaToRna(dna);
+    const template = templateStrand(dna);
+    const fullRna = codingToRna(dna);
     const transcribed = fullRna.slice(0, state.progress);
+
+    // Translation starts at the first AUG and runs in frame until the first stop codon.
+    const startIdx = transcribed.indexOf('AUG');
     const codons = [];
-    for (let i = 0; i + 2 < transcribed.length; i += 3) codons.push(transcribed.slice(i, i + 3));
+    let stopEnd = -1;           // index just past the stop codon, once reached
+    if (startIdx >= 0) {
+      for (let i = startIdx; i + 2 < transcribed.length; i += 3) {
+        const codon = transcribed.slice(i, i + 3);
+        codons.push(codon);
+        if (CODON_TABLE[codon] === 'STOP') { stopEnd = i + 3; break; }
+      }
+    }
 
-    // Highlight the codon currently being translated (the last 3 bases that
-    // were transcribed). Bases at positions [codonStart, codonStart+3) are ringed.
-    const codonStart = state.progress === 0 ? -1 : Math.floor((state.progress - 1) / 3) * 3;
+    // Highlight the codon currently being read (in frame from the start AUG);
+    // nothing is ringed before the start codon appears or after the stop codon.
+    let codonStart = -1;
+    if (startIdx >= 0 && state.progress > startIdx && (stopEnd < 0 || state.progress <= stopEnd)) {
+      codonStart = startIdx + Math.floor((state.progress - 1 - startIdx) / 3) * 3;
+    }
+    const inCodon = (i) => codonStart >= 0 && i >= codonStart && i < codonStart + 3 && i < state.progress;
 
-    let dnaHTML = '';
+    let codingHTML = '';
+    let templateHTML = '';
     for (let i = 0; i < dna.length; i++) {
-      const inCurrentCodon = codonStart >= 0 && i >= codonStart && i < codonStart + 3 && i < state.progress;
-      dnaHTML += baseSpan(dna[i], { muted: i >= state.progress, ring: inCurrentCodon, index: i });
+      codingHTML += baseSpan(dna[i], { muted: i >= state.progress, ring: inCodon(i), index: i });
+      templateHTML += baseSpan(template[i], { muted: i >= state.progress, index: i });
     }
 
     let rnaHTML = '';
     for (let i = 0; i < dna.length; i++) {
       const b = i < state.progress ? fullRna[i] : '';
-      const inCurrentCodon = codonStart >= 0 && i >= codonStart && i < codonStart + 3 && i < state.progress;
-      rnaHTML += b
-        ? baseSpan(b, { ring: inCurrentCodon })
-        : `<span style="display:inline-flex;width:28px;height:32px;margin:1px;border-radius:6px;border:1px dashed var(--color-border)"></span>`;
+      rnaHTML += b ? baseSpan(b, { ring: inCodon(i) }) : emptySlot;
     }
 
     let aaHTML = '';
-    let stopped = false;
-    for (let i = 0; i < codons.length && !stopped; i++) {
-      const codon = codons[i];
-      if (codon.length < 3) break;
+    for (const codon of codons) {
       const aa = CODON_TABLE[codon] || '?';
       const bg = aa === 'STOP' ? '#0b1220' : '#8b5cf6';
-      const fg = '#fff';
       aaHTML += `
         <div style="display:flex;flex-direction:column;align-items:center;margin:0 2px">
           <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-muted)">${codon}</span>
           <span style="
             margin-top:4px;padding:6px 10px;border-radius:6px;
-            background:${bg};color:${fg};font-weight:700;font-size:12px;
+            background:${bg};color:#fff;font-weight:700;font-size:12px;
           ">${aa}</span>
         </div>
       `;
-      if (aa === 'STOP') stopped = true;
     }
+    const aaEmpty = startIdx < 0
+      ? 'Waiting for an AUG start codon in the mRNA'
+      : 'Start codon found — reading the first codon';
 
-    // Polymerase / ribosome cursor positions
+    // Polymerase cursor position
     const polyPos = state.progress;
+    const labelStyle = 'color:var(--color-muted);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase';
 
     display.innerHTML = `
-      <div style="margin-bottom:6px;color:var(--color-muted);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">
-        DNA template (5' → 3')
+      <div style="margin-bottom:6px;${labelStyle}">
+        DNA coding strand (5' → 3') — typed above
       </div>
       <div style="position:relative">
-        <div style="display:flex;flex-wrap:wrap">${dnaHTML}</div>
+        <div style="display:flex;flex-wrap:wrap">${codingHTML}</div>
         <div style="position:absolute;top:-2px;left:${polyPos * 30}px;height:36px;width:32px;border:2px solid #f59e0b;border-radius:8px;pointer-events:none;transition:left 0.18s ease"></div>
       </div>
-      <div style="margin:14px 0 6px;color:var(--color-muted);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">
-        mRNA
+      <div style="margin:10px 0 6px;${labelStyle}">
+        DNA template strand (3' → 5') — read by RNA polymerase
+      </div>
+      <div style="display:flex;flex-wrap:wrap">${templateHTML}</div>
+      <div style="margin:14px 0 6px;${labelStyle}">
+        mRNA (5' → 3') — complement of the template, same as coding strand with U for T
       </div>
       <div style="display:flex;flex-wrap:wrap">${rnaHTML}</div>
-      <div style="margin:14px 0 6px;color:var(--color-muted);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">
-        Polypeptide
+      <div style="margin:14px 0 6px;${labelStyle}">
+        Polypeptide — from the first AUG to the first stop codon
       </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:flex-start">${aaHTML || '<span style="color:var(--color-muted);font-size:13px">No codons yet</span>'}</div>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-start">${aaHTML || `<span style="color:var(--color-muted);font-size:13px">${aaEmpty}</span>`}</div>
     `;
   }
 
@@ -170,6 +197,7 @@ export function mount(rootEl) {
   const resetB = button({ label: 'Reset', onClick: () => { state.progress = 0; render(); } });
   const fullB = button({ label: 'Skip to end', primary: true, onClick: () => { state.progress = state.dna.length; render(); } });
   const exB = button({ label: 'Example: insulin signal', onClick: () => {
+    // Coding strand of the human preproinsulin signal peptide: MALWMRLLPLLALLA
     state.dna = 'ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTGGCC';
     dnaInput.value = state.dna;
     state.progress = 0;

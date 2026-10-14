@@ -21,7 +21,7 @@ export function mount(rootEl) {
   // Use FitzHugh-Nagumo-style 2-variable for stability:
   //   V'  = V - V³/3 - W + I(t)
   //   W'  = (V + a - b W) / tau
-  // Map to mV with: V_mV = V * 30 - 40 (rough)
+  // Map to mV with: V_mV = V * 38.5 - 28.8, so rest (V ≈ -1.2) ≈ -75 mV and the spike peak (V ≈ 1.8) ≈ +40 mV
   let V = -1.2;     // dimensionless
   let Wv = -0.6;
   let t_ms = 0;
@@ -62,7 +62,7 @@ export function mount(rootEl) {
     lastPulse = { strength: strength / 0.05, width: params.pulseWidth, t0: t_ms, peak: vMv(V), crossT: null };
   }
 
-  function vMv(V) { return V * 30 - 40; } // convert to mV
+  function vMv(V) { return V * 38.5 - 28.8; } // convert to mV (rest ≈ -75, peak ≈ +40)
 
   function draw() {
     const ctx = cv.ctx;
