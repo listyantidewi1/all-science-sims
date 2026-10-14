@@ -16,12 +16,12 @@ export default {
   tryThis: {
     en: [
       'Spots preset (F=0.035, k=0.065).',
-      'Coral preset (F=0.054, k=0.062).',
+      'Coral preset (F=0.0545, k=0.062) — the F slider rounds it to 0.054.',
       'Click the canvas to inject more activator.',
     ],
     id: [
       'Praatur Bintik (F=0,035, k=0,065).',
-      'Praatur Karang (F=0,054, k=0,062).',
+      'Praatur Karang (F=0,0545, k=0,062) — slider F membulatkannya menjadi 0,054.',
       'Klik kanvas untuk menyuntikkan aktivator lebih banyak.',
     ],
   },

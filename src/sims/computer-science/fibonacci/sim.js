@@ -116,15 +116,18 @@ export function mount(rootEl) {
     // Compare row
     ctx.fillStyle = 'rgba(120,130,150,0.85)';
     ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
+    // All three numbers count the same thing as the "calls" counter above:
+    // function calls, including memoized cache hits.
+    //   naive     = 2·F(n+1) − 1   (C(n) = 1 + C(n−1) + C(n−2), C(0) = C(1) = 1)
+    //   memoized  = 2n − 1 for n ≥ 2 (one spine call per n plus one cache hit per node), 1 for n < 2
+    //   iterative = n loop steps (no recursive calls at all)
     const naive = naiveCount(params.n);
-    const memoCount = params.n + 1;
-    ctx.fillText(`naive ≈ ${naive}    memoized = ${memoCount}    iterative = ${params.n}`, 16, H - 12);
+    const memoCount = params.n < 2 ? 1 : 2 * params.n - 1;
+    ctx.fillText(`calls — naive = ${naive}    memoized = ${memoCount} (${params.n + 1} values computed)    iterative = ${params.n} loop steps`, 16, H - 12);
   }
 
-  function naiveCount(n) {
-    if (n < 2) return 1;
-    return 1 + naiveCount(n - 1) + naiveCount(n - 2);
-  }
+  function fibNum(n) { let a = 0, b = 1; for (let i = 0; i < n; i++) [a, b] = [b, a + b]; return a; }
+  function naiveCount(n) { return 2 * fibNum(n + 1) - 1; }
 
   // controls
   const nS = slider({ label: 'n', min: 0, max: 12, step: 1, value: params.n,

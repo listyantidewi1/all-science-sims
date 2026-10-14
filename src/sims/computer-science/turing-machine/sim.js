@@ -2,6 +2,9 @@ import { slider, select, button, row } from '../../../lib/controls.js';
 
 // A simple Turing machine.
 // rules[state][symbol] = { write, move ('L'|'R'|'H'), next }
+// Each program declares its own blank symbol. The busy beavers use 0 as the
+// blank (the classic two-symbol formulation); the incrementer and doubler use
+// a separate blank '_' so that an untouched cell is distinct from a written 0.
 
 const PROGRAMS = {
   busyBeaver5: {
@@ -17,16 +20,29 @@ const PROGRAMS = {
       E: { 0: { write: 1, move: 'H', next: 'H' }, 1: { write: 0, move: 'L', next: 'A' } },
     },
   },
+  busyBeaver3: {
+    name: 'Busy Beaver (3-state)',
+    blank: 0,
+    initialTape: [],
+    initialState: 'A',
+    // Σ(3) champion: halts after 14 steps with 6 ones on the tape.
+    rules: {
+      A: { 0: { write: 1, move: 'R', next: 'B' }, 1: { write: 1, move: 'H', next: 'H' } },
+      B: { 0: { write: 0, move: 'R', next: 'C' }, 1: { write: 1, move: 'R', next: 'B' } },
+      C: { 0: { write: 1, move: 'L', next: 'C' }, 1: { write: 1, move: 'L', next: 'A' } },
+    },
+  },
   binaryInc: {
     name: 'Binary increment',
-    blank: 0,
+    blank: '_',
     initialTape: [1, 0, 1, 1],
     initialState: 'right',
+    // 1011 → 1100 in 10 steps
     rules: {
       right: {
         0: { write: 0, move: 'R', next: 'right' },
         1: { write: 1, move: 'R', next: 'right' },
-        '_': { write: 0, move: 'L', next: 'carry' },
+        '_': { write: '_', move: 'L', next: 'carry' },
       },
       carry: {
         0: { write: 1, move: 'L', next: 'done' },
@@ -36,22 +52,56 @@ const PROGRAMS = {
       done: {
         0: { write: 0, move: 'L', next: 'done' },
         1: { write: 1, move: 'L', next: 'done' },
-        '_': { write: 0, move: 'H', next: 'H' },
+        '_': { write: '_', move: 'H', next: 'H' },
       },
     },
   },
   unaryDouble: {
     name: 'Double a unary number',
-    blank: 0,
+    blank: '_',
     initialTape: [1, 1, 1],
-    initialState: 'find',
+    initialState: 'scan',
+    // Copies each input 1 to the far side of a one-cell gap, marking copied
+    // ones with 0; then restores the marks, fills the gap and erases one
+    // surplus 1 so the result is contiguous. 111 → 111111 in 53 steps.
     rules: {
-      find: {
-        1: { write: 1, move: 'R', next: 'find' },
-        '_': { write: 1, move: 'R', next: 'mark' },
+      scan: {
+        1: { write: 0, move: 'R', next: 'toSep' },
+        0: { write: 0, move: 'R', next: 'scan' },
+        '_': { write: '_', move: 'L', next: 'restore' },
       },
-      mark: {
-        '_': { write: 1, move: 'H', next: 'H' },
+      toSep: {
+        1: { write: 1, move: 'R', next: 'toSep' },
+        0: { write: 0, move: 'R', next: 'toSep' },
+        '_': { write: '_', move: 'R', next: 'toEnd' },
+      },
+      toEnd: {
+        1: { write: 1, move: 'R', next: 'toEnd' },
+        '_': { write: 1, move: 'L', next: 'back' },
+      },
+      back: {
+        1: { write: 1, move: 'L', next: 'back' },
+        '_': { write: '_', move: 'L', next: 'back2' },
+      },
+      back2: {
+        1: { write: 1, move: 'L', next: 'back2' },
+        0: { write: 0, move: 'L', next: 'back2' },
+        '_': { write: '_', move: 'R', next: 'scan' },
+      },
+      restore: {
+        0: { write: 1, move: 'L', next: 'restore' },
+        '_': { write: '_', move: 'R', next: 'fill' },
+      },
+      fill: {
+        1: { write: 1, move: 'R', next: 'fill' },
+        '_': { write: 1, move: 'R', next: 'toLast' },
+      },
+      toLast: {
+        1: { write: 1, move: 'R', next: 'toLast' },
+        '_': { write: '_', move: 'L', next: 'erase' },
+      },
+      erase: {
+        1: { write: '_', move: 'H', next: 'H' },
       },
     },
   },
@@ -107,8 +157,9 @@ export function mount(rootEl) {
     if (state.cur === 'H') return;
     const prog = PROGRAMS[state.program];
     const sym = state.tape.has(state.head) ? state.tape.get(state.head) : prog.blank;
-    const symKey = (sym === 0 || sym === 1) ? sym : '_';
-    const rule = prog.rules[state.cur]?.[symKey] || prog.rules[state.cur]?._;
+    // Look the symbol up as written in the table: 0 and 1 are the digit keys,
+    // the blank '_' is its own key (a blank is never read as a 0).
+    const rule = prog.rules[state.cur]?.[String(sym)];
     if (!rule) { state.cur = 'H'; return; }
     if (rule.write !== undefined) state.tape.set(state.head, rule.write);
     if (rule.move === 'L') state.head--;
@@ -121,12 +172,14 @@ export function mount(rootEl) {
   function render() {
     // tape — show 31 cells centered on head
     const halfRange = 15;
+    const blank = PROGRAMS[state.program].blank;
     let tapeHTML = '<div style="display:flex;align-items:center;gap:0">';
     for (let i = state.head - halfRange; i <= state.head + halfRange; i++) {
-      const v = state.tape.has(i) ? state.tape.get(i) : 0;
+      const raw = state.tape.has(i) ? state.tape.get(i) : blank;
+      const v = raw === '_' ? '' : raw; // blank cells are shown empty
       const isHead = i === state.head;
-      const bg = isHead ? '#fbbf24' : v ? '#10b981' : '#1f2937';
-      const fg = isHead || v ? '#0b1220' : '#94a3b8';
+      const bg = isHead ? '#fbbf24' : v === 1 ? '#10b981' : '#1f2937';
+      const fg = isHead || v === 1 ? '#0b1220' : '#94a3b8';
       tapeHTML += `<div style="
         width: 28px; height: 36px; border: 1px solid var(--color-border);
         background: ${bg}; color: ${fg};
@@ -153,7 +206,7 @@ export function mount(rootEl) {
         rulesHTML += `<tr style="${cur ? 'background:rgba(251,191,36,0.18)' : ''}">
           <td style="padding:3px 6px;font-weight:700">${s}</td>
           <td style="padding:3px 6px">${r === '_' ? '∅' : r}</td>
-          <td style="padding:3px 6px">${act.write}</td>
+          <td style="padding:3px 6px">${act.write === '_' ? '∅' : act.write}</td>
           <td style="padding:3px 6px">${act.move}</td>
           <td style="padding:3px 6px">${act.next}</td>
         </tr>`;

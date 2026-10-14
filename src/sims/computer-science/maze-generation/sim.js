@@ -87,14 +87,30 @@ export function mount(rootEl) {
     const sx = Math.floor(Math.random() * W);
     const sy = Math.floor(Math.random() * H);
     visited[sy][sx] = true;
-    runState = { kind: 'wilson', walk: null };
+    runState = { kind: 'wilson', walk: null, visitedCount: 1 };
   }
+  // One Wilson "step" advances the current random walk by a budget of moves
+  // rather than a single move. With a tiny tree the first walk can wander for
+  // thousands of moves (average ≈1400 on this grid, sometimes >6000), which at
+  // 30 steps/s looked frozen. The budget shrinks as the tree grows, so late
+  // walks are shown one move at a time. The random walk itself is unchanged,
+  // so the maze is still a uniform spanning tree.
   function wilsonStep() {
+    const total = W * H;
+    const remaining = total - runState.visitedCount;
+    const budget = Math.max(1, Math.min(50, Math.ceil(remaining / runState.visitedCount)));
+    for (let i = 0; i < budget; i++) {
+      const r = wilsonMove();
+      if (r !== 'moved') return r !== 'done'; // 'committed' → stop early so the commit is visible
+    }
+    return true;
+  }
+  function wilsonMove() {
     // If no current walk, find an unvisited cell, start one
     if (!runState.walk) {
       let found = null;
       for (let y = 0; y < H && !found; y++) for (let x = 0; x < W && !found; x++) if (!visited[y][x]) found = [x, y];
-      if (!found) return false;
+      if (!found) return 'done';
       runState.walk = { path: [found], dirs: new Map() };
     }
     const w = runState.walk;
@@ -117,10 +133,12 @@ export function mount(rootEl) {
         cells[y][x][d.w1] = false;
         cells[d.ny][d.nx][d.w2] = false;
         visited[y][x] = true;
+        runState.visitedCount++;
         x = d.nx; y = d.ny;
         if (visited[y][x]) break;
       }
       runState.walk = null;
+      return 'committed';
     } else {
       // check loop erase
       const idx = w.path.findIndex(([x, y]) => x === nx && y === ny);
@@ -130,7 +148,7 @@ export function mount(rootEl) {
         w.path.push([nx, ny]);
       }
     }
-    return true;
+    return 'moved';
   }
 
   function init() {
@@ -193,7 +211,8 @@ export function mount(rootEl) {
     onInput: (v) => { params.speed = v; } });
   const resetB = button({ label: 'Regenerate', primary: true, onClick: init });
   const finishB = button({ label: 'Finish instantly', onClick: () => {
-    let safety = 5000;
+    // DFS/Prim need ≈ 2·W·H steps; Wilson's random walks can need far more.
+    let safety = 200000;
     while (step() && --safety > 0) {}
   } });
   ctrlPanel.append(algoSel.el, speedS.el, row(resetB, finishB));

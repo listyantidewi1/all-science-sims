@@ -43,6 +43,18 @@ export function mount(rootEl) {
   stage.appendChild(display);
 
   const params = { p: 11, q: 13, message: 42, e: 7 };
+  let note = ''; // transient message shown when a prime choice had to be adjusted
+
+  // RSA needs two *distinct* primes: with p = q, φ(n) = (p−1)(q−1) is wrong and
+  // decryption breaks. Return the next prime in the list that differs from `avoid`.
+  function nextPrimeAvoiding(current, avoid) {
+    const i = SMALL_PRIMES.indexOf(current);
+    for (let k = 1; k <= SMALL_PRIMES.length; k++) {
+      const cand = SMALL_PRIMES[(i + k) % SMALL_PRIMES.length];
+      if (cand !== avoid) return cand;
+    }
+    return current;
+  }
 
   function pickValidE(phi) {
     for (let e = 3; e < phi; e += 2) {
@@ -58,15 +70,20 @@ export function mount(rootEl) {
     let e = params.e;
     if (gcd(e, phi) !== 1) e = pickValidE(phi);
     const d = modInverse(e, phi);
+    const tooBig = params.message >= n; // RSA only works for messages m < n
     const m = params.message % n;
     const c = modPow(m, e, n);
     const decrypted = d != null ? modPow(c, d, n) : null;
-    return { p, q, n, phi, e, d, m, c, decrypted };
+    return { p, q, n, phi, e, d, m, c, decrypted, tooBig, original: params.message };
   }
 
   function render() {
     const r = compute();
     const ok = r.decrypted === r.m;
+    const warnings = [];
+    if (note) warnings.push(note);
+    if (r.tooBig) warnings.push(`⚠ Message m = ${r.original} is not smaller than n = ${r.n}. RSA can only encrypt m &lt; n, so the sim encrypts m mod n = ${r.m} instead and that is what comes back — choose a smaller message or larger primes.`);
+    const warnHTML = warnings.map((w) => `<div style="margin-top:var(--space-3);padding:8px 10px;border-radius:8px;background:rgba(245,158,11,0.15);border:1px solid #f59e0b;color:#f59e0b;font-size:12px;font-family:var(--font-sans)">${w}</div>`).join('');
     display.innerHTML = `
       <h3 style="margin:0 0 var(--space-3);font-size:var(--type-md);font-family:var(--font-sans)">Step-by-step RSA</h3>
       <div style="display:grid;grid-template-columns:200px 1fr;gap:8px 16px;line-height:1.6">
@@ -90,8 +107,9 @@ export function mount(rootEl) {
       <div style="background:#0b1220;border:1px solid var(--color-border);border-radius:8px;padding:var(--space-3);margin-top:var(--space-3)">
         <div style="margin-bottom:8px"><strong>Decrypt</strong>: m = c^d mod n</div>
         <div style="font-size:14px;color:var(--color-fg)">${r.c}<sup>${r.d}</sup> mod ${r.n} = <strong style="color:${ok ? '#10b981' : '#ef4444'}">${r.decrypted ?? '?'}</strong></div>
-        <div style="margin-top:8px;font-size:12px;color:${ok ? '#10b981' : '#ef4444'}">${ok ? '✓ Recovered original message' : '✗ Decryption failed (try a different e)'}</div>
+        <div style="margin-top:8px;font-size:12px;color:${ok ? '#10b981' : '#ef4444'}">${ok ? (r.tooBig ? '✓ Recovered m mod n, not the original message' : '✓ Recovered original message') : '✗ Decryption failed (try a different e)'}</div>
       </div>
+      ${warnHTML}
     `;
   }
   render();
@@ -101,18 +119,36 @@ export function mount(rootEl) {
     label: 'Prime p',
     options: SMALL_PRIMES.map((x) => ({ value: String(x), label: String(x) })),
     value: String(params.p),
-    onChange: (v) => { params.p = Number(v); render(); },
+    onChange: (v) => {
+      params.p = Number(v);
+      note = '';
+      if (params.p === params.q) {
+        params.q = nextPrimeAvoiding(params.q, params.p);
+        qSel.value = String(params.q);
+        note = `⚠ p and q must be different primes (with p = q, φ(n) = (p−1)(q−1) no longer holds and decryption breaks). q was moved to ${params.q}.`;
+      }
+      render();
+    },
   });
   const qSel = select({
     label: 'Prime q',
     options: SMALL_PRIMES.map((x) => ({ value: String(x), label: String(x) })),
     value: String(params.q),
-    onChange: (v) => { params.q = Number(v); render(); },
+    onChange: (v) => {
+      params.q = Number(v);
+      note = '';
+      if (params.q === params.p) {
+        params.p = nextPrimeAvoiding(params.p, params.q);
+        pSel.value = String(params.p);
+        note = `⚠ p and q must be different primes (with p = q, φ(n) = (p−1)(q−1) no longer holds and decryption breaks). p was moved to ${params.p}.`;
+      }
+      render();
+    },
   });
   const mS = slider({ label: 'Message m', min: 1, max: 200, step: 1, value: params.message,
-    onInput: (v) => { params.message = v; render(); } });
+    onInput: (v) => { params.message = v; note = ''; render(); } });
   const eS = slider({ label: 'e (public exponent)', min: 3, max: 50, step: 2, value: params.e,
-    onInput: (v) => { params.e = v; render(); } });
+    onInput: (v) => { params.e = v; note = ''; render(); } });
   ctrlPanel.append(pSel.el, qSel.el, mS.el, eS.el);
 
   return () => {};

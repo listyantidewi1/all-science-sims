@@ -54,9 +54,12 @@ export function mount(rootEl) {
     const startK = key(state.start.x, state.start.y);
     const goalK = key(state.goal.x, state.goal.y);
     const queue = [[state.start.x, state.start.y]];
-    state.visited.add(startK);
+    const seen = new Set([startK]); // discovered (enqueued) cells, for de-duplication
     while (queue.length) {
       const [x, y] = queue.shift();
+      // Like A*, count a cell as visited when it is popped off the frontier and
+      // expanded, not when it is first discovered, so both counters mean the same thing.
+      state.visited.add(key(x, y));
       yield;
       if (key(x, y) === goalK) {
         // reconstruct
@@ -68,8 +71,8 @@ export function mount(rootEl) {
       }
       for (const [nx, ny] of neighbors(x, y)) {
         const k = key(nx, ny);
-        if (state.visited.has(k) || state.walls.has(k)) continue;
-        state.visited.add(k);
+        if (seen.has(k) || state.walls.has(k)) continue;
+        seen.add(k);
         state.cameFrom.set(k, key(x, y));
         queue.push([nx, ny]);
       }
@@ -150,7 +153,7 @@ export function mount(rootEl) {
     // header
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
     ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
-    ctx.fillText(`Algorithm: ${state.algo === 'bfs' ? 'BFS' : 'A*'}    Visited: ${state.visited.size}    Path: ${state.path.length || '—'}`, 10, 18);
+    ctx.fillText(`Algorithm: ${state.algo === 'bfs' ? 'BFS' : 'A*'}    Visited (cells expanded): ${state.visited.size}    Path: ${state.path.length || '—'}`, 10, 18);
   }
 
   // mouse handlers

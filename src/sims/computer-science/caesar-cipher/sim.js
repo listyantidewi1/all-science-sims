@@ -80,8 +80,9 @@ export function mount(rootEl) {
     // Brute force table
     let html = '<h3 style="margin:0 0 8px;font-size:var(--type-md)">All 25 shifts (brute force)</h3>';
     html += '<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px">';
-    for (let k = 0; k <= 25; k++) {
-      const cur = k === state.shift;
+    // shifts 1..25: shift 0 is the plaintext itself and shift 26 equals shift 0
+    for (let k = 1; k <= 25; k++) {
+      const cur = k === ((state.shift % 26) + 26) % 26; // a negative shift matches its positive twin
       html += `<tr style="${cur ? 'background:rgba(139,92,246,0.18)' : ''}">
         <td style="padding:3px 8px;color:var(--color-muted);width:60px">shift ${k}</td>
         <td style="padding:3px 8px;letter-spacing:1px">${shiftStr(state.text, k)}</td>
@@ -98,10 +99,12 @@ export function mount(rootEl) {
   });
   const presetRow = document.createElement('div');
   presetRow.className = 'ctrl-row';
-  for (const [name, k, txt] of [['ROT13', 13, null], ['Decrypt previous', -state.shift, null], ['Brutus quote', 3, 'ET TU BRUTE']]) {
+  // k may be a number or a function of the current shift (evaluated at click time)
+  for (const [name, k, txt] of [['ROT13', 13, null], ['Decrypt previous', (s) => -s, null], ['Brutus quote', 3, 'ET TU BRUTE']]) {
     const b = button({ label: name, onClick: () => {
-      state.shift = k;
-      shiftS.value = k;
+      const next = typeof k === 'function' ? k(state.shift) : k;
+      state.shift = next;
+      shiftS.value = next;
       if (txt) { state.text = txt; input.value = txt; }
       render();
     } });

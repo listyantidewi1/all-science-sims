@@ -115,6 +115,7 @@ export function mount(rootEl) {
     size: 30,
     speed: 30, // steps per second
     algo: 'quick',
+    input: 'random', // 'random' | 'nearly' | 'reversed'
     arr: [],
     iter: null,
     highlight: { i: -1, j: -1 },
@@ -125,8 +126,23 @@ export function mount(rootEl) {
     lastTime: 0,
   };
 
+  function makeArray(n, kind) {
+    const vals = Array.from({ length: n }, () => Math.floor(Math.random() * 100) + 1);
+    if (kind === 'random') return vals;
+    vals.sort((a, b) => a - b);
+    if (kind === 'reversed') return vals.reverse();
+    // nearly sorted: displace a handful of elements (about 5% of n, at least one) by 1–3 positions
+    const moves = Math.max(1, Math.round(n * 0.05));
+    for (let s = 0; s < moves; s++) {
+      const i = Math.floor(Math.random() * (n - 1));
+      const j = Math.min(n - 1, i + 1 + Math.floor(Math.random() * 3));
+      [vals[i], vals[j]] = [vals[j], vals[i]];
+    }
+    return vals;
+  }
+
   function newArray() {
-    state.arr = Array.from({ length: state.size }, () => Math.floor(Math.random() * 100) + 1);
+    state.arr = makeArray(state.size, state.input);
     state.iter = null;
     state.highlight = { i: -1, j: -1 };
     state.sorted = new Set();
@@ -207,6 +223,17 @@ export function mount(rootEl) {
     value: state.algo,
     onChange: (v) => { state.algo = v; newArray(); },
   });
+  const inputSel = select({
+    label: 'Input order',
+    key: 'input',
+    options: [
+      { value: 'random', label: 'Random' },
+      { value: 'nearly', label: 'Nearly sorted' },
+      { value: 'reversed', label: 'Reversed' },
+    ],
+    value: state.input,
+    onChange: (v) => { state.input = v; newArray(); },
+  });
   const playB = button({ label: 'Run', primary: true, onClick: () => {
     if (!state.iter) start();
     else state.running = !state.running;
@@ -214,7 +241,7 @@ export function mount(rootEl) {
   } });
   const shuffleB = button({ label: 'Shuffle', onClick: newArray });
 
-  ctrlPanel.append(sizeS.el, speedS.el, algoSel.el, row(playB, shuffleB));
+  ctrlPanel.append(sizeS.el, speedS.el, algoSel.el, inputSel.el, row(playB, shuffleB));
 
   // Lab — algorithm and array size vs comparison / swap / write counts of a completed sort.
   const lab = labPanel({

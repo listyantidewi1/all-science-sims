@@ -43,12 +43,22 @@ export function mount(rootEl) {
   insertBtn.addEventListener('click', () => {
     const k = input.value.trim();
     if (!k) return;
-    insertKey(k);
+    showMsg(insertKey(k) ? '' : rejectedMsg([k]));
     input.value = '';
     render();
   });
   inputRow.appendChild(insertBtn);
   stage.appendChild(inputRow);
+
+  // message shown when an open-addressing insert finds no empty slot
+  const msg = document.createElement('div');
+  msg.style.cssText = 'display:none;margin-bottom:var(--space-3);padding:8px 10px;border-radius:6px;background:rgba(239,68,68,0.12);border:1px solid #ef4444;color:#ef4444;font-size:12px';
+  stage.appendChild(msg);
+  function showMsg(text) { msg.textContent = text; msg.style.display = text ? 'block' : 'none'; }
+  function rejectedMsg(keys) {
+    const list = keys.map((k) => `"${k}"`).join(', ');
+    return `Table full: ${list} ${keys.length === 1 ? 'was' : 'were'} not inserted — all ${params.nBuckets} slots are occupied (α = 1). Open addressing needs an empty slot: add buckets or clear the table.`;
+  }
 
   const tableWrap = document.createElement('div');
   tableWrap.style.cssText = 'background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:8px;padding:var(--space-3);overflow:auto';
@@ -56,24 +66,27 @@ export function mount(rootEl) {
 
   let probesByKey = new Map(); // remember probes for visualization
 
+  // Returns true when the key was stored, false when an open-addressing table
+  // had no empty slot (the key is rejected rather than silently dropped).
   function insertKey(k) {
     const h = hash(k);
     const idx = h % params.nBuckets;
     if (params.method === 'chaining') {
       params.table[idx].push(k);
       probesByKey.set(k, [idx]);
-    } else {
-      const probes = [];
-      for (let i = 0; i < params.nBuckets; i++) {
-        const pIdx = (idx + i) % params.nBuckets;
-        probes.push(pIdx);
-        if (params.table[pIdx] == null) {
-          params.table[pIdx] = k;
-          break;
-        }
-      }
-      probesByKey.set(k, probes);
+      return true;
     }
+    const probes = [];
+    for (let i = 0; i < params.nBuckets; i++) {
+      const pIdx = (idx + i) % params.nBuckets;
+      probes.push(pIdx);
+      if (params.table[pIdx] == null) {
+        params.table[pIdx] = k;
+        probesByKey.set(k, probes);
+        return true;
+      }
+    }
+    return false; // every slot probed and occupied: table is full
   }
 
   function render() {
@@ -119,7 +132,7 @@ export function mount(rootEl) {
 
   // controls
   const nS = slider({ label: 'Number of buckets', min: 2, max: 32, step: 1, value: params.nBuckets,
-    onInput: (v) => { params.nBuckets = v; rebuild(); render(); } });
+    onInput: (v) => { params.nBuckets = v; rebuild(); showMsg(''); render(); } });
   const methodSel = select({
     label: 'Collision handling',
     options: [
@@ -127,14 +140,15 @@ export function mount(rootEl) {
       { value: 'linear', label: 'Open addressing (linear probe)' },
     ],
     value: params.method,
-    onChange: (v) => { params.method = v; rebuild(); render(); },
+    onChange: (v) => { params.method = v; rebuild(); showMsg(''); render(); },
   });
   const presetB = button({ label: 'Insert 10 sample names', primary: true, onClick: () => {
     const names = ['Anna', 'Budi', 'Citra', 'Dewi', 'Eko', 'Fitri', 'Gita', 'Hari', 'Indra', 'Joko'];
-    for (const n of names) insertKey(n);
+    const rejected = names.filter((n) => !insertKey(n));
+    showMsg(rejected.length ? rejectedMsg(rejected) : '');
     render();
   } });
-  const clearB = button({ label: 'Clear', onClick: () => { rebuild(); render(); } });
+  const clearB = button({ label: 'Clear', onClick: () => { rebuild(); showMsg(''); render(); } });
   ctrlPanel.append(nS.el, methodSel.el, row(presetB, clearB));
 
   // Lab — load factor vs collisions and measured lookup cost, for both methods.

@@ -39,7 +39,7 @@ export function mount(rootEl) {
     let count = 0;
     if (params.kind === 'sierpinski') count = Math.pow(3, params.depth);
     else if (params.kind === 'koch') count = 3 * Math.pow(4, params.depth);
-    else if (params.kind === 'tree') count = Math.pow(2, params.depth + 1) - 1;
+    else if (params.kind === 'tree') count = treeSegments; // segments actually drawn (trunk + branches)
     else if (params.kind === 'cantor') count = Math.pow(2, params.depth);
     ctx.fillText(`Depth: ${params.depth}    Pieces: ${count}`, 14, 26);
   }
@@ -84,9 +84,11 @@ export function mount(rootEl) {
       const dx = p2.x - p1.x, dy = p2.y - p1.y;
       const a = { x: p1.x + dx / 3, y: p1.y + dy / 3 };
       const b = { x: p1.x + 2 * dx / 3, y: p1.y + 2 * dy / 3 };
-      // peak: rotate (b - a) by -60° and add to a
-      const rx = (b.x - a.x) * Math.cos(-Math.PI / 3) - (b.y - a.y) * Math.sin(-Math.PI / 3);
-      const ry = (b.x - a.x) * Math.sin(-Math.PI / 3) + (b.y - a.y) * Math.cos(-Math.PI / 3);
+      // peak: rotate (b - a) by +60° and add to a. The triangle is traversed
+      // A(bottom-left) → B(bottom-right) → C(top); in canvas coordinates (y down)
+      // a +60° rotation puts the peak on the outside of each edge.
+      const rx = (b.x - a.x) * Math.cos(Math.PI / 3) - (b.y - a.y) * Math.sin(Math.PI / 3);
+      const ry = (b.x - a.x) * Math.sin(Math.PI / 3) + (b.y - a.y) * Math.cos(Math.PI / 3);
       const peak = { x: a.x + rx, y: a.y + ry };
       koch(p1, a, d - 1);
       koch(a, peak, d - 1);
@@ -99,11 +101,16 @@ export function mount(rootEl) {
     koch({ x: cx2, y: cy2 }, { x: ax, y: ay }, params.depth);
   }
 
+  // number of tree segments drawn in the last frame (depth 0 = trunk only,
+  // each level doubles the tips, so 2^(depth+1) - 1 unless twigs get shorter than 1 px)
+  let treeSegments = 0;
   function drawTree(ctx, W, H) {
     const startX = W / 2, startY = H - 20;
     const length = H * 0.28;
+    treeSegments = 0;
     function branch(x, y, len, angle, d) {
-      if (d === 0 || len < 1) return;
+      if (d < 0 || len < 1) return;
+      treeSegments++;
       const x2 = x + Math.cos(angle) * len;
       const y2 = y + Math.sin(angle) * len;
       ctx.strokeStyle = `hsl(${280 - d * 18}, 60%, ${30 + d * 6}%)`;

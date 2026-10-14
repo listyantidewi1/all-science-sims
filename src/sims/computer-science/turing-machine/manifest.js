@@ -3,8 +3,8 @@ export default {
   subject: 'computer-science',
   title: { en: 'Turing Machine', id: 'Mesin Turing' },
   description: {
-    en: 'A read/write head crawls along an infinite tape, following a tiny rule table. Watch a 5-state busy beaver, a binary incrementer, or a unary doubler chug through their programs one step at a time.',
-    id: 'Sebuah kepala baca/tulis merayap di pita tak hingga mengikuti tabel aturan kecil. Amati busy-beaver 5-state, penambah biner, atau penggandakan unary menjalankan programnya langkah demi langkah.',
+    en: 'A read/write head crawls along an infinite tape, following a tiny rule table. Watch a 3- or 5-state busy beaver, a binary incrementer, or a unary doubler chug through their programs one step at a time.',
+    id: 'Sebuah kepala baca/tulis merayap di pita tak hingga mengikuti tabel aturan kecil. Amati busy-beaver 3-state atau 5-state, penambah biner, atau penggandakan unary menjalankan programnya langkah demi langkah.',
   },
   details: () => import('./details.js'),
   topics: ['computation', 'theory'],
