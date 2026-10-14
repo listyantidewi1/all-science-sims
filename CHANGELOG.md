@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — simulation accuracy pass (about 80 fixes across 75 sims)
+
+A review of every simulation against its new Learn text turned up a list of physics, chemistry, biology and maths errors. The significant ones:
+
+- **Physics**: the inclined-plane block slid *up* the ramp; the magnetic field around a wire circulated the wrong way; gas-law pressure scaled as √T instead of T (now computed from momentum transfer); mirrors drew the concave and convex arcs swapped and convex mirrors had only one principal ray; Carnot allowed T_c > T_h; Hooke's law stiffened instead of yielding past the elastic limit.
+- **Chemistry**: the phase-diagram vapour curve classified room-temperature water as a gas; the Bohr atom used 2, 8, 8, 18 shells for every element (now real shell occupancies, Cr/Cu exceptions in Aufbau); buffer and titration pH now solve the exact charge balance instead of plateauing at pKa ± 5.
+- **Biology**: DNA transcription treated the coding strand as the template, giving the wrong mRNA and protein; Okazaki fragments grew toward the fork; X-linked pedigree checks allowed father-to-son transmission; photosynthesis showed air as 4 % CO₂; the population pyramid now uses an age-dependent mortality curve; the epidemic sim gains a small-world network and hub vaccination.
+- **Earth and space**: the greenhouse model gave +14.6 °C per CO₂ doubling (now logarithmic forcing, ≈ +3 °C); moon phases were mirrored relative to the northern-hemisphere view; eclipses now distinguish total, annular and partial; Hohmann transfer time was shown in the wrong units (4.44 instead of 0.71 yr); the Cat 5 hurricane preset evaluated to Cat 1; crust temperatures displayed as 15 K.
+- **Computer science**: the Koch snowflake grew inward; the Turing machine read blanks as 0 so the incrementer never halted (plus a working unary doubler and a 3-state busy beaver); RSA allowed p = q; sorting gains nearly-sorted and reversed inputs.
+- **Mathematics**: Fourier sawtooth and triangle series converged to the wrong targets; the Galton board wrote past the last bin at high p and poisoned the histogram; Pythagorean presets showed 2.67-3.33-4.33 instead of 3-4-5; Newton's method claimed convergence unconditionally.
+- **Data science**: CLT normal overlay drawn at half height; binomial slider capped at n = 5; "Throw 1000" threw 2000; bias-variance fits went singular at high degree and the verdict is now based on train/test error.
+- **Social science and finance**: predator-prey now uses RK4 so orbits stay closed; voting shows ties and carries IRV totals; dollar-cost averaging produced NaN when months exceeded the horizon; tax brackets get per-schedule ranges and currency (Rp schedule usable); CAPM alpha is now Jensen's alpha.
+- Dozens of smaller text corrections so "Try this" prompts, lab procedures and Learn text match what the sims actually do, in both languages.
+
 ## [1.19.0] — Learn more on every simulation, UI polish
 
 ### Added — "Learn more" on every simulation
