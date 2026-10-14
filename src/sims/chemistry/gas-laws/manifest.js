@@ -3,8 +3,8 @@ export default {
   subject: 'chemistry',
   title: { en: 'Ideal Gas Law', id: 'Hukum Gas Ideal' },
   description: {
-    en: 'Particles bounce in a sealed box. Tune temperature, volume, and particle count and watch pressure (collision rate on the walls) respond exactly as PV = nRT predicts.',
-    id: 'Partikel memantul dalam kotak tertutup. Atur suhu, volume, dan jumlah partikel lalu amati tekanan (laju tumbukan ke dinding) merespons persis seperti diprediksi PV = nRT.',
+    en: 'Particles bounce in a sealed box. Tune temperature, volume, and particle count and watch pressure (momentum delivered to the walls each second) respond exactly as PV = nRT predicts.',
+    id: 'Partikel memantul dalam kotak tertutup. Atur suhu, volume, dan jumlah partikel lalu amati tekanan (momentum yang diberikan ke dinding tiap detik) merespons persis seperti diprediksi PV = nRT.',
   },
   details: () => import('./details.js'),
   topics: ['gases', 'thermodynamics'],

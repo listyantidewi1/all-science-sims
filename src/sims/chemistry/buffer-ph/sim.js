@@ -19,10 +19,31 @@ export function mount(rootEl) {
     addedBase: 0,    // M strong base added (NaOH)
   };
 
-  function effectiveHA() { return Math.max(1e-6, params.HA + params.addedAcid - params.addedBase); }
-  function effectiveA()  { return Math.max(1e-6, params.A - params.addedAcid + params.addedBase); }
+  const KW = 1e-14;
+  /**
+   * Exact pH of a weak-acid/conjugate-base mixture (HA0, A0 as its Na⁺ salt) after
+   * adding strong acid (HCl) and strong base (NaOH), all in mol/L of the same
+   * solution (no dilution). Solves the charge balance
+   *   [Na⁺] + [H⁺] = [A⁻] + [Cl⁻] + [OH⁻],  [A⁻] = C_T·Ka/(Ka + [H⁺]),  [OH⁻] = Kw/[H⁺]
+   * by bisection in pH; the left side minus the right is monotonic in [H⁺].
+   * Within the buffer range this reproduces Henderson–Hasselbalch; once the added
+   * strong acid or base exceeds the component it reacts with, the pH is set by the
+   * excess strong acid/base and tends smoothly to those limits.
+   */
+  function pHOf(HA0, A0, pKa, addedAcid, addedBase) {
+    const Ka = Math.pow(10, -pKa);
+    const CT = HA0 + A0;
+    const Na = A0 + addedBase, Cl = addedAcid;
+    const f = (h) => Na + h - CT * Ka / (Ka + h) - Cl - KW / h;
+    let lo = -1, hi = 15; // pH bounds
+    for (let i = 0; i < 60; i++) {
+      const mid = (lo + hi) / 2;
+      if (f(Math.pow(10, -mid)) > 0) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
   function pH() {
-    return params.pKa + Math.log10(effectiveA() / effectiveHA());
+    return pHOf(params.HA, params.A, params.pKa, params.addedAcid, params.addedBase);
   }
 
   function pHColor(pH) {
@@ -108,10 +129,8 @@ export function mount(rootEl) {
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     for (let i = 0; i <= 200; i++) {
-      const added = -xRange + (i / 200) * (2 * xRange);
-      const HA_ = Math.max(1e-6, params.HA + (added > 0 ? added : 0) - (added < 0 ? -added : 0));
-      const A_ = Math.max(1e-6, params.A - (added > 0 ? added : 0) + (added < 0 ? -added : 0));
-      const p = params.pKa + Math.log10(A_ / HA_);
+      const added = -xRange + (i / 200) * (2 * xRange); // <0: strong acid, >0: strong base
+      const p = pHOf(params.HA, params.A, params.pKa, added < 0 ? -added : 0, added > 0 ? added : 0);
       const sx = x2(added), sy = y2(Math.max(0, Math.min(14, p)));
       if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
     }

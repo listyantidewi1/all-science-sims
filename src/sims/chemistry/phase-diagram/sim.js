@@ -1,50 +1,59 @@
 import { createCanvas, loop } from '../../../lib/canvas.js';
 import { slider, button, row } from '../../../lib/controls.js';
 
-// Schematic phase diagram for water (P in atm, T in °C, log axes for clarity).
+// Phase diagram for water (P in atm, T in °C, log pressure axis).
 // Triple point: 0.01 °C, 0.006 atm. Critical point: 374 °C, 218 atm.
-// Lines (illustrative — qualitative shapes):
-//   melting (solid-liquid): nearly vertical at 0 °C, slightly negative slope
-//   sublimation (solid-gas): from low T to triple point
-//   vaporization (liquid-gas): from triple to critical point
+// Boundary curves (Clausius–Clapeyron form log10 P = A − B/T_K):
+//   vaporization (liquid-gas): two segments fitted exactly through the triple
+//     point, the normal boiling point (100 °C, 1 atm) and the critical point;
+//     within ~5 % of steam-table values (0.030 atm at 25 °C, 0.29 atm at 70 °C).
+//   sublimation (solid-gas): ΔH_sub ≈ 51 kJ/mol, pinned at the triple point.
+//   melting (solid-liquid): dT/dP ≈ −0.0074 °C/atm — leans to LOWER T at
+//     higher P (ice is less dense than water), so ~−7 °C at 1000 atm.
 
 const T_MIN = -50, T_MAX = 450;
 const LOG_P_MIN = -3, LOG_P_MAX = 3;  // 10^x atm: 0.001 to 1000
 
-function phase(T, P) {
-  // P in atm
-  const triple = { T: 0.01, P: 0.006 };
-  const critical = { T: 374, P: 218 };
-  const meltCurveT = (Pa) => 0 - 0.0001 * (Pa - 1);  // negative-slope hint
-  // sublimation curve: log P_sub = -A/T_K + B (illustrative)
-  const subPressure = (Tc) => Math.exp(0.05 * (Tc + 50)) * 0.0005;
-  // vaporization curve: Clausius-Clapeyron-ish
-  const vapPressure = (Tc) => {
-    if (Tc < triple.T) return null;
-    if (Tc > critical.T) return null;
-    // log10 P = a − b/(T+273)
-    const Tk = Tc + 273.15;
-    return Math.pow(10, 5.4 - 1500 / Tk);
-  };
+const TRIPLE = { T: 0.01, P: 0.006 };
+const CRITICAL = { T: 374, P: 218 };
+const T0 = 273.15;
+const NBP = 100; // normal boiling point, °C, at 1 atm
+// vaporization segment 1: triple → normal boiling point
+const B1 = Math.log10(1 / TRIPLE.P) / (1 / (TRIPLE.T + T0) - 1 / (NBP + T0));
+const A1 = B1 / (NBP + T0);
+// vaporization segment 2: normal boiling point → critical point
+const B2 = Math.log10(CRITICAL.P) / (1 / (NBP + T0) - 1 / (CRITICAL.T + T0));
+const A2 = B2 / (NBP + T0);
+// sublimation: B = ΔH_sub / (R ln 10)
+const B3 = 51000 / (Math.LN10 * 8.314);
+const A3 = Math.log10(TRIPLE.P) + B3 / (TRIPLE.T + T0);
+const MELT_SLOPE = -0.0074; // °C per atm
 
-  if (T > critical.T && P > critical.P) return 'supercritical';
-  if (T < triple.T) {
-    // below triple: solid below sub curve, gas above? No: at low T,
-    // higher pressure → solid; lower pressure → gas.
-    if (P > subPressure(T)) return 'solid';
-    return 'gas';
+/** Liquid–vapour equilibrium pressure (atm) at Tc °C. */
+function vapPressure(Tc) {
+  const Tk = Tc + T0;
+  return Tc <= NBP ? Math.pow(10, A1 - B1 / Tk) : Math.pow(10, A2 - B2 / Tk);
+}
+/** Solid–vapour equilibrium pressure (atm) at Tc °C. */
+function subPressure(Tc) {
+  return Math.pow(10, A3 - B3 / (Tc + T0));
+}
+/** Melting temperature (°C) at pressure P (atm). */
+function meltT(P) {
+  return TRIPLE.T + MELT_SLOPE * (P - TRIPLE.P);
+}
+
+function phase(T, P) {
+  // P in atm, T in °C
+  if (T >= CRITICAL.T) return P >= CRITICAL.P ? 'supercritical' : 'gas';
+  if (P <= TRIPLE.P) {
+    // below the triple-point pressure there is no liquid: solid or gas only
+    if (T < TRIPLE.T) return P > subPressure(T) ? 'solid' : 'gas';
+    return P > vapPressure(T) ? 'liquid' : 'gas';
   }
-  // T >= triple.T
-  // Below liquid-vapor curve → gas, above → liquid; if T > critical it's supercritical or gas.
-  const vp = vapPressure(T);
-  if (T < meltCurveT(P)) return 'solid'; // unusual: only relevant if very cold and high P
-  // melting line: solid if P > some threshold and T < ~0
-  if (T < 0.0 + 0.0001 * (P - 1)) return 'solid';
-  if (vp == null) {
-    // T > critical
-    return P > critical.P ? 'supercritical' : 'gas';
-  }
-  return P > vp ? 'liquid' : 'gas';
+  // above the triple-point pressure: left of the melting line is solid
+  if (T < meltT(P)) return 'solid';
+  return P > vapPressure(T) ? 'liquid' : 'gas';
 }
 
 const COLORS = {
@@ -146,18 +155,18 @@ export function mount(rootEl) {
       ctx.stroke();
     }
     // sublimation
-    drawCurve((T) => T < 0.01 ? Math.exp(0.05 * (T + 50)) * 0.0005 : null, '#cbd5e1');
+    drawCurve((T) => T < TRIPLE.T ? subPressure(T) : null, '#cbd5e1');
     // vaporization
-    drawCurve((T) => {
-      if (T < 0.01 || T > 374) return null;
-      return Math.pow(10, 5.4 - 1500 / (T + 273.15));
-    }, '#cbd5e1');
-    // melting (vertical near 0 °C, draw as a tilted line)
+    drawCurve((T) => (T < TRIPLE.T || T > CRITICAL.T) ? null : vapPressure(T), '#cbd5e1');
+    // melting: same meltT(P) used by phase(), sampled in log P from the triple point upward
     ctx.strokeStyle = '#cbd5e1';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(x2(0.01, W), y2(0.006, H));
-    ctx.lineTo(x2(-2, W), y2(1000, H));
+    ctx.moveTo(x2(TRIPLE.T, W), y2(TRIPLE.P, H));
+    for (let lp = Math.log10(TRIPLE.P); lp <= LOG_P_MAX + 0.01; lp += 0.05) {
+      const Pm = Math.pow(10, Math.min(lp, LOG_P_MAX));
+      ctx.lineTo(x2(meltT(Pm), W), y2(Pm, H));
+    }
     ctx.stroke();
 
     // triple and critical points

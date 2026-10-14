@@ -10,18 +10,29 @@ const ELEMENTS = [
   'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr',
 ];
 
-// Bohr-style shell capacities used here: 2, 8, 8, 18 (simplified KLMN; ignores subshell ordering past 4s/3d).
-const SHELL_CAP = [2, 8, 8, 18];
+// Shell occupancies are derived from the real ground-state electron
+// configuration: fill subshells in Aufbau order (1s 2s 2p 3s 3p 4s 3d 4p), apply
+// the Cr and Cu exceptions (4s¹ 3d⁵, 4s¹ 3d¹⁰), then sum electrons per principal
+// quantum number n. Gives 2,8,8,1 for K, 2,8,14,2 for Fe, 2,8,18,1 for Cu,
+// 2,8,18,8 for Kr. Covers Z = 1..36 (the slider range).
+const SUBSHELLS = [
+  { n: 1, cap: 2 }, { n: 2, cap: 2 }, { n: 2, cap: 6 }, { n: 3, cap: 2 }, { n: 3, cap: 6 },
+  { n: 4, cap: 2 }, { n: 3, cap: 10 }, { n: 4, cap: 6 },
+];
+const EXCEPTIONS = { 24: [4, 3], 29: [4, 3] }; // Cr, Cu: move one electron from n=4 (4s) to n=3 (3d)
 
 function shellsForZ(z) {
-  const shells = [];
+  const perN = [];
   let remaining = z;
-  for (let i = 0; i < SHELL_CAP.length && remaining > 0; i++) {
-    const take = Math.min(remaining, SHELL_CAP[i]);
-    shells.push(take);
+  for (const sub of SUBSHELLS) {
+    if (remaining <= 0) break;
+    const take = Math.min(remaining, sub.cap);
+    perN[sub.n - 1] = (perN[sub.n - 1] || 0) + take;
     remaining -= take;
   }
-  return shells;
+  const ex = EXCEPTIONS[z];
+  if (ex) { perN[ex[0] - 1] -= 1; perN[ex[1] - 1] += 1; }
+  return perN.map((c) => c || 0);
 }
 
 export function mount(rootEl) {
@@ -140,7 +151,7 @@ export function mount(rootEl) {
     columns: [
       { key: 'z',       label: 'Z' },
       { key: 'element', label: 'element' },
-      { key: 'shells',  label: 'shells (2, 8, 8, 18)' },
+      { key: 'shells',  label: 'shells (e⁻ per n)' },
       { key: 'valence', label: 'valence e⁻' },
       { key: 'noble',   label: 'full outer shell?' },
     ],

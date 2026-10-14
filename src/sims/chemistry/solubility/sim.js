@@ -3,10 +3,23 @@ import { slider, select, button, row } from '../../../lib/controls.js';
 import { labPanel } from '../../../lib/lab.js';
 
 // Solubility (g per 100 g water) at temperature T (°C). Approximated curves.
+// Piecewise-linear interpolation through tabulated [T, solubility] points.
+function interp(points) {
+  return (T) => {
+    if (T <= points[0][0]) return points[0][1];
+    for (let i = 1; i < points.length; i++) {
+      const [t0, s0] = points[i - 1], [t1, s1] = points[i];
+      if (T <= t1) return s0 + (s1 - s0) * (T - t0) / (t1 - t0);
+    }
+    return points[points.length - 1][1];
+  };
+}
+// CuSO₄ (anhydrous basis), literature values: 14.3 g/100 g at 0 °C, 20.7 at 20, 28.5 at 40, 40 at 60, 55 at 80, 75.4 at 100.
+const CUSO4_DATA = [[0, 14.3], [20, 20.7], [40, 28.5], [60, 40], [80, 55], [100, 75.4]];
 const SOLUTES = {
   KNO3:  { name: 'KNO₃ (potassium nitrate)', curve: (T) => 13 + 1.05 * T + 0.012 * T * T, color: '#fbbf24' },
   NaCl:  { name: 'NaCl (table salt)',          curve: (T) => 35.7 + 0.05 * T,             color: '#e2e8f0' },
-  CuSO4: { name: 'CuSO₄ (copper sulfate)',     curve: (T) => 14 + 0.5 * T + 0.005 * T * T, color: '#22d3ee' },
+  CuSO4: { name: 'CuSO₄ (copper sulfate)',     curve: interp(CUSO4_DATA),                 color: '#22d3ee' },
   Sugar: { name: 'Sugar (sucrose)',            curve: (T) => 180 + 1.7 * T,                color: '#fef3c7' },
 };
 

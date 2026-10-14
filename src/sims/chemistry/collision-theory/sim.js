@@ -23,8 +23,10 @@ export function mount(rootEl) {
   let collisions = 0;
   let reactions = 0;
   let reactionsLast = 0;
+  let collisionsLast = 0;
   let lastTick = 0;
-  let rateEMA = 0;
+  let rateEMA = 0;   // reactions per second, smoothed over recent 0.5 s windows
+  let collsEMA = 0;  // A–B collisions per second, smoothed the same way
 
   function spawn(arr, n, color) {
     for (let i = 0; i < n; i++) {
@@ -38,7 +40,8 @@ export function mount(rootEl) {
   }
   function reset() {
     A = []; B = []; C = [];
-    collisions = 0; reactions = 0; reactionsLast = 0;
+    collisions = 0; reactions = 0; reactionsLast = 0; collisionsLast = 0;
+    rateEMA = 0; collsEMA = 0; lastTick = 0;
     spawn(A, params.nA, '#3b82f6');
     spawn(B, params.nB, '#ef4444');
   }
@@ -107,6 +110,9 @@ export function mount(rootEl) {
       const r = (reactions - reactionsLast) / lastTick;
       rateEMA = rateEMA * 0.5 + r * 0.5;
       reactionsLast = reactions;
+      const rc = (collisions - collisionsLast) / lastTick;
+      collsEMA = collsEMA * 0.5 + rc * 0.5;
+      collisionsLast = collisions;
       lastTick = 0;
     }
   }
@@ -178,8 +184,8 @@ export function mount(rootEl) {
       nB: params.nB,
       T: params.T,
       Ea: params.Ea,
-      rate: reactionsLast,
-      colls: collisions / Math.max(0.5, lastTick),
+      rate: rateEMA,
+      colls: collsEMA,
     }),
   });
   ctrlPanel.appendChild(lab.el);

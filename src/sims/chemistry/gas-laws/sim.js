@@ -18,8 +18,10 @@ export function mount(rootEl) {
   };
 
   let particles = [];
-  let collisionsPerSec = 0;
-  let collisions = 0;
+  // Pressure = momentum delivered to the walls per second, per unit wall length.
+  // Each wall hit reverses the normal velocity component and hands the wall 2m|v_normal| (m = 1).
+  let impulsePerSec = 0;   // smoothed total |Δp| per second on all walls
+  let impulse = 0;         // accumulated |Δp| in the current window
   let lastTick = 0;
 
   const RADIUS = 4;
@@ -84,23 +86,33 @@ export function mount(rootEl) {
     for (const p of particles) {
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      // Walls
-      if (p.x < b.x + RADIUS) { p.x = b.x + RADIUS; p.vx = -p.vx; collisions++; }
-      if (p.x > b.x + b.w - RADIUS) { p.x = b.x + b.w - RADIUS; p.vx = -p.vx; collisions++; }
-      if (p.y < b.y + RADIUS) { p.y = b.y + RADIUS; p.vy = -p.vy; collisions++; }
-      if (p.y > b.y + b.h - RADIUS) { p.y = b.y + b.h - RADIUS; p.vy = -p.vy; collisions++; }
+      // Walls — each bounce transfers |Δp| = 2m|v_normal| to the wall (m = 1)
+      if (p.x < b.x + RADIUS) { p.x = b.x + RADIUS; p.vx = -p.vx; impulse += 2 * Math.abs(p.vx); }
+      if (p.x > b.x + b.w - RADIUS) { p.x = b.x + b.w - RADIUS; p.vx = -p.vx; impulse += 2 * Math.abs(p.vx); }
+      if (p.y < b.y + RADIUS) { p.y = b.y + RADIUS; p.vy = -p.vy; impulse += 2 * Math.abs(p.vy); }
+      if (p.y > b.y + b.h - RADIUS) { p.y = b.y + b.h - RADIUS; p.vy = -p.vy; impulse += 2 * Math.abs(p.vy); }
       // Keep inside if box shrunk
       if (p.x > b.x + b.w - RADIUS) p.x = b.x + b.w - RADIUS;
     }
 
-    // Compute collision rate as exponential moving average per second
+    // Momentum-transfer rate as an exponential moving average per second
     lastTick += dt;
     if (lastTick > 0.5) {
-      const rate = collisions / lastTick;
-      collisionsPerSec = collisionsPerSec * 0.5 + rate * 0.5;
-      collisions = 0;
+      const rate = impulse / lastTick;
+      impulsePerSec = impulsePerSec * 0.5 + rate * 0.5;
+      impulse = 0;
       lastTick = 0;
     }
+  }
+
+  // Pressure (2-D: force per unit wall length) = (Σ|Δp| per second) / perimeter.
+  // Kinetic theory gives P = n m <v²> / (2A) with <v²> = 36 T here, so P ∝ nT/V.
+  // The unit scale is chosen so that the full box at n = 80, T = 300 K reads ≈ 1000.
+  function pressure() {
+    const b = box();
+    const wallLen = 2 * (b.w + b.h);
+    const fullArea = (b.w / params.Vfrac) * b.h;
+    return (impulsePerSec / wallLen) * fullArea / (18 * 24);
   }
 
   function draw() {
@@ -127,19 +139,17 @@ export function mount(rootEl) {
       ctx.fill();
     }
 
-    // PV = nRT — display each variable plus a derived "PV/nT" check
-    // We treat "pressure" ≈ collisionsPerSec / wall length.
-    const wallLen = 2 * (b.w + b.h);
-    const pseudoP = collisionsPerSec / wallLen * 100;
-    const v = b.w * b.h;
-    const PV_nT = pseudoP * v / (params.n * params.T);
+    // PV = nRT — display each variable plus a derived "PV/nT" check.
+    // Pressure = momentum transferred to the walls per second per unit wall length.
+    const pseudoP = pressure();
+    const PV_nT = pseudoP * params.Vfrac / (params.n * params.T);
 
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
     ctx.font = 'bold 13px system-ui, -apple-system, Roboto, sans-serif';
     const lines = [
       `n = ${params.n}    T = ${params.T} K    V (rel) = ${params.Vfrac.toFixed(2)}`,
-      `Pressure ≈ ${pseudoP.toFixed(1)} (collisions/s/length)`,
-      `PV / nT = ${PV_nT.toFixed(3)}  (should be roughly constant)`,
+      `Pressure ≈ ${pseudoP.toFixed(1)} (momentum to walls /s /length)`,
+      `PV / nT = ${PV_nT.toFixed(4)}  (should be roughly constant)`,
     ];
     let y0 = 18;
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
@@ -166,11 +176,6 @@ export function mount(rootEl) {
   ctrlPanel.append(nS.el, tS.el, vS.el, row(resetB));
 
   // Lab — verify Boyle/Charles/Gay-Lussac and that PV/nT ≈ constant.
-  function pseudoP() {
-    const b = box();
-    const wallLen = 2 * (b.w + b.h);
-    return collisionsPerSec / wallLen * 100;
-  }
   const lab = labPanel({
     title: 'Gas laws lab — PV = nRT',
     filename: 'gas-laws-lab.csv',
@@ -191,7 +196,7 @@ export function mount(rootEl) {
     ],
     predict: 'If you halve V at constant T, what should happen to P? Halve T at constant V?',
     source: () => {
-      const P = pseudoP();
+      const P = pressure();
       const V = params.Vfrac;
       return {
         n: params.n,

@@ -99,7 +99,7 @@ export function mount(rootEl) {
     sorted.sort((a, b) => b.proj.depth - a.proj.depth);
     const baseR = Math.min(W, H) * 0.07;
     for (const item of sorted) {
-      const r = baseR * (1 - item.proj.depth * 0.15);
+      const r = baseR * (cell.radius / 0.5) * (1 - item.proj.depth * 0.15); // scaled by the lattice's contact radius (SC = 0.5a)
       const grad = ctx.createRadialGradient(item.proj.x - r * 0.3, item.proj.y - r * 0.3, 1, item.proj.x, item.proj.y, r);
       grad.addColorStop(0, '#dbeafe');
       grad.addColorStop(0.5, '#3b82f6');

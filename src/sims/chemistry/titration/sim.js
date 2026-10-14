@@ -29,29 +29,21 @@ function pHAt(volBaseAdded_mL, params) {
     return 7;
   }
 
-  // Weak acid: solve simplified buffer / Henderson-Hasselbalch-ish
+  // Weak acid: exact solution of the charge balance for HA (total C_T) + NaOH (Na⁺):
+  //   [Na⁺] + [H⁺] = [A⁻] + [OH⁻],  [A⁻] = C_T·Ka/(Ka + [H⁺]),  [OH⁻] = Kw/[H⁺]
+  // Solved by bisection in pH (the residual is monotonic in [H⁺]). This covers the
+  // pure weak acid, the buffer region (where it reduces to Henderson–Hasselbalch),
+  // the equivalence point (hydrolysis of A⁻) and the excess-base region in one formula.
   const Ka = params.Ka;
-  const pKa = -Math.log10(Ka);
-  if (volBaseAdded_mL <= 0.01) {
-    // pure weak acid: pH ≈ 0.5*(pKa - log10(Ca))
-    return 0.5 * (pKa - Math.log10(Ca));
+  const CT = moleA / Vtot;
+  const Na = moleB / Vtot;
+  const f = (h) => Na + h - CT * Ka / (Ka + h) - 1e-14 / h;
+  let lo = -1, hi = 15;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (f(Math.pow(10, -mid)) > 0) lo = mid; else hi = mid;
   }
-  if (moleB < moleA - 1e-12) {
-    // buffer region: pH = pKa + log10([A-]/[HA])
-    const HA = (moleA - moleB) / Vtot;
-    const Am = moleB / Vtot;
-    return pKa + Math.log10(Am / Math.max(HA, 1e-12));
-  }
-  if (Math.abs(moleB - moleA) <= 1e-9) {
-    // equivalence: only A- at concentration moleA/Vtot, weak base
-    const Am = moleA / Vtot;
-    const Kb = 1e-14 / Ka;
-    const OH = Math.sqrt(Kb * Am);
-    return 14 + Math.log10(Math.max(OH, 1e-14));
-  }
-  // past equivalence
-  const OHm = (moleB - moleA) / Vtot;
-  return 14 + Math.log10(Math.max(OHm, 1e-14));
+  return (lo + hi) / 2;
 }
 
 const INDICATORS = {

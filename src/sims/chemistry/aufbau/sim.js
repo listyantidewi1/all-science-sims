@@ -1,4 +1,9 @@
 import { slider, button, row } from '../../../lib/controls.js';
+import { getLocale } from '../../../i18n/index.js';
+
+// Ground-state exceptions to the strict diagonal rule within Z <= 36:
+// value = the configuration the strict rule would have given.
+const EXCEPTIONS = { 24: '4s² 3d⁴', 29: '4s² 3d⁹' };
 
 // Aufbau order up to ~36
 const ORBITAL_ORDER = [
@@ -53,6 +58,15 @@ export function mount(rootEl) {
       }
       if (remaining === 0) break;
     }
+    // Ground-state exceptions: Cr and Cu promote one 4s electron into 3d
+    // (half-filled / filled d subshell): [Ar] 4s¹ 3d⁵ and [Ar] 4s¹ 3d¹⁰.
+    if (EXCEPTIONS[Z]) {
+      const s4 = result.find((o) => o.name === '4s');
+      const d3 = result.find((o) => o.name === '3d');
+      s4.fills[0].down = false;
+      const empty = d3.fills.find((b) => !b.up) || d3.fills.find((b) => !b.down);
+      if (empty) { if (!empty.up) empty.up = true; else empty.down = true; }
+    }
     return result;
   }
 
@@ -71,6 +85,12 @@ export function mount(rootEl) {
     let html = '';
     html += `<h3 style="margin:0 0 var(--space-3);font-size:var(--type-md)">${ELEMENTS[state.Z] || '?'} (Z=${state.Z})</h3>`;
     html += `<div style="font-family:var(--font-mono);font-size:14px;margin-bottom:var(--space-4);color:var(--color-accent)">${configString(state.Z)}</div>`;
+    if (EXCEPTIONS[state.Z]) {
+      const note = getLocale() === 'id'
+        ? `Pengecualian: aturan diagonal memprediksi ${EXCEPTIONS[state.Z]}, tetapi subkulit 3d yang ${state.Z === 24 ? 'setengah penuh' : 'penuh'} lebih stabil, sehingga satu elektron 4s pindah ke 3d.`
+        : `Exception: the diagonal rule predicts ${EXCEPTIONS[state.Z]}, but a ${state.Z === 24 ? 'half-filled' : 'filled'} 3d subshell is more stable, so one 4s electron moves into 3d.`;
+      html += `<div style="font-size:12px;margin:calc(-1 * var(--space-3)) 0 var(--space-4);color:var(--color-muted)">${note}</div>`;
+    }
 
     // Orbital diagram
     html += '<div style="display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:flex-end">';
