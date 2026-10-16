@@ -363,6 +363,9 @@ import sequencesSeries from '../sims/mathematics/sequences-series/manifest.js';
 import coulombsLaw from '../sims/physics/coulombs-law/manifest.js';
 import standingWavesPipes from '../sims/physics/standing-waves-pipes/manifest.js';
 
+import circleTheorems from '../sims/mathematics/circle-theorems/manifest.js';
+import probabilityTrees from '../sims/mathematics/probability-trees/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -459,6 +462,7 @@ export const SIMS = [
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
   // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  circleTheorems, probabilityTrees,
   virusReplication, molarityDilution, teachableClassifier, functionTransformations, sequencesSeries, coulombsLaw, standingWavesPipes,
 ];
 

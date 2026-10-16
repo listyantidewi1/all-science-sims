@@ -69,15 +69,16 @@ export function mount(rootEl) {
   function equation() {
     const F = parent().label;
     const { a, h, k } = state, b = bEff();
-    const inner = (() => {
-      const shift = h === 0 ? 'x' : h > 0 ? `(x − ${fmt(h)})` : `(x + ${fmt(-h)})`;
-      if (b === 1) return shift;
-      if (b === -1) return `−${shift}`;
-      return `${fmt(b)}${shift}`;
-    })();
-    const body = F.replace(/x/, inner === 'x' ? 'x' : inner).replace('2^(x)', '2ˣ');
-    const fPart = F === '2ˣ' ? (inner === 'x' ? '2ˣ' : `2^${inner.startsWith('(') ? inner : `(${inner})`}`)
-      : F === 'sin x' ? `sin ${inner}` : body;
+    // inner = b(x − h) written out, e.g. "x − 2", "−x", "2(x + 3)"; grp = the same wrapped in brackets when needed.
+    const shift = h === 0 ? 'x' : h > 0 ? `x − ${fmt(h)}` : `x + ${fmt(-h)}`;
+    const inner = b === 1 ? shift : b === -1 ? (h === 0 ? '−x' : `−(${shift})`) : (h === 0 ? `${fmt(b)}x` : `${fmt(b)}(${shift})`);
+    const grp = inner === 'x' ? 'x' : `(${inner})`;
+    const fPart = F === 'x²' ? `${grp}²`
+      : F === '|x|' ? `|${inner}|`
+      : F === '√x' ? `√${grp}`
+      : F === '2ˣ' ? (inner === 'x' ? '2ˣ' : `2^${grp}`)
+      : F === 'sin x' ? (inner === 'x' ? 'sin x' : `sin${grp}`)
+      : `1/${grp}`;
     const aPart = a === 1 ? '' : a === -1 ? '−' : `${fmt(a)}·`;
     const kPart = k === 0 ? '' : k > 0 ? ` + ${fmt(k)}` : ` − ${fmt(-k)}`;
     return `y = ${aPart}${fPart}${kPart}`;
