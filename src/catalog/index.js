@@ -370,6 +370,10 @@ import knnClassifier from '../sims/data-science/knn-classifier/manifest.js';
 import perceptron from '../sims/data-science/perceptron/manifest.js';
 import textClassifier from '../sims/data-science/text-classifier/manifest.js';
 
+import exponentialLog from '../sims/mathematics/exponential-log/manifest.js';
+import linearProgramming from '../sims/mathematics/linear-programming/manifest.js';
+import trigRatios from '../sims/mathematics/trig-ratios/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -466,6 +470,7 @@ export const SIMS = [
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
   // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  exponentialLog, linearProgramming, trigRatios,
   knnClassifier, perceptron, textClassifier,
   circleTheorems, probabilityTrees,
   virusReplication, molarityDilution, teachableClassifier, functionTransformations, sequencesSeries, coulombsLaw, standingWavesPipes,
