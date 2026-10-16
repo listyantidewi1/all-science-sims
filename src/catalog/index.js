@@ -294,6 +294,48 @@ import particleModel     from '../sims/chemistry/particle-model/manifest.js';
 import heatTransfer      from '../sims/physics/heat-transfer/manifest.js';
 import speedDistanceTime from '../sims/physics/speed-distance-time/manifest.js';
 
+import bloodJourney from '../sims/biology/blood-journey/manifest.js';
+import dichotomousKey from '../sims/biology/dichotomous-key/manifest.js';
+import fiveSenses from '../sims/biology/five-senses/manifest.js';
+import pondEcosystem from '../sims/biology/pond-ecosystem/manifest.js';
+import riverHealth from '../sims/biology/river-health/manifest.js';
+import dissolving from '../sims/chemistry/dissolving/manifest.js';
+import forestAndFlood from '../sims/climate/forest-and-flood/manifest.js';
+import saveEnergyHome from '../sims/climate/save-energy-home/manifest.js';
+import earthRotationRevolution from '../sims/earth-space/earth-rotation-revolution/manifest.js';
+import pocketMoney from '../sims/finance/pocket-money/manifest.js';
+import angles from '../sims/mathematics/angles/manifest.js';
+import areaPerimeter from '../sims/mathematics/area-perimeter/manifest.js';
+import barChartsPictograms from '../sims/mathematics/bar-charts-pictograms/manifest.js';
+import circleGeometry from '../sims/mathematics/circle-geometry/manifest.js';
+import clockTime from '../sims/mathematics/clock-time/manifest.js';
+import cuboidVolume from '../sims/mathematics/cuboid-volume/manifest.js';
+import integersNumberLine from '../sims/mathematics/integers-number-line/manifest.js';
+import linearEquationBalance from '../sims/mathematics/linear-equation-balance/manifest.js';
+import meanMedianMode from '../sims/mathematics/mean-median-mode/manifest.js';
+import multiplicationArrays from '../sims/mathematics/multiplication-arrays/manifest.js';
+import numberLine from '../sims/mathematics/number-line/manifest.js';
+import placeValueBlocks from '../sims/mathematics/place-value-blocks/manifest.js';
+import similarTriangles from '../sims/mathematics/similar-triangles/manifest.js';
+import solidsVolume from '../sims/mathematics/solids-volume/manifest.js';
+import bentStrawRefraction from '../sims/physics/bent-straw-refraction/manifest.js';
+import electromagneticInduction from '../sims/physics/electromagnetic-induction/manifest.js';
+import energyChain from '../sims/physics/energy-chain/manifest.js';
+import eyeAndGlasses from '../sims/physics/eye-and-glasses/manifest.js';
+import forcesShapeMotion from '../sims/physics/forces-shape-motion/manifest.js';
+import hotSpoonConduction from '../sims/physics/hot-spoon-conduction/manifest.js';
+import hydraulicLift from '../sims/physics/hydraulic-lift/manifest.js';
+import leverClasses from '../sims/physics/lever-classes/manifest.js';
+import liquidPressureDepth from '../sims/physics/liquid-pressure-depth/manifest.js';
+import measurementUnits from '../sims/physics/measurement-units/manifest.js';
+import mirrorReflection from '../sims/physics/mirror-reflection/manifest.js';
+import motionGraphs from '../sims/physics/motion-graphs/manifest.js';
+import newtonsSecondLaw from '../sims/physics/newtons-second-law/manifest.js';
+import pressureSolids from '../sims/physics/pressure-solids/manifest.js';
+import seesawLever from '../sims/physics/seesaw-lever/manifest.js';
+import staticElectricity from '../sims/physics/static-electricity/manifest.js';
+import thermalExpansion from '../sims/physics/thermal-expansion/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -378,6 +420,9 @@ export const SIMS = [
   simpleCircuit, plantGrowth, lifeCycles, dayAndNight,
   statesOfMatter, lightAndShadows, soundVibrations, magnets,
   density, particleModel, heatTransfer, speedDistanceTime,
+
+  // 1.20.0 — Kurikulum Merdeka CP 2025, primary and middle school
+  bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
