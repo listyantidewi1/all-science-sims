@@ -355,6 +355,14 @@ import fermentation from '../sims/biology/fermentation/manifest.js';
 
 import energySkatePark from '../sims/physics/energy-skate-park/manifest.js';
 
+import virusReplication from '../sims/biology/virus-replication/manifest.js';
+import molarityDilution from '../sims/chemistry/molarity-dilution/manifest.js';
+import teachableClassifier from '../sims/data-science/teachable-classifier/manifest.js';
+import functionTransformations from '../sims/mathematics/function-transformations/manifest.js';
+import sequencesSeries from '../sims/mathematics/sequences-series/manifest.js';
+import coulombsLaw from '../sims/physics/coulombs-law/manifest.js';
+import standingWavesPipes from '../sims/physics/standing-waves-pipes/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -449,6 +457,9 @@ export const SIMS = [
   angleRelationships,
   factorsMultiples, waveAnatomy, transformations,
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
+
+  // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  virusReplication, molarityDilution, teachableClassifier, functionTransformations, sequencesSeries, coulombsLaw, standingWavesPipes,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
