@@ -346,6 +346,10 @@ import soundThroughMaterials from '../sims/physics/sound-through-materials/manif
 
 import compassMap from '../sims/earth-space/compass-map/manifest.js';
 
+import doubleCirculation from '../sims/biology/double-circulation/manifest.js';
+import nephronFilter from '../sims/biology/nephron-filter/manifest.js';
+import earthMoonSunPositions from '../sims/earth-space/earth-moon-sun-positions/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -432,6 +436,7 @@ export const SIMS = [
   density, particleModel, heatTransfer, speedDistanceTime,
 
   // 1.20.0 — Kurikulum Merdeka CP 2025, primary and middle school
+  doubleCirculation, nephronFilter, earthMoonSunPositions,
   compassMap,
   soundThroughMaterials,
   angleRelationships,
