@@ -6,9 +6,9 @@ Generated from the manifests; regenerate after adding sims.
 
 | Level | Sims |
 |---|---|
-| Primary (grades 1–6) | 37 |
-| Middle school (grades 7–9) | 111 |
-| High school (grades 10–12) | 215 |
+| Primary (grades 1–6) | 62 |
+| Middle school (grades 7–9) | 139 |
+| High school (grades 10–12) | 222 |
 | University (beyond school) | 119 |
 
 ## Primary (grades 1–6)
@@ -25,12 +25,20 @@ Generated from the manifests; regenerate after adding sims.
 | [Light and Shadows](https://all-science-sims.vercel.app/#/physics/light-and-shadows) | Grades 2–4 | NGSS 1-PS4-3 · KS2 Light (Y3/Y6) · Merdeka Fase B IPAS |
 | [Sound is Vibration](https://all-science-sims.vercel.app/#/physics/sound-vibrations) | Grades 3–5 | NGSS 1-PS4-1 / 4-PS4-1 · KS2 Sound (Y4) · Merdeka Fase B IPAS |
 | [Magnets](https://all-science-sims.vercel.app/#/physics/magnets) | Grades 3–5 | NGSS 3-PS2-3 · KS2 Forces & magnets (Y3) · Merdeka Fase B IPAS |
+| [Sound Travels](https://all-science-sims.vercel.app/#/physics/sound-through-materials) | Grades 5–6 | NGSS 1-PS4-1 / 4-PS4-1 · KS2 Sound (Y4) · Merdeka Fase C IPAS (bunyi) |
+| [The Bent Straw](https://all-science-sims.vercel.app/#/physics/bent-straw-refraction) | Grades 5–6 | NGSS 4-PS4-2 · KS2 Light (Y6) · Merdeka Fase C IPAS (cahaya) |
+| [Energy Chain](https://all-science-sims.vercel.app/#/physics/energy-chain) | Grades 3–5 | NGSS 4-PS3-2 / 4-PS3-4 · KS2 Electricity & light · Merdeka Fase B IPAS (bentuk energi) |
+| [Push, Pull, Squash!](https://all-science-sims.vercel.app/#/physics/forces-shape-motion) | Grades 3–4 | NGSS K-PS2-1 / 3-PS2-1 · KS2 Forces (Y3/Y5) · Merdeka Fase B IPAS (gaya) |
+| [Which Spoon Gets Hot?](https://all-science-sims.vercel.app/#/physics/hot-spoon-conduction) | Grades 5–6 | NGSS 4-PS3-2 · KS2 Properties of materials (Y5) · Merdeka Fase C IPAS (energi) |
+| [Mirror Game](https://all-science-sims.vercel.app/#/physics/mirror-reflection) | Grades 5–6 | NGSS 4-PS4-2 · KS2 Light (Y6) · Merdeka Fase C IPAS (cahaya) |
+| [Seesaw Balance](https://all-science-sims.vercel.app/#/physics/seesaw-lever) | Grades 3–5 | NGSS 3-PS2-1 · KS2 Forces (Y5 levers) · Merdeka Fase B IPAS (gaya) |
 
 ### Chemistry
 
 | Sim | Grades | Standards |
 |---|---|---|
 | [Ice, Water, Steam](https://all-science-sims.vercel.app/#/chemistry/states-of-matter) | Grades 3–5 | NGSS 2-PS1 / 5-PS1 · KS2 States of matter (Y4) · Merdeka Fase B IPAS |
+| [Dissolve It!](https://all-science-sims.vercel.app/#/chemistry/dissolving) | Grades 4–6 | NGSS 5-PS1-3 / 5-PS1-4 · KS2 States of matter (Y4/Y5) · Merdeka Fase B–C IPAS (zat) |
 
 ### Biology
 
@@ -42,6 +50,9 @@ Generated from the manifests; regenerate after adding sims.
 | [The Food Journey](https://all-science-sims.vercel.app/#/biology/digestive-system) | Grades 4–6 | NGSS 4-LS1 · KS2 Animals incl. humans (Y4) · Merdeka Fase C IPAS |
 | [Grow a Plant](https://all-science-sims.vercel.app/#/biology/plant-growth) | Grades 1–4 | NGSS 2-LS2-1 · KS1 Plants (Y2) · Merdeka Fase A–B IPAS |
 | [Life Cycles](https://all-science-sims.vercel.app/#/biology/life-cycles) | Grades 2–4 | NGSS 3-LS1-1 · KS2 Living things & habitats (Y5) · Merdeka Fase B IPAS |
+| [Blood Journey](https://all-science-sims.vercel.app/#/biology/blood-journey) | Grades 5–6 | NGSS 4-LS1-1 · KS2 Animals incl. humans (Y6 circulation) · Merdeka Fase C IPAS (sistem organ) |
+| [My Five Senses](https://all-science-sims.vercel.app/#/biology/five-senses) | Grades 3–4 | NGSS 1-LS1-1 · KS1 Animals incl. humans (Y1) · Merdeka Fase B IPAS (pancaindra) |
+| [Pond Life](https://all-science-sims.vercel.app/#/biology/pond-ecosystem) | Grades 5–6 | NGSS 5-LS2-1 · KS2 Living things & habitats (Y4/Y6) · Merdeka Fase C IPAS (biotik–abiotik) |
 
 ### Earth & Space
 
@@ -57,6 +68,8 @@ Generated from the manifests; regenerate after adding sims.
 | [Volcano Types](https://all-science-sims.vercel.app/#/earth-space/volcano-types) | Grades 6–9 | NGSS MS-ESS2 · KS3 Geography · Merdeka Fase C–D |
 | [My Weather Station](https://all-science-sims.vercel.app/#/earth-space/weather-station) | Grades 2–5 | NGSS K-ESS2 / 3-ESS2 · KS1 Seasonal changes · Merdeka Fase A–B IPAS |
 | [Day and Night](https://all-science-sims.vercel.app/#/earth-space/day-and-night) | Grades 2–5 | NGSS 1-ESS1-1 / 5-ESS1-2 · KS2 Earth & space (Y5) · Merdeka Fase C IPAS |
+| [Compass and Map](https://all-science-sims.vercel.app/#/earth-space/compass-map) | Grades 3–5 | NGSS K-ESS3 · KS1–KS2 Geography (maps, compass) · Merdeka Fase B IPAS (peta) |
+| [Spinning and Orbiting Earth](https://all-science-sims.vercel.app/#/earth-space/earth-rotation-revolution) | Grades 5–6 | NGSS 5-ESS1-2 · KS2 Earth & space (Y5) · Merdeka Fase C IPAS (rotasi & revolusi) |
 
 ### Computer Science
 
@@ -79,6 +92,21 @@ Generated from the manifests; regenerate after adding sims.
 |---|---|---|
 | [Fractions Visualizer](https://all-science-sims.vercel.app/#/mathematics/fractions) | Grades 3–6 | CCSS 3.NF–5.NF · KS2 Maths · Merdeka Fase B–C |
 | [Ratio and Proportion](https://all-science-sims.vercel.app/#/mathematics/ratio-proportion) | Grades 6–8 | CCSS 6.RP / 7.RP · KS3 Ratio & proportion · Merdeka Fase D Matematika |
+| [Factors and Multiples](https://all-science-sims.vercel.app/#/mathematics/factors-multiples) | Grades 5–6 | CCSS 4.OA.B.4 / 6.NS.B.4 · KS2 Number (Y5/Y6) · Merdeka Matematika Fase C (KPK & FPB) |
+| [Angle Explorer](https://all-science-sims.vercel.app/#/mathematics/angles) | Grades 5–6 | CCSS 4.MD.C · KS2 Geometry (Y5/Y6) · Merdeka Matematika Fase C (sudut) |
+| [Area and Perimeter](https://all-science-sims.vercel.app/#/mathematics/area-perimeter) | Grades 4–6 | CCSS 3.MD.C / 4.MD.A.3 · KS2 Measurement (Y4/Y5) · Merdeka Matematika Fase B–C (luas & keliling) |
+| [Picture Graphs and Bar Charts](https://all-science-sims.vercel.app/#/mathematics/bar-charts-pictograms) | Grades 1–4 | CCSS 2.MD.D.10 · KS1–KS2 Statistics · Merdeka Matematika Fase A–B (data) |
+| [Tell the Time](https://all-science-sims.vercel.app/#/mathematics/clock-time) | Grades 1–4 | CCSS 1.MD.B.3 / 3.MD.A.1 · KS1–KS2 Measurement (time) · Merdeka Matematika Fase A–C (waktu) |
+| [Fill the Box](https://all-science-sims.vercel.app/#/mathematics/cuboid-volume) | Grades 3–6 | CCSS 5.MD.C · KS2 Measurement (Y5/Y6) · Merdeka Matematika Fase B–C (volume) |
+| [Multiplication Arrays](https://all-science-sims.vercel.app/#/mathematics/multiplication-arrays) | Grades 3–4 | CCSS 3.OA.A · KS2 Multiplication (Y3/Y4) · Merdeka Matematika Fase B (perkalian) |
+| [Number Line Jumps](https://all-science-sims.vercel.app/#/mathematics/number-line) | Grades 1–3 | CCSS 1.NBT / 2.NBT · KS1 Number · Merdeka Matematika Fase A–B (bilangan) |
+| [Place Value Blocks](https://all-science-sims.vercel.app/#/mathematics/place-value-blocks) | Grades 1–4 | CCSS 2.NBT.A · KS1–KS2 Number & place value · Merdeka Matematika Fase A–B (nilai tempat) |
+
+### Finance & Economics
+
+| Sim | Grades | Standards |
+|---|---|---|
+| [Pocket Money Planner](https://all-science-sims.vercel.app/#/finance/pocket-money) | Grades 3–5 | CCSS 2.MD.C.8 · KS1–KS2 Maths (money) · Merdeka Fase B IPAS (uang) / Matematika Fase C |
 
 ### Engineering
 
@@ -100,6 +128,8 @@ Generated from the manifests; regenerate after adding sims.
 | Sim | Grades | Standards |
 |---|---|---|
 | [Carbon Footprint Calculator](https://all-science-sims.vercel.app/#/climate/carbon-footprint) | Grades 6–9 | NGSS MS-ESS3 · KS3 Geography · Merdeka Fase C–D |
+| [Forest, Rain and Flood](https://all-science-sims.vercel.app/#/climate/forest-and-flood) | Grades 3–4 | NGSS 2-ESS2-1 / 4-ESS3-2 · KS2 Geography · Merdeka Fase B IPAS (SDA & iklim) |
+| [Energy Saver House](https://all-science-sims.vercel.app/#/climate/save-energy-home) | Grades 5–6 | NGSS 4-ESS3-1 · KS2 Science/Geography · Merdeka Fase C IPAS (hemat energi) |
 
 ### Cognitive Science
 
@@ -129,6 +159,19 @@ Generated from the manifests; regenerate after adding sims.
 | [Build an Electromagnet](https://all-science-sims.vercel.app/#/physics/electromagnet) | Grades 7–9 | NGSS MS-PS2-3 · KS3 Magnetism & electromagnets · Merdeka Fase D |
 | [Heat Transfer](https://all-science-sims.vercel.app/#/physics/heat-transfer) | Grades 7–9 | NGSS MS-PS3-3 · KS3 Energy transfer by heating · Merdeka Fase D |
 | [Speed, Distance and Time](https://all-science-sims.vercel.app/#/physics/speed-distance-time) | Grades 7–9 | NGSS MS-PS2 · KS3 Motion & speed · Merdeka Fase D |
+| [Energy Roller Coaster](https://all-science-sims.vercel.app/#/physics/energy-skate-park) | Grades 8–10 | NGSS MS-PS3-1 / MS-PS3-5 · KS3 Physics (energy) · Merdeka Fase D (usaha & energi) |
+| [Wave Anatomy](https://all-science-sims.vercel.app/#/physics/wave-anatomy) | Grades 8–10 | NGSS MS-PS4-1 · KS3 Physics (waves) · Merdeka Fase D (gelombang) |
+| [Moving Magnet, Flowing Current](https://all-science-sims.vercel.app/#/physics/electromagnetic-induction) | Grades 9–12 | NGSS MS-PS2-3 / HS-PS2-5 · KS4 Physics (induction) · Merdeka Fase D–F (induksi elektromagnetik) |
+| [The Eye and Corrective Lenses](https://all-science-sims.vercel.app/#/physics/eye-and-glasses) | Grades 8–10 | NGSS MS-PS4-2 · KS3–KS4 Physics (light, lenses) · Merdeka Fase D (alat optik) |
+| [Hydraulic Lift](https://all-science-sims.vercel.app/#/physics/hydraulic-lift) | Grades 7–9 | NGSS MS-PS2-2 · KS3 Physics (pressure in fluids) · Merdeka Fase D (hukum Pascal) |
+| [Levers: Tools and the Body](https://all-science-sims.vercel.app/#/physics/lever-classes) | Grades 7–9 | NGSS MS-PS2-2 · KS3 Physics (forces, levers) · Merdeka Fase D (pesawat sederhana) |
+| [Pressure and Depth](https://all-science-sims.vercel.app/#/physics/liquid-pressure-depth) | Grades 7–9 | NGSS MS-PS2-2 · KS3 Physics (pressure in fluids) · Merdeka Fase D (tekanan hidrostatis) |
+| [Measure It!](https://all-science-sims.vercel.app/#/physics/measurement-units) | Grade 7 | NGSS MS-PS (practices) · KS3 Working scientifically · Merdeka Fase D (pengukuran) |
+| [Motion Graphs](https://all-science-sims.vercel.app/#/physics/motion-graphs) | Grades 7–10 | NGSS MS-PS2-2 / HS-PS2-1 · KS3–KS4 Physics (motion) · Merdeka Fase D–E (GLB & GLBB) |
+| [Force, Mass, Acceleration](https://all-science-sims.vercel.app/#/physics/newtons-second-law) | Grades 7–9 | NGSS MS-PS2-2 · KS3 Physics (forces) · Merdeka Fase D (gaya & gerak) |
+| [Pressure: Pins and Snowshoes](https://all-science-sims.vercel.app/#/physics/pressure-solids) | Grades 7–9 | NGSS MS-PS2-2 · KS3 Physics (pressure) · Merdeka Fase D (tekanan) |
+| [Static Electricity](https://all-science-sims.vercel.app/#/physics/static-electricity) | Grade 9 | NGSS MS-PS2-3 · KS3 Physics (static electricity) · Merdeka Fase D (listrik statis) |
+| [Thermal Expansion](https://all-science-sims.vercel.app/#/physics/thermal-expansion) | Grade 7 | NGSS MS-PS1-4 · KS3 Physics (energy, particles) · Merdeka Fase D (kalor & pemuaian) |
 
 ### Chemistry
 
@@ -143,6 +186,7 @@ Generated from the manifests; regenerate after adding sims.
 | [Physical or Chemical Change?](https://all-science-sims.vercel.app/#/chemistry/physical-chemical-change) | Grades 7–9 | NGSS 5-PS1-4 / MS-PS1-2 · KS3 Chemical reactions · Merdeka Fase D |
 | [Density Lab](https://all-science-sims.vercel.app/#/chemistry/density) | Grades 7–9 | NGSS MS-PS1 · KS3 Density · Merdeka Fase D |
 | [Particle Model of Matter](https://all-science-sims.vercel.app/#/chemistry/particle-model) | Grades 7–9 | NGSS MS-PS1-4 · KS3 Particle model · Merdeka Fase D |
+| [Food Label Detective](https://all-science-sims.vercel.app/#/chemistry/food-additives) | Grades 8–9 | NGSS MS-LS1-7 · KS3 Food & nutrition · Merdeka Fase D (zat aditif & adiktif) |
 
 ### Biology
 
@@ -160,6 +204,11 @@ Generated from the manifests; regenerate after adding sims.
 | [Microscope Simulator](https://all-science-sims.vercel.app/#/biology/microscope) | Grades 5–9 | NGSS MS-LS1 · KS2–KS3 Biology · Merdeka Fase C–D |
 | [Antibiotic Resistance Evolution](https://all-science-sims.vercel.app/#/biology/antibiotic-resistance) | Grades 9–12 | NGSS HS-LS4 · KS4 Biology · Merdeka Fase E |
 | [How We Breathe](https://all-science-sims.vercel.app/#/biology/breathing-lungs) | Grades 7–9 | NGSS MS-LS1-3 · KS3 Gas exchange · Merdeka Fase D |
+| [Fermentation Lab](https://all-science-sims.vercel.app/#/biology/fermentation) | Grades 9–10 | NGSS MS-LS1-7 · KS3 Biology (microbes) · Merdeka Fase D–E (bioteknologi konvensional) |
+| [Two Loops of Blood](https://all-science-sims.vercel.app/#/biology/double-circulation) | Grade 8 | NGSS MS-LS1-3 · KS3 Biology (circulation) · Merdeka Fase D (sistem peredaran darah) |
+| [The Kidney Filter](https://all-science-sims.vercel.app/#/biology/nephron-filter) | Grades 8–11 | NGSS MS-LS1-3 / HS-LS1-3 · KS3–KS4 Biology · Merdeka Fase D–F (sistem ekskresi) |
+| [Classification Key](https://all-science-sims.vercel.app/#/biology/dichotomous-key) | Grade 7 | NGSS MS-LS4-2 · KS3 Biology (classification) · Merdeka Fase D (klasifikasi) |
+| [River Health](https://all-science-sims.vercel.app/#/biology/river-health) | Grades 7–9 | NGSS MS-LS2-4 / MS-ESS3-3 · KS3 Biology (ecosystems) · Merdeka Fase D (pencemaran) |
 
 ### Earth & Space
 
@@ -183,6 +232,7 @@ Generated from the manifests; regenerate after adding sims.
 | [Volcano Types](https://all-science-sims.vercel.app/#/earth-space/volcano-types) | Grades 6–9 | NGSS MS-ESS2 · KS3 Geography · Merdeka Fase C–D |
 | [Earthquake Waves](https://all-science-sims.vercel.app/#/earth-space/earthquake-waves) | Grades 7–9 | NGSS MS-ESS2 / MS-ESS3 · KS3 Earth structure · Merdeka Fase D |
 | [Air Pressure and Weather](https://all-science-sims.vercel.app/#/earth-space/air-pressure-weather) | Grades 7–9 | NGSS MS-ESS2-5 · KS3 Earth & atmosphere · Merdeka Fase D |
+| [Earth, Moon and Sun](https://all-science-sims.vercel.app/#/earth-space/earth-moon-sun-positions) | Grades 7–9 | NGSS MS-ESS1-1 · KS3 Physics (space) · Merdeka Fase D (bumi–bulan–matahari) |
 
 ### Computer Science
 
@@ -237,6 +287,14 @@ Generated from the manifests; regenerate after adding sims.
 | [Venn Diagrams](https://all-science-sims.vercel.app/#/mathematics/venn-diagrams) | Grades 7–10 | CCSS 7.SP / HS-S-CP · KS3–KS4 Maths · Merdeka Fase D |
 | [System of Linear Equations](https://all-science-sims.vercel.app/#/mathematics/system-of-equations) | Grades 8–11 | CCSS 8.EE / HS-A-REI · KS3–KS4 Maths · Merdeka Fase D–E |
 | [Ratio and Proportion](https://all-science-sims.vercel.app/#/mathematics/ratio-proportion) | Grades 6–8 | CCSS 6.RP / 7.RP · KS3 Ratio & proportion · Merdeka Fase D Matematika |
+| [Angles on Lines](https://all-science-sims.vercel.app/#/mathematics/angle-relationships) | Grades 7–8 | CCSS 7.G.B.5 / 8.G.A.5 · KS3 Geometry · Merdeka Matematika Fase D (sudut) |
+| [Translate, Reflect, Rotate, Dilate](https://all-science-sims.vercel.app/#/mathematics/transformations) | Grade 9 | CCSS 8.G.A · KS3 Geometry · Merdeka Matematika Fase D (transformasi) |
+| [Circle Explorer](https://all-science-sims.vercel.app/#/mathematics/circle-geometry) | Grade 8 | CCSS 7.G.B.4 · KS3 Geometry & measures · Merdeka Matematika Fase D (lingkaran) |
+| [Integers](https://all-science-sims.vercel.app/#/mathematics/integers-number-line) | Grade 7 | CCSS 6.NS.C / 7.NS.A · KS3 Number · Merdeka Matematika Fase D (bilangan bulat) |
+| [Equation Balance](https://all-science-sims.vercel.app/#/mathematics/linear-equation-balance) | Grades 7–8 | CCSS 6.EE.B / 7.EE.B.4 · KS3 Algebra · Merdeka Matematika Fase D (persamaan linear) |
+| [Mean, Median, Mode](https://all-science-sims.vercel.app/#/mathematics/mean-median-mode) | Grades 7–9 | CCSS 6.SP.B.5 · KS3 Statistics · Merdeka Matematika Fase D (ukuran pemusatan) |
+| [Similar and Congruent Triangles](https://all-science-sims.vercel.app/#/mathematics/similar-triangles) | Grade 9 | CCSS 8.G.A.4 / HSG-SRT · KS3–KS4 Geometry · Merdeka Matematika Fase D (kesebangunan) |
+| [Surface Area and Volume](https://all-science-sims.vercel.app/#/mathematics/solids-volume) | Grades 8–9 | CCSS 7.G.B.6 / 8.G.C.9 · KS3 Geometry & measures · Merdeka Matematika Fase D (bangun ruang) |
 
 ### Finance & Economics
 
@@ -324,6 +382,11 @@ Generated from the manifests; regenerate after adding sims.
 | [Curved Mirrors](https://all-science-sims.vercel.app/#/physics/mirrors) | Grades 9–12 | NGSS HS-PS4 · KS4 Physics · Merdeka Fase F |
 | [Bernoulli's Principle](https://all-science-sims.vercel.app/#/physics/bernoulli) | Grades 10–12 · University | NGSS HS-PS2 · A-level Physics · Merdeka Fase F |
 | [Series & Parallel Circuits](https://all-science-sims.vercel.app/#/physics/circuits) | Grades 8–11 | NGSS MS-PS2 / HS-PS3 · KS3–KS4 Physics · Merdeka Fase D–E |
+| [Energy Roller Coaster](https://all-science-sims.vercel.app/#/physics/energy-skate-park) | Grades 8–10 | NGSS MS-PS3-1 / MS-PS3-5 · KS3 Physics (energy) · Merdeka Fase D (usaha & energi) |
+| [Wave Anatomy](https://all-science-sims.vercel.app/#/physics/wave-anatomy) | Grades 8–10 | NGSS MS-PS4-1 · KS3 Physics (waves) · Merdeka Fase D (gelombang) |
+| [Moving Magnet, Flowing Current](https://all-science-sims.vercel.app/#/physics/electromagnetic-induction) | Grades 9–12 | NGSS MS-PS2-3 / HS-PS2-5 · KS4 Physics (induction) · Merdeka Fase D–F (induksi elektromagnetik) |
+| [The Eye and Corrective Lenses](https://all-science-sims.vercel.app/#/physics/eye-and-glasses) | Grades 8–10 | NGSS MS-PS4-2 · KS3–KS4 Physics (light, lenses) · Merdeka Fase D (alat optik) |
+| [Motion Graphs](https://all-science-sims.vercel.app/#/physics/motion-graphs) | Grades 7–10 | NGSS MS-PS2-2 / HS-PS2-1 · KS3–KS4 Physics (motion) · Merdeka Fase D–E (GLB & GLBB) |
 
 ### Chemistry
 
@@ -375,6 +438,8 @@ Generated from the manifests; regenerate after adding sims.
 | [Cardiac Cycle](https://all-science-sims.vercel.app/#/biology/cardiac-cycle) | Grades 10–12 · University | NGSS HS-LS1 · A-level Biology · Merdeka Fase F |
 | [Meiosis](https://all-science-sims.vercel.app/#/biology/meiosis) | Grades 10–12 | NGSS HS-LS3 · A-level Biology · Merdeka Fase F |
 | [Antibiotic Resistance Evolution](https://all-science-sims.vercel.app/#/biology/antibiotic-resistance) | Grades 9–12 | NGSS HS-LS4 · KS4 Biology · Merdeka Fase E |
+| [Fermentation Lab](https://all-science-sims.vercel.app/#/biology/fermentation) | Grades 9–10 | NGSS MS-LS1-7 · KS3 Biology (microbes) · Merdeka Fase D–E (bioteknologi konvensional) |
+| [The Kidney Filter](https://all-science-sims.vercel.app/#/biology/nephron-filter) | Grades 8–11 | NGSS MS-LS1-3 / HS-LS1-3 · KS3–KS4 Biology · Merdeka Fase D–F (sistem ekskresi) |
 
 ### Earth & Space
 

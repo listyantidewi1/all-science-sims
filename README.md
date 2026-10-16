@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 266 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
+> 319 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **266 original simulations** across 14 subjects — see [Catalog](#catalog) below.
+- **319 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -62,9 +62,9 @@ Each manifest carries `grade: [...]` (school years 1–12, 13 = university), ass
 
 | Level | Typical frameworks | Sims |
 |---|---|---|
-| Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 37 |
-| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 111 |
-| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 215 |
+| Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 62 |
+| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 139 |
+| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 222 |
 | University | Undergraduate courses | 119 |
 
 Counts overlap because many sims span two levels. Primary sims use big controls, plain words, and predict-then-test flows; see for example Float or Sink?, Magnets, Light the Bulb, Grow a Plant, and Day and Night.
@@ -113,6 +113,26 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Magnets | Drag two bar magnets around. |
 | Heat Transfer | Three ways heat moves. |
 | Speed, Distance and Time | Set the speed of a vehicle on a straight 200 m track, press Start and watch the stopwatch run while distance–time and speed–time graphs draw themselves. |
+| Energy Roller Coaster | Shape a roller-coaster track by dragging six control points, place the cart at any height and release it. |
+| Sound Travels | Ring a bell and watch the sound travel to an ear 1 km away. |
+| Wave Anatomy | A transverse wave on a rope and a longitudinal wave in a spring run side by side from the same source. |
+| The Bent Straw | Put a straw in a glass and pour in water. |
+| Moving Magnet, Flowing Current | Push a bar magnet through a coil of wire and watch a galvanometer needle kick one way as it enters and the other way as it leaves. |
+| Energy Chain | Energy never disappears, it just changes form. |
+| The Eye and Corrective Lenses | Look inside an eye as it tries to focus light from an object onto the retina. |
+| Push, Pull, Squash! | A ball, a toy car and a lump of clay sit on a table. |
+| Which Spoon Gets Hot? | Three spoons stand in a cup of hot water: one metal, one wood, one plastic. |
+| Hydraulic Lift | Push on a small piston and watch a large piston lift a heavy load. |
+| Levers: Tools and the Body | Pick a crowbar, a wheelbarrow, a pair of tweezers or your own forearm, and drag the point where the effort pushes. |
+| Pressure and Depth | Punch three holes in a tall bottle and watch the water jets: the deepest hole squirts the farthest. |
+| Measure It! | Read a virtual ruler, a vernier caliper and a dial balance. |
+| Mirror Game | A torch shines a beam of light across the room. |
+| Motion Graphs | Drive a car along a straight road with a velocity slider, or pick a preset: constant speed, speeding up, slowing down or stop-and-go. |
+| Force, Mass, Acceleration | Push a cart along a 12 m track with a force you choose (0–50 N), change its mass (1–10 kg) and switch friction on or off. |
+| Pressure: Pins and Snowshoes | Press the same weight into sand through a pin tip, a stiletto heel, a flat shoe or a snowshoe and watch how deep each one sinks. |
+| Seesaw Balance | A seesaw with a weight on each side. |
+| Static Electricity | Rub a balloon on wool or a glass rod on silk and watch electrons jump from one to the other. |
+| Thermal Expansion | Heat a steel rail, a metal ball next to a ring, or a steel-brass bimetal strip from 0 to 300 °C and watch them grow. |
 
 ### Chemistry
 
@@ -148,6 +168,8 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Ice, Water, Steam | Heat or cool a box of tiny particles and watch them change. |
 | Density Lab | Drag blocks of wood, ice, plastic, aluminium, iron, gold, cork and a mystery material onto a balance to read their mass, then into a measuring cylinder to find their volume from the water that rises. |
 | Particle Model of Matter | Particles in a box with a movable piston. |
+| Food Label Detective | Pick a packaged snack or drink and read its ingredient list like a detective. |
+| Dissolve It! | Drop a spoonful of sugar, salt, sand, flour or oil into a glass of water and watch what happens. |
 
 ### Biology
 
@@ -181,6 +203,14 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | How We Breathe | A bell-jar lung model with balloons for lungs and a rubber sheet for the diaphragm sits next to a real chest. |
 | Grow a Plant | Two pots, two seeds. |
 | Life Cycles | Pick a butterfly, a frog, or a bean plant. |
+| Fermentation Lab | Mix yeast and sugar in a flask, stretch a balloon over the neck and watch carbon dioxide inflate it. |
+| Two Loops of Blood | Watch blood travel twice through the heart on every round trip: a short loop to the lungs to pick up oxygen and a long loop around the body to deliver it. |
+| The Kidney Filter | Follow water, glucose, salt and urea through a single nephron: filtered out of the blood in the glomerulus, reabsorbed along the tubule, and what is left leaves as urine. |
+| Blood Journey | Follow a drop of blood around the body. |
+| Classification Key | A mystery organism appears: is it a frog, a shark, a spider or a mango tree? |
+| My Five Senses | Something happens in the picture: a light flashes, a bell rings, a flower smells sweet, a lemon tastes sour, a feather tickles. |
+| Pond Life | A pond is a small world. |
+| River Health | A river flows past a village, a farm and a factory. |
 
 ### Earth & Space
 
@@ -210,6 +240,9 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Earthquake Waves | Place an earthquake on a map and watch P and S waves spread out at different speeds. |
 | Air Pressure and Weather | Drag a HIGH and a LOW pressure centre around a simple weather map. |
 | Day and Night | Watch the Earth spin next to the Sun. |
+| Earth, Moon and Sun | Look down on the Sun, Earth and Moon from above the North Pole. |
+| Compass and Map | Help Adi walk across the village map! |
+| Spinning and Orbiting Earth | The Earth does two things at once: it spins like a top and it travels around the Sun. |
 
 ### Computer Science
 
@@ -320,6 +353,23 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Venn Diagrams | Three overlapping sets create seven regions plus the universal background. |
 | System of Linear Equations | Two lines on the plane. |
 | Ratio and Proportion | Mix blue and yellow paint to make green, or concentrate and water to make juice. |
+| Angles on Lines | Drag a transversal across two parallel lines and watch the eight angles update. |
+| Factors and Multiples | Pick two numbers and watch a long number strip light up: blue for the multiples of one, orange for the multiples of the other, and glowing green where they meet. |
+| Translate, Reflect, Rotate, Dilate | Drag the corners of a triangle or quadrilateral on a coordinate grid, then choose a transformation: slide it by (dx, dy), reflect it in the x-axis, y-axis or the line y = x, rotate it by 90°, 180° or 270° about the origin or a centre you pick, or enlarge it by a factor k. |
+| Angle Explorer | Drag the arm around and watch the protractor read the angle in degrees. |
+| Area and Perimeter | Drag the corners of a rectangle on a square grid and watch the unit squares get counted one by one. |
+| Picture Graphs and Bar Charts | Run a mini survey: favourite fruit, pets or how we get to school. |
+| Circle Explorer | Change the radius with a slider and drag the point on the rim to open or close a central angle. |
+| Tell the Time | Drag the hands of a big clock and read the time on the digital display and in words. |
+| Fill the Box | Choose how long, how wide and how tall a glass box is, then watch little cubes fill it up one layer at a time. |
+| Integers | Walk a little figure along a number line from −20 to 20. |
+| Equation Balance | An equation is a balanced scale: bags that each hide the same unknown number x sit on the pans with unit weights. |
+| Mean, Median, Mode | Build a data set on a dot plot by clicking, dragging and nudging dots, and watch the mean (shown as the balance point of a seesaw), median, mode and range update instantly. |
+| Multiplication Arrays | Build a rectangle of dots with the rows and columns sliders and see the multiplication fact it shows, like 6 × 4 = 24. |
+| Number Line Jumps | Help the frog hop along a number line from 0 to 100. |
+| Place Value Blocks | Build any number up to 10,000 out of blocks: small cubes for ones, rods for tens, flats for hundreds and big cubes for thousands. |
+| Similar and Congruent Triangles | Drag the corners of two triangles on a grid and watch their side lengths, side ratios and angles update live. |
+| Surface Area and Volume | Pick a solid: a box, a triangular prism, a cylinder, a sphere, a square pyramid or a cone. |
 
 ### Finance & Economics
 
@@ -343,6 +393,7 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Yield Curve Shapes | Plot Treasury bond yields by maturity. |
 | Sharpe Ratio | Sharpe = (return − risk-free) / volatility. |
 | Tax-Advantaged Accounts | You contribute $5,000/year for 30 years. |
+| Pocket Money Planner | You get pocket money every week. |
 
 ### Engineering
 
@@ -394,6 +445,8 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | El Niño / La Niña (ENSO) | The Pacific basin oscillates between three states: La Niña (warm pool piles up west, strong easterlies), Neutral, and El Niño (warm water sloshes east, easterlies fail). |
 | Methane vs CO₂ | A pulse of methane is ~80× more warming than the same mass of CO₂ over 20 years — but methane decays from the atmosphere with a 12-year e-folding time, while CO₂ lingers for centuries. |
 | Ozone Layer & CFCs | Stratospheric ozone (O₃) is created and destroyed naturally by the Chapman cycle. |
+| Forest, Rain and Flood | Rain falls on a hillside above a village. |
+| Energy Saver House | Look inside a house and switch its appliances on and off: lights, air conditioner, fan, TV, fridge and water heater. |
 
 ---
 

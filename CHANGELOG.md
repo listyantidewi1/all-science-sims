@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — 53 new sims mapped to Kurikulum Merdeka (Keputusan Kepala BSKAP No. 046/H/KR/2025)
+
+The learning outcomes (Capaian Pembelajaran) for IPAS Fase B–C, IPA Fase D and Matematika Fase A–D were compared against the catalog and the gaps filled. Every new sim has a lab panel where there is something to measure, a grade range, bilingual text and a Learn section.
+
+- **Primary IPAS (grades 3–6)**: My Five Senses, Push Pull Squash, Energy Chain, Seesaw Balance, Which Spoon Gets Hot, Sound Travels, Mirror Game, The Bent Straw, Dissolve It, Blood Journey, Pond Life, Spinning and Orbiting Earth, Compass and Map, Energy Saver House, Forest Rain and Flood, Pocket Money Planner.
+- **Primary mathematics (grades 1–6)**: Number Line Jumps, Place Value Blocks, Tell the Time, Multiplication Arrays, Picture Graphs and Bar Charts, Area and Perimeter, Angle Explorer, Fill the Box, Factors and Multiples (FPB & KPK).
+- **Middle-school IPA (grades 7–9)**: Measure It, Thermal Expansion, Force Mass Acceleration, Motion Graphs, Energy Roller Coaster, Levers, Pressure in Solids, Hydraulic Lift, Pressure and Depth, Wave Anatomy, The Eye and Corrective Lenses, Static Electricity, Electromagnetic Induction, Food Label Detective, Fermentation Lab, Classification Key, River Health, Two Loops of Blood, The Kidney Filter, Earth Moon and Sun.
+- **Middle-school mathematics (grades 7–9)**: Integers, Equation Balance, Circle Explorer, Transformations, Similar and Congruent Triangles, Mean Median Mode, Surface Area and Volume, Angles on Lines.
+- docs/curriculum-map.md regenerated (62 primary, 139 middle, 222 high-school sims); README catalog and counts updated to 319 sims.
+
 ## [1.19.1] — Simulation accuracy pass
 
 ### Fixed — simulation accuracy pass (about 80 fixes across 75 sims)
