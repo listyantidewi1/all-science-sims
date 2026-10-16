@@ -342,6 +342,8 @@ import transformations from '../sims/mathematics/transformations/manifest.js';
 
 import angleRelationships from '../sims/mathematics/angle-relationships/manifest.js';
 
+import soundThroughMaterials from '../sims/physics/sound-through-materials/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -428,6 +430,7 @@ export const SIMS = [
   density, particleModel, heatTransfer, speedDistanceTime,
 
   // 1.20.0 — Kurikulum Merdeka CP 2025, primary and middle school
+  soundThroughMaterials,
   angleRelationships,
   factorsMultiples, waveAnatomy, transformations,
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
