@@ -55,19 +55,19 @@ export function mount(rootEl) {
   function findExtrema(fn) {
     const N = 400, zeros = [], peaks = [];
     let prev = fn(0);
-    if (Math.abs(prev) < 1e-6) zeros.push(0);
-    if (Math.abs(prev) > 0.999) peaks.push(0);
+    if (Math.abs(prev) < 1e-7) zeros.push(0);
     for (let i = 1; i <= N; i++) {
       const u = i / N, v = fn(u);
-      if (Math.sign(v) !== Math.sign(prev) && Math.abs(v) > 1e-9 && Math.abs(prev) > 1e-9) zeros.push(u - 0.5 / N);
-      else if (Math.abs(v) < 1e-6 && i === N) zeros.push(1);
+      if (Math.abs(v) < 1e-7) zeros.push(u);
+      else if (prev * v < 0) zeros.push(u - (1 / N) * (v / (v - prev)));
       prev = v;
     }
-    // peaks: local maxima of |fn|
+    // peaks: local maxima of |fn| (including the ends)
+    if (Math.abs(fn(0)) > 0.999) peaks.push(0);
     let a = Math.abs(fn(0)), b = Math.abs(fn(1 / N));
     for (let i = 2; i <= N; i++) {
       const c = Math.abs(fn(i / N));
-      if (b > a && b >= c && b > 0.9) peaks.push((i - 1) / N);
+      if (b >= a && b >= c && b > 0.9) peaks.push((i - 1) / N);
       a = b; b = c;
     }
     if (Math.abs(fn(1)) > 0.999) peaks.push(1);

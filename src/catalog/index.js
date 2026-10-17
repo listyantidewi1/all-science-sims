@@ -374,6 +374,29 @@ import exponentialLog from '../sims/mathematics/exponential-log/manifest.js';
 import linearProgramming from '../sims/mathematics/linear-programming/manifest.js';
 import trigRatios from '../sims/mathematics/trig-ratios/manifest.js';
 
+import biodiversityIndex from '../sims/biology/biodiversity-index/manifest.js';
+import bloodGlucose from '../sims/biology/blood-glucose/manifest.js';
+import membraneTransport from '../sims/biology/membrane-transport/manifest.js';
+import nitrogenCycle from '../sims/biology/nitrogen-cycle/manifest.js';
+import reflexArc from '../sims/biology/reflex-arc/manifest.js';
+import chemicalBonding from '../sims/chemistry/chemical-bonding/manifest.js';
+import colligativeProperties from '../sims/chemistry/colligative-properties/manifest.js';
+import hessLaw from '../sims/chemistry/hess-law/manifest.js';
+import intermolecularForces from '../sims/chemistry/intermolecular-forces/manifest.js';
+import lewisStructures from '../sims/chemistry/lewis-structures/manifest.js';
+import limitingReagent from '../sims/chemistry/limiting-reagent/manifest.js';
+import flowchartRunner from '../sims/computer-science/flowchart-runner/manifest.js';
+import packetRouting from '../sims/computer-science/packet-routing/manifest.js';
+import pixelsRgb from '../sims/computer-science/pixels-rgb/manifest.js';
+import vonNeumannCpu from '../sims/computer-science/von-neumann-cpu/manifest.js';
+import acGenerator from '../sims/physics/ac-generator/manifest.js';
+import analogToDigital from '../sims/physics/analog-to-digital/manifest.js';
+import blackbodyRadiation from '../sims/physics/blackbody-radiation/manifest.js';
+import capacitor from '../sims/physics/capacitor/manifest.js';
+import doubleSlit from '../sims/physics/double-slit/manifest.js';
+import lorentzForce from '../sims/physics/lorentz-force/manifest.js';
+import specialRelativity from '../sims/physics/special-relativity/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -470,6 +493,7 @@ export const SIMS = [
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
   // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  biodiversityIndex, bloodGlucose, membraneTransport, nitrogenCycle, reflexArc, chemicalBonding, colligativeProperties, hessLaw, intermolecularForces, lewisStructures, limitingReagent, flowchartRunner, packetRouting, pixelsRgb, vonNeumannCpu, acGenerator, analogToDigital, blackbodyRadiation, capacitor, doubleSlit, lorentzForce, specialRelativity,
   exponentialLog, linearProgramming, trigRatios,
   knnClassifier, perceptron, textClassifier,
   circleTheorems, probabilityTrees,
