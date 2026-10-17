@@ -405,6 +405,11 @@ import electrolyteConductivity from '../sims/chemistry/electrolyte-conductivity/
 
 import plantTropisms from '../sims/biology/plant-tropisms/manifest.js';
 
+import immuneResponse from '../sims/biology/immune-response/manifest.js';
+import menstrualCycle from '../sims/biology/menstrual-cycle/manifest.js';
+import mutations from '../sims/biology/mutations/manifest.js';
+import gelElectrophoresis from '../sims/biology/gel-electrophoresis/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -501,6 +506,7 @@ export const SIMS = [
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
   // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  immuneResponse, menstrualCycle, mutations, gelElectrophoresis,
   plantTropisms,
   electrolyteConductivity,
   nuclearBindingEnergy,
