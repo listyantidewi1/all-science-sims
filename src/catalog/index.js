@@ -397,6 +397,8 @@ import doubleSlit from '../sims/physics/double-slit/manifest.js';
 import lorentzForce from '../sims/physics/lorentz-force/manifest.js';
 import specialRelativity from '../sims/physics/special-relativity/manifest.js';
 
+import hydrocarbonIsomers from '../sims/chemistry/hydrocarbon-isomers/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -493,6 +495,7 @@ export const SIMS = [
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
   // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  hydrocarbonIsomers,
   biodiversityIndex, bloodGlucose, membraneTransport, nitrogenCycle, reflexArc, chemicalBonding, colligativeProperties, hessLaw, intermolecularForces, lewisStructures, limitingReagent, flowchartRunner, packetRouting, pixelsRgb, vonNeumannCpu, acGenerator, analogToDigital, blackbodyRadiation, capacitor, doubleSlit, lorentzForce, specialRelativity,
   exponentialLog, linearProgramming, trigRatios,
   knnClassifier, perceptron, textClassifier,
