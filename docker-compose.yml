@@ -1,0 +1,24 @@
+services:
+  # development — hot reload, mount source langsung ke container
+  dev:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      # isolasi node_modules container dari host supaya tidak bentrok
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - DOCKER=true
+    command: sh -c "npm ci && npm run dev -- --host"
+
+  # production — build statis di-serve lewat nginx
+  # jalankan dengan: docker compose --profile prod up
+  prod:
+    profiles: [prod]
+    build:
+      context: .
+      target: production
+    ports:
+      - "8080:80"
