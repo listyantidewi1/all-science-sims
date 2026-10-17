@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 319 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
+> 364 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **319 original simulations** across 14 subjects — see [Catalog](#catalog) below.
+- **364 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
@@ -62,9 +62,9 @@ Each manifest carries `grade: [...]` (school years 1–12, 13 = university), ass
 
 | Level | Typical frameworks | Sims |
 |---|---|---|
-| Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 62 |
-| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 139 |
-| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 222 |
+| Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 63 |
+| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 142 |
+| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 265 |
 | University | Undergraduate courses | 119 |
 
 Counts overlap because many sims span two levels. Primary sims use big controls, plain words, and predict-then-test flows; see for example Float or Sink?, Magnets, Light the Bulb, Grow a Plant, and Day and Night.
@@ -133,6 +133,16 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Seesaw Balance | A seesaw with a weight on each side. |
 | Static Electricity | Rub a balloon on wool or a glass rod on silk and watch electrons jump from one to the other. |
 | Thermal Expansion | Heat a steel rail, a metal ball next to a ring, or a steel-brass bimetal strip from 0 to 300 °C and watch them grow. |
+| Fission and Fusion | Explore the binding energy per nucleon curve built from real atomic masses of about 40 nuclides, click any point to see its Z, N and BE/A, and discover why iron-56 and nickel-62 sit at the top. |
+| AC Generator | Spin a rectangular coil between the poles of a magnet and watch the flux Φ = NBA cos ωt and the induced EMF ε = NBAω sin ωt drawn live, while a bulb on the slip rings flickers with |ε|. |
+| Analog to Digital | Turn a smooth analog signal into numbers: choose a sine, a voice-like mix of harmonics or a triangle wave, sample it at a rate you set and quantise each sample to 1–8 bits. |
+| Blackbody Radiation | Heat an ideal emitter from 300 K to 10 000 K and watch its Planck spectrum change shape: the peak slides to shorter wavelengths following Wien's law λ_max = b/T while the area under the curve, the radiated power per square metre σT⁴, explodes. |
+| Parallel-Plate Capacitor | Build a parallel-plate capacitor: set the plate area, the gap and the dielectric (air, paper, glass or water) and read C = κε₀A/d in picofarads. |
+| Young's Double Slit | Shine monochromatic light of a chosen wavelength through two narrow slits and watch the interference fringes build up on a screen, column by column, from the real intensity formula. |
+| Charge in a Magnetic Field | Fire an electron, a proton, an alpha particle or a custom charge into a uniform magnetic field pointing into or out of the page and watch it bend into a circle of radius r = mv/(qB). |
+| Time Dilation and Length Contraction | Watch a light clock on a spaceship from two points of view at once: in the ship frame the light bounces straight up and down, while from the ground the same light travels a longer zigzag at the same speed c, so the moving clock ticks slower by the factor γ = 1/√(1 − v²/c²). |
+| Coulomb's Law | Set two point charges between −10 and +10 μC, drag one along the line to change their separation, and watch the electrostatic force vectors stretch and flip as F = k·q₁q₂/r². |
+| Standing Waves in Pipes and Strings | Set up a standing wave in an open–open pipe, an open–closed pipe or a string fixed at both ends. |
 
 ### Chemistry
 
@@ -170,6 +180,15 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Particle Model of Matter | Particles in a box with a movable piston. |
 | Food Label Detective | Pick a packaged snack or drink and read its ingredient list like a detective. |
 | Dissolve It! | Drop a spoonful of sugar, salt, sand, flour or oil into a glass of water and watch what happens. |
+| Electrolytes and Conductivity | Lower a conductivity tester into a beaker of NaCl, HCl, NaOH, acetic acid, ammonia, sugar, ethanol or pure water and set the concentration. |
+| Hydrocarbon Builder | Click grid positions to build a carbon chain of 1–8 atoms, cycle each C–C bond through single, double and triple, and hang methyl branches above or below the chain. |
+| Ionic or Covalent? | Pick any two elements from a mini periodic table and watch what their valence electrons do: jump across to make ions and a crystal lattice, get shared in a Lewis-dot overlap, or pool into a sea of electrons between metal cations. |
+| Colligative Properties | Dissolve sucrose, ethylene glycol, table salt or calcium chloride in water and read how the boiling point rises, the freezing point falls, the vapour pressure drops and the osmotic pressure builds, all in proportion to i × molality. |
+| Enthalpy Diagrams and Hess's Law | Build a reaction pathway by dragging step reactions into a cycle, flipping any that run the wrong way, and watch the enthalpy level diagram add the ΔH values until the steps match the target reaction. |
+| Intermolecular Forces and Boiling Points | Choose a molecule (alkanes, hydrogen halides, water, ammonia, HF, methanol, CO₂, neon, argon) and heat it with a temperature slider. |
+| Lewis Structure Builder | Choose a molecule (H₂O, CO₂, NH₃, CH₄, O₂, N₂, HCl, SO₂, BF₃ or PCl₅) and build its Lewis structure yourself: click between two atoms to add single, double or triple bonds and click an atom to add lone pairs. |
+| Limiting Reagent | Choose a balanced reaction, dial in the moles of each reactant and press React: the particle boxes show which reactant runs out first and what is left over. |
+| Molarity and Dilution | Weigh out a solute (table salt, glucose or blue copper(II) sulfate), dissolve it in a volumetric flask of 100 to 1000 mL and read the molarity M = n/V as the colour and particle density change. |
 
 ### Biology
 
@@ -211,6 +230,17 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | My Five Senses | Something happens in the picture: a light flashes, a bell rings, a flower smells sweet, a lemon tastes sour, a feather tickles. |
 | Pond Life | A pond is a small world. |
 | River Health | A river flows past a village, a farm and a factory. |
+| Immune Response and Vaccines | Infect a body with a pathogen and watch the innate response (phagocytes) buy time while the adaptive response builds: helper T cells activate B cells, which clone into plasma cells that pour out antibodies and leave memory cells behind. |
+| Hormones of the Menstrual Cycle | Slide through a 28-day cycle and watch four hormone curves (FSH, LH, oestrogen, progesterone) drive what happens in the ovary and the uterus: a follicle grows, the LH surge triggers ovulation on day 14, the corpus luteum pumps out progesterone and the endometrium thickens to about 12 mm before it is shed. |
+| Mutations | Start from the first 30 bases of the human β-globin gene, transcribe it to mRNA and translate it codon by codon. |
+| PCR and Gel Electrophoresis | Amplify a DNA sample by PCR, watching the denature–anneal–extend cycle double the copies each round (2ⁿ), then load a DNA ladder, three suspects and a crime-scene sample into an agarose gel. |
+| Plant Growth Responses | Grow a seedling in a chamber and move the lamp around it: auxin piles up on the shaded side (shown as colour), that side elongates faster and the shoot bends towards the light. |
+| Biodiversity Index | Sample two habitats side by side, such as a rainforest and an oil-palm plantation, by clicking 1 m² quadrats on each grid. |
+| Blood Sugar Control | Run a body through a 24-hour day: eat small or large meals, exercise, sleep, and watch blood glucose (mmol/L) rise and fall while the pancreas answers with insulin or glucagon and the liver stores or releases glycogen. |
+| Active and Passive Transport | Watch O₂, glucose, Na⁺ and K⁺ particles jostle on either side of a phospholipid bilayer fitted with channel proteins, a glucose carrier and a Na⁺/K⁺ pump. |
+| Nitrogen Cycle | Follow nitrogen as it moves between the atmosphere, soil ammonium and nitrate, plants, animals and decomposers. |
+| Reflex Arc | Tap the knee or touch a hot plate and watch the impulse race from receptor to sensory neuron, through the spinal cord, down the motor neuron to the muscle, with a stopwatch counting the milliseconds. |
+| Virus Replication | Watch a bacteriophage infect a bacterium step by step. |
 
 ### Earth & Space
 
@@ -271,6 +301,10 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Binary Numbers | A row of 8 bit-toggles. |
 | Tower of Hanoi | Move the entire stack of N disks from peg A to peg C, never placing a larger disk on a smaller one. |
 | Finite-State Automata | Three pre-built automata: one accepts strings ending in "01", one accepts even-parity binary strings, one accepts strings divisible by 3 in binary. |
+| Flowchart Runner | Pick a classic algorithm (largest of three numbers, sum 1..n, even or odd, FizzBuzz, GCD by subtraction), type in your own inputs and run the flowchart one block at a time. |
+| How the Internet Routes | Send a message from a home or school PC to a web or video server across a small network of routers with link costs. |
+| Pixels and Colour | Paint on a tiny 8×8, 16×16 or 32×32 canvas and discover that every picture is just numbers. |
+| Inside the Computer: Fetch–Decode–Execute | Step through a toy Von Neumann computer with a 16-word memory, an accumulator, a program counter and an instruction register. |
 
 ### Data Science
 
@@ -296,6 +330,10 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Box Plot & 5-Number Summary | Type a list of numbers (or pick a preset) and watch the median, quartiles, and outliers fall into place. |
 | Correlation Explorer | Drag points around the canvas and watch the Pearson correlation coefficient r update live, from −1 (perfect anticorrelation) through 0 (no relationship) to +1 (perfect correlation). |
 | p-value & Hypothesis Testing | A null hypothesis says "no effect" — the test statistic comes from a known distribution. |
+| k-Nearest Neighbours | Drag a query point across a two-class dataset and watch the k-nearest-neighbours classifier look up its k closest training points and take a vote. |
+| Perceptron Playground | Meet the simplest artificial neuron: two inputs, two weights and a bias. |
+| Spam or Not? Naive Bayes | Build a spam filter from twenty short messages. |
+| Teach the Machine | Be the teacher! |
 
 ### Social Science
 
@@ -370,6 +408,13 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | Place Value Blocks | Build any number up to 10,000 out of blocks: small cubes for ones, rods for tens, flats for hundreds and big cubes for thousands. |
 | Similar and Congruent Triangles | Drag the corners of two triangles on a grid and watch their side lengths, side ratios and angles update live. |
 | Surface Area and Volume | Pick a solid: a box, a triangular prism, a cylinder, a sphere, a square pyramid or a cone. |
+| Exponentials and Logarithms | Plot y = a·bˣ with sliders for a and b, drag a point along the curve and read off the doubling time or half-life. |
+| Linear Programming | Set up to four linear constraints ax + by ≤ c with sliders and watch the feasible region appear as the shaded overlap of their half-planes. |
+| Trigonometric Ratios | Drag the vertices of a right triangle and watch the sides relabel themselves as opposite, adjacent and hypotenuse for the angle you choose, while sin, cos and tan update live as ratios of those sides. |
+| Circle Theorems | Drag points around a circle and watch the angles and lengths update live. |
+| Tree Diagrams, Permutations and Combinations | Build a two-stage tree diagram for two coin flips, two draws from a bag of red and blue balls (with or without replacement), or two dice. |
+| Transforming Functions | Pick a parent function (x², |x|, √x, 2ˣ, sin x or 1/x) and move the sliders of y = a·f(b(x − h)) + k to stretch, squash, reflect and slide its graph while the parent stays as a ghost. |
+| Sequences and Series | Build an arithmetic or geometric sequence from its first term and its difference or ratio, and watch the terms grow as bars and as points on a graph while the partial sum S_n is computed from the formula. |
 
 ### Finance & Economics
 

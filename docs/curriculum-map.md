@@ -6,9 +6,9 @@ Generated from the manifests; regenerate after adding sims.
 
 | Level | Sims |
 |---|---|
-| Primary (grades 1–6) | 62 |
-| Middle school (grades 7–9) | 139 |
-| High school (grades 10–12) | 222 |
+| Primary (grades 1–6) | 63 |
+| Middle school (grades 7–9) | 142 |
+| High school (grades 10–12) | 265 |
 | University (beyond school) | 119 |
 
 ## Primary (grades 1–6)
@@ -85,6 +85,7 @@ Generated from the manifests; regenerate after adding sims.
 |---|---|---|
 | [Outlier Effects](https://all-science-sims.vercel.app/#/data-science/outliers) | Grades 6–9 | CCSS 6.SP · KS3 Maths · Merdeka Fase D |
 | [Box Plot & 5-Number Summary](https://all-science-sims.vercel.app/#/data-science/box-plot) | Grades 6–10 | CCSS 6.SP / HS-S-ID · KS3–KS4 Maths · Merdeka Fase D–E |
+| [Teach the Machine](https://all-science-sims.vercel.app/#/data-science/teachable-classifier) | Grades 5–9 | CSTA 1B-AP · KS2–KS3 Computing · Merdeka Koding & KA Fase C–D (mengenali pola, klasifikasi) |
 
 ### Mathematics
 
@@ -248,6 +249,8 @@ Generated from the manifests; regenerate after adding sims.
 | [Stack vs Queue](https://all-science-sims.vercel.app/#/computer-science/stack-queue) | Grades 9–12 | CSTA 3A · KS4/A-level Computer Science · Merdeka Fase E |
 | [Binary Numbers](https://all-science-sims.vercel.app/#/computer-science/binary-numbers) | Grades 5–9 | CSTA 1B/2 · KS2–KS3 Computing · Merdeka Fase C–D |
 | [Tower of Hanoi](https://all-science-sims.vercel.app/#/computer-science/tower-of-hanoi) | Grades 5–9 | CSTA 1B/2 · KS2–KS3 Computing/Maths · Merdeka Fase C–D |
+| [Flowchart Runner](https://all-science-sims.vercel.app/#/computer-science/flowchart-runner) | Grades 7–10 | CSTA 2-AP-10 · KS3 Computing (algorithms) · Merdeka Informatika Fase D–E (berpikir komputasional) |
+| [Pixels and Colour](https://all-science-sims.vercel.app/#/computer-science/pixels-rgb) | Grades 7–9 | CSTA 2-DA-07 · KS3 Computing (data representation) · Merdeka Informatika Fase D (representasi data) |
 
 ### Data Science
 
@@ -259,6 +262,7 @@ Generated from the manifests; regenerate after adding sims.
 | [Monte Carlo: Estimate π](https://all-science-sims.vercel.app/#/data-science/monte-carlo-pi) | Grades 8–11 | CCSS 7.SP / HS-S-IC · KS3–KS4 Maths · Merdeka Fase D–E |
 | [Box Plot & 5-Number Summary](https://all-science-sims.vercel.app/#/data-science/box-plot) | Grades 6–10 | CCSS 6.SP / HS-S-ID · KS3–KS4 Maths · Merdeka Fase D–E |
 | [Correlation Explorer](https://all-science-sims.vercel.app/#/data-science/correlation) | Grades 8–11 | CCSS 8.SP / HS-S-ID · KS3–KS4 Maths · Merdeka Fase D–E |
+| [Teach the Machine](https://all-science-sims.vercel.app/#/data-science/teachable-classifier) | Grades 5–9 | CSTA 1B-AP · KS2–KS3 Computing · Merdeka Koding & KA Fase C–D (mengenali pola, klasifikasi) |
 
 ### Social Science
 
@@ -387,6 +391,16 @@ Generated from the manifests; regenerate after adding sims.
 | [Moving Magnet, Flowing Current](https://all-science-sims.vercel.app/#/physics/electromagnetic-induction) | Grades 9–12 | NGSS MS-PS2-3 / HS-PS2-5 · KS4 Physics (induction) · Merdeka Fase D–F (induksi elektromagnetik) |
 | [The Eye and Corrective Lenses](https://all-science-sims.vercel.app/#/physics/eye-and-glasses) | Grades 8–10 | NGSS MS-PS4-2 · KS3–KS4 Physics (light, lenses) · Merdeka Fase D (alat optik) |
 | [Motion Graphs](https://all-science-sims.vercel.app/#/physics/motion-graphs) | Grades 7–10 | NGSS MS-PS2-2 / HS-PS2-1 · KS3–KS4 Physics (motion) · Merdeka Fase D–E (GLB & GLBB) |
+| [Fission and Fusion](https://all-science-sims.vercel.app/#/physics/nuclear-binding-energy) | Grade 12 | NGSS HS-PS1-8 · A-level Physics (nuclear) · Merdeka Fisika Fase F (fisika inti) |
+| [AC Generator](https://all-science-sims.vercel.app/#/physics/ac-generator) | Grade 12 | NGSS HS-PS2-5 · A-level Physics (electromagnetic induction) · Merdeka Fisika Fase F (induksi, arus bolak-balik) |
+| [Analog to Digital](https://all-science-sims.vercel.app/#/physics/analog-to-digital) | Grades 11–12 | NGSS HS-PS4-2 · A-level Physics (digital signals) · Merdeka Fisika Fase F (teori dasar digital) |
+| [Blackbody Radiation](https://all-science-sims.vercel.app/#/physics/blackbody-radiation) | Grade 12 | NGSS HS-ESS1-2 · A-level Physics (astrophysics) · Merdeka Fisika Fase F (fisika modern) |
+| [Parallel-Plate Capacitor](https://all-science-sims.vercel.app/#/physics/capacitor) | Grades 11–12 | NGSS HS-PS3-5 · A-level Physics (capacitance) · Merdeka Fisika Fase F (rangkaian listrik) |
+| [Young's Double Slit](https://all-science-sims.vercel.app/#/physics/double-slit) | Grades 11–12 | NGSS HS-PS4-3 · A-level Physics (interference) · Merdeka Fisika Fase F (gelombang cahaya) |
+| [Charge in a Magnetic Field](https://all-science-sims.vercel.app/#/physics/lorentz-force) | Grade 12 | NGSS HS-PS2-5 · A-level Physics (magnetic fields) · Merdeka Fisika Fase F (medan magnet) |
+| [Time Dilation and Length Contraction](https://all-science-sims.vercel.app/#/physics/special-relativity) | Grade 12 | NGSS HS-PS4 (ETS) · A-level Physics (special relativity) · Merdeka Fisika Fase F (fisika modern) |
+| [Coulomb's Law](https://all-science-sims.vercel.app/#/physics/coulombs-law) | Grades 11–12 | NGSS HS-PS2-4 · A-level Physics (electric fields) · Merdeka Fisika Fase F (listrik statis) |
+| [Standing Waves in Pipes and Strings](https://all-science-sims.vercel.app/#/physics/standing-waves-pipes) | Grade 11 | NGSS HS-PS4-1 · A-level Physics (stationary waves) · Merdeka Fisika Fase F (gelombang bunyi) |
 
 ### Chemistry
 
@@ -414,6 +428,15 @@ Generated from the manifests; regenerate after adding sims.
 | [Electrolysis of Water](https://all-science-sims.vercel.app/#/chemistry/electrolysis) | Grades 10–12 · University | NGSS HS-PS1 · KS4/A-level Chemistry · Merdeka Fase F |
 | [Atomic Emission Spectra](https://all-science-sims.vercel.app/#/chemistry/emission-spectra) | Grades 10–12 · University | NGSS HS-PS4 · A-level Physics/Chemistry · Merdeka Fase E |
 | [Activation Energy & Catalysis](https://all-science-sims.vercel.app/#/chemistry/activation-energy) | Grades 11–12 · University | NGSS HS-PS1 · A-level Chemistry · Merdeka Fase F |
+| [Electrolytes and Conductivity](https://all-science-sims.vercel.app/#/chemistry/electrolyte-conductivity) | Grades 11–12 | NGSS HS-PS1-2 · A-level Chemistry (ionic equilibria) · Merdeka Kimia Fase F (daya hantar listrik larutan) |
+| [Hydrocarbon Builder](https://all-science-sims.vercel.app/#/chemistry/hydrocarbon-isomers) | Grades 11–12 | NGSS HS-PS1-2 · A-level Chemistry (organic) · Merdeka Kimia Fase F (senyawa karbon) |
+| [Ionic or Covalent?](https://all-science-sims.vercel.app/#/chemistry/chemical-bonding) | Grade 11 | NGSS HS-PS1-1 / HS-PS1-2 · A-level Chemistry (bonding) · Merdeka Kimia Fase F (ikatan kimia) |
+| [Colligative Properties](https://all-science-sims.vercel.app/#/chemistry/colligative-properties) | Grade 12 | AP Chemistry (solutions) · A-level Chemistry · Merdeka Kimia Fase F (sifat koligatif) |
+| [Enthalpy Diagrams and Hess's Law](https://all-science-sims.vercel.app/#/chemistry/hess-law) | Grade 11 | NGSS HS-PS1-4 · A-level Chemistry (enthalpy) · Merdeka Kimia Fase F (termokimia) |
+| [Intermolecular Forces and Boiling Points](https://all-science-sims.vercel.app/#/chemistry/intermolecular-forces) | Grade 11 | NGSS HS-PS1-3 · A-level Chemistry (intermolecular forces) · Merdeka Kimia Fase F (gaya intermolekuler) |
+| [Lewis Structure Builder](https://all-science-sims.vercel.app/#/chemistry/lewis-structures) | Grade 11 | NGSS HS-PS1-2 · A-level Chemistry (bonding, shapes) · Merdeka Kimia Fase F (ikatan kimia, bentuk molekul) |
+| [Limiting Reagent](https://all-science-sims.vercel.app/#/chemistry/limiting-reagent) | Grade 10 | NGSS HS-PS1-7 · GCSE/A-level Chemistry (moles) · Merdeka IPA Fase E (stoikiometri) |
+| [Molarity and Dilution](https://all-science-sims.vercel.app/#/chemistry/molarity-dilution) | Grades 10–11 | NGSS HS-PS1-7 · A-level Chemistry (amount of substance) · Merdeka IPA Fase E / Kimia Fase F (larutan) |
 
 ### Biology
 
@@ -440,6 +463,17 @@ Generated from the manifests; regenerate after adding sims.
 | [Antibiotic Resistance Evolution](https://all-science-sims.vercel.app/#/biology/antibiotic-resistance) | Grades 9–12 | NGSS HS-LS4 · KS4 Biology · Merdeka Fase E |
 | [Fermentation Lab](https://all-science-sims.vercel.app/#/biology/fermentation) | Grades 9–10 | NGSS MS-LS1-7 · KS3 Biology (microbes) · Merdeka Fase D–E (bioteknologi konvensional) |
 | [The Kidney Filter](https://all-science-sims.vercel.app/#/biology/nephron-filter) | Grades 8–11 | NGSS MS-LS1-3 / HS-LS1-3 · KS3–KS4 Biology · Merdeka Fase D–F (sistem ekskresi) |
+| [Immune Response and Vaccines](https://all-science-sims.vercel.app/#/biology/immune-response) | Grades 11–12 | NGSS HS-LS1-3 · A-level Biology (immunity) · Merdeka Biologi Fase F (sistem pertahanan tubuh) |
+| [Hormones of the Menstrual Cycle](https://all-science-sims.vercel.app/#/biology/menstrual-cycle) | Grades 11–12 | NGSS HS-LS1-3 · A-level Biology (hormonal control) · Merdeka Biologi Fase F (sistem reproduksi) |
+| [Mutations](https://all-science-sims.vercel.app/#/biology/mutations) | Grade 12 | NGSS HS-LS3-2 · A-level Biology (gene mutation) · Merdeka Biologi Fase F (substansi genetik) |
+| [PCR and Gel Electrophoresis](https://all-science-sims.vercel.app/#/biology/gel-electrophoresis) | Grade 12 | NGSS HS-LS3-1 (ETS) · A-level Biology (gene technology) · Merdeka Biologi Fase F (bioteknologi modern) |
+| [Plant Growth Responses](https://all-science-sims.vercel.app/#/biology/plant-tropisms) | Grade 12 | NGSS HS-LS1-3 · A-level Biology (plant responses) · Merdeka Biologi Fase F (pertumbuhan dan perkembangan) |
+| [Biodiversity Index](https://all-science-sims.vercel.app/#/biology/biodiversity-index) | Grade 10 | NGSS HS-LS2-2 · A-level Biology (biodiversity) · Merdeka IPA Fase E (keanekaragaman hayati) |
+| [Blood Sugar Control](https://all-science-sims.vercel.app/#/biology/blood-glucose) | Grades 11–12 | NGSS HS-LS1-3 · A-level Biology (homeostasis) · Merdeka Biologi Fase F (sistem hormon) |
+| [Active and Passive Transport](https://all-science-sims.vercel.app/#/biology/membrane-transport) | Grade 11 | NGSS HS-LS1-2 · A-level Biology (transport across membranes) · Merdeka Biologi Fase F (bioproses) |
+| [Nitrogen Cycle](https://all-science-sims.vercel.app/#/biology/nitrogen-cycle) | Grade 10 | NGSS HS-LS2-5 · A-level Biology (nutrient cycles) · Merdeka IPA Fase E (ekosistem) |
+| [Reflex Arc](https://all-science-sims.vercel.app/#/biology/reflex-arc) | Grades 11–12 | NGSS HS-LS1-3 · A-level Biology (nervous system) · Merdeka Biologi Fase F (sistem koordinasi) |
+| [Virus Replication](https://all-science-sims.vercel.app/#/biology/virus-replication) | Grade 10 | NGSS HS-LS1-1 · A-level Biology (pathogens) · Merdeka IPA Fase E (virus) |
 
 ### Earth & Space
 
@@ -480,6 +514,9 @@ Generated from the manifests; regenerate after adding sims.
 | [Recursive Fibonacci + Memoization](https://all-science-sims.vercel.app/#/computer-science/fibonacci) | Grades 10–12 · University | CSTA 3B · A-level Computer Science · University |
 | [RSA Public-Key Crypto (toy)](https://all-science-sims.vercel.app/#/computer-science/rsa) | Grade 12 · University | A-level Computer Science · University · AP/IB Higher |
 | [Finite-State Automata](https://all-science-sims.vercel.app/#/computer-science/finite-state-automata) | Grades 11–12 · University | A-level Computer Science · University · AP/IB Higher |
+| [Flowchart Runner](https://all-science-sims.vercel.app/#/computer-science/flowchart-runner) | Grades 7–10 | CSTA 2-AP-10 · KS3 Computing (algorithms) · Merdeka Informatika Fase D–E (berpikir komputasional) |
+| [How the Internet Routes](https://all-science-sims.vercel.app/#/computer-science/packet-routing) | Grades 11–12 | CSTA 3A-NI-04 · GCSE Computer Science (networks) · Merdeka Informatika Fase F (jaringan komputer) |
+| [Inside the Computer: Fetch–Decode–Execute](https://all-science-sims.vercel.app/#/computer-science/von-neumann-cpu) | Grades 10–11 | CSTA 3A-CS-02 · GCSE Computer Science (CPU) · Merdeka Informatika Fase E (model komputer Von Neumann) |
 
 ### Data Science
 
@@ -503,6 +540,9 @@ Generated from the manifests; regenerate after adding sims.
 | [Box Plot & 5-Number Summary](https://all-science-sims.vercel.app/#/data-science/box-plot) | Grades 6–10 | CCSS 6.SP / HS-S-ID · KS3–KS4 Maths · Merdeka Fase D–E |
 | [Correlation Explorer](https://all-science-sims.vercel.app/#/data-science/correlation) | Grades 8–11 | CCSS 8.SP / HS-S-ID · KS3–KS4 Maths · Merdeka Fase D–E |
 | [p-value & Hypothesis Testing](https://all-science-sims.vercel.app/#/data-science/p-value) | Grades 11–12 · University | AP Statistics · A-level Maths · University |
+| [k-Nearest Neighbours](https://all-science-sims.vercel.app/#/data-science/knn-classifier) | Grades 10–12 | CSTA 3A-DA-11 · A-level Computer Science · Merdeka Koding & KA Fase E–F (machine learning) |
+| [Perceptron Playground](https://all-science-sims.vercel.app/#/data-science/perceptron) | Grades 11–12 | CSTA 3B-AP-08 · A-level Computer Science · Merdeka Koding & KA Fase F (dasar machine learning) |
+| [Spam or Not? Naive Bayes](https://all-science-sims.vercel.app/#/data-science/text-classifier) | Grades 11–12 | CSTA 3B-AP-08 · A-level Computer Science · Merdeka Koding & KA Fase F (dasar NLP) |
 
 ### Social Science
 
@@ -552,6 +592,13 @@ Generated from the manifests; regenerate after adding sims.
 | [Pascal's Triangle](https://all-science-sims.vercel.app/#/mathematics/pascal-triangle) | Grades 7–11 | CCSS 7.SP / HS-A-APR · KS3–KS4 Maths · Merdeka Fase D–E |
 | [Venn Diagrams](https://all-science-sims.vercel.app/#/mathematics/venn-diagrams) | Grades 7–10 | CCSS 7.SP / HS-S-CP · KS3–KS4 Maths · Merdeka Fase D |
 | [System of Linear Equations](https://all-science-sims.vercel.app/#/mathematics/system-of-equations) | Grades 8–11 | CCSS 8.EE / HS-A-REI · KS3–KS4 Maths · Merdeka Fase D–E |
+| [Exponentials and Logarithms](https://all-science-sims.vercel.app/#/mathematics/exponential-log) | Grades 10–11 | CCSS HSF-LE / HSF-BF.B.5 · A-level Maths (exponentials and logs) · Merdeka Matematika Fase E (eksponen dan logaritma) |
+| [Linear Programming](https://all-science-sims.vercel.app/#/mathematics/linear-programming) | Grades 10–11 | CCSS HSA-REI.D.12 · GCSE/A-level Maths · Merdeka Matematika Fase E (sistem pertidaksamaan linear) |
+| [Trigonometric Ratios](https://all-science-sims.vercel.app/#/mathematics/trig-ratios) | Grade 10 | CCSS HSG-SRT.C · GCSE Maths (trigonometry) · Merdeka Matematika Fase E (perbandingan trigonometri) |
+| [Circle Theorems](https://all-science-sims.vercel.app/#/mathematics/circle-theorems) | Grades 11–12 | CCSS HSG-C.A.2 · GCSE Maths (circle theorems) · Merdeka Matematika Fase F (lingkaran) |
+| [Tree Diagrams, Permutations and Combinations](https://all-science-sims.vercel.app/#/mathematics/probability-trees) | Grade 12 | CCSS HSS-CP · GCSE/A-level Maths (probability) · Merdeka Matematika Fase F (peluang, permutasi dan kombinasi) |
+| [Transforming Functions](https://all-science-sims.vercel.app/#/mathematics/function-transformations) | Grades 11–12 | CCSS HSF-BF.B.3 · A-level Maths (functions) · Merdeka Matematika Fase F (transformasi, komposisi, invers fungsi) |
+| [Sequences and Series](https://all-science-sims.vercel.app/#/mathematics/sequences-series) | Grades 10–11 | CCSS HSF-BF.A.2 / HSF-LE · A-level Maths (sequences) · Merdeka Matematika Fase F (barisan dan deret, bunga majemuk) |
 
 ### Finance & Economics
 

@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added — 53 new sims mapped to Kurikulum Merdeka (Keputusan Kepala BSKAP No. 046/H/KR/2025)
+## [1.20.0] — 98 new sims mapped to Kurikulum Merdeka (Keputusan Kepala BSKAP No. 046/H/KR/2025)
+
+### Added — high school and informatics (45 sims)
+
+- **Fisika Fase F**: Coulomb's Law, Parallel-Plate Capacitor, Charge in a Magnetic Field, AC Generator, Analog to Digital, Standing Waves in Pipes and Strings, Young's Double Slit, Time Dilation and Length Contraction, Blackbody Radiation, Fission and Fusion.
+- **Kimia Fase F / IPA Fase E**: Ionic or Covalent?, Lewis Structure Builder, Intermolecular Forces and Boiling Points, Hydrocarbon Builder, Molarity and Dilution, Limiting Reagent, Enthalpy Diagrams and Hess's Law, Colligative Properties, Electrolytes and Conductivity.
+- **Biologi Fase F / IPA Fase E**: Virus Replication, Biodiversity Index, Nitrogen Cycle, Active and Passive Transport, Plant Growth Responses, Reflex Arc, Blood Sugar Control, Immune Response and Vaccines, Hormones of the Menstrual Cycle, Mutations, PCR and Gel Electrophoresis.
+- **Matematika Fase E–F**: Sequences and Series, Exponentials and Logarithms, Linear Programming, Trigonometric Ratios, Transforming Functions, Circle Theorems, Tree Diagrams Permutations and Combinations.
+- **Informatika and Koding & Kecerdasan Artifisial**: Flowchart Runner, Pixels and Colour, Inside the Computer (fetch–decode–execute), How the Internet Routes, Teach the Machine, k-Nearest Neighbours, Perceptron Playground, Spam or Not? (naive Bayes).
+
+### Added — primary and middle school (53 sims)
 
 The learning outcomes (Capaian Pembelajaran) for IPAS Fase B–C, IPA Fase D and Matematika Fase A–D were compared against the catalog and the gaps filled. Every new sim has a lab panel where there is something to measure, a grade range, bilingual text and a Learn section.
 
@@ -17,7 +27,7 @@ The learning outcomes (Capaian Pembelajaran) for IPAS Fase B–C, IPA Fase D and
 - **Primary mathematics (grades 1–6)**: Number Line Jumps, Place Value Blocks, Tell the Time, Multiplication Arrays, Picture Graphs and Bar Charts, Area and Perimeter, Angle Explorer, Fill the Box, Factors and Multiples (FPB & KPK).
 - **Middle-school IPA (grades 7–9)**: Measure It, Thermal Expansion, Force Mass Acceleration, Motion Graphs, Energy Roller Coaster, Levers, Pressure in Solids, Hydraulic Lift, Pressure and Depth, Wave Anatomy, The Eye and Corrective Lenses, Static Electricity, Electromagnetic Induction, Food Label Detective, Fermentation Lab, Classification Key, River Health, Two Loops of Blood, The Kidney Filter, Earth Moon and Sun.
 - **Middle-school mathematics (grades 7–9)**: Integers, Equation Balance, Circle Explorer, Transformations, Similar and Congruent Triangles, Mean Median Mode, Surface Area and Volume, Angles on Lines.
-- docs/curriculum-map.md regenerated (62 primary, 139 middle, 222 high-school sims); README catalog and counts updated to 319 sims.
+- docs/curriculum-map.md regenerated (63 primary, 142 middle, 265 high-school sims); README catalog and counts updated to 364 sims.
 
 ## [1.19.1] — Simulation accuracy pass
 
