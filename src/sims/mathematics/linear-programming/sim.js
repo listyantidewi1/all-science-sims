@@ -70,13 +70,32 @@ export function mount(rootEl) {
     let R = 5;
     for (const c of st.cons) {
       if (!c.on) continue;
-      if (c.a > 0) R = Math.max(R, c.c / c.a);
-      if (c.b > 0) R = Math.max(R, c.c / c.b);
+      // positive intercepts of the boundary line, whatever the signs of a, b, c (e.g. −x − y ≤ −8 has intercepts at 8)
+      if (Math.abs(c.a) > EPS && c.c / c.a > 0) R = Math.max(R, c.c / c.a);
+      if (Math.abs(c.b) > EPS && c.c / c.b > 0) R = Math.max(R, c.c / c.b);
     }
     return Math.min(400, R * 1.15);
   }
+  // Is z unbounded over the region? The recession cone is {d ≥ 0 : a·d ≤ 0 for every active constraint}; its extreme
+  // rays lie among the axes and the directions of the constraint lines, so z is unbounded exactly when one of those
+  // feasible directions has p·d > 0 (maximise) or p·d < 0 (minimise).
+  function objectiveUnbounded() {
+    const active = st.cons.filter((c) => c.on && (Math.abs(c.a) > EPS || Math.abs(c.b) > EPS));
+    const dirs = [{ x: 1, y: 0 }, { x: 0, y: 1 }];
+    for (const c of active) dirs.push({ x: c.b, y: -c.a }, { x: -c.b, y: c.a });
+    for (const d of dirs) {
+      const L = Math.hypot(d.x, d.y);
+      if (L < EPS) continue;
+      const ux = d.x / L, uy = d.y / L;
+      if (ux < -1e-9 || uy < -1e-9) continue;
+      if (active.some((c) => c.a * ux + c.b * uy > 1e-9)) continue;
+      const g = st.p * ux + st.q * uy;
+      if (st.goal === 'max' ? g > 1e-9 : g < -1e-9) return true;
+    }
+    return false;
+  }
   function solve() {
-    const R = windowSize();
+    let R = windowSize();
     const BIG = R * 4;
     let poly = [{ x: 0, y: 0 }, { x: BIG, y: 0 }, { x: BIG, y: BIG }, { x: 0, y: BIG }];
     for (const c of st.cons) {
@@ -93,12 +112,17 @@ export function mount(rootEl) {
       st.cons.forEach((c, i) => { if (c.on && Math.abs(c.a * v.x + c.b * v.y - c.c) < 1e-6 * Math.max(1, Math.abs(c.c))) tight.push(`C${i + 1}`); });
       return { x: v.x, y: v.y, z: st.p * v.x + st.q * v.y, tight, edge: v.x > BIG - 1e-6 || v.y > BIG - 1e-6 };
     });
+    const zUnbounded = unbounded && poly.length >= 3 && objectiveUnbounded();
     let best = null;
-    for (const k of corners) {
-      if (k.edge) continue;
-      if (!best || (st.goal === 'max' ? k.z > best.z + 1e-9 : k.z < best.z - 1e-9)) best = k;
+    if (!zUnbounded) {
+      for (const k of corners) {
+        if (k.edge) continue;
+        if (!best || (st.goal === 'max' ? k.z > best.z + 1e-9 : k.z < best.z - 1e-9)) best = k;
+      }
     }
-    result = { poly, corners, best, unbounded, R };
+    // make sure every finite corner is inside the drawn window
+    for (const k of corners) if (!k.edge) R = Math.max(R, Math.min(400, 1.15 * Math.max(k.x, k.y)));
+    result = { poly, corners, best, unbounded, zUnbounded, R };
   }
 
   const toPx = (x) => plot.x0 + (x / plot.R) * plot.s;
@@ -191,6 +215,12 @@ export function mount(rootEl) {
     }
     const hd = levelHandle();
     if (hd) {
+      // arrow in the direction (p, q): the way z increases
+      const n = Math.hypot(st.p, st.q) || 1, ux = st.p / n, uy = -st.q / n, L = 30;
+      const ax0 = toPx(hd.x), ay0 = toPy(hd.y), ax1 = ax0 + ux * L, ay1 = ay0 + uy * L;
+      ctx.strokeStyle = '#fbbf24'; ctx.fillStyle = '#fbbf24'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(ax0, ay0); ctx.lineTo(ax1, ay1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(ax1, ay1); ctx.lineTo(ax1 - 9 * ux + 4.5 * uy, ay1 - 9 * uy - 4.5 * ux); ctx.lineTo(ax1 - 9 * ux - 4.5 * uy, ay1 - 9 * uy + 4.5 * ux); ctx.closePath(); ctx.fill();
       ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(toPx(hd.x), toPy(hd.y), 8, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#0b1220'; ctx.lineWidth = 2; ctx.stroke();
       ctx.font = mono(fs * 0.9); ctx.fillStyle = '#fde68a'; ctx.textAlign = 'left';
@@ -203,8 +233,14 @@ export function mount(rootEl) {
       ctx.fillStyle = isBest ? '#fbbf24' : '#e2e8f0';
       ctx.beginPath(); ctx.arc(toPx(k.x), toPy(k.y), isBest ? 7 : 4.5, 0, Math.PI * 2); ctx.fill();
       if (isBest) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(toPx(k.x), toPy(k.y), 11, 0, Math.PI * 2); ctx.stroke(); }
-      ctx.font = mono(fs * 0.85); ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'left';
-      ctx.fillText(`(${fmt(k.x, 1)}, ${fmt(k.y, 1)})`, toPx(k.x) + 8, toPy(k.y) + fs * 1.1);
+      ctx.font = mono(fs * 0.85); ctx.fillStyle = '#e2e8f0';
+      const lbl = `(${fmt(k.x, 1)}, ${fmt(k.y, 1)})`;
+      // keep the label inside the plot: flip left near the right edge, above near the bottom edge
+      const flipX = toPx(k.x) + 8 + ctx.measureText(lbl).width > left + side - 2;
+      const flipY = toPy(k.y) + fs * 1.1 > top + side - 2;
+      ctx.textAlign = flipX ? 'right' : 'left';
+      ctx.fillText(lbl, toPx(k.x) + (flipX ? -8 : 8), toPy(k.y) + (flipY ? -fs * 0.7 : fs * 1.1));
+      ctx.textAlign = 'left';
     });
     ctx.restore();
     ctx.strokeStyle = 'rgba(148,163,184,0.6)'; ctx.lineWidth = 1.2; ctx.strokeRect(left, top, side, side);
@@ -242,6 +278,7 @@ export function mount(rootEl) {
       line(`${isBest ? '★ ' : '   '}(${fmt(k.x, 1)}, ${fmt(k.y, 1)})  z = ${fmt(k.z, 1)}   ${k.tight.join('∩')}`, isBest ? '#fbbf24' : '#cbd5e1', isBest, true, 1.35);
     });
     if (result.unbounded) line(T('Region is unbounded (open on one side).', 'Daerah tak terbatas (terbuka di satu sisi).'), '#f87171', false, false, 1.4);
+    if (result.zUnbounded) line(st.goal === 'max' ? T('No maximum: z grows without bound along the open side.', 'Tidak ada maksimum: z terus naik tanpa batas di sisi terbuka.') : T('No minimum: z decreases without bound along the open side.', 'Tidak ada minimum: z terus turun tanpa batas di sisi terbuka.'), '#f87171', true, false, 1.4);
     if (result.best) {
       yy += fs * 0.3;
       line(`${T('Optimum', 'Optimum')}: z* = ${fmt(result.best.z, 1)} ${T('at', 'di')} (${fmt(result.best.x, 1)}, ${fmt(result.best.y, 1)})`, '#fbbf24', true, false, 1.5);
@@ -258,7 +295,10 @@ export function mount(rootEl) {
     },
     onDrag(id, x, y) {
       const wx = ((x - plot.x0) / plot.s) * plot.R, wy = ((plot.y0 - y) / plot.s) * plot.R;
-      st.zLevel = Math.round((st.p * wx + st.q * wy) * 10) / 10;
+      const R = plot.R, zs = [0, st.p * R, st.q * R, (st.p + st.q) * R];
+      // keep the level line inside the window so its handle never disappears
+      const z = Math.max(Math.min(...zs), Math.min(Math.max(...zs), st.p * wx + st.q * wy));
+      st.zLevel = Math.round(z * 10) / 10;
     },
     handles: () => { const h = levelHandle(); return h ? [{ id: 'level', x: toPx(h.x), y: toPy(h.y), label: `Objective level line, z = ${fmt(st.zLevel, 1)} (drag)` }] : []; },
     cursor: 'default', hoverCursor: 'grab',

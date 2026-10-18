@@ -54,7 +54,7 @@ export default {
         const Y = (y) => (220 - ((y + 2) / 11) * 200).toFixed(1);
         const exp = [], log = [];
         for (let i = 0; i <= 60; i++) {
-          const x = -2 + (i / 60) * 5.2;               // up to x≈3.2, y≈9.2
+          const x = -2 + (i / 60) * 5.15;              // up to x≈3.15, y≈8.9 (stays inside the 200×200 plot box)
           exp.push(`${X(x)},${Y(Math.pow(2, x))}`);
         }
         for (let i = 1; i <= 80; i++) {

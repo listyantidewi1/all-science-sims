@@ -17,9 +17,9 @@ function fmt(v, d = 3) {
 
 const CONTEXTS = {
   none:     { a: 1,  b: 2,    c: 10,  R: 8,  xu: ['x', 'x'], yu: ['y', 'y'] },
-  bacteria: { a: 1,  b: 2,    c: 50,  R: 8,  xu: ['x = hours', 'x = jam'], yu: ['y = cells (thousands)', 'y = sel (ribuan)'] },
-  decay:    { a: 10, b: 0.9,  c: 2.5, R: 12, xu: ['x = days', 'x = hari'], yu: ['y = mass (g)', 'y = massa (g)'] },
-  growth:   { a: 10, b: 1.08, c: 20,  R: 12, xu: ['x = years', 'x = tahun'], yu: ['y = Rp (million)', 'y = Rp (juta)'] },
+  bacteria: { a: 1,  b: 2,    c: 50,  R: 60, xu: ['x = hours', 'x = jam'], yu: ['y = cells (thousands)', 'y = sel (ribuan)'] },
+  decay:    { a: 10, b: 0.9,  c: 2.5, R: 16, xu: ['x = days', 'x = hari'], yu: ['y = mass (g)', 'y = massa (g)'] },
+  growth:   { a: 10, b: 1.08, c: 20,  R: 25, xu: ['x = years', 'x = tahun'], yu: ['y = Rp (million)', 'y = Rp (juta)'] },
 };
 
 export function mount(rootEl) {
@@ -107,8 +107,13 @@ export function mount(rootEl) {
     ctx.setLineDash([]);
     if (Number.isFinite(xs)) {
       ctx.fillStyle = '#f87171'; ctx.beginPath(); ctx.arc(toPx(xs), toPy(p.c), 4, 0, Math.PI * 2); ctx.fill();
-      ctx.font = mono(fs * 0.9); ctx.textAlign = 'left';
-      ctx.fillText(`x = ${fmt(xs)}`, toPx(xs) + 6, plot.y0 - 6);
+      ctx.font = mono(fs * 0.9);
+      const xsTxt = `x = ${fmt(xs)}`;
+      // keep the label inside the plot: flip to the left of the drop line near the right edge
+      const fits = toPx(xs) + 6 + ctx.measureText(xsTxt).width < left + side - 4;
+      ctx.textAlign = fits ? 'left' : 'right';
+      ctx.fillText(xsTxt, toPx(xs) + (fits ? 6 : -6), plot.y0 - 6);
+      ctx.textAlign = 'left';
     }
     // marker point and its reflection
     const y = f(p.x);
@@ -185,7 +190,8 @@ export function mount(rootEl) {
     },
     onDrag(id, x) {
       const nx = ((x - plot.x0) / plot.s) * plot.R;
-      p.x = Math.round(Math.max(-p.R, Math.min(p.R, nx)) * 20) / 20;
+      const lim = Math.min(10, p.R);                 // the x slider spans ±10
+      p.x = Math.round(Math.max(-lim, Math.min(lim, nx)) * 20) / 20;
       xS.value = p.x;
     },
     handles: () => {

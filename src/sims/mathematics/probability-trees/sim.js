@@ -115,9 +115,9 @@ export function mount(rootEl) {
   }
 
   // ---- drawing ----------------------------------------------------------------------
-  function text(ctx, s, x, y, color, size, bold = false, align = 'left') {
+  function text(ctx, s, x, y, color, size, bold = false, align = 'left', maxW = undefined) {
     ctx.fillStyle = color; ctx.font = `${bold ? 'bold ' : ''}${size}px ${FONT}`; ctx.textAlign = align; ctx.textBaseline = 'middle';
-    ctx.fillText(s, x, y);
+    ctx.fillText(s, x, y, maxW);
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
   }
   function branch(ctx, x1, y1, x2, y2, color, width, label) {
@@ -139,7 +139,8 @@ export function mount(rootEl) {
     ctx.fillStyle = '#0b1220'; ctx.fillRect(0, 0, W, H);
     const m = model(), ev = events(m);
     const fsz = fontPx(0.021), small = fontPx(0.018);
-    const x0 = W * 0.05, x1 = W * 0.22, x2 = W * 0.40;
+    const x0 = W * 0.03, x1 = W * 0.16, x2 = W * 0.30;   // tree columns; the leaf text must end before the panel at 0.65 W
+    const xProb = x2 + W * 0.1, xEnd = W * 0.635;
     const yRoot = H * 0.55, yTop = H * 0.32, yBot = H * 0.80;
     const leafY = [H * 0.2, H * 0.44, H * 0.66, H * 0.92];
     const r1 = clamp(W * 0.018, 7, 14), r2 = clamp(W * 0.014, 6, 11);
@@ -147,8 +148,8 @@ export function mount(rootEl) {
     // Stage headers
     text(ctx, m.stage1, (x0 + x1) / 2, H * 0.07, '#cbd5e1', small, true, 'center');
     text(ctx, m.stage2, (x1 + x2) / 2, H * 0.07, '#cbd5e1', small, true, 'center');
-    text(ctx, T('outcome', 'hasil'), x2 + W * 0.045, H * 0.07, '#cbd5e1', small, true, 'left');
-    text(ctx, T('probability', 'peluang'), x2 + W * 0.12, H * 0.07, '#cbd5e1', small, true, 'left');
+    text(ctx, T('outcome', 'hasil'), x2 + W * 0.025, H * 0.07, '#cbd5e1', small, true, 'left', W * 0.07);
+    text(ctx, T('probability', 'peluang'), xProb, H * 0.07, '#cbd5e1', small, true, 'left');
 
     // Leaf highlighting for events A and B (mutually-exclusive view) — drawn first as backgrounds
     const leafTag = (i) => { const a = ev.A.leaves.includes(i), b = ev.B.leaves.includes(i); return a && b ? 'both' : a ? 'A' : b ? 'B' : null; };
@@ -157,7 +158,7 @@ export function mount(rootEl) {
         const tag = leafTag(i);
         if (!tag) continue;
         ctx.fillStyle = tag === 'both' ? 'rgba(167,139,250,0.22)' : tag === 'A' ? 'rgba(245,158,11,0.18)' : 'rgba(56,189,248,0.18)';
-        ctx.beginPath(); ctx.roundRect(x2 - r2 - 6, leafY[i] - H * 0.055, W * 0.235, H * 0.11, 8); ctx.fill();
+        ctx.beginPath(); ctx.roundRect(x2 - r2 - 6, leafY[i] - H * 0.055, xEnd - (x2 - r2 - 6), H * 0.11, 8); ctx.fill();
       }
     }
     // Branches: first stage
@@ -180,29 +181,28 @@ export function mount(rootEl) {
       node(ctx, x2, leafY[i], i % 2 === 0 ? COL.X : COL.Y, '', r2);
       const nm = names[i].join(m.X.length > 2 ? ', ' : '');
       text(ctx, nm, x2 + r2 + 8, leafY[i], '#e2e8f0', fsz, true);
-      text(ctx, `${fs(firstP[i])} × ${fs(secondP[i])} = ${fs(m.leaves[i])}`, x2 + W * 0.12, leafY[i] - fsz * 0.7, '#e2e8f0', fsz);
-      text(ctx, `= ${dec(m.leaves[i])}`, x2 + W * 0.12, leafY[i] + fsz * 0.7, COL.dim, small);
-      if (state.trials) text(ctx, `${state.trials.counts[i]}/${state.trials.n}`, x2 + W * 0.235, leafY[i], '#a7f3d0', small, false, 'right');
+      text(ctx, `${fs(firstP[i])} × ${fs(secondP[i])} = ${fs(m.leaves[i])}`, xProb, leafY[i] - fsz * 0.7, '#e2e8f0', fsz, false, 'left', xEnd - xProb);
+      text(ctx, `= ${dec(m.leaves[i])}`, xProb, leafY[i] + fsz * 0.7, COL.dim, small);
+      if (state.trials) text(ctx, `${state.trials.counts[i]}/${state.trials.n} ${T('observed', 'teramati')}`, xProb + W * 0.07, leafY[i] + fsz * 0.7, '#a7f3d0', small, false, 'left', xEnd - xProb - W * 0.07);
       if (state.hiExcl) {
         const tag = leafTag(i);
         if (tag) text(ctx, tag === 'both' ? 'A∩B' : tag, x2 - r2 - 4, leafY[i] - H * 0.04, tag === 'both' ? COL.both : COL[tag], small, true, 'right');
       }
     }
-    if (state.trials) text(ctx, T('observed', 'teramati'), x2 + W * 0.235, H * 0.07, '#a7f3d0', small, true, 'right');
 
     // Independence note (bottom-left)
     if (state.hiIndep) {
       const msg = m.independent
         ? T(`Stages independent: P(${m.X}₂ | ${m.X}₁) = P(${m.X}₂ | ${m.Y}₁) = ${fs(m.p2X)}`, `Tahap saling bebas: P(${m.X}₂ | ${m.X}₁) = P(${m.X}₂ | ${m.Y}₁) = ${fs(m.p2X)}`)
         : T(`Stages dependent: P(${m.X}₂ | ${m.X}₁) = ${fs(m.p2X)} but P(${m.X}₂ | ${m.Y}₁) = ${fs(m.p2Y)}`, `Tahap tidak bebas: P(${m.X}₂ | ${m.X}₁) = ${fs(m.p2X)} tetapi P(${m.X}₂ | ${m.Y}₁) = ${fs(m.p2Y)}`);
-      text(ctx, msg, W * 0.02, H * 0.975, m.independent ? COL.ok : '#fde68a', small, true);
+      text(ctx, msg, W * 0.02, H * 0.975, m.independent ? COL.ok : '#fde68a', small, true, 'left', W * 0.61);
     }
 
     // Right panel: events
-    const px = W * 0.665, pw = W * 0.325, lh = fsz * 1.5;
+    const px = W * 0.65, pw = W * 0.34, lh = fsz * 1.4;
     ctx.fillStyle = 'rgba(15,23,42,0.85)'; ctx.beginPath(); ctx.roundRect(px, H * 0.03, pw, H * 0.94, 10); ctx.fill();
     let y = H * 0.03 + lh * 0.9;
-    const put = (s, color = '#e2e8f0', bold = false, size = fsz) => { text(ctx, s, px + 10, y, color, size, bold); y += lh; };
+    const put = (s, color = '#e2e8f0', bold = false, size = fsz) => { text(ctx, s, px + 10, y, color, size, bold, 'left', pw - 20); y += lh; };
     put(`A: ${evLabel(ev.A, m)}`, COL.A, true);
     put(`B: ${evLabel(ev.B, m)}`, COL.B, true);
     put(`P(A) = ${fs(ev.pA)} = ${dec(ev.pA)}`, COL.A);
@@ -210,12 +210,17 @@ export function mount(rootEl) {
     put(`P(A ∩ B) = ${fs(ev.pAB)} = ${dec(ev.pAB)}`, COL.both);
     put(`P(A ∪ B) = ${fs(ev.pA)} + ${fs(ev.pB)} − ${fs(ev.pAB)} = ${fs(ev.pU)}`, '#e2e8f0', false, small);
     y += lh * 0.3;
-    put(`P(A|B) = P(A∩B)/P(B) = ${fs(ev.pAB)} ÷ ${fs(ev.pB)} = ${fs(ev.pAgB)}`, '#fff', true, small);
+    put(`P(A|B) = P(A∩B)/P(B)`, '#fff', true, small);
+    put(`       = ${fs(ev.pAB)} ÷ ${fs(ev.pB)} = ${fs(ev.pAgB)}`, '#fff', true, small);
     put(`P(B|A) = ${fs(ev.pAB)} ÷ ${fs(ev.pA)} = ${fs(ev.pBgA)}`, '#cbd5e1', false, small);
     y += lh * 0.3;
     if (state.hiExcl) {
-      put(ev.exclusive ? T('A, B mutually exclusive: no shared leaf, so P(A∪B) = P(A) + P(B)', 'A, B saling lepas: tak ada daun bersama, jadi P(A∪B) = P(A) + P(B)')
-                       : T(`A, B overlap on ${ev.inter.length} leaf${ev.inter.length > 1 ? 'ves' : ''}: not mutually exclusive`, `A, B beririsan pada ${ev.inter.length} daun: tidak saling lepas`), ev.exclusive ? COL.ok : '#fde68a', true, small);
+      if (ev.exclusive) {
+        put(T('A, B mutually exclusive: no shared leaf,', 'A, B saling lepas: tak ada daun bersama,'), COL.ok, true, small);
+        put(T('so P(A∪B) = P(A) + P(B)', 'jadi P(A∪B) = P(A) + P(B)'), COL.ok, true, small);
+      } else {
+        put(T(`A, B overlap on ${ev.inter.length} leaf${ev.inter.length > 1 ? 'ves' : ''}: not mutually exclusive`, `A, B beririsan pada ${ev.inter.length} daun: tidak saling lepas`), '#fde68a', true, small);
+      }
     }
     if (state.hiIndep) {
       const prod = mul(ev.pA, ev.pB);
@@ -266,7 +271,7 @@ export function mount(rootEl) {
     value: state.die, onChange: (v) => { state.die = v; state.trials = null; },
   });
   const evOpts = EVENTS.map((e) => ({ value: e.id, label: e.en('X', 'Y') }));
-  const evASel = select({ label: 'Event A (X = 1st outcome, Y = 2nd)', key: 'a', options: evOpts, value: state.evA, onChange: (v) => { state.evA = v; } });
+  const evASel = select({ label: 'Event A (X = red / heads / six, Y = the other)', key: 'a', options: evOpts, value: state.evA, onChange: (v) => { state.evA = v; } });
   const evBSel = select({ label: 'Event B', key: 'b', options: evOpts, value: state.evB, onChange: (v) => { state.evB = v; } });
   const indepT = toggle({ label: 'Highlight independent / dependent', key: 'indep', value: state.hiIndep, onChange: (v) => { state.hiIndep = v; } });
   const exclT = toggle({ label: 'Highlight mutually exclusive', key: 'excl', value: state.hiExcl, onChange: (v) => { state.hiExcl = v; } });

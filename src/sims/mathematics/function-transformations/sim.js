@@ -181,19 +181,25 @@ export function mount(rootEl) {
     return lines.length * lh + pad * 1.2;
   }
 
-  // Count how often the horizontal line y = c crosses the transformed graph in the visible window.
+  // Count how often the horizontal line y = c meets the transformed graph in the visible window:
+  // sign changes of y − c, plus tangential touches (a local extremum of y − c within tolerance of 0,
+  // e.g. y = 1 against sin x or y = 0 against x²) which have no sign change but are still solutions.
   function crossings(c) {
     const n = 2400;
-    let count = 0, prev = NaN, prevY = NaN;
+    const tol = 2e-3 * Math.max(1, Math.abs(state.a));
+    const d = new Array(n + 1);
     for (let i = 0; i <= n; i++) {
-      const x = -XR + (2 * XR * i) / n;
-      const y = transformed(x);
-      if (!Number.isFinite(y)) { prev = NaN; continue; }
-      const d = y - c;
-      if (Number.isFinite(prev) && Math.abs(y - prevY) < 50) {
-        if (d === 0 || (d > 0) !== (prev > 0)) count++;
-      }
-      prev = d; prevY = y;
+      const y = transformed(-XR + (2 * XR * i) / n);
+      d[i] = Number.isFinite(y) ? y - c : NaN;
+    }
+    let count = 0;
+    for (let i = 1; i <= n; i++) {
+      const a = d[i - 1], b = d[i];
+      if (b === 0) { count++; continue; }                                                   // exact hit on a sample
+      if (!Number.isFinite(a) || !Number.isFinite(b) || Math.abs(b - a) > 50) continue;   // gap or asymptote jump
+      if (a * b < 0) { count++; continue; }                                                 // crossing
+      if (i < n && Number.isFinite(d[i + 1]) && Math.abs(b) < tol && Math.abs(b) < Math.abs(a) && Math.abs(b) <= Math.abs(d[i + 1])
+          && a * d[i + 1] > 0) count++;                                                     // touch at an extremum
     }
     return count;
   }

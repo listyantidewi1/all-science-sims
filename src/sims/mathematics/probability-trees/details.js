@@ -111,7 +111,7 @@ export default {
       en: [
         ['Independent and mutually exclusive mean the same thing.', 'They are almost opposites. Mutually exclusive events have P(A ∩ B) = 0, so if both have positive probability they cannot be independent, because independence needs P(A ∩ B) = P(A)·P(B) > 0.'],
         ['After drawing a red ball, the next ball is "due" to be blue.', 'With replacement the probabilities do not change at all. Without replacement they do change, but only because the contents of the bag changed, not because of luck balancing out.'],
-        ['P(A | B) and P(B | A) are the same.', 'In general they differ: P(A | B) = P(A ∩ B)/P(B) while P(B | A) = P(A ∩ B)/P(A). With 3 red and 2 blue without replacement, P(second R | first R) = 1/2 but the two are only equal here by symmetry; try A = "both red" and B = "first red" to see 1/2 versus 1.'],
+        ['P(A | B) and P(B | A) are the same.', 'In general they differ: P(A | B) = P(A ∩ B)/P(B) while P(B | A) = P(A ∩ B)/P(A). With 3 red and 2 blue without replacement, try A = "both red" and B = "first red": P(A | B) = 1/2 but P(B | A) = 1.'],
         ['The probability of "at least one head" in two flips is 1/2 + 1/2 = 1.', 'Adding only works for mutually exclusive events. "First is a head" and "second is a head" overlap (both heads), so P = 1/2 + 1/2 − 1/4 = 3/4, which is also 1 − P(no heads).'],
         ['nCr is bigger than nPr because combinations are "more general".', 'nCr is never bigger: every combination gives r! different permutations, so nPr = nCr·r! ≥ nCr. For n = 5, r = 3: 60 permutations but 10 combinations.'],
       ],

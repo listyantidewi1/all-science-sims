@@ -13,6 +13,7 @@ function fmt(v, d = 2) {
   if (a >= 1e9) return v.toExponential(2);
   if (a >= 1e5) return Math.round(v).toLocaleString('en-US');
   if (Number.isInteger(v)) return String(v);
+  if (a < 0.005) return v.toPrecision(3);        // tiny terms such as 3·0.5^19 must not print as 0.00
   return v.toFixed(d);
 }
 function fmtRp(v) {
@@ -131,9 +132,15 @@ export function mount(rootEl) {
       ctx.fillStyle = idx === p.n - 1 ? '#f59e0b' : (isG ? '#a78bfa' : '#38bdf8');
       ctx.fillRect(x, Math.min(y0, y1), bw, Math.max(1, Math.abs(y1 - y0)));
       ctx.fillStyle = '#94a3b8';
-      if (p.n <= 12 || idx % 2 === 0 || idx === p.n - 1) {
+      if (p.n <= 12 || (idx % 2 === 0 && idx < p.n - 2) || idx === p.n - 1) {
         ctx.fillText(`u${idx + 1}`, x + bw / 2, bottom + fs * 1.3);
-        if (p.n <= 10) ctx.fillText(fmt(v, 1), x + bw / 2, v >= 0 ? y1 - 4 : y1 + fs);
+        if (p.n <= 10) {
+          // value label outside the bar end, moved inside when it would collide with the title or the axis labels
+          let ly = v >= 0 ? y1 - 4 : y1 + fs;
+          if (v >= 0 && ly < top + fs * 0.6) ly = y1 + fs;
+          if (v < 0 && ly > bottom - 2) ly = y1 - 4;
+          ctx.fillText(fmt(v, 1), x + bw / 2, ly);
+        }
       }
     });
     ctx.strokeStyle = 'rgba(148,163,184,0.6)'; ctx.lineWidth = 1;
@@ -173,7 +180,7 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.arc(xG(idx + 1), yG(v), rad, 0, Math.PI * 2); ctx.fill();
     });
     ctx.fillStyle = '#94a3b8'; ctx.font = mono(fs); ctx.textAlign = 'center';
-    for (let k = 1; k <= p.n; k++) if (p.n <= 12 || k % 2 === 0 || k === p.n) ctx.fillText(String(k), xG(k), bottom + fs * 1.3);
+    for (let k = 1; k <= p.n; k++) if (p.n <= 12 || (k % 2 === 0 && k < p.n - 1) || k === p.n) ctx.fillText(String(k), xG(k), bottom + fs * 1.3);
     ctx.textAlign = 'right';
     ctx.fillText(fmt(ghi, 0), gx0 - 4, top + fs * 0.4);
     ctx.fillText(fmt(glo, 0), gx0 - 4, bottom);
@@ -191,9 +198,11 @@ export function mount(rootEl) {
       `${T('Simple', 'Tunggal')}:    Mₙ = M₀(1 + i·n) = ${fmtRp(S)}   (${T('arithmetic, d =', 'aritmetika, b =')} ${fmtRp(P * i())})`,
       `${T('Compound', 'Majemuk')}:  Mₙ = M₀(1 + i)ⁿ = ${fmtRp(C)}   (${T('geometric, r =', 'geometri, r =')} ${(1 + i()).toFixed(3)})`,
     ]);
-    const top = H * 0.27, bottom = H * 0.9, gx0 = W * 0.1, gx1 = W * 0.96;
     const fs = Math.max(9, Math.min(12, W * 0.015));
     const hi = Math.max(C, S) * 1.05 || 1;
+    ctx.font = mono(fs);
+    const gx0 = W * 0.03 + ctx.measureText(fmtRp(hi)).width + 8;   // leave room for the longest Rp axis label
+    const top = H * 0.27, bottom = H * 0.9, gx1 = W * 0.96;
     const xG = (t) => gx0 + (t / n) * (gx1 - gx0);
     const yG = (v) => bottom - (v / hi) * (bottom - top);
     ctx.strokeStyle = 'rgba(148,163,184,0.3)'; ctx.lineWidth = 1;
@@ -239,12 +248,16 @@ export function mount(rootEl) {
       `A = M₀·i / (1 − (1+i)^−n) = ${fmtRp(A)} ${T('per period', 'per periode')}`,
       `${T('Total paid', 'Total dibayar')} = n·A = ${fmtRp(total)}   ${T('Total interest', 'Total bunga')} = ${fmtRp(total - P)}`,
     ]);
-    const fs = Math.max(8, Math.min(11.5, W * 0.0145));
+    let fs = Math.max(8, Math.min(11.5, W * 0.0145));
     const top = H * 0.27, bottom = H * 0.95;
     // ---- table (left) ----
     const tx0 = W * 0.03, tx1 = W * 0.6;
     const cols = [T('Period', 'Periode'), T('Payment', 'Angsuran'), T('Interest', 'Bunga'), T('Principal', 'Pokok'), T('Balance', 'Sisa')];
     const cw = [(tx1 - tx0) * 0.12, (tx1 - tx0) * 0.22, (tx1 - tx0) * 0.22, (tx1 - tx0) * 0.22, (tx1 - tx0) * 0.22];
+    // shrink the table font when large Rp amounts would not fit their columns
+    ctx.font = mono(fs);
+    const widest = Math.max(ctx.measureText(fmtRp(A)).width, ctx.measureText(fmtRp(P)).width) + 10;
+    if (widest > cw[1]) fs = Math.max(7, fs * cw[1] / widest);
     const rowH = fs * 1.55;
     ctx.font = font(fs, true); ctx.fillStyle = '#cbd5e1'; ctx.textAlign = 'right';
     let x = tx0;
