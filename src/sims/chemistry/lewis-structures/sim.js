@@ -54,7 +54,7 @@ export function mount(rootEl) {
     const n = state.mol.atoms.length - 1;
     const R = Math.min(W, H) * (n >= 5 ? 0.3 : 0.27);
     const dirs = DIRS[n] || DIRS[1];
-    return [[cx, cy], ...dirs.map(([dx, dy]) => [cx + dx * R, cy + dy * R])];
+    return [[cx, cy], ...dirs.map(([dx, dy]) => [cx + dx * R, cy + dy * R * 0.75])];
   }
   const atomR = () => Math.min(cv.width, cv.height) * 0.065;
 
@@ -199,21 +199,27 @@ export function mount(rootEl) {
       ctx.fillText(hint, W * 0.975, H * 0.08);
     }
     ctx.font = `${fs}px system-ui, sans-serif`; ctx.fillStyle = '#94a3b8';
-    ctx.fillText(T('Click between atoms: bond ∅→–→=→≡', 'Klik di antara atom: ikatan ∅→–→=→≡'), W * 0.975, H * 0.08 + fs * 1.7);
-    ctx.fillText(T('Click an atom: add a lone pair', 'Klik sebuah atom: tambah pasangan bebas'), W * 0.975, H * 0.08 + fs * 3.4);
+    if (an.valid && state.mol.atoms.length > 2) {
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText(T(`${an.domains} electron domains on ${state.mol.atoms[0]}:`, `${an.domains} domain elektron pada ${state.mol.atoms[0]}:`), W * 0.975, H * 0.08 + fs * 1.7);
+      ctx.fillText(T(`${an.per[0].nBonded} bonded atoms + ${state.lp[0]} lone pairs`, `${an.per[0].nBonded} atom terikat + ${state.lp[0]} pasangan bebas`), W * 0.975, H * 0.08 + fs * 3.4);
+    } else {
+      ctx.fillText(T('Click between atoms: bond ∅→–→=→≡', 'Klik di antara atom: ikatan ∅→–→=→≡'), W * 0.975, H * 0.08 + fs * 1.7);
+      ctx.fillText(T('Click an atom: add a lone pair', 'Klik sebuah atom: tambah pasangan bebas'), W * 0.975, H * 0.08 + fs * 3.4);
+    }
     // Bottom: VSEPR link + note
     ctx.textAlign = 'left';
     if (an.valid) {
       ctx.fillStyle = '#e2e8f0'; ctx.font = `bold ${fs}px system-ui, sans-serif`;
-      const dom = state.mol.atoms.length === 2 ? '' : T(` — ${an.domains} electron domains on ${state.mol.atoms[0]} (${an.per[0].nBonded} bonded atoms + ${state.lp[0]} lone pairs)`, ` — ${an.domains} domain elektron pada ${state.mol.atoms[0]} (${an.per[0].nBonded} atom terikat + ${state.lp[0]} pasangan bebas)`);
-      ctx.fillText(T(`VSEPR shape: ${an.shape[0]}${an.shape[1] ? ', ' + an.shape[1] : ''}`, `Bentuk VSEPR: ${an.shape[0]}${an.shape[1] ? ', ' + an.shape[1] : ''}`) + dom, W * 0.025, H * 0.93);
+      ctx.fillText(T(`VSEPR shape: ${an.shape[0]}${an.shape[1] ? ', ' + an.shape[1] : ''}`, `Bentuk VSEPR: ${an.shape[0]}${an.shape[1] ? ', ' + an.shape[1] : ''}`), W * 0.025, H * 0.93);
     } else {
       ctx.fillStyle = '#64748b'; ctx.font = `${fs}px system-ui, sans-serif`;
       ctx.fillText(T('VSEPR shape appears when the structure is valid. Formal charge = valence − lone electrons − bonds.', 'Bentuk VSEPR muncul jika struktur sah. Muatan formal = valensi − elektron bebas − jumlah ikatan.'), W * 0.025, H * 0.93);
     }
     if (state.mol.note) {
       ctx.fillStyle = '#fbbf24'; ctx.font = `italic ${Math.round(fs * 0.95)}px system-ui, sans-serif`;
-      ctx.fillText(state.mol.note[getLocale() === 'id' ? 1 : 0], W * 0.025, H * 0.98);
+      const note = state.mol.note[getLocale() === 'id' ? 1 : 0];
+      if (ctx.measureText(note).width <= W * 0.95) ctx.fillText(note, W * 0.025, H * 0.98);
     }
   }
 
@@ -246,13 +252,17 @@ export function mount(rootEl) {
   editor.setAttribute('role', 'group');
   editor.setAttribute('aria-label', T('Keyboard editor: bonds and lone pairs', 'Editor papan ketik: ikatan dan pasangan bebas'));
   editor.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px';
+  const noteEl = document.createElement('div');
+  noteEl.style.cssText = 'font-size:0.85rem;color:#b45309;font-style:italic';
   const hint = document.createElement('div');
   hint.style.cssText = 'font-size:0.8rem;color:var(--color-muted)';
   hint.textContent = T('Keyboard: Tab to a button and press Enter to cycle it. Bond pairs count 2 electrons each; lone pairs count 2 each.', 'Papan ketik: Tab ke tombol lalu tekan Enter untuk mengubahnya. Tiap pasangan ikatan 2 elektron; tiap pasangan bebas 2 elektron.');
-  ctrlPanel.append(row(molSel), row(answerB, clearB), editor, hint);
+  ctrlPanel.append(row(molSel), row(answerB, clearB), noteEl, editor, hint);
   let editorBtns = [];
   const BOND_SYM = ['∅', '–', '=', '≡'];
   function rebuildEditor() {
+    noteEl.textContent = state.mol.note ? state.mol.note[getLocale() === 'id' ? 1 : 0] : '';
+    noteEl.style.display = state.mol.note ? '' : 'none';
     editor.innerHTML = ''; editorBtns = [];
     const c = state.mol.atoms[0];
     state.mol.atoms.slice(1).forEach((sym, k) => {

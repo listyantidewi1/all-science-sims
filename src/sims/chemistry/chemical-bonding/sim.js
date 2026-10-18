@@ -131,18 +131,20 @@ export function mount(rootEl) {
       const yy = cy + (k - (info.order - 1) / 2) * dr * 4.2;
       dot(ctx, cx + shift - dr * 1.1, yy, dr); dot(ctx, cx + shift + dr * 1.1, yy, dr);
     }
-    // Remaining electrons around each atom: pairs first, singles are "bonds to other atoms"
+    // Remaining electrons around each atom: lone pairs = (valence − usual bonds)/2 (yellow),
+    // then one single electron per bond the atom still makes to other atoms (orange).
     const place = (x, el, inward) => {
-      let left = el.val - info.order;
+      let pairs = Math.max(0, Math.floor((el.val - el.cap) / 2));
+      let singles = Math.max(0, el.cap - info.order);
       const sides = SIDES.filter((s) => s[0] !== inward); // skip the side facing the partner
       let i = 0;
-      while (left > 0 && i < sides.length) {
+      while ((pairs > 0 || singles > 0) && i < sides.length) {
         const [sx, sy] = sides[i];
         const px = x + sx * r * 1.45, py = cy + sy * r * 1.45;
-        if (left >= 2) {
+        if (pairs > 0) {
           const ox = sy !== 0 ? dr * 1.1 : 0, oy = sx !== 0 ? dr * 1.1 : 0;
-          dot(ctx, px - ox, py - oy, dr); dot(ctx, px + ox, py + oy, dr); left -= 2;
-        } else { dot(ctx, px, py, dr, '#fb923c'); left -= 1; }
+          dot(ctx, px - ox, py - oy, dr); dot(ctx, px + ox, py + oy, dr); pairs--;
+        } else { dot(ctx, px, py, dr, '#fb923c'); singles--; }
         i++;
       }
     };
@@ -167,7 +169,12 @@ export function mount(rootEl) {
       T(`One ${A.sym}–${B.sym} ${bondWord} bond: ${info.order} shared pair${info.order > 1 ? 's' : ''}`, `Satu ikatan ${bondWord} ${A.sym}–${B.sym}: ${info.order} pasangan elektron dipakai bersama`),
       T('yellow = pairs · orange = electron that bonds to another atom', 'kuning = pasangan · oranye = elektron yang berikatan dengan atom lain'),
     ];
-    lines.forEach((s, i) => ctx.fillText(s, X0 + Wv * 0.33, Y0 + Hv * 0.93 - (lines.length - 1 - i) * fs * 1.3));
+    ctx.textAlign = 'left';
+    lines.forEach((s, i) => {
+      ctx.font = `${i === 0 ? fs : Math.round(fs * 0.85)}px system-ui, sans-serif`;
+      ctx.fillText(s, X0 + fs * 0.6, Y0 + Hv * 0.93 - (lines.length - 1 - i) * fs * 1.3);
+    });
+    ctx.textAlign = 'center'; ctx.font = `${fs}px system-ui, sans-serif`;
     // Right side: molecule card
     const rx = X0 + Wv * 0.8;
     ctx.fillStyle = '#e2e8f0';
@@ -305,22 +312,22 @@ export function mount(rootEl) {
     ctx.fillStyle = { ionic: '#f87171', polar: '#fbbf24', nonpolar: '#4ade80', network: '#4ade80', metallic: '#38bdf8' }[info.type];
     ctx.fillText(typeName(info.type), W * 0.97, H * 0.065);
     // Visual region
-    const X0 = W * 0.03, Y0 = H * 0.1, Wv = W * 0.94, Hv = H * 0.46;
+    const X0 = W * 0.03, Y0 = H * 0.1, Wv = W * 0.94, Hv = H * 0.42;
     ctx.strokeStyle = 'rgba(148,163,184,0.25)'; ctx.lineWidth = 1;
     ctx.strokeRect(X0, Y0, Wv, Hv);
     if (info.type === 'ionic') drawIonic(ctx, X0, Y0, Wv, Hv, info);
     else if (info.type === 'metallic') drawMetallic(ctx, X0, Y0, Wv, Hv, info);
     else drawCovalent(ctx, X0, Y0, Wv, Hv, info);
     // ΔEN bar
-    const bx = W * 0.08, bw = W * 0.84, by = H * 0.63, bh = H * 0.045, maxEN = 3.3;
+    const bx = W * 0.08, bw = W * 0.84, by = H * 0.605, bh = H * 0.045, maxEN = 3.3;
     const xOf = (v) => bx + bw * clamp(v / maxEN, 0, 1);
     ctx.fillStyle = 'rgba(74,222,128,0.35)'; ctx.fillRect(bx, by, xOf(0.4) - bx, bh);
     ctx.fillStyle = 'rgba(251,191,36,0.35)'; ctx.fillRect(xOf(0.4), by, xOf(1.7) - xOf(0.4), bh);
     ctx.fillStyle = 'rgba(248,113,113,0.35)'; ctx.fillRect(xOf(1.7), by, bx + bw - xOf(1.7), bh);
     ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.fillStyle = '#94a3b8';
-    ctx.fillText(T('non-polar', 'nonpolar'), (bx + xOf(0.4)) / 2, by - fs * 0.5);
-    ctx.fillText(T('polar covalent', 'kovalen polar'), (xOf(0.4) + xOf(1.7)) / 2, by - fs * 0.5);
-    ctx.fillText(T('ionic', 'ion'), (xOf(1.7) + bx + bw) / 2, by - fs * 0.5);
+    ctx.fillText(T('non-polar', 'nonpolar'), (bx + xOf(0.4)) / 2, by - fs * 0.35);
+    ctx.fillText(T('polar covalent', 'kovalen polar'), (xOf(0.4) + xOf(1.7)) / 2, by - fs * 0.35);
+    ctx.fillText(T('ionic', 'ion'), (xOf(1.7) + bx + bw) / 2, by - fs * 0.35);
     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1.5;
     for (const v of [0.4, 1.7]) { ctx.beginPath(); ctx.moveTo(xOf(v), by - 3); ctx.lineTo(xOf(v), by + bh + 3); ctx.stroke(); ctx.fillText(v.toFixed(1), xOf(v), by + bh + fs * 1.1); }
     ctx.fillText('0', bx, by + bh + fs * 1.1); ctx.fillText(maxEN.toFixed(1), bx + bw, by + bh + fs * 1.1);
@@ -331,24 +338,43 @@ export function mount(rootEl) {
     ctx.font = `bold ${fs}px system-ui, sans-serif`;
     ctx.fillText(`ΔEN = ${info.dEN.toFixed(2)}`, clamp(px, bx + fs * 3, bx + bw - fs * 3), by + bh + fs * 2.4);
     ctx.textAlign = 'left'; ctx.fillStyle = '#64748b'; ctx.font = `${Math.round(fs * 0.85)}px system-ui, sans-serif`;
-    ctx.fillText(T('guideline only — real bonding is a continuum', 'hanya pedoman — ikatan nyata berupa rentang kontinu'), bx, by - fs * 1.7);
-    // Properties
-    let y = H * 0.775;
+    ctx.fillText(T('guideline only — real bonding is a continuum', 'hanya pedoman — ikatan nyata berupa rentang kontinu'), bx, by - fs * 1.5);
+    // Properties (value column starts after the widest label, so Indonesian labels do not collide)
+    let y = H * 0.79;
     ctx.font = `${fs}px system-ui, sans-serif`;
-    for (const [k, v] of properties(info)) {
+    const props = properties(info);
+    const colX = W * 0.03 + Math.max(...props.map(([k]) => ctx.measureText(k + ':').width)) + fs * 0.8;
+    for (const [k, v] of props) {
       ctx.fillStyle = '#94a3b8'; ctx.fillText(k + ':', W * 0.03, y);
-      ctx.fillStyle = '#e2e8f0'; ctx.fillText(v, W * 0.03 + fs * 10.5, y);
-      y += fs * 1.55;
+      ctx.fillStyle = '#e2e8f0'; ctx.fillText(v, colX, y);
+      y += fs * 1.5;
     }
     if (info.flag) {
-      ctx.fillStyle = '#fbbf24'; ctx.font = `italic ${Math.round(fs * 0.9)}px system-ui, sans-serif`;
+      ctx.fillStyle = '#fbbf24';
       const msg = {
         noMetal: T('Exception: ΔEN ≥ 1.7 but no metal → still a molecular (polar covalent) compound, e.g. HF.', 'Pengecualian: ΔEN ≥ 1,7 tetapi tanpa logam → tetap senyawa molekuler (kovalen polar), mis. HF.'),
         borderline: T('Borderline: metal + non-metal with ΔEN just under 1.7 → strongly polar, partly ionic (AlCl₃ sublimes at 180 °C; BeCl₂ melts at 399 °C).', 'Perbatasan: logam + nonlogam dengan ΔEN sedikit di bawah 1,7 → sangat polar, sebagian ionik (AlCl₃ menyublim pada 180 °C; BeCl₂ meleleh pada 399 °C).'),
         metalCovalent: T('Note: metal + non-metal, yet ΔEN < 1.7 → the guideline says polar covalent; real compounds range from ionic (NaH) to covalent (GaBr₃).', 'Catatan: logam + nonlogam, tetapi ΔEN < 1,7 → pedoman menyebut kovalen polar; senyawa nyata berkisar dari ionik (NaH) hingga kovalen (GaBr₃).'),
       }[info.flag];
-      ctx.fillText(msg, W * 0.03, H * 0.975);
+      // wrap to at most two lines, shrinking the font if needed, so nothing is clipped at the right edge
+      let fsz = Math.round(fs * 0.9), lines = [];
+      for (; fsz >= 8; fsz--) {
+        ctx.font = `italic ${fsz}px system-ui, sans-serif`;
+        lines = wrapText(ctx, msg, W * 0.94);
+        if (lines.length <= 2) break;
+      }
+      lines.forEach((ln, i) => ctx.fillText(ln, W * 0.03, H * 0.975 - (lines.length - 1 - i) * fsz * 1.2));
     }
+  }
+  function wrapText(ctx, text, maxW) {
+    const words = text.split(' '), out = [];
+    let cur = '';
+    for (const w of words) {
+      const next = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(next).width > maxW && cur) { out.push(cur); cur = w; } else cur = next;
+    }
+    if (cur) out.push(cur);
+    return out;
   }
 
   function step(dt) {

@@ -11,13 +11,14 @@ const R = 0.08206;   // L·atm/(mol·K)
 const N_WATER = 1000 / 18.015; // mol of water per kg
 
 const SOLUTES = {
-  sucrose: { label: 'Sucrose C₁₂H₂₂O₁₁ (i = 1)', name: 'sucrose', i: 1, Mr: 342.3, ions: ['#fbbf24'] },
-  glycol:  { label: 'Ethylene glycol C₂H₆O₂ (i = 1)', name: 'ethylene glycol', i: 1, Mr: 62.07, ions: ['#a78bfa'] },
-  nacl:    { label: 'NaCl → Na⁺ + Cl⁻ (i ≈ 2)', name: 'NaCl', i: 2, Mr: 58.44, ions: ['#f87171', '#4ade80'] },
-  cacl2:   { label: 'CaCl₂ → Ca²⁺ + 2Cl⁻ (i ≈ 3)', name: 'CaCl₂', i: 3, Mr: 110.98, ions: ['#f87171', '#4ade80', '#4ade80'] },
+  sucrose: { label: ['Sucrose C₁₂H₂₂O₁₁ (i = 1)', 'Sukrosa C₁₂H₂₂O₁₁ (i = 1)'], name: ['sucrose', 'sukrosa'], i: 1, Mr: 342.3, ions: ['#fbbf24'] },
+  glycol:  { label: ['Ethylene glycol C₂H₆O₂ (i = 1)', 'Etilen glikol C₂H₆O₂ (i = 1)'], name: ['ethylene glycol', 'etilen glikol'], i: 1, Mr: 62.07, ions: ['#a78bfa'] },
+  nacl:    { label: ['NaCl → Na⁺ + Cl⁻ (i ≈ 2)', 'NaCl → Na⁺ + Cl⁻ (i ≈ 2)'], name: ['NaCl', 'NaCl'], i: 2, Mr: 58.44, ions: ['#f87171', '#4ade80'] },
+  cacl2:   { label: ['CaCl₂ → Ca²⁺ + 2Cl⁻ (i ≈ 3)', 'CaCl₂ → Ca²⁺ + 2Cl⁻ (i ≈ 3)'], name: ['CaCl₂', 'CaCl₂'], i: 3, Mr: 110.98, ions: ['#f87171', '#4ade80', '#4ade80'] },
 };
-// Normalised Magnus formula: vapour pressure of pure water in atm, exactly 1 at 100 °C.
-const pSat = (tC) => Math.exp(17.625 * tC / (tC + 243.04)) / Math.exp(17.625 * 100 / 343.04);
+const L = () => (getLocale() === 'id' ? 1 : 0);
+// Antoine equation for water (1–100 °C), P in atm: exactly 1 atm at 100 °C, 3.16 kPa at 25 °C, 0.61 kPa at 0 °C.
+const pSat = (tC) => Math.pow(10, 8.07131 - 1730.63 / (233.426 + tC)) / 760;
 
 const SPOTS = (() => {
   const out = [];
@@ -70,12 +71,14 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(B.x, B.y); ctx.lineTo(B.x, B.y + B.h); ctx.lineTo(B.x + B.w, B.y + B.h); ctx.stroke();
     ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'center';
     ctx.fillText(T('temperature (°C) — schematic, not to scale', 'suhu (°C) — skematis, tidak berskala'), B.x + B.w / 2, B.y + B.h + fs * 2.3);
-    ctx.save(); ctx.translate(B.x - fs * 1.3, B.y + B.h / 2); ctx.rotate(-Math.PI / 2);
+    ctx.save(); ctx.translate(B.x - fs * 2.8, B.y + B.h / 2); ctx.rotate(-Math.PI / 2);
     ctx.fillText(T('pressure (atm)', 'tekanan (atm)'), 0, 0); ctx.restore();
     // 1 atm line
     ctx.setLineDash([3, 4]); ctx.strokeStyle = 'rgba(226,232,240,0.5)';
     ctx.beginPath(); ctx.moveTo(B.x, Y(1)); ctx.lineTo(B.x + B.w, Y(1)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.textAlign = 'left'; ctx.fillStyle = '#cbd5e1'; ctx.fillText('1 atm', B.x + 4, Y(1) - 3);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#cbd5e1'; ctx.font = `${Math.round(fs * 0.85)}px system-ui, sans-serif`;
+    ctx.fillText('1 atm', B.x - 4, Y(1) + fs * 0.35);
+    ctx.font = `${fs}px system-ui, sans-serif`;
 
     // curves: vaporisation (pure, solution shifted), fusion lines, sublimation
     const curve = (shift, tStart, color, dash) => {
@@ -117,12 +120,13 @@ export function mount(rootEl) {
     // liquid range bar
     ctx.fillStyle = 'rgba(251,191,36,0.15)';
     ctx.fillRect(X(tf), Y(1) - 3, X(tb) - X(tf), 6);
+    const lgx = X(12); // right of the fusion lines, above the low-pressure part of the vapour curve
     ctx.textAlign = 'left'; ctx.fillStyle = '#93c5fd';
-    ctx.fillText(T('solid: pure water', 'biru: air murni'), B.x + 6, B.y + fs * 1.2);
+    ctx.fillText(T('solid lines: pure water', 'garis utuh: air murni'), lgx, B.y + fs * 1.2);
     ctx.fillStyle = '#fbbf24';
-    ctx.fillText(T('dashed: solution', 'putus-putus: larutan'), B.x + 6, B.y + fs * 2.4);
+    ctx.fillText(T('dashed: solution', 'putus-putus: larutan'), lgx, B.y + fs * 2.4);
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(T('liquid range widens by ΔT_f + ΔT_b', 'rentang cair melebar ΔT_f + ΔT_b'), B.x + 6, B.y + fs * 3.6);
+    ctx.fillText(T('liquid range widens by ΔT_f + ΔT_b', 'rentang cair melebar ΔT_f + ΔT_b'), lgx, B.y + fs * 3.6);
     ctx.fillStyle = '#94a3b8';
     ctx.fillText(T('ice', 'es'), X(tMin) + 6, Y(0.9));
     ctx.fillText(T('liquid', 'cair'), X(40), Y(0.9));
@@ -209,46 +213,53 @@ export function mount(rootEl) {
     const lx = W * 0.03;
     ctx.fillStyle = '#f8fafc';
     ctx.font = `bold ${fs * 1.1}px system-ui, sans-serif`;
-    ctx.fillText(`${s.name}: m = ${p.m.toFixed(2)} mol/kg, i = ${s.i}  →  i·m = ${im().toFixed(2)} mol ${T('particles', 'partikel')}/kg`, lx, y);
+    const maxW = W * 0.94;
+    fitText(ctx, `${s.name[L()]}: m = ${p.m.toFixed(2)} mol/kg, i = ${s.i}  →  i·m = ${im().toFixed(2)} mol ${T('particles', 'partikel')}/kg`, lx, y, maxW);
     ctx.font = `${fs}px system-ui, sans-serif`;
     y += fs * 1.5;
     ctx.fillStyle = '#fbbf24';
-    ctx.fillText(`ΔT_b = i·K_b·m = ${s.i} × ${KB} × ${p.m.toFixed(2)} = ${dTb().toFixed(2)} K   →   T_b = ${(100 + dTb()).toFixed(2)} °C`, lx, y);
+    fitText(ctx, `ΔT_b = i·K_b·m = ${s.i} × ${KB} × ${p.m.toFixed(2)} = ${dTb().toFixed(2)} K   →   T_b = ${(100 + dTb()).toFixed(2)} °C`, lx, y, maxW);
     y += fs * 1.4;
     ctx.fillStyle = '#93c5fd';
-    ctx.fillText(`ΔT_f = i·K_f·m = ${s.i} × ${KF} × ${p.m.toFixed(2)} = ${dTf().toFixed(2)} K   →   T_f = ${(-dTf()).toFixed(2)} °C`, lx, y);
+    fitText(ctx, `ΔT_f = i·K_f·m = ${s.i} × ${KF} × ${p.m.toFixed(2)} = ${dTf().toFixed(2)} K   →   T_f = ${(-dTf()).toFixed(2)} °C`, lx, y, maxW);
     y += fs * 1.4;
     ctx.fillStyle = '#34d399';
-    ctx.fillText(`π = i·M·R·T ≈ ${s.i} × ${p.m.toFixed(2)} × ${R} × ${(p.tC + 273.15).toFixed(0)} = ${piAtm().toFixed(1)} atm   (M ≈ m)`, lx, y);
+    fitText(ctx, `π = i·M·R·T ≈ ${s.i} × ${p.m.toFixed(2)} × ${R} × ${(p.tC + 273.15).toFixed(0)} = ${piAtm().toFixed(1)} atm   (M ≈ m)`, lx, y, maxW);
     y += fs * 1.4;
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`${T('Raoult', 'Raoult')}: P = x_w·P° = ${xWater().toFixed(4)} × ${(pSat(p.tC) * 101.325).toFixed(2)} kPa = ${(pVap() * 101.325).toFixed(2)} kPa   (ΔP = ${(dP() * 101.325).toFixed(3)} kPa ${T('at', 'pada')} ${p.tC} °C)`, lx, y);
+    fitText(ctx, `${T('Raoult', 'Raoult')}: P = x_w·P° = ${xWater().toFixed(4)} × ${(pSat(p.tC) * 101.325).toFixed(2)} kPa = ${(pVap() * 101.325).toFixed(2)} kPa   (ΔP = ${(dP() * 101.325).toFixed(3)} kPa ${T('at', 'pada')} ${p.tC} °C)`, lx, y, maxW);
 
     const top = y + fs * 1.6;
-    const PD = { x: W * 0.07, y: top, w: W * 0.40, h: H - top - fs * 3.2 };
+    const PD = { x: W * 0.09, y: top, w: W * 0.38, h: H - top - fs * 3.2 };
     const UT = { x: W * 0.56, y: top + fs * 1.2, w: W * 0.36, h: H - top - fs * 4.4 };
     drawPhaseDiagram(ctx, PD, fs);
     drawUTube(ctx, UT, fs);
   }
 
+  function fitText(ctx, txt, x, y, maxW) {
+    const w = ctx.measureText(txt).width;
+    if (w > maxW && maxW > 0) { ctx.save(); ctx.translate(x, y); ctx.scale(maxW / w, 1); ctx.fillText(txt, 0, 0); ctx.restore(); }
+    else ctx.fillText(txt, x, y);
+  }
+
   // ---- controls ---------------------------------------------------------------------
   const soluteSel = select({
-    label: 'Solute', key: 'solute',
-    options: Object.entries(SOLUTES).map(([value, s]) => ({ value, label: s.label })),
+    label: T('Solute', 'Zat terlarut'), key: 'solute',
+    options: Object.entries(SOLUTES).map(([value, s]) => ({ value, label: s.label[L()] })),
     value: p.solute, onChange: (v) => { p.solute = v; },
   });
   const mS = slider({
-    label: 'Molality m (mol solute / kg water)', key: 'm', min: 0, max: 8, step: 0.05, value: p.m,
+    label: T('Molality m (mol solute / kg water)', 'Molalitas m (mol zat terlarut / kg air)'), key: 'm', min: 0, max: 8, step: 0.05, value: p.m,
     format: (v) => v.toFixed(2), onInput: (v) => { p.m = v; },
   });
   const tS = slider({
-    label: 'Temperature for π and P (°C)', key: 't', min: 0, max: 100, step: 1, value: p.tC,
+    label: T('Temperature for π and P (°C)', 'Suhu untuk π dan P (°C)'), key: 't', min: 0, max: 100, step: 1, value: p.tC,
     format: (v) => v + ' °C', onInput: (v) => { p.tC = v; },
   });
   const preset = (label, solute, m) => button({ label, onClick: () => { soluteSel.apply(solute); mS.apply(m); } });
   ctrlPanel.append(
     soluteSel.el, mS.el, tS.el,
-    row(preset('Road salt: NaCl 3 mol/kg', 'nacl', 3), preset('Antifreeze: glycol 8 mol/kg', 'glycol', 8), preset('Seawater: NaCl 0.6 mol/kg', 'nacl', 0.6)),
+    row(preset(T('Road salt: NaCl 3 mol/kg', 'Garam jalan: NaCl 3 mol/kg'), 'nacl', 3), preset(T('Antifreeze: glycol 8 mol/kg', 'Antibeku: glikol 8 mol/kg'), 'glycol', 8), preset(T('Seawater: NaCl 0.6 mol/kg', 'Air laut: NaCl 0,6 mol/kg'), 'nacl', 0.6)),
   );
 
   const lab = labPanel({
@@ -272,7 +283,7 @@ export function mount(rootEl) {
     ],
     predict: 'At equal molality, which solution will have the lowest freezing point: sucrose, NaCl or CaCl₂? By what factor?',
     source: () => ({
-      solute: sol().name,
+      solute: sol().name[0],
       m: p.m,
       i: sol().i,
       dTb: dTb(),

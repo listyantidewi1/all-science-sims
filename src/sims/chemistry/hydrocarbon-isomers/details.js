@@ -14,13 +14,13 @@ export default {
   },
   tryThis: {
     en: [
-      'Build butane (4 carbons, single bonds), then click +CH₃ above C2. The formula stays C₄H₁₀ but the name becomes 2-methylpropane: two structural isomers.',
+      'Build propane (3 carbons, single bonds), then click +CH₃ above C2. The formula is C₄H₁₀, the same as butane, but the name is 2-methylpropane: two structural isomers.',
       'Build all five C₆H₁₄ isomers: hexane, 2-methylpentane, 3-methylpentane, 2,2-dimethylbutane, 2,3-dimethylbutane. Check each against the table.',
       'Make a 4-carbon chain and click the C3–C4 bond to a double bond. The name is but-1-ene, not but-3-ene: the sim numbers from the end nearest the double bond.',
       'Put a methyl on C2 of propane and then try to make the C1–C2 bond triple. The sim refuses: C2 would need five bonds. Why does a double bond work?',
     ],
     id: [
-      'Bangun butana (4 karbon, ikatan tunggal), lalu klik +CH₃ di atas C2. Rumusnya tetap C₄H₁₀ tetapi namanya menjadi 2-metilpropana: dua isomer struktur.',
+      'Bangun propana (3 karbon, ikatan tunggal), lalu klik +CH₃ di atas C2. Rumusnya C₄H₁₀, sama dengan butana, tetapi namanya 2-metilpropana: dua isomer struktur.',
       'Bangun kelima isomer C₆H₁₄: heksana, 2-metilpentana, 3-metilpentana, 2,2-dimetilbutana, 2,3-dimetilbutana. Periksa masing-masing dengan tabel.',
       'Buat rantai 4 karbon dan klik ikatan C3–C4 menjadi rangkap dua. Namanya but-1-ena, bukan but-3-ena: simulasi menomori dari ujung yang terdekat dengan ikatan rangkap.',
       'Letakkan metil pada C2 propana lalu coba jadikan ikatan C1–C2 rangkap tiga. Simulasi menolak: C2 akan memerlukan lima ikatan. Mengapa rangkap dua masih bisa?',

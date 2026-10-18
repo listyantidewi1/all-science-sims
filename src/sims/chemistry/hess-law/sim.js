@@ -18,7 +18,7 @@ const hf = (sp) => (sp in HF ? HF[sp] : 0);
 const S = (r, p, dH) => ({ r, p, dH });
 const PUZZLES = {
   co2: {
-    name: 'C + O₂ → CO₂ (via CO)',
+    name: ['C + O₂ → CO₂ (via CO)', 'C + O₂ → CO₂ (lewat CO)'],
     target: S({ 'C(s)': 1, 'O₂(g)': 1 }, { 'CO₂(g)': 1 }, -393.5),
     steps: [
       S({ 'C(s)': 1, 'O₂(g)': 0.5 }, { 'CO(g)': 1 }, -110.5),
@@ -27,7 +27,7 @@ const PUZZLES = {
     ],
   },
   ch4: {
-    name: 'C + 2H₂ → CH₄ (from combustion data)',
+    name: ['C + 2H₂ → CH₄ (from combustion data)', 'C + 2H₂ → CH₄ (dari data pembakaran)'],
     target: S({ 'C(s)': 1, 'H₂(g)': 2 }, { 'CH₄(g)': 1 }, -74.8),
     steps: [
       S({ 'CH₄(g)': 1, 'O₂(g)': 2 }, { 'CO₂(g)': 1, 'H₂O(l)': 2 }, -890.3),
@@ -37,7 +37,7 @@ const PUZZLES = {
     ],
   },
   no2: {
-    name: 'N₂ + 2O₂ → 2NO₂ (via NO)',
+    name: ['N₂ + 2O₂ → 2NO₂ (via NO)', 'N₂ + 2O₂ → 2NO₂ (lewat NO)'],
     target: S({ 'N₂(g)': 1, 'O₂(g)': 2 }, { 'NO₂(g)': 2 }, 66.4),
     steps: [
       S({ 'N₂(g)': 1, 'H₂(g)': 3 }, { 'NH₃(g)': 2 }, -91.8),
@@ -46,7 +46,7 @@ const PUZZLES = {
     ],
   },
   caco3: {
-    name: 'CaCO₃ → CaO + CO₂ (from ΔH°f)',
+    name: ['CaCO₃ → CaO + CO₂ (from ΔH°f)', 'CaCO₃ → CaO + CO₂ (dari ΔH°f)'],
     target: S({ 'CaCO₃(s)': 1 }, { 'CaO(s)': 1, 'CO₂(g)': 1 }, 178.3),
     steps: [
       S({ 'Ca(s)': 1, 'C(s)': 1, 'O₂(g)': 1.5 }, { 'CaCO₃(s)': 1 }, -1206.9),
@@ -346,15 +346,16 @@ export function mount(rootEl) {
     const c1 = D2.x + D2.w * 0.05, c2 = D2.x + D2.w * 0.36, c3 = D2.x + D2.w * 0.64, c4 = D2.x + D2.w * 0.98;
     ctx.textAlign = 'center';
     lvl(0, c2, c3, '#e2e8f0', T('elements (0)', 'unsur (0)'), Hr > 0 || Hp > 0 ? false : true);
-    lvl(Hr, c1, c2 - 4, '#fcd34d', `${T('reactants', 'pereaksi')} ${Hr.toFixed(1)}`, Hr <= 0);
-    lvl(Hp, c3 + 4, c4, '#6ee7b7', `${T('products', 'produk')} ${Hp.toFixed(1)}`, Hp <= 0);
+    // the dashed arrow from the elements arrives from above when ΔH°f < 0, so put the label below the level then
+    lvl(Hr, c1, c2 - 4, '#fcd34d', `${T('reactants', 'pereaksi')} ${Hr.toFixed(1)}`, Hr > 0);
+    lvl(Hp, c3 + 4, c4, '#6ee7b7', `${T('products', 'produk')} ${Hp.toFixed(1)}`, Hp > 0);
     arrowV(ctx, (c2 + c1) / 2 + D2.w * 0.08, y(0), y(Hr), '#fcd34d', true);
     arrowV(ctx, (c3 + c4) / 2 - D2.w * 0.08, y(0), y(Hp), '#6ee7b7', true);
     // reaction arrow from reactants level to products level
     const ax = (c2 + c3) / 2;
     arrowV(ctx, ax, y(Hr), y(Hp), dH < 0 ? '#fb923c' : '#60a5fa', false);
-    ctx.fillStyle = dH < 0 ? '#fb923c' : '#60a5fa'; ctx.textAlign = 'center';
-    ctx.fillText(`ΔH°rxn ${sgn(dH)}`, ax, (y(Hr) + y(Hp)) / 2 - 4 - (Math.abs(y(Hr) - y(Hp)) < fs * 2 ? fs * 1.2 : 0));
+    ctx.fillStyle = dH < 0 ? '#fb923c' : '#60a5fa'; ctx.textAlign = 'left';
+    ctx.fillText(`ΔH°rxn ${sgn(dH)}`, ax + 8, (y(Hr) + y(Hp)) / 2 + fs * 0.35 - (Math.abs(y(Hr) - y(Hp)) < fs * 2 ? fs * 1.2 : 0));
     ctx.textAlign = 'left'; ctx.fillStyle = '#94a3b8';
     ctx.fillText(T('Both routes start at the elements, so ΔH°rxn = ΣΔH°f(prod) − ΣΔH°f(react).', 'Kedua rute mulai dari unsur, jadi ΔH°rxn = ΣΔH°f(prod) − ΣΔH°f(pereaksi).'), W * 0.03, H - fs * 0.4);
   }
@@ -404,8 +405,8 @@ export function mount(rootEl) {
       cards.forEach((c, i) => {
         const r = cardAt(i);
         const eq = eqStr(puzzle().steps[i], c.rev);
-        out.push({ id: `card:${i}`, x: r.x + r.w * 0.4, y: r.y + r.h / 2, label: c.zone === 'path' ? `${eq}: in pathway, arrow key removes it` : `${eq}: in bank, arrow key adds it to pathway` });
-        if (c.zone === 'path') { const f = flipBox(r); out.push({ id: `flip:${i}`, x: f.x + f.w / 2, y: f.y + f.h / 2, label: `Reverse step ${eq}` }); }
+        out.push({ id: `card:${i}`, x: r.x + r.w * 0.4, y: r.y + r.h / 2, label: c.zone === 'path' ? T(`${eq}: in pathway, arrow key removes it`, `${eq}: di lintasan, tombol panah mengeluarkannya`) : T(`${eq}: in bank, arrow key adds it to pathway`, `${eq}: di bank, tombol panah menambahkannya ke lintasan`) });
+        if (c.zone === 'path') { const f = flipBox(r); out.push({ id: `flip:${i}`, x: f.x + f.w / 2, y: f.y + f.h / 2, label: T(`Reverse step ${eq}`, `Balik tahap ${eq}`) }); }
       });
       return out;
     },
@@ -415,23 +416,23 @@ export function mount(rootEl) {
 
   // ---- controls -----------------------------------------------------------------------
   const modeSel = select({
-    label: 'Mode', key: 'mode',
-    options: [{ value: 'path', label: 'Build a pathway (Hess cycle)' }, { value: 'calc', label: 'ΔH°f calculator' }],
+    label: T('Mode', 'Mode'), key: 'mode',
+    options: [{ value: 'path', label: T('Build a pathway (Hess cycle)', 'Susun lintasan (siklus Hess)') }, { value: 'calc', label: T('ΔH°f calculator', 'Kalkulator ΔH°f') }],
     value: p.mode, onChange: (v) => { p.mode = v; },
   });
   const puzzleSel = select({
-    label: 'Target reaction', key: 'target',
-    options: Object.entries(PUZZLES).map(([value, pz]) => ({ value, label: pz.name })),
+    label: T('Target reaction', 'Reaksi target'), key: 'target',
+    options: Object.entries(PUZZLES).map(([value, pz]) => ({ value, label: pz.name[getLocale() === 'id' ? 1 : 0] })),
     value: p.puzzle, onChange: (v) => { p.puzzle = v; resetCards(); },
   });
   const calcSel = select({
-    label: 'Calculator reaction', key: 'rxn',
+    label: T('Calculator reaction', 'Reaksi kalkulator'), key: 'rxn',
     options: Object.entries(CALC_RXNS).map(([value, r]) => ({ value, label: eqStr(r) })),
     value: p.calc, onChange: (v) => { p.calc = v; },
   });
-  const clearB = button({ label: 'Clear pathway', onClick: resetCards });
+  const clearB = button({ label: T('Clear pathway', 'Kosongkan lintasan'), onClick: resetCards });
   const solveB = button({
-    label: 'Show solution',
+    label: T('Show solution', 'Tampilkan solusi'),
     onClick: () => {
       resetCards();
       solve(puzzle()).forEach(({ i, rev }) => { cards[i].zone = 'path'; cards[i].rev = rev; cards[i].order = nextOrder++; });

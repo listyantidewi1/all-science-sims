@@ -8,19 +8,21 @@ const T = (en, id) => (getLocale() === 'id' ? id : en);
 // Limiting molar conductivities Λ° at 25 °C in S·cm²/mol (sum of the ions), acid/base constants.
 // type: 'strong' (α = 1), 'weak' (α from K), 'non' (no ions), 'water' (autoionisation only).
 const SOLUTIONS = {
-  nacl:    { label: 'NaCl (table salt)', name: 'NaCl', type: 'strong', lambda: 126.4, cat: 'Na⁺', an: 'Cl⁻', mol: 'NaCl' },
-  hcl:     { label: 'HCl (hydrochloric acid)', name: 'HCl', type: 'strong', lambda: 426.2, cat: 'H⁺', an: 'Cl⁻', mol: 'HCl' },
-  naoh:    { label: 'NaOH (sodium hydroxide)', name: 'NaOH', type: 'strong', lambda: 248.1, cat: 'Na⁺', an: 'OH⁻', mol: 'NaOH' },
-  acetic:  { label: 'CH₃COOH (acetic acid)', name: 'CH₃COOH', type: 'weak', K: 1.8e-5, lambda: 390.7, cat: 'H⁺', an: 'CH₃COO⁻', mol: 'CH₃COOH' },
-  ammonia: { label: 'NH₃ (ammonia)', name: 'NH₃', type: 'weak', K: 1.8e-5, lambda: 271.5, cat: 'NH₄⁺', an: 'OH⁻', mol: 'NH₃' },
-  sugar:   { label: 'C₁₂H₂₂O₁₁ (sugar)', name: 'sucrose', type: 'non', lambda: 0, mol: 'C₁₂H₂₂O₁₁' },
-  ethanol: { label: 'C₂H₅OH (ethanol)', name: 'ethanol', type: 'non', lambda: 0, mol: 'C₂H₅OH' },
-  water:   { label: 'Pure water', name: 'pure water', type: 'water', lambda: 0, cat: 'H⁺', an: 'OH⁻', mol: 'H₂O' },
+  nacl:    { label: ['NaCl (table salt)', 'NaCl (garam dapur)'], name: 'NaCl', type: 'strong', lambda: 126.4, cat: 'Na⁺', an: 'Cl⁻', mol: 'NaCl' },
+  hcl:     { label: ['HCl (hydrochloric acid)', 'HCl (asam klorida)'], name: 'HCl', type: 'strong', lambda: 426.2, cat: 'H⁺', an: 'Cl⁻', mol: 'HCl' },
+  naoh:    { label: ['NaOH (sodium hydroxide)', 'NaOH (natrium hidroksida)'], name: 'NaOH', type: 'strong', lambda: 248.1, cat: 'Na⁺', an: 'OH⁻', mol: 'NaOH' },
+  acetic:  { label: ['CH₃COOH (acetic acid)', 'CH₃COOH (asam asetat)'], name: 'CH₃COOH', type: 'weak', K: 1.8e-5, lambda: 390.7, cat: 'H⁺', an: 'CH₃COO⁻', mol: 'CH₃COOH' },
+  ammonia: { label: ['NH₃ (ammonia)', 'NH₃ (amonia)'], name: 'NH₃', type: 'weak', K: 1.8e-5, lambda: 271.5, cat: 'NH₄⁺', an: 'OH⁻', mol: 'NH₃' },
+  sugar:   { label: ['C₁₂H₂₂O₁₁ (sugar)', 'C₁₂H₂₂O₁₁ (gula)'], name: ['sucrose', 'sukrosa'], type: 'non', lambda: 0, mol: 'C₁₂H₂₂O₁₁' },
+  ethanol: { label: ['C₂H₅OH (ethanol)', 'C₂H₅OH (etanol)'], name: ['ethanol', 'etanol'], type: 'non', lambda: 0, mol: 'C₂H₅OH' },
+  water:   { label: ['Pure water', 'Air murni'], name: ['pure water', 'air murni'], type: 'water', lambda: 0, cat: 'H⁺', an: 'OH⁻', mol: 'H₂O' },
 };
 const CELL = 0.5;     // electrode area / spacing, cm
 const VOLT = 3.0;     // V
 const KAPPA_WATER = 5.5e-8; // S/cm at 25 °C
 const N_UNITS = 60;   // formula units drawn
+const L = () => (getLocale() === 'id' ? 1 : 0);
+const nameOf = (s) => (Array.isArray(s.name) ? s.name[L()] : s.name);
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div');
@@ -228,7 +230,7 @@ export function mount(rootEl) {
     ctx.textAlign = 'left';
     let y = fs * 1.5; const lx = W * 0.03;
     ctx.fillStyle = '#f8fafc'; ctx.font = `bold ${fs * 1.1}px system-ui, sans-serif`;
-    ctx.fillText(`${s.name}  c = ${fmtC(conc())} mol/L  →  ${classify()}`, lx, y);
+    ctx.fillText(`${nameOf(s)}  c = ${fmtC(conc())} mol/L  →  ${classify()}`, lx, y);
     ctx.font = `${fs}px system-ui, sans-serif`; y += fs * 1.5;
     ctx.fillStyle = '#e2e8f0';
     if (s.type === 'water') ctx.fillText(T('[H⁺] = [OH⁻] = 1.0×10⁻⁷ mol/L (autoionisation only)', '[H⁺] = [OH⁻] = 1,0×10⁻⁷ mol/L (hanya autoionisasi)'), lx, y);
@@ -250,15 +252,15 @@ export function mount(rootEl) {
 
   // ---- controls ----------------------------------------------------------------------
   const solSel = select({
-    label: 'Solution', key: 'solution',
-    options: Object.entries(SOLUTIONS).map(([value, s]) => ({ value, label: s.label })),
+    label: T('Solution', 'Larutan'), key: 'solution',
+    options: Object.entries(SOLUTIONS).map(([value, s]) => ({ value, label: s.label[L()] })),
     value: p.sol, onChange: (v) => { p.sol = v; },
   });
   const cS = slider({
-    label: 'Concentration (mol/L, log scale)', key: 'logc', min: -3, max: 0, step: 0.05, value: p.logc,
+    label: T('Concentration (mol/L, log scale)', 'Konsentrasi (mol/L, skala log)'), key: 'logc', min: -3, max: 0, step: 0.05, value: p.logc,
     format: (v) => fmtC(Math.pow(10, v)), onInput: (v) => { p.logc = v; },
   });
-  const swB = button({ label: 'Switch on / off', onClick: () => { p.on = !p.on; } });
+  const swB = button({ label: T('Switch on / off', 'Sakelar nyala / mati'), onClick: () => { p.on = !p.on; } });
   ctrlPanel.append(solSel.el, cS.el, row(swB));
 
   const lab = labPanel({
@@ -282,7 +284,7 @@ export function mount(rootEl) {
     ],
     predict: 'Sugar and NaCl both dissolve completely in water. Will both solutions light the bulb? What must be present in a liquid for it to carry a current?',
     source: () => ({
-      solution: sol().name,
+      solution: Array.isArray(sol().name) ? sol().name[0] : sol().name,
       c: conc(),
       alpha: alpha(),
       ions: ionConc(),

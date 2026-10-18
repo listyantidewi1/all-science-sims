@@ -15,13 +15,13 @@ export default {
   tryThis: {
     en: [
       'Pick Na then Cl. Watch one electron jump across and count the charges on the ions. Then swap Na for Mg: how many electrons move, and how does the formula change?',
-      'Keep F as Element 2 and click H, B, Si. ΔEN is above 1.7 every time, yet no metal is present. Read the exception note under the properties.',
+      'Set Element 2 to F, then use the Element 1 dropdown to pick H, B and Si in turn (a click on the table alternates between the two slots). ΔEN is above 1.7 every time, yet no metal is present. Read the exception note under the properties.',
       'Click Cl twice (Cl + Cl), then O + O, then N + N. Compare the number of shared pairs in the Lewis diagram.',
       'Click Al then Cl. ΔEN is only 1.55. Which column of the ΔEN bar does it land in, and what does the note say about AlCl₃?',
     ],
     id: [
       'Pilih Na lalu Cl. Lihat satu elektron melompat dan hitung muatan pada ion. Lalu ganti Na dengan Mg: berapa elektron yang berpindah, dan bagaimana rumusnya berubah?',
-      'Tetap pakai F sebagai Unsur 2 dan klik H, B, Si. ΔEN selalu di atas 1,7, tetapi tidak ada logam. Baca catatan pengecualian di bawah daftar sifat.',
+      'Atur Unsur 2 = F, lalu pakai menu Unsur 1 untuk memilih H, B, dan Si bergantian (klik pada tabel bergantian mengisi kedua slot). ΔEN selalu di atas 1,7, tetapi tidak ada logam. Baca catatan pengecualian di bawah daftar sifat.',
       'Klik Cl dua kali (Cl + Cl), lalu O + O, lalu N + N. Bandingkan jumlah pasangan elektron yang dipakai bersama pada diagram Lewis.',
       'Klik Al lalu Cl. ΔEN hanya 1,55. Di kolom mana batang ΔEN menunjuk, dan apa kata catatan tentang AlCl₃?',
     ],

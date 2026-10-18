@@ -7,9 +7,9 @@ const T = (en, id) => (getLocale() === 'id' ? id : en);
 
 // Molar masses in g/mol; solubility in g per litre of water at ~20 °C.
 const SOLUTES = {
-  nacl:    { name: 'NaCl',     label: 'NaCl (table salt)',          Mr: 58.44,  tint: null,           dot: '#e2e8f0', solubility: 360 },
-  glucose: { name: 'C₆H₁₂O₆',  label: 'Glucose C₆H₁₂O₆',            Mr: 180.16, tint: null,           dot: '#fde68a', solubility: 900 },
-  cuso4:   { name: 'CuSO₄',    label: 'CuSO₄ (copper(II) sulfate)', Mr: 159.61, tint: [37, 110, 235], dot: '#93c5fd', solubility: 200 },
+  nacl:    { name: 'NaCl',     label: ['NaCl (table salt)', 'NaCl (garam dapur)'],          Mr: 58.44,  tint: null,           dot: '#e2e8f0', solubility: 360 },
+  glucose: { name: 'C₆H₁₂O₆',  label: ['Glucose C₆H₁₂O₆', 'Glukosa C₆H₁₂O₆'],            Mr: 180.16, tint: null,           dot: '#fde68a', solubility: 900 },
+  cuso4:   { name: 'CuSO₄',    label: ['CuSO₄ (copper(II) sulfate)', 'CuSO₄ (tembaga(II) sulfat)'], Mr: 159.61, tint: [37, 110, 235], dot: '#93c5fd', solubility: 200 },
 };
 const VOLUMES = [100, 250, 500, 1000];
 const PHASES = { idle: 0, draw: 1.1, move: 1.1, release: 1.1, fill: 1.6, done: 0 };
@@ -235,15 +235,16 @@ export function mount(rootEl) {
     ctx.textAlign = 'left';
     const lx = W * 0.03;
     let y = fs * 1.5;
+    const half = W * 0.46;
     ctx.fillStyle = '#f8fafc';
-    ctx.fillText(`${s.name}: Mr = ${s.Mr} g/mol`, lx, y); y += fs * 1.4;
+    fitText(ctx, `${s.name}: Mr = ${s.Mr} g/mol`, lx, y, half); y += fs * 1.4;
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`n = m / Mr = ${dissolved().toFixed(2)} g / ${s.Mr} = ${fmt(nStock())} mol`, lx, y); y += fs * 1.4;
+    fitText(ctx, `n = m / Mr = ${dissolved().toFixed(2)} g / ${s.Mr} = ${fmt(nStock())} mol`, lx, y, half); y += fs * 1.4;
     ctx.fillStyle = '#fbbf24';
-    ctx.fillText(`M₁ = n / V = ${fmt(nStock())} / ${(p.V / 1000).toFixed(3)} L = ${fmt(m1)} mol/L`, lx, y); y += fs * 1.4;
+    fitText(ctx, `M₁ = n / V = ${fmt(nStock())} / ${(p.V / 1000).toFixed(3)} L = ${fmt(m1)} mol/L`, lx, y, half); y += fs * 1.4;
     if (undissolved) {
       ctx.fillStyle = '#f87171';
-      ctx.fillText(T(`Saturated: only ${massMax().toFixed(1)} g dissolves in ${p.V} mL`, `Jenuh: hanya ${massMax().toFixed(1)} g larut dalam ${p.V} mL`), lx, y);
+      fitText(ctx, T(`Saturated: only ${massMax().toFixed(1)} g dissolves in ${p.V} mL`, `Jenuh: hanya ${massMax().toFixed(1)} g larut dalam ${p.V} mL`), lx, y, half);
       y += fs * 1.4;
     }
 
@@ -252,12 +253,12 @@ export function mount(rootEl) {
     ctx.textAlign = 'right';
     y = fs * 1.5;
     ctx.fillStyle = '#f8fafc';
-    ctx.fillText(T('Dilution', 'Pengenceran') + `: V₁ = ${p.V1} mL → V₂ = ${p.V2} mL`, rx, y); y += fs * 1.4;
+    fitText(ctx, T('Dilution', 'Pengenceran') + `: V₁ = ${p.V1} mL → V₂ = ${p.V2} mL`, rx, y, half); y += fs * 1.4;
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`${T('moles taken', 'mol yang dipipet')} = M₁V₁ = ${fmt(m1 * p.V1 / 1000)} mol`, rx, y); y += fs * 1.4;
+    fitText(ctx, `${T('moles taken', 'mol yang dipipet')} = M₁V₁ = ${fmt(m1 * p.V1 / 1000)} mol`, rx, y, half); y += fs * 1.4;
     if (ph === 'done') {
       ctx.fillStyle = '#34d399';
-      ctx.fillText(`M₂ = M₁V₁ / V₂ = ${fmt(m1)} × ${p.V1} / ${p.V2} = ${fmt(M2)} mol/L`, rx, y); y += fs * 1.4;
+      fitText(ctx, `M₂ = M₁V₁ / V₂ = ${fmt(m1)} × ${p.V1} / ${p.V2} = ${fmt(M2)} mol/L`, rx, y, half); y += fs * 1.4;
       ctx.fillStyle = '#94a3b8';
       ctx.fillText(T(`diluted ${(p.V2 / p.V1).toFixed(1)}×`, `diencerkan ${(p.V2 / p.V1).toFixed(1)}×`), rx, y);
     } else if (ph === 'fill') {
@@ -269,6 +270,12 @@ export function mount(rootEl) {
     }
     ctx.textAlign = 'left';
   }
+  // Draw text, squeezing it horizontally if it would be wider than maxW (right-aligned text squeezes toward x).
+  function fitText(ctx, txt, x, y, maxW) {
+    const w = ctx.measureText(txt).width;
+    if (w > maxW && maxW > 0) { ctx.save(); ctx.translate(x, y); ctx.scale(maxW / w, 1); ctx.fillText(txt, 0, 0); ctx.restore(); }
+    else ctx.fillText(txt, x, y);
+  }
   function fmt(x) {
     if (!Number.isFinite(x)) return '—';
     if (x === 0) return '0';
@@ -278,37 +285,37 @@ export function mount(rootEl) {
 
   // ---- controls --------------------------------------------------------------
   const soluteSel = select({
-    label: 'Solute', key: 'solute',
-    options: Object.entries(SOLUTES).map(([value, s]) => ({ value, label: s.label })),
+    label: T('Solute', 'Zat terlarut'), key: 'solute',
+    options: Object.entries(SOLUTES).map(([value, s]) => ({ value, label: s.label[getLocale() === 'id' ? 1 : 0] })),
     value: p.solute,
     onChange: (v) => { p.solute = v; resetDilution(); },
   });
   const massS = slider({
-    label: 'Mass of solute (g)', key: 'mass', min: 0.5, max: 120, step: 0.05, value: p.mass,
+    label: T('Mass of solute (g)', 'Massa zat terlarut (g)'), key: 'mass', min: 0.5, max: 120, step: 0.05, value: p.mass,
     format: (v) => v.toFixed(2),
     onInput: (v) => { p.mass = v; resetDilution(); },
   });
   const volSel = select({
-    label: 'Volumetric flask V (mL)', key: 'v',
+    label: T('Volumetric flask V (mL)', 'Labu ukur V (mL)'), key: 'v',
     options: VOLUMES.map((v) => ({ value: String(v), label: `${v} mL` })),
     value: String(p.V),
     onChange: (v) => { p.V = Number(v); resetDilution(); },
   });
   const v1S = slider({
-    label: 'Pipette V₁ (mL)', key: 'v1', min: 1, max: 100, step: 1, value: p.V1,
+    label: T('Pipette V₁ (mL)', 'Pipet V₁ (mL)'), key: 'v1', min: 1, max: 100, step: 1, value: p.V1,
     onInput: (v) => { p.V1 = v; resetDilution(); },
   });
   const v2Sel = select({
-    label: 'Dilution flask V₂ (mL)', key: 'v2',
+    label: T('Dilution flask V₂ (mL)', 'Labu pengenceran V₂ (mL)'), key: 'v2',
     options: VOLUMES.map((v) => ({ value: String(v), label: `${v} mL` })),
     value: String(p.V2),
     onChange: (v) => { p.V2 = Number(v); resetDilution(); },
   });
   const goB = button({
-    label: 'Pipette & dilute', primary: true,
+    label: T('Pipette & dilute', 'Pipet & encerkan'), primary: true,
     onClick: () => { if (anim.phase === 'idle' || anim.phase === 'done') { M2 = null; anim.phase = 'draw'; anim.t = 0; } },
   });
-  const resetB = button({ label: 'Reset dilution', onClick: resetDilution });
+  const resetB = button({ label: T('Reset dilution', 'Atur ulang pengenceran'), onClick: resetDilution });
   ctrlPanel.append(soluteSel.el, massS.el, volSel.el, v1S.el, v2Sel.el, row(goB, resetB));
 
   const lab = labPanel({

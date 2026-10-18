@@ -88,13 +88,16 @@ export function mount(rootEl) {
   function flash(msg) { state.msg = msg; state.msgAt = state.now; }
   function cycleBond(i) {
     const cur = state.bonds[i];
+    let skipped = 0;
     for (let k = 1; k <= 3; k++) {
       const next = ((cur - 1 + k) % 3) + 1;
       const trial = state.bonds.slice(); trial[i] = next;
       const a = analyse(state.n, trial, state.branches);
       if (a.used[i] <= 4 && a.used[i + 1] <= 4) { state.bonds = trial; break; }
+      skipped = next;
     }
     if (state.bonds[i] === cur) flash(T('No room: each carbon can make only 4 bonds', 'Tidak muat: tiap karbon hanya dapat membentuk 4 ikatan'));
+    else if (skipped) flash(T(`A ${skipped === 3 ? 'triple' : 'double'} bond here was skipped: a carbon would need more than 4 bonds`, `Ikatan ${skipped === 3 ? 'rangkap tiga' : 'rangkap dua'} di sini dilewati: ada karbon yang akan melebihi 4 ikatan`));
     syncEditor();
   }
   function toggleBranch(i, slot) {
@@ -194,7 +197,7 @@ export function mount(rootEl) {
     // Hint / flash message
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'; ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`;
     if (state.now - state.msgAt < 2.5) { ctx.fillStyle = '#fbbf24'; ctx.fillText(state.msg, W * 0.04, H * 0.78); }
-    else { ctx.fillStyle = '#64748b'; ctx.fillText(T('Click +C to extend the chain (click the last C to remove it) · click a bond to cycle – = ≡ · click +CH₃ to add a branch', 'Klik +C untuk memperpanjang rantai (klik C terakhir untuk menghapus) · klik ikatan untuk mengubah – = ≡ · klik +CH₃ untuk menambah cabang'), W * 0.04, H * 0.78); }
+    else { ctx.fillStyle = '#64748b'; fitText(ctx, T('Click +C to extend the chain (click the last C to remove it) · click a bond to cycle – = ≡ · click +CH₃ to add a branch', 'Klik +C untuk memperpanjang rantai (klik C terakhir untuk menghapus) · klik ikatan untuk mengubah – = ≡ · klik +CH₃ untuk menambah cabang'), W * 0.04, H * 0.78, W * 0.92); }
     // Isomer table
     const ty = H * 0.86, tw = W * 0.92, cx0 = W * 0.04, colW = tw / (MAX_C + 1);
     ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`; ctx.textAlign = 'center';
@@ -213,6 +216,12 @@ export function mount(rootEl) {
     ctx.fillText(a.saturated
       ? T(`${a.C > 8 ? 'beyond the table' : ALKANE_ISOMERS[a.C] + ' structural isomer' + (ALKANE_ISOMERS[a.C] > 1 ? 's' : '')} share the formula C${sub(a.C)}H${sub(a.H)} — can you build another one?`, `${a.C > 8 ? 'di luar tabel' : ALKANE_ISOMERS[a.C] + ' isomer struktur'} memiliki rumus C${sub(a.C)}H${sub(a.H)} — bisakah kamu membangun yang lain?`)
       : T('isomer counts are for alkanes only; alkenes also have position and cis/trans isomers', 'jumlah isomer hanya untuk alkana; alkena juga punya isomer posisi dan cis/trans'), W * 0.04, H * 0.975);
+  }
+
+  function fitText(ctx, txt, x, y, maxW) {
+    const w = ctx.measureText(txt).width;
+    if (w > maxW && maxW > 0) { ctx.save(); ctx.translate(x, y); ctx.scale(maxW / w, 1); ctx.fillText(txt, 0, 0); ctx.restore(); }
+    else ctx.fillText(txt, x, y);
   }
 
   // ---------- pointer ----------
@@ -289,7 +298,7 @@ export function mount(rootEl) {
     ],
     procedure: [
       'Build straight chains of 1 to 8 carbons with single bonds only. Record each. Check that H = 2C + 2 every time.',
-      'Set the chain to 4 carbons and add a methyl on C2. Record. Compare the formula with butane: same formula, different name — structural isomers.',
+      'Set the chain to 3 carbons and add a methyl on C2. Record. Compare with butane: same formula C₄H₁₀, different name — structural isomers.',
       'Build all three C₅H₁₂ isomers (pentane, 2-methylbutane, 2,2-dimethylpropane) and record them. Does the table agree?',
       'Make a 4-carbon chain and set one bond to double. Record but-1-ene and but-2-ene. How many H atoms were lost per double bond?',
       'Set a bond to triple. Record. Then try 2,2-dimethyl on a carbon next to a triple bond: why does the sim refuse?',

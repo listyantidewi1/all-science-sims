@@ -14,13 +14,13 @@ export default {
   tryThis: {
     en: [
       'Keep c = 0.1 mol/L and step through all eight solutions. Which light the bulb brightly, which only dimly, and which not at all?',
-      'Compare HCl and acetic acid at the same concentration. Both are acids: why is the current about 100 times smaller for acetic acid?',
+      'Compare HCl and acetic acid at the same concentration. Both are acids: why is the current about 80 times smaller for acetic acid?',
       'For acetic acid, slide the concentration down from 1 to 0.001 mol/L and watch α. Does more ionisation mean more current?',
       'Switch to pure water and read the ammeter. Why does tap water in a real bathroom still conduct dangerously well?',
     ],
     id: [
       'Pertahankan c = 0,1 mol/L dan coba kedelapan larutan. Mana yang menyalakan lampu dengan terang, mana yang redup, dan mana yang tidak menyala?',
-      'Bandingkan HCl dan asam asetat pada konsentrasi yang sama. Keduanya asam: mengapa arus pada asam asetat sekitar 100 kali lebih kecil?',
+      'Bandingkan HCl dan asam asetat pada konsentrasi yang sama. Keduanya asam: mengapa arus pada asam asetat sekitar 80 kali lebih kecil?',
       'Untuk asam asetat, geser konsentrasi dari 1 ke 0,001 mol/L dan amati α. Apakah ionisasi yang lebih besar berarti arus lebih besar?',
       'Pilih air murni dan baca amperemeter. Mengapa air keran di kamar mandi sungguhan tetap menghantar listrik dengan berbahaya?',
     ],

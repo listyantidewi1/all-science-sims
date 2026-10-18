@@ -17,13 +17,13 @@ export default {
       'Choose CH₄ and set T = −170 °C: the molecules sit as a liquid. Slide past −161.5 °C and watch them leave one by one. Then choose H₂O at the same temperature and see how far you must heat it.',
       'Compare HCl, HBr and HI at T = −50 °C. HCl has the largest dipole moment, yet it is the only one that is a gas. Read the M values to see why.',
       'Switch the chart to "Hydride trends". Follow the group 16 line from H₂Te back to H₂S and extrapolate: water "should" boil near −80 °C. Read off how far above that it really is.',
-      'Set T = 25 °C and cycle through all 13 molecules. Which three are liquids at room temperature, and what force do they share?',
+      'Set T = 25 °C and cycle through all 13 molecules. Which two are still liquids at room temperature, which one has only just boiled (b.p. 19.5 °C), and what force do all three share?',
     ],
     id: [
       'Pilih CH₄ dan atur T = −170 °C: molekul berkumpul sebagai cairan. Geser melewati −161,5 °C dan lihat molekul pergi satu per satu. Lalu pilih H₂O pada suhu yang sama dan lihat seberapa jauh kamu harus memanaskannya.',
       'Bandingkan HCl, HBr, dan HI pada T = −50 °C. HCl memiliki momen dipol terbesar, tetapi hanya HCl yang berwujud gas. Baca nilai M untuk melihat alasannya.',
       'Ganti grafik ke "Tren hidrida". Ikuti garis golongan 16 dari H₂Te kembali ke H₂S dan ekstrapolasikan: air "seharusnya" mendidih sekitar −80 °C. Baca seberapa jauh nilai sebenarnya di atas itu.',
-      'Atur T = 25 °C dan telusuri ke-13 molekul. Tiga molekul mana yang cair pada suhu kamar, dan gaya apa yang mereka miliki bersama?',
+      'Atur T = 25 °C dan telusuri ke-13 molekul. Dua molekul mana yang masih cair pada suhu kamar, satu mana yang baru saja mendidih (t.d. 19,5 °C), dan gaya apa yang dimiliki ketiganya?',
     ],
   },
 
@@ -92,7 +92,7 @@ export default {
         'Dipole–dipole forces add to dispersion in polar molecules but are often outweighed by it: HCl (μ 1.08 D) boils 50 K below HI (μ 0.44 D) because HI has far more electrons.',
         'Hydrogen bonding (H on N, O or F attracted to a lone pair on N, O or F) is about 20 kJ/mol per bond and lifts H₂O, HF and NH₃ 80–180 K above the dispersion trend.',
         'Kinetic theory: v_rms = √(3RT/M). At a given temperature lighter molecules move faster, but it is the attraction strength, not speed, that decides when the liquid boils.',
-        'At 25 °C only H₂O, CH₃OH and (just) HF among the sim\'s molecules are liquids; all of them hydrogen-bond.',
+        'At 25 °C only H₂O and CH₃OH among the sim\'s molecules are liquids, and HF (b.p. 19.5 °C) has only just boiled; all three hydrogen-bond.',
       ],
       id: [
         'Pendidihan memutus gaya antarmolekul (1–40 kJ/mol), bukan ikatan kovalen (ratusan kJ/mol); gaya yang lebih kuat berarti titik didih lebih tinggi.',
@@ -100,7 +100,7 @@ export default {
         'Gaya dipol–dipol menambah dispersi pada molekul polar tetapi sering kalah olehnya: HCl (μ 1,08 D) mendidih 50 K di bawah HI (μ 0,44 D) karena HI memiliki jauh lebih banyak elektron.',
         'Ikatan hidrogen (H pada N, O, atau F yang tertarik ke pasangan bebas pada N, O, atau F) bernilai sekitar 20 kJ/mol per ikatan dan mengangkat H₂O, HF, dan NH₃ 80–180 K di atas tren dispersi.',
         'Teori kinetik: v_rms = √(3RT/M). Pada suhu tertentu molekul yang lebih ringan bergerak lebih cepat, tetapi kekuatan tarikanlah, bukan laju, yang menentukan kapan cairan mendidih.',
-        'Pada 25 °C hanya H₂O, CH₃OH, dan (hampir) HF di antara molekul simulasi yang berwujud cair; semuanya berikatan hidrogen.',
+        'Pada 25 °C hanya H₂O dan CH₃OH di antara molekul simulasi yang berwujud cair, dan HF (t.d. 19,5 °C) baru saja mendidih; ketiganya berikatan hidrogen.',
       ],
     },
     vocabulary: {

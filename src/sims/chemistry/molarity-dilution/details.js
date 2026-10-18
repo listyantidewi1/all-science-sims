@@ -16,13 +16,13 @@ export default {
       'Set 5.85 g of NaCl in 1000 mL. What is M? Now keep the mass and pick the 250 mL flask — M should be exactly 4× bigger.',
       'Switch to CuSO₄ and raise the mass slowly. At what molarity does the blue become hard to see through?',
       'Make a 1.00 mol/L CuSO₄ stock (how many grams in 500 mL?). Pipette 25 mL into 250 mL and compare the colour of the two flasks.',
-      'Keep piling on NaCl until the "Saturated" warning appears. Why does M stop rising?',
+      'Pick the 100 mL flask and keep piling on NaCl until the "Saturated" warning appears (above 36 g). Why does M stop rising?',
     ],
     id: [
       'Atur 5,85 g NaCl dalam 1000 mL. Berapa M? Pertahankan massa dan pilih labu 250 mL — M seharusnya tepat 4× lebih besar.',
       'Ganti ke CuSO₄ dan naikkan massa perlahan. Pada molaritas berapa warna biru mulai sulit ditembus pandang?',
       'Buat larutan induk CuSO₄ 1,00 mol/L (berapa gram dalam 500 mL?). Pipet 25 mL ke labu 250 mL dan bandingkan warna kedua labu.',
-      'Terus tambah NaCl sampai peringatan "Jenuh" muncul. Mengapa M berhenti naik?',
+      'Pilih labu 100 mL dan terus tambah NaCl sampai peringatan "Jenuh" muncul (di atas 36 g). Mengapa M berhenti naik?',
     ],
   },
 

@@ -148,7 +148,9 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(B2.x - 6, ay); ctx.lineTo(B2.x - 16, ay - 6); ctx.lineTo(B2.x - 16, ay + 6); ctx.fill();
     ctx.fillStyle = '#94a3b8';
     ctx.fillText(`${Math.round(anim.xi * 100)}%`, W / 2, ay - 8);
-    ctx.fillText(T(`1 particle = ${SCALE} mol`, `1 partikel = ${SCALE} mol`), W / 2, by + bh + fs * 1.3);
+    ctx.font = `${Math.round(fs * 0.85)}px system-ui, sans-serif`;
+    ctx.fillText(T(`1 particle = ${SCALE} mol`, `1 partikel = ${SCALE} mol`), W / 2, ay + fs * 1.5);
+    ctx.font = `${fs}px system-ui, sans-serif`;
 
     // mole-ratio bars: n / coefficient for each reactant
     const barY = H * 0.66, barH = fs * 0.9, barW = W * 0.40;
@@ -192,20 +194,21 @@ export function mount(rootEl) {
   function resetAnim() { anim.xi = 0; anim.running = false; }
 
   const rxnSel = select({
-    label: 'Reaction', key: 'rxn',
+    label: T('Reaction', 'Reaksi'), key: 'rxn',
     options: Object.entries(REACTIONS).map(([value, r]) => ({ value, label: r.eq })),
     value: p.rxn,
     onChange: (v) => { p.rxn = v; relabel(); resetAnim(); },
   });
-  const nAS = slider({ label: `Moles of ${rx().reactants[0].f}`, key: 'na', min: 0, max: MAXN, step: 0.1, value: p.nA, format: (v) => v.toFixed(1) + ' mol', onInput: (v) => { p.nA = v; resetAnim(); } });
-  const nBS = slider({ label: `Moles of ${rx().reactants[1].f}`, key: 'nb', min: 0, max: MAXN, step: 0.1, value: p.nB, format: (v) => v.toFixed(1) + ' mol', onInput: (v) => { p.nB = v; resetAnim(); } });
-  const pctS = slider({ label: 'Actual yield (% of theoretical)', key: 'yield', min: 0, max: 100, step: 1, value: p.pct, format: (v) => v + '%', onInput: (v) => { p.pct = v; } });
+  const molesOf = (f) => T(`Moles of ${f}`, `Mol ${f}`);
+  const nAS = slider({ label: molesOf(rx().reactants[0].f), key: 'na', min: 0, max: MAXN, step: 0.1, value: p.nA, format: (v) => v.toFixed(1) + ' mol', onInput: (v) => { p.nA = v; resetAnim(); } });
+  const nBS = slider({ label: molesOf(rx().reactants[1].f), key: 'nb', min: 0, max: MAXN, step: 0.1, value: p.nB, format: (v) => v.toFixed(1) + ' mol', onInput: (v) => { p.nB = v; resetAnim(); } });
+  const pctS = slider({ label: T('Actual yield (% of theoretical)', 'Hasil nyata (% dari teoretis)'), key: 'yield', min: 0, max: 100, step: 1, value: p.pct, format: (v) => v + '%', onInput: (v) => { p.pct = v; } });
   function relabel() {
-    nAS.el.querySelector('label').textContent = `Moles of ${rx().reactants[0].f}`;
-    nBS.el.querySelector('label').textContent = `Moles of ${rx().reactants[1].f}`;
+    nAS.el.querySelector('label').textContent = molesOf(rx().reactants[0].f);
+    nBS.el.querySelector('label').textContent = molesOf(rx().reactants[1].f);
   }
-  const goB = button({ label: 'React', primary: true, onClick: react });
-  const resetB = button({ label: 'Reset', onClick: resetAnim });
+  const goB = button({ label: T('React', 'Reaksikan'), primary: true, onClick: react });
+  const resetB = button({ label: T('Reset', 'Atur ulang'), onClick: resetAnim });
   ctrlPanel.append(rxnSel.el, nAS.el, nBS.el, pctS.el, row(goB, resetB));
 
   const lab = labPanel({

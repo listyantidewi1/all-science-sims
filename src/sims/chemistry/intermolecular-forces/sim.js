@@ -185,8 +185,8 @@ export function mount(rootEl) {
     // current temperature line
     ctx.strokeStyle = state.temp >= state.mol.bp ? 'rgba(248,113,113,0.8)' : 'rgba(96,165,250,0.8)'; ctx.setLineDash([5, 4]);
     ctx.beginPath(); ctx.moveTo(x0, yOf(state.temp)); ctx.lineTo(x1, yOf(state.temp)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.textAlign = 'left'; ctx.fillStyle = ctx.strokeStyle;
-    ctx.fillText(`T = ${state.temp.toFixed(0)} °C`, x0 + 4, yOf(state.temp) - fs * 0.7);
+    ctx.textAlign = 'center'; ctx.fillStyle = ctx.strokeStyle;
+    ctx.fillText(`T = ${state.temp.toFixed(0)} °C`, (x0 + x1) / 2, yOf(state.temp) - fs * 0.5);
     ctx.textBaseline = 'alphabetic';
     if (state.chart === 'hydrides') {
       const xOf = (per) => x0 + (x1 - x0) * ((per - 2) / 3 * 0.84 + 0.08);
@@ -196,6 +196,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#e2e8f0'; ctx.font = `bold ${fs}px system-ui, sans-serif`;
       ctx.fillText(T('Boiling points of the group 14–17 hydrides', 'Titik didih hidrida golongan 14–17'), (x0 + x1) / 2, Y + fs * 1.2);
       ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`;
+      const labels = [];
       for (const s of HYDRIDES) {
         ctx.strokeStyle = s.color; ctx.lineWidth = 2; ctx.beginPath();
         s.pts.forEach(([, per, bp], i) => { const x = xOf(per), y = yOf(bp); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
@@ -213,9 +214,19 @@ export function mount(rootEl) {
           const sel = state.mol.f === lab;
           ctx.fillStyle = s.color; ctx.beginPath(); ctx.arc(x, y, sel ? 6 : 3.5, 0, Math.PI * 2); ctx.fill();
           if (sel) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); }
-          ctx.fillStyle = sel ? '#fff' : s.color; ctx.textAlign = per === 2 ? 'right' : 'left';
-          ctx.fillText(lab, x + (per === 2 ? -8 : 8), y + (s.group === 15 && per > 2 ? fs : -fs * 0.4));
+          labels.push({ lab, per, x, y: y + fs * 0.35, color: sel ? '#fff' : s.color });
         });
+      }
+      // place labels: right of the point (left of it for period 2); within a period column push them apart
+      for (let per = 2; per <= 5; per++) {
+        const col = labels.filter((l) => l.per === per).sort((a, b) => a.y - b.y);
+        const minGap = fs * 1.05;
+        for (let i = 1; i < col.length; i++) if (col[i].y - col[i - 1].y < minGap) col[i].y = col[i - 1].y + minGap;
+        for (let i = col.length - 2; i >= 0; i--) if (col[i + 1].y - col[i].y < minGap) col[i].y = col[i + 1].y - minGap;
+        for (const l of col) {
+          ctx.fillStyle = l.color; ctx.textAlign = per === 2 ? 'right' : 'left';
+          ctx.fillText(l.lab, l.x + (per === 2 ? -9 : 9), l.y);
+        }
       }
       ctx.textAlign = 'left'; ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.round(fs * 0.85)}px system-ui, sans-serif`;
       ctx.fillText(T('dashed: value expected from the dispersion trend alone', 'putus-putus: nilai yang diharapkan dari tren dispersi saja'), x0 + 4, Y + fs * 2.3);
