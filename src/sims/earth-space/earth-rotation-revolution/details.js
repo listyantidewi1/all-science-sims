@@ -75,7 +75,7 @@ export default {
   <circle cx="326" cy="120" r="6" fill="#3b82f6"/>
   <path d="M322 70 A56 56 0 0 0 232 90" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
   <text x="270" y="192">${L('orbits: 365 days = 1 year', 'mengorbit: 365 hari = 1 tahun')}</text>
-  <text x="270" y="124" font-size="9" fill="#0b1220">${L('Sun', 'Sol')}</text>
+  <text x="270" y="146" font-size="9">${L('Sun', 'Matahari')}</text>
   <text x="90" y="30" font-weight="bold">${L('ROTATION', 'ROTASI')}</text>
   <text x="270" y="30" font-weight="bold">${L('REVOLUTION', 'REVOLUSI')}</text>
 </svg>`;

@@ -162,12 +162,15 @@ export function mount(rootEl) {
     // Banner
     ctx.textAlign = 'center';
     ctx.font = `bold ${Math.round(fs * 1.25)}px system-ui, -apple-system, Roboto, sans-serif`;
-    if (balanced()) {
+    if (balanced() && Math.abs(state.theta) < 0.06) {
       const pulse = 1 + 0.06 * Math.sin((now - state.celebrateAt) * 6) * (now - state.celebrateAt < 2 ? 1 : 0);
       ctx.save(); ctx.translate(W * 0.5, H * 0.09); ctx.scale(pulse, pulse);
       ctx.fillStyle = '#22c55e'; ctx.beginPath(); ctx.roundRect(-W * 0.2, -fs * 0.9, W * 0.4, fs * 1.8, fs); ctx.fill();
       ctx.fillStyle = '#052e16'; ctx.fillText(T('Balanced!', 'Seimbang!'), 0, fs * 0.45);
       ctx.restore();
+    } else if (balanced()) {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillText(T('Both sides equal — levelling out…', 'Kedua sisi sama — papan mendatar…'), W * 0.5, H * 0.09 + fs * 0.45);
     } else {
       ctx.fillStyle = '#facc15';
       ctx.fillText(momentL() > momentR() ? T('Left side is stronger', 'Sisi kiri lebih kuat') : T('Right side is stronger', 'Sisi kanan lebih kuat'), W * 0.5, H * 0.09 + fs * 0.45);

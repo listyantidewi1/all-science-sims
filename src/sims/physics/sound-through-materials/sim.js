@@ -132,7 +132,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0';
     ctx.textAlign = 'center';
     ctx.font = `bold ${Math.max(11, Math.round(H * 0.04))}px system-ui, -apple-system, Roboto, sans-serif`;
-    ctx.fillText(T('Ear', 'Telinga'), ex, ey + s * 1.1);
+    ctx.fillText(T('Ear', 'Telinga'), ex, ey - s * 1.05);
     // loudness bar at the ear
     const bw = Math.max(10, W * 0.025), bh = H * 0.3, bx0 = ex - bw / 2, by0 = H * 0.86;
     ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.roundRect(bx0, by0 - bh, bw, bh, bw / 2); ctx.fill();
@@ -229,7 +229,7 @@ export function mount(rootEl) {
     label: T('What is in between?', 'Apa yang ada di antaranya?'), key: 'medium',
     options: MEDIA.map((m) => ({ value: m.id, label: name(m) })),
     value: 'air',
-    onChange: (v) => { state.medium = MEDIA.find((m) => m.id === v) || MEDIA[0]; state.ringing = false; state.arrived = false; state.failed = false; },
+    onChange: (v) => { state.medium = MEDIA.find((m) => m.id === v) || MEDIA[0]; state.ringing = false; state.arrived = false; state.failed = false; state.last = null; },
   });
   const ringB = bigBtn(T('Ring the bell', 'Bunyikan bel'), () => ring(), true);
   const pitchS = slider({

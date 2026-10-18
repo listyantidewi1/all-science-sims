@@ -333,7 +333,7 @@ export function mount(rootEl) {
       if (state.status === 'none') return null;
       const s = SUBS[state.sub];
       const time = state.status === 'done' ? state.lastTime.toFixed(1)
-        : state.status === 'never' ? 'never'
+        : (state.status === 'never' || !s.soluble) ? 'never'
           : state.status === 'saturated' ? 'water full'
             : 'still dissolving';
       return { substance: s.en, temp: state.temp, stirred: state.stirredSince || state.stir > 0 ? 'yes' : 'no', spoons: state.spoons, time };

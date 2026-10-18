@@ -8,7 +8,7 @@ const TAU = Math.PI * 2;
 
 const PLANETS = {
   earth: { en: 'Earth', id: 'Bumi', rotHours: 24, yearDays: 365.25, orbitAU: 1, color: '#3b82f6', land: '#22c55e', city: 'Jakarta' },
-  mars: { en: 'Mars', id: 'Mars', rotHours: 24.62, yearDays: 687, orbitAU: 1.52, color: '#ea580c', land: '#9a3412', city: T('Base camp', 'Pos pangkalan') },
+  mars: { en: 'Mars', id: 'Mars', rotHours: 24.62, yearDays: 687, orbitAU: 1.52, color: '#ea580c', land: '#9a3412', city: 'Camp', cityId: 'Pos' },
 };
 const MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -42,6 +42,15 @@ export function mount(rootEl) {
   let now = 0;
   const P = () => PLANETS[state.planet];
   const font = (px, bold = true) => `${bold ? 'bold ' : ''}${Math.round(px)}px system-ui, -apple-system, Roboto, sans-serif`;
+  // Filled arrowhead with its tip at (x, y) pointing along the unit vector (ux, uy).
+  function arrowHead(ctx, x, y, ux, uy, size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - ux * size - uy * size * 0.6, y - uy * size + ux * size * 0.6);
+    ctx.lineTo(x - ux * size + uy * size * 0.6, y - uy * size - ux * size * 0.6);
+    ctx.closePath(); ctx.fill();
+  }
 
   function step(dt) {
     if (state.target != null) {
@@ -93,7 +102,7 @@ export function mount(rootEl) {
 
   function drawSpinView(ctx, W, H) {
     const p = P();
-    const cx = W * 0.56, cy = H * 0.54, R = H * 0.3;
+    const cx = W * 0.5, cy = H * 0.54, R = H * 0.3;
     // sun at left edge with rays
     const sx = W * 0.06, sr = H * 0.14;
     const grad = ctx.createRadialGradient(sx, cy, sr * 0.5, sx, cy, sr * 2.2);
@@ -111,12 +120,10 @@ export function mount(rootEl) {
     // planet seen from above the North Pole; spins counterclockwise
     const ang = -spinFrac() * TAU;
     drawPlanetDisc(ctx, cx, cy, R, ang, p, true);
-    // rotation arrow
+    // rotation arrow (counterclockwise on screen = decreasing canvas angle)
     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(cx, cy, R * 1.18, 0.35, -0.35, true); ctx.stroke();
-    const ax = cx + Math.cos(-0.35) * R * 1.18, ay = cy + Math.sin(-0.35) * R * 1.18;
-    ctx.fillStyle = '#e2e8f0';
-    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(ax - 12, ay + 8); ctx.lineTo(ax + 4, ay + 12); ctx.closePath(); ctx.fill();
+    arrowHead(ctx, cx + Math.cos(-0.35) * R * 1.18, cy + Math.sin(-0.35) * R * 1.18, Math.sin(-0.35), -Math.cos(-0.35), 12, '#e2e8f0');
     // city marker on the rim: noon when it points at the Sun (left)
     const ca = Math.PI + ang;
     const mx = cx + Math.cos(ca) * R * 0.93, my = cy + Math.sin(ca) * R * 0.93;
@@ -125,15 +132,15 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.arc(mx, my, Math.max(6, R * 0.07), 0, TAU); ctx.fill();
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
     // label with a leader line outside the disc
-    const lx = cx + Math.cos(ca) * R * 1.3, ly = cy + Math.sin(ca) * R * 1.3;
+    const lx = cx + Math.cos(ca) * R * 1.22, ly = cy + Math.sin(ca) * R * 1.22;
     ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(lx, ly); ctx.stroke();
     ctx.fillStyle = '#fff'; ctx.font = font(Math.max(11, W * 0.02));
     ctx.textAlign = Math.cos(ca) < 0 ? 'right' : 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText(p.city, lx + (Math.cos(ca) < 0 ? -6 : 6), ly);
+    ctx.fillText(getLocale() === 'id' && p.cityId ? p.cityId : p.city, lx + (Math.cos(ca) < 0 ? -6 : 6), ly);
 
     // info panel on the right
-    const ix = W * 0.84;
+    const ix = W * 0.88;
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     const h = localHour();
     const hh = Math.floor(h), mm = Math.floor((h - hh) * 60);
@@ -214,13 +221,9 @@ export function mount(rootEl) {
     // start marker
     ctx.fillStyle = '#fff'; ctx.font = font(Math.max(9, W * 0.015), false); ctx.textAlign = 'left';
     ctx.fillText(T('start', 'mulai'), cx + r + 8, cy + (state.planet === 'earth' ? Rmain * 0.08 : 0) + 14);
-    // direction arrow on orbit
+    // direction arrow on the orbit: tangent for counterclockwise travel
     const aa = -0.9;
-    const ax = cx + Math.cos(aa) * r, ay = cy + Math.sin(aa) * r;
-    ctx.fillStyle = '#e2e8f0';
-    ctx.save(); ctx.translate(ax, ay); ctx.rotate(aa - Math.PI / 2);
-    ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(7, 4); ctx.lineTo(-7, 4); ctx.closePath(); ctx.fill();
-    ctx.restore();
+    arrowHead(ctx, cx + Math.cos(aa) * r, cy + Math.sin(aa) * r, Math.sin(aa), -Math.cos(aa), 10, '#e2e8f0');
 
     // counters (left and right columns)
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
@@ -299,7 +302,7 @@ export function mount(rootEl) {
     procedure: [
       'Choose Earth and press Reset, then Pause.',
       'Press "+1 day" once. Read the hours passed and the spins done. Record.',
-      'Press "+1 year" once. Read the days passed and the years done. Record.',
+      'Press Reset, then "+1 year" once. Read the days passed and the years done. Record.',
       'Choose Mars and repeat steps 2 and 3.',
       'Compare: how many hours is one Mars day? How many Earth days is one Mars year?',
     ],

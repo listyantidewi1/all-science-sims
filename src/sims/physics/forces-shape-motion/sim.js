@@ -253,7 +253,7 @@ export function mount(rootEl) {
     // Speed meter for the selected thing (top right)
     const o = things[state.sel];
     const sp = clamp(speedOf(o) / 0.7, 0, 1);
-    const bw = W * 0.22, bh = Math.max(10, H * 0.035), bx = W * 0.74, by = H * 0.06;
+    const bw = W * 0.17, bh = Math.max(10, H * 0.035), bx = W * 0.8, by = H * 0.06;
     ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, bh / 2); ctx.fill();
     ctx.fillStyle = sp > 0.01 ? '#22c55e' : '#475569'; ctx.beginPath(); ctx.roundRect(bx, by, Math.max(bh, bw * sp), bh, bh / 2); ctx.fill();
     ctx.fillStyle = '#e2e8f0';

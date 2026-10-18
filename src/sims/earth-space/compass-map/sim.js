@@ -115,6 +115,16 @@ export function mount(rootEl) {
     state.reached = false;
   }
 
+  // Remove the last n planned steps from the route (they were never walked).
+  function trimRoute(n) {
+    while (n > 0 && state.route.length) {
+      const last = state.route[state.route.length - 1];
+      const take = Math.min(n, last.n);
+      last.n -= take; n -= take;
+      if (last.n <= 0) state.route.pop();
+    }
+  }
+
   function step(dt) {
     if (state.moving) {
       state.moving.t += dt / STEP_TIME;
@@ -125,7 +135,9 @@ export function mount(rootEl) {
         state.steps++;
         const tgt = PLACES[state.target];
         if (state.pos.x === tgt.x && state.pos.y === tgt.y) {
-          state.reached = true; state.reachedAt = now; state.queue = [];
+          state.reached = true; state.reachedAt = now;
+          trimRoute(state.queue.length);          // steps still queued were never taken
+          state.queue = [];
         } else if (isRiver(state.pos.x, state.pos.y)) {
           say('Splash! Use the bridge. Back to the start.', 'Byur! Lewat jembatan. Kembali ke awal.', 2.5);
           const s = PLACES[state.start];
@@ -143,10 +155,9 @@ export function mount(rootEl) {
       const to = { x: state.pos.x + d.dx, y: state.pos.y + d.dy };
       if (!inMap(to.x, to.y)) {
         say('Oops! That is the edge of the map.', 'Ups! Itu tepi peta.', 2);
+        // trim the route of this step and every step still queued behind it
+        trimRoute(1 + state.queue.length);
         state.queue = [];
-        // trim the route of the steps that could not be taken
-        const last = state.route[state.route.length - 1];
-        if (last) { last.n -= 1; if (last.n <= 0) state.route.pop(); }
         return;
       }
       state.moving = { from: { ...state.pos }, to, t: 0 };
@@ -339,7 +350,7 @@ export function mount(rootEl) {
     if (state.reached) {
       const age = now - state.reachedAt;
       ctx.fillStyle = '#fde047';
-      ctx.font = font(Math.max(16, W * 0.034 * (1 + 0.05 * Math.sin(age * 6))));
+      ctx.font = font(Math.max(14, W * 0.026 * (1 + 0.05 * Math.sin(age * 6))));
       const best = shortest(PLACES[state.start], tgt);
       const txt = state.steps <= best
         ? T(`You made it in ${state.steps} steps - the shortest way!`, `Sampai dalam ${state.steps} langkah - jalan terpendek!`)

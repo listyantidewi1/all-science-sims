@@ -27,7 +27,7 @@ const PUZZLES = [
     torch: { x: 0.1, y: 0.12, angle: 90 },
     target: { x: 0.88, y: 0.14 },
     mirrors: [{ x: 0.1, y: 0.8, angle: 0 }, { x: 0.5, y: 0.84, angle: 0 }, { x: 0.88, y: 0.84, angle: 0 }],
-    walls: [{ x: 0.47, y: 0, w: 0.06, h: 0.6 }],
+    walls: [{ x: 0.47, y: 0.1, w: 0.06, h: 0.5 }],
   },
 ];
 

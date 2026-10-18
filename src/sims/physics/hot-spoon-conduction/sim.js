@@ -214,7 +214,7 @@ export function mount(rootEl) {
     ctx.font = `bold ${Math.round(fs * 1.3)}px system-ui, -apple-system, Roboto, sans-serif`;
     ctx.fillText(`${T('Time', 'Waktu')}: ${Math.floor(state.time)} s${state.fast ? ' (×4)' : ''}`, W * 0.03, H * 0.1);
     // colour legend
-    const lgX = W * 0.03, lgY = H * 0.15, lgW = W * 0.18, lgH = Math.max(8, H * 0.03);
+    const lgX = W * 0.03, lgY = H * 0.15, lgW = W * 0.14, lgH = Math.max(8, H * 0.03);
     const grad = ctx.createLinearGradient(lgX, 0, lgX + lgW, 0);
     grad.addColorStop(0, '#64748b'); grad.addColorStop(1, '#ef4444');
     ctx.fillStyle = grad; ctx.beginPath(); ctx.roundRect(lgX, lgY, lgW, lgH, lgH / 2); ctx.fill();

@@ -55,7 +55,9 @@ export function mount(rootEl) {
   }
 
   function drawStrawScene(ctx, W, H) {
-    const gx0 = W * 0.18, gx1 = W * 0.42, gyT = H * 0.2, gyB = H * 0.86;
+    // A wide tumbler: at the steepest view (60°) the ray from the straw
+    // bottom must still leave through the water surface, not the glass wall.
+    const gx0 = W * 0.14, gx1 = W * 0.56, gyT = H * 0.22, gyB = H * 0.86;
     const pxPerCm = (gyB - gyT) / GLASS_CM;
     const yW = gyB - (state.level / 100) * (gyB - gyT);
     const hasWater = state.level > 0.5;
@@ -71,16 +73,12 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.roundRect(gx0, yW, gx1 - gx0, gyB - yW, [0, 0, 18, 18]); ctx.fill();
       ctx.strokeStyle = '#7dd3fc'; ctx.lineWidth = 2.5;
       ctx.beginPath(); ctx.moveTo(gx0, yW); ctx.lineTo(gx1, yW); ctx.stroke();
-      // the surface continues as a thin dashed line so the eye can see the "border"
-      ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(125,211,252,0.5)'; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(gx1, yW); ctx.lineTo(W * 0.95, yW); ctx.stroke();
-      ctx.setLineDash([]);
     }
     ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.roundRect(gx0, gyT, gx1 - gx0, gyB - gyT, [4, 4, 18, 18]); ctx.stroke();
 
     // straw: real line from P0 (bottom) to P1 (top)
-    const P0 = { x: gx0 + (gx1 - gx0) * 0.25, y: gyB - 6 };
+    const P0 = { x: gx0 + (gx1 - gx0) * 0.2, y: gyB - 6 };
     const P1 = { x: gx1 - 4, y: H * 0.08 };
     const sw = Math.max(6, W * 0.016);
     const strawSeg = (a, b, alpha, dashed) => {
@@ -159,18 +157,19 @@ export function mount(rootEl) {
     }
     drawEye(ctx, eye.x, eye.y, eyeSize);
 
-    // headline
+    // headline (bottom right, where neither the ray nor the eye ever goes)
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.font = font(Math.max(14, W * 0.032));
+    const hx = (gx1 + W) / 2;
     if (hasWater) {
       ctx.fillStyle = '#fde047';
-      ctx.fillText(T('The straw looks bent!', 'Sedotan tampak bengkok!'), W * 0.68, H * 0.12);
+      ctx.fillText(T('The straw looks bent!', 'Sedotan tampak bengkok!'), hx, H * 0.88);
       ctx.font = font(Math.max(11, W * 0.02), false);
       ctx.fillStyle = '#e2e8f0';
-      ctx.fillText(T(`The bottom looks ${state.liftCm.toFixed(1)} cm higher than it is`, `Ujung bawah tampak ${state.liftCm.toFixed(1).replace('.', ',')} cm lebih tinggi dari aslinya`), W * 0.68, H * 0.18);
+      ctx.fillText(T(`Bottom looks ${state.liftCm.toFixed(1)} cm higher`, `Dasar tampak ${state.liftCm.toFixed(1).replace('.', ',')} cm lebih tinggi`), hx, H * 0.95);
     } else {
       ctx.fillStyle = '#e2e8f0';
-      ctx.fillText(T('No water: the straw looks straight', 'Tanpa air: sedotan tampak lurus'), W * 0.68, H * 0.12);
+      ctx.fillText(T('No water: the straw looks straight', 'Tanpa air: sedotan tampak lurus'), hx, H * 0.88);
     }
     // ruler on the left
     ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5; ctx.fillStyle = '#94a3b8';
@@ -274,7 +273,8 @@ export function mount(rootEl) {
     ctx.font = font(Math.max(11, W * 0.02), false);
     ctx.fillStyle = '#cbd5e1';
     ctx.fillText(hasWater ? T('Light from the coin bends at the surface and climbs over the rim', 'Cahaya dari koin membelok di permukaan dan melewati bibir mangkuk')
-      : T('Add water to make the coin appear', 'Tambahkan air agar koin muncul'), W * 0.5, H * 0.18);
+      : state.coinSeen ? T('Looking from this high up, the rim is not in the way', 'Dilihat dari atas seperti ini, bibir mangkuk tidak menghalangi')
+        : T('Add water to make the coin appear', 'Tambahkan air agar koin muncul'), W * 0.5, H * 0.18);
     ctx.fillStyle = '#94a3b8';
     ctx.font = font(Math.max(10, W * 0.016), false);
     ctx.fillText(T('shaded = the eye cannot see this part of the bottom', 'bagian gelap = tidak terlihat oleh mata'), W * 0.5, H * 0.94);
@@ -306,7 +306,7 @@ export function mount(rootEl) {
     format: (v) => `${v}%`, onInput: (v) => { state.level = v; },
   });
   const angleS = slider({
-    label: T('Viewing angle (°)', 'Sudut pandang (°)'), key: 'angle', min: 5, max: 65, step: 1, value: state.angle,
+    label: T('Viewing angle (°)', 'Sudut pandang (°)'), key: 'angle', min: 5, max: 60, step: 1, value: state.angle,
     format: (v) => `${v}°`, onInput: (v) => { state.angle = v; },
   });
   ctrlPanel.append(row(strawBtn, coinBtn), levelS.el, angleS.el);
@@ -326,7 +326,7 @@ export function mount(rootEl) {
       'Choose the straw. Set the viewing angle to 30°.',
       'Set the water level to 20%, read "looks higher by", press Record.',
       'Repeat for 40%, 60%, 80% and 100%.',
-      'Now keep the water at 100% and change the angle: 10°, 30°, 50°, 65°. Record each.',
+      'Now keep the water at 100% and change the angle: 10°, 30°, 50°, 60°. Record each.',
       'Switch to the coin. Find the smallest water level where the coin is seen and record it.',
     ],
     predict: 'With more water, will the straw bottom look more lifted, less lifted, or the same?',

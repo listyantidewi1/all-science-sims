@@ -139,12 +139,12 @@ export default {
     questions: {
       en: [
         { q: 'You add a spoonful of sugar to cold water and it takes 8 seconds to vanish. What two things could you do to make it vanish faster?', a: 'Warm the water and stir it. Both make the water particles bump the sugar apart more quickly.' },
-        { q: 'After five spoonfuls of salt, the sixth stays at the bottom even when you stir. What has happened?', a: 'The solution is saturated. The water is holding as much salt as it can, so the extra salt cannot dissolve.' },
+        { q: 'After three spoonfuls of salt, the fourth stays at the bottom even when you stir. What has happened?', a: 'The solution is saturated. The water is holding as much salt as it can, so the extra salt cannot dissolve.' },
         { q: 'Flour makes the water white and cloudy. Has it dissolved? How do you know?', a: 'No. A dissolved solid makes a clear solution. The cloudiness shows the flour bits are still big, and if you wait they settle to the bottom.' },
       ],
       id: [
         { q: 'Kamu menambahkan sesendok gula ke air dingin dan butuh 8 detik sampai gula menghilang. Dua hal apa yang bisa kamu lakukan agar lebih cepat?', a: 'Menghangatkan air dan mengaduknya. Keduanya membuat partikel air memecah gula lebih cepat.' },
-        { q: 'Setelah lima sendok garam, sendok keenam tetap tinggal di dasar walaupun diaduk. Apa yang terjadi?', a: 'Larutannya sudah jenuh. Air sudah menampung garam sebanyak yang ia bisa, sehingga garam tambahan tidak bisa larut.' },
+        { q: 'Setelah tiga sendok garam, sendok keempat tetap tinggal di dasar walaupun diaduk. Apa yang terjadi?', a: 'Larutannya sudah jenuh. Air sudah menampung garam sebanyak yang ia bisa, sehingga garam tambahan tidak bisa larut.' },
         { q: 'Tepung membuat air menjadi putih dan keruh. Apakah tepung larut? Bagaimana kamu tahu?', a: 'Tidak. Zat padat yang larut membentuk larutan bening. Kekeruhan menunjukkan butiran tepung masih besar, dan jika ditunggu, tepung mengendap ke dasar.' },
       ],
     },
