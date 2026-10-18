@@ -138,12 +138,12 @@ export default {
     questions: {
       en: [
         { q: 'A query point has nearest neighbours with labels B, O, B, O, O, B, B (closest first). What does kNN predict for k = 1, k = 3 and k = 7?', a: 'k = 1: B (the nearest). k = 3: B, O, B → 2 B vs 1 O → B. k = 7: 4 B vs 3 O → B. Note that k = 5 would give 2 B vs 3 O → O, so the answer can flip with k.' },
-        { q: 'On the overlapping dataset, training accuracy is 100% at k = 1 but test accuracy is about 75%. Which number should you report, and what is the gap called?', a: 'Report the test accuracy. The 25-point gap is overfitting: the k = 1 model memorised noise in the training points that does not repeat in new data.' },
+        { q: 'On the overlapping dataset, training accuracy is 100% at k = 1 but test accuracy is only about 65–75%. Which number should you report, and what is the gap called?', a: 'Report the test accuracy. The gap of 25–35 points is overfitting: the k = 1 model memorised noise in the training points that does not repeat in new data.' },
         { q: 'Two features are height in centimetres (150–190) and shoe size (36–46). Why would kNN on raw values be a poor idea?', a: 'The height differences are several times larger than the shoe-size differences, so distance is almost entirely decided by height and shoe size is effectively ignored. Normalise each feature (for example to 0–1 or to z-scores) first.' },
       ],
       id: [
         { q: 'Sebuah titik kueri memiliki tetangga terdekat berlabel B, O, B, O, O, B, B (terdekat lebih dulu). Apa prediksi kNN untuk k = 1, k = 3 dan k = 7?', a: 'k = 1: B (yang terdekat). k = 3: B, O, B → 2 B lawan 1 O → B. k = 7: 4 B lawan 3 O → B. Perhatikan bahwa k = 5 memberi 2 B lawan 3 O → O, jadi jawabannya bisa berbalik tergantung k.' },
-        { q: 'Pada dataset tumpang tindih, akurasi latih 100% pada k = 1 tetapi akurasi uji sekitar 75%. Angka mana yang harus dilaporkan, dan apa nama celahnya?', a: 'Laporkan akurasi uji. Celah 25 poin itu adalah overfitting: model k = 1 menghafal kebisingan pada titik latih yang tidak terulang pada data baru.' },
+        { q: 'Pada dataset tumpang tindih, akurasi latih 100% pada k = 1 tetapi akurasi uji hanya sekitar 65–75%. Angka mana yang harus dilaporkan, dan apa nama celahnya?', a: 'Laporkan akurasi uji. Celah 25–35 poin itu adalah overfitting: model k = 1 menghafal kebisingan pada titik latih yang tidak terulang pada data baru.' },
         { q: 'Dua ciri adalah tinggi badan dalam sentimeter (150–190) dan ukuran sepatu (36–46). Mengapa kNN pada nilai mentah adalah ide yang buruk?', a: 'Selisih tinggi badan beberapa kali lebih besar daripada selisih ukuran sepatu, sehingga jarak hampir sepenuhnya ditentukan oleh tinggi badan dan ukuran sepatu praktis diabaikan. Normalisasi setiap ciri dulu (misalnya ke 0–1 atau skor-z).' },
       ],
     },

@@ -110,14 +110,24 @@ export function mount(rootEl) {
     ctx.fillRect(0, 0, W, H);
     const fs = clamp(W * 0.0155, 8, 15);
     const mono = `${fs}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
-    const sans = `${fs}px system-ui, -apple-system, Roboto, sans-serif`;
     ctx.textBaseline = 'middle';
+    // Draw text left-aligned at (x, y), shrinking the font so it never runs past maxW.
+    // mk(size) builds the font string for a given pixel size.
+    const fit = (text, x, y, maxW, mk) => {
+      ctx.font = mk(fs);
+      const w = ctx.measureText(text).width;
+      if (w > maxW) ctx.font = mk(Math.max(7, fs * maxW / w));
+      ctx.fillText(text, x, y);
+    };
+    const sansMk = (s) => `${s}px system-ui, -apple-system, Roboto, sans-serif`;
+    const monoMk = (s) => `${s}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+    const headMk = (s) => `600 ${s}px system-ui, sans-serif`;
 
     // title over grid
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#94a3b8'; ctx.font = `600 ${fs}px system-ui, sans-serif`;
+    ctx.fillStyle = '#94a3b8';
     const n = state.n;
-    ctx.fillText(`${T('Canvas', 'Kanvas')} ${n}×${n} = ${n * n} ${T('pixels', 'piksel')}  ·  ${T(DEPTHS[state.depth].name.en, DEPTHS[state.depth].name.id)}`, g.gx, g.gy * 0.5);
+    fit(`${T('Canvas', 'Kanvas')} ${n}×${n} = ${n * n} ${T('pixels', 'piksel')}  ·  ${T(DEPTHS[state.depth].name.en, DEPTHS[state.depth].name.id)}`, g.gx, g.gy * 0.5, g.gs, headMk);
 
     // grid
     const c = g.cell;
@@ -148,7 +158,7 @@ export function mount(rootEl) {
     const px = g.px, pw = g.pw;
     let y = g.gy * 0.5;
     const lh = fs * 1.5;
-    const section = (label) => { ctx.fillStyle = '#94a3b8'; ctx.font = `600 ${fs}px system-ui, sans-serif`; ctx.textAlign = 'left'; ctx.fillText(label, px, y); y += lh; };
+    const section = (label) => { ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'left'; fit(label, px, y, pw, headMk); y += lh; };
 
     // Colour mixer
     section(T('Colour mixer: one pixel = three numbers', 'Pencampur warna: satu piksel = tiga angka'));
@@ -162,14 +172,14 @@ export function mount(rootEl) {
       const yy = y + i * lh;
       ctx.fillStyle = 'rgba(148,163,184,0.15)'; ctx.fillRect(bx, yy - lh * 0.3, barW, lh * 0.6);
       ctx.fillStyle = col; ctx.fillRect(bx, yy - lh * 0.3, barW * v / 255, lh * 0.6);
-      ctx.fillStyle = '#e2e8f0'; ctx.font = mono; ctx.textAlign = 'left';
-      ctx.fillText(`${k} ${String(v).padStart(3, ' ')}  ${hex2(v)}  ${bin8(v)}`, bx + barW + fs * 0.6, yy);
+      ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'left';
+      fit(`${k} ${String(v).padStart(3, ' ')}  ${hex2(v)}  ${bin8(v)}`, bx + barW + fs * 0.6, yy, px + pw - (bx + barW + fs * 0.6), monoMk);
     });
     y += lh * 3.3;
     ctx.fillStyle = '#fde68a'; ctx.font = `700 ${fs * 1.05}px ui-monospace, monospace`;
     ctx.fillText(`#${hex2(state.r)}${hex2(state.g)}${hex2(state.b)}`, px, y);
-    ctx.fillStyle = '#cbd5e1'; ctx.font = mono;
-    ctx.fillText(`= rgb(${state.r}, ${state.g}, ${state.b})  ·  24 bit`, px + fs * 5.2, y);
+    ctx.fillStyle = '#cbd5e1';
+    fit(`= rgb(${state.r}, ${state.g}, ${state.b})  ·  24 bit`, px + fs * 5.2, y, pw - fs * 5.2, monoMk);
     y += lh * 1.3;
 
     // Zoom: selected pixel as stored at this bit depth
@@ -200,11 +210,11 @@ export function mount(rootEl) {
     // File size
     const bits = n * n * DEPTHS[state.depth].bits, bytes = bits / 8;
     section(T('Raw file size', 'Ukuran berkas mentah'));
-    ctx.fillStyle = '#e2e8f0'; ctx.font = mono;
-    ctx.fillText(`${n} × ${n} × ${DEPTHS[state.depth].bits} bit = ${bits.toLocaleString()} bit = ${bytes.toLocaleString()} ${T('bytes', 'byte')}${bytes >= 1024 ? ` = ${(bytes / 1024).toFixed(1)} KB` : ''}`, px, y);
+    ctx.fillStyle = '#e2e8f0';
+    fit(`${n} × ${n} × ${DEPTHS[state.depth].bits} bit = ${bits.toLocaleString()} bit = ${bytes.toLocaleString()} ${T('bytes', 'byte')}${bytes >= 1024 ? ` = ${(bytes / 1024).toFixed(1)} KB` : ''}`, px, y, pw, monoMk);
     y += lh;
-    ctx.fillStyle = '#94a3b8'; ctx.font = sans;
-    ctx.fillText(`${T('Possible colours', 'Warna yang mungkin')}: ${DEPTHS[state.depth].colours.toLocaleString()}  ·  Full HD 1920×1080 @ ${DEPTHS[state.depth].bits} bit = ${(1920 * 1080 * DEPTHS[state.depth].bits / 8 / 1e6).toFixed(1)} MB`, px, y);
+    ctx.fillStyle = '#94a3b8';
+    fit(`${T('Possible colours', 'Warna yang mungkin')}: ${DEPTHS[state.depth].colours.toLocaleString()}  ·  Full HD 1920×1080 @ ${DEPTHS[state.depth].bits} bit = ${(1920 * 1080 * DEPTHS[state.depth].bits / 8 / 1e6).toFixed(1)} MB`, px, y, pw, sansMk);
     y += lh * 1.3;
 
     // Resolution comparison: the same picture at 8 / 16 / 32
@@ -282,7 +292,7 @@ export function mount(rootEl) {
   });
   const depthSel = select({
     label: 'Bit depth', key: 'depth',
-    options: Object.entries(DEPTHS).map(([k, d]) => ({ value: k, label: d.name.en })),
+    options: Object.entries(DEPTHS).map(([k, d]) => ({ value: k, label: T(d.name.en, d.name.id) })),
     value: state.depth,
     onChange: (v) => { state.depth = v; },
   });
@@ -290,7 +300,7 @@ export function mount(rootEl) {
   const rS = slider({ label: 'Red', key: 'r', min: 0, max: 255, step: 1, value: state.r, format: fmt, onInput: (v) => { state.r = v; } });
   const gS = slider({ label: 'Green', key: 'g', min: 0, max: 255, step: 1, value: state.g, format: fmt, onInput: (v) => { state.g = v; } });
   const bS = slider({ label: 'Blue', key: 'b', min: 0, max: 255, step: 1, value: state.b, format: fmt, onInput: (v) => { state.b = v; } });
-  const pickT = toggle({ label: 'Pick colour from pixel', key: 'pick', value: false, onChange: (v) => { state.pick = v; cv.canvas.style.cursor = v ? 'copy' : 'crosshair'; } });
+  const pickT = toggle({ label: T('Pick colour from pixel', 'Ambil warna dari piksel'), key: 'pick', value: false, onChange: (v) => { state.pick = v; cv.canvas.style.cursor = v ? 'copy' : 'crosshair'; } });
   const fillB = button({ label: 'Fill all', onClick: () => { for (let i = 0; i < state.n * state.n; i++) setPixel(i % state.n, Math.floor(i / state.n), state.r, state.g, state.b); } });
   const clearB = button({ label: 'Clear', onClick: () => { state.img = newImage(state.n); } });
   const smileB = button({ label: 'Smiley', onClick: presetSmiley });

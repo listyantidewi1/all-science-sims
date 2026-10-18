@@ -4,12 +4,12 @@ export default {
     en: [
       'Describe a perceptron as a weighted sum z = w₁x₁ + w₂x₂ + b passed through a threshold, and read the decision line w₁x₁ + w₂x₂ + b = 0 from the weights.',
       'Explain the perceptron learning rule and gradient descent as ways of nudging the weights to reduce a loss, and interpret a loss curve.',
-      'Show why a single neuron cannot learn XOR and how a hidden layer of two neurons makes it possible.',
+      'Show why a single neuron cannot learn XOR and how a small hidden layer (two or more neurons) makes it possible.',
     ],
     id: [
       'Menjelaskan perceptron sebagai jumlah berbobot z = w₁x₁ + w₂x₂ + b yang dilewatkan ambang, dan membaca garis keputusan w₁x₁ + w₂x₂ + b = 0 dari bobotnya.',
       'Menjelaskan aturan belajar perceptron dan penurunan gradien sebagai cara menggeser bobot untuk mengurangi loss, serta menafsirkan kurva loss.',
-      'Menunjukkan mengapa satu neuron tidak bisa mempelajari XOR dan bagaimana lapisan tersembunyi berisi dua neuron membuatnya mungkin.',
+      'Menunjukkan mengapa satu neuron tidak bisa mempelajari XOR dan bagaimana lapisan tersembunyi kecil (dua neuron atau lebih) membuatnya mungkin.',
     ],
   },
   tryThis: {

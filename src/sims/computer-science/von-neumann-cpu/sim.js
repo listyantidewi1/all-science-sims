@@ -15,21 +15,21 @@ const PROGRAMS = {
     name: B('Add two numbers', 'Jumlahkan dua bilangan'),
     code: [['IN'], ['STORE', 10], ['IN'], ['ADD', 10], ['OUT'], ['HALT']],
     data: {},
-    inputs: [{ label: 'Input 1', v: 5, mode: 'queue' }, { label: 'Input 2', v: 7, mode: 'queue' }],
+    inputs: [{ k: 'in1', label: 'Input 1', v: 5, mode: 'queue' }, { k: 'in2', label: 'Input 2', v: 7, mode: 'queue' }],
     note: B('Reads two numbers from the input device, keeps the first in memory word 10, adds the second, outputs the sum.', 'Membaca dua bilangan dari perangkat masukan, menyimpan yang pertama di kata memori 10, menambahkan yang kedua, mengeluarkan jumlahnya.'),
   },
   countdown: {
     name: B('Count down from N', 'Hitung mundur dari N'),
     code: [['IN'], ['STORE', 10], ['LOAD', 10], ['JZ', 8], ['OUT'], ['SUB', 11], ['STORE', 10], ['JUMP', 2], ['HALT']],
     data: { 11: 1 },
-    inputs: [{ label: 'N', v: 5, mode: 'queue' }],
+    inputs: [{ k: 'N', label: 'N', v: 5, mode: 'queue' }],
     note: B('A loop: word 10 is the counter, word 11 holds the constant 1. JZ leaves the loop when the counter reaches 0.', 'Sebuah perulangan: kata 10 adalah pencacah, kata 11 menyimpan konstanta 1. JZ keluar dari perulangan saat pencacah mencapai 0.'),
   },
   multiply: {
     name: B('Multiply a × b (repeated addition)', 'Perkalian a × b (penjumlahan berulang)'),
     code: [['LOAD', 12], ['JZ', 8], ['SUB', 14], ['STORE', 12], ['LOAD', 13], ['ADD', 11], ['STORE', 13], ['JUMP', 0], ['LOAD', 13], ['OUT'], ['HALT']],
     data: { 11: 6, 12: 4, 13: 0, 14: 1 },
-    inputs: [{ label: 'a (memory 11)', v: 6, mode: 'mem', addr: 11 }, { label: 'b (memory 12)', v: 4, mode: 'mem', addr: 12 }],
+    inputs: [{ k: 'a', label: 'a (memory 11)', v: 6, mode: 'mem', addr: 11 }, { k: 'b', label: 'b (memory 12)', v: 4, mode: 'mem', addr: 12 }],
     note: B('No multiply instruction exists: a (word 11) is added to the product (word 13) b times, counting b (word 12) down to 0 with the constant 1 in word 14.', 'Tidak ada instruksi kali: a (kata 11) ditambahkan ke hasil (kata 13) sebanyak b kali, menghitung b (kata 12) mundur ke 0 dengan konstanta 1 di kata 14.'),
   },
 };
@@ -54,7 +54,8 @@ export function mount(rootEl) {
     codeLen: 0,
     pc: 0, ir: 0, acc: 0, mar: 0,
     opcode: 0, operand: 0,
-    phase: 'fetch',        // fetch | decode | execute
+    phase: 'fetch',        // next phase to run: fetch | decode | execute
+    lastPhase: null,       // phase just performed (lit up in the pill row); null before the first step
     cycles: 0, phases: 0,
     halted: false, error: null,
     inQueue: [], out: [],
@@ -79,7 +80,7 @@ export function mount(rootEl) {
       if (inp.mode === 'queue') state.inQueue.push(v); else state.mem[inp.addr] = v;
     });
     state.pc = 0; state.ir = 0; state.acc = 0; state.mar = 0; state.opcode = 0; state.operand = 0;
-    state.phase = 'fetch'; state.cycles = 0; state.phases = 0;
+    state.phase = 'fetch'; state.lastPhase = null; state.cycles = 0; state.phases = 0;
     state.halted = false; state.error = null; state.out = [];
     state.running = false; state.accum = 0;
     state.lastRead = -1; state.lastWrite = -1; state.lastIn = false; state.lastOut = false;
@@ -95,6 +96,7 @@ export function mount(rootEl) {
     state.pulses = [];
     state.lastRead = -1; state.lastWrite = -1; state.lastIn = false; state.lastOut = false;
     state.phases++;
+    state.lastPhase = state.phase;
     if (state.phase === 'fetch') {
       state.mar = state.pc;
       state.ir = state.mem[state.pc];
@@ -189,7 +191,7 @@ export function mount(rootEl) {
     ctx.font = `700 ${fs * 0.95}px system-ui, sans-serif`;
     phases.forEach(([k, label], i) => {
       const w = ctx.measureText(label).width + fs * 1.6;
-      const active = state.phase === k && !state.halted;
+      const active = state.lastPhase === k;
       ctx.fillStyle = active ? '#fbbf24' : 'rgba(148,163,184,0.15)';
       ctx.beginPath(); ctx.roundRect(px, py - ph / 2, w, ph, ph / 2); ctx.fill();
       ctx.fillStyle = active ? '#0b1220' : '#94a3b8'; ctx.textAlign = 'center';
@@ -232,7 +234,7 @@ export function mount(rootEl) {
     // decode readout
     ctx.fillStyle = 'rgba(167,139,250,0.12)'; ctx.beginPath(); ctx.roundRect(lx, ry, colW, fs * 2.6, 6); ctx.fill();
     ctx.font = `${fs * 0.9}px ui-monospace, monospace`;
-    const decoded = state.phase !== 'decode' || state.halted;
+    const decoded = state.phases > 0 && (state.phase !== 'decode' || state.halted);
     ctx.fillStyle = decoded ? '#c4b5fd' : '#64748b';
     ctx.fillText(`opcode ${bin(decoded ? state.opcode : state.ir >> 4, 4)} = ${decoded ? (OPS[state.opcode] ?? '??') : '?'}`, lx + fs * 0.5, ry + fs * 0.8);
     ctx.fillText(`operand ${bin(decoded ? state.operand : state.ir & 15, 4)} = ${decoded ? state.operand : '?'}`, lx + fs * 0.5, ry + fs * 1.85);
@@ -254,16 +256,20 @@ export function mount(rootEl) {
     wrap(ctx, T(state.msg.en, state.msg.id), cx + fs, cy + ch - fs * 3.6, cw - fs * 2, fs * 1.25, 3);
 
     // ---- memory ----
-    const mx = W * 0.59, my = H * 0.05, mw = W * 0.385, rowH = (H * 0.9) / (MEM_SIZE + 1);
+    const mx = W * 0.59, my = H * 0.05, mw = W * 0.385;
+    const mTop = my + fs * 1.5;                                  // title line sits above the column headers
+    const rowH = (H * 0.9 - fs * 1.5) / (MEM_SIZE + 1);
     ctx.fillStyle = '#111b2e'; ctx.strokeStyle = '#475569'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.roundRect(mx, my, mw, rowH * (MEM_SIZE + 1) + fs * 0.6, 10); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(mx, my, mw, fs * 1.5 + rowH * (MEM_SIZE + 1) + fs * 0.6, 10); ctx.fill(); ctx.stroke();
     const mfs = clamp(Math.min(fs, rowH * 0.62), 6, 14);
-    ctx.font = `700 ${mfs * 0.9}px system-ui, sans-serif`; ctx.fillStyle = '#94a3b8';
     const c1 = mx + fs * 0.6, c2 = mx + mw * 0.2, c3 = mx + mw * 0.56, c4 = mx + mw * 0.68;
-    const hy = my + rowH * 0.55 + fs * 0.3;
+    ctx.fillStyle = '#94a3b8'; ctx.font = `700 ${fs}px system-ui, sans-serif`;
+    ctx.fillText(T('Memory (16 words)', 'Memori (16 kata)'), c1, my + fs * 0.95);
+    ctx.font = `700 ${mfs * 0.9}px system-ui, sans-serif`;
+    const hy = mTop + rowH * 0.55 + fs * 0.3;
     ctx.fillText(T('addr', 'alamat'), c1, hy); ctx.fillText(T('contents (8 bits)', 'isi (8 bit)'), c2, hy); ctx.fillText('dec', c3, hy); ctx.fillText(T('reads as', 'terbaca'), c4, hy);
     for (let i = 0; i < MEM_SIZE; i++) {
-      const y = my + rowH * (i + 1) + fs * 0.3, yc = y + rowH / 2;
+      const y = mTop + rowH * (i + 1) + fs * 0.3, yc = y + rowH / 2;
       if (i === state.lastWrite) ctx.fillStyle = 'rgba(52,211,153,0.28)';
       else if (i === state.lastRead) ctx.fillStyle = 'rgba(34,211,238,0.22)';
       else ctx.fillStyle = i % 2 ? 'rgba(148,163,184,0.05)' : 'transparent';
@@ -277,8 +283,6 @@ export function mount(rootEl) {
       ctx.fillStyle = isCode ? '#c4b5fd' : '#64748b';
       ctx.fillText(isCode ? mnemonic(state.mem[i]) : (state.mem[i] ? `${T('data', 'data')} (${mnemonic(state.mem[i])})` : T('data', 'data')), c4, yc);
     }
-    ctx.fillStyle = '#94a3b8'; ctx.font = `700 ${fs}px system-ui, sans-serif`;
-    ctx.fillText(T('Memory (16 words)', 'Memori (16 kata)'), mx + mw - fs * 0.6 - ctx.measureText(T('Memory (16 words)', 'Memori (16 kata)')).width, hy);
 
     // ---- buses between CPU and memory ----
     const bx0 = cx + cw, bx1 = mx;
@@ -356,7 +360,7 @@ export function mount(rootEl) {
   }
   const progSel = select({
     label: 'Program', key: 'program',
-    options: Object.entries(PROGRAMS).map(([k, v]) => ({ value: k, label: v.name.en })),
+    options: Object.entries(PROGRAMS).map(([k, v]) => ({ value: k, label: T(v.name.en, v.name.id) })),
     value: state.progKey,
     onChange: (v) => { state.progKey = v; buildInputs(); loadProgram(); noteEl.textContent = T(prog().note.en, prog().note.id); },
   });
@@ -398,7 +402,7 @@ export function mount(rootEl) {
       if (!state.cycles) return null;
       return {
         program: prog().name.en,
-        inputs: prog().inputs.map((i, k) => `${i.label.split(' ')[0]}=${state.inputVals[k]}`).join(' '),
+        inputs: prog().inputs.map((i, idx) => `${i.k}=${state.inputVals[idx]}`).join(' '),
         cycles: state.cycles,
         phases: state.phases,
         output: state.out.join(' '),

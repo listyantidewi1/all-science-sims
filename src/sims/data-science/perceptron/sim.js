@@ -162,7 +162,9 @@ export function mount(rootEl) {
   // --- layout and drawing -----------------------------------------------------
   function layout() {
     const W = cv.width, H = cv.height;
-    const side = Math.min(H * 0.84, W * 0.5);
+    // leave room under the plot for the x₁ label and the epoch/accuracy/loss line (2.4 fs below it)
+    const fs = Math.max(10, Math.round(H * 0.03));
+    const side = Math.min(H * 0.80, W * 0.5, H * 0.90 - fs * 2.7);
     const plot = { x: W * 0.03, y: H * 0.10, w: side, h: side };
     const rx = plot.x + plot.w + W * 0.04;
     const rw = W * 0.97 - rx;
@@ -324,7 +326,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#94a3b8'; ctx.font = small; ctx.textAlign = 'right';
     ctx.fillText(yMax.toFixed(2), C.x - 3, C.y + fs * 0.4);
     ctx.fillText('0', C.x - 3, C.y + C.h);
-    ctx.textAlign = 'center';
+    ctx.textAlign = 'right';
     ctx.fillText(`${state.epoch} ${T('epochs', 'epoch')}`, C.x + C.w, C.y + C.h + fs);
     ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 2;
     ctx.beginPath();
@@ -388,7 +390,7 @@ export function mount(rootEl) {
       'Separable data, perceptron rule, η = 0.1: Reset weights, press Train, pause when accuracy reaches 100%. Record.',
       'Same data, gradient descent, η = 0.1 then η = 1.0: train 100 epochs each (watch the epoch counter). Record both.',
       'XOR, single neuron: train 200 epochs. Record the accuracy it gets stuck at.',
-      'XOR, hidden layer on (2 neurons): train until the loss flattens. Record. If accuracy is below 90%, Reset weights and repeat; note how many tries it took.',
+      'XOR, hidden layer on (3 neurons, the default): train until the loss flattens. Record. Then set Hidden neurons to 2, Reset weights and train again; if accuracy is below 90%, Reset weights and repeat, noting how many tries it took.',
     ],
     predict: 'How many epochs will the perceptron rule need on separable data? What accuracy will a single neuron reach on XOR?',
     source: () => ({

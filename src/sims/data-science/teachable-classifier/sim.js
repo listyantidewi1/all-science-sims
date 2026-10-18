@@ -90,6 +90,9 @@ export function mount(rootEl) {
 
   // --- actions ------------------------------------------------------------
   function labelCurrent(ci) {
+    // While a mystery test is on screen the waiting fruit is hidden, so a tap on a name
+    // only dismisses the test; the next tap labels the fruit the pupil can actually see.
+    if (state.mystery) { state.mystery = null; return; }
     if (!state.current) return;
     state.examples.push({ ...state.current, label: ci });
     state.message = '';
@@ -298,10 +301,6 @@ export function mount(rootEl) {
   const biasB = bigBtn(T('Biased data (small apples)', 'Data bias (apel kecil)'), biasedData);
   const resetB = bigBtn(T('Start again', 'Mulai lagi'), restart);
   const regionsT = toggle({ label: T('Show the machine\'s regions', 'Tampilkan wilayah mesin'), key: 'regions', value: true, onChange: (v) => { state.showRegions = v; } });
-
-  // any teaching action clears the finished mystery test so the next fruit can be labelled
-  for (const b of labelBtns) b.el.addEventListener('click', () => { state.mystery = null; });
-  resetB.el.addEventListener('click', () => { state.mystery = null; });
 
   ctrlPanel.append(row(...labelBtns), row(testB, biasB, resetB), row(regionsT));
 

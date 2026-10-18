@@ -351,12 +351,12 @@ export function mount(rootEl) {
   });
 
   // ---------- controls ----------
-  const hostOpts = (ids) => ids.map((id) => ({ value: id, label: `${NODE[id].name.en} (${NODE[id].ip})` }));
+  const hostOpts = (ids) => ids.map((id) => ({ value: id, label: `${T(NODE[id].name.en, NODE[id].name.id)} (${NODE[id].ip})` }));
   const srcSel = select({ label: 'Source', key: 'src', options: hostOpts(['H', 'S']), value: state.src, onChange: (v) => { state.src = v; } });
   const dstSel = select({ label: 'Destination', key: 'dst', options: hostOpts(['W', 'V']), value: state.dst, onChange: (v) => { state.dst = v; } });
   const routerSel = select({
     label: 'Routing table of', key: 'router',
-    options: NODES.filter((n) => n.kind === 'router').map((n) => ({ value: n.id, label: `${n.id} · ${n.name.en} (${n.ip})` })),
+    options: NODES.filter((n) => n.kind === 'router').map((n) => ({ value: n.id, label: `${n.id} · ${T(n.name.en, n.name.id)} (${n.ip})` })),
     value: state.selected, onChange: (v) => { state.selected = v; },
   });
   const nS = slider({ label: 'Packets per message', key: 'packets', min: 3, max: 12, step: 1, value: state.nPackets, onInput: (v) => { state.nPackets = v; } });

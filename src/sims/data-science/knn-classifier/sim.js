@@ -130,7 +130,11 @@ export function mount(rootEl) {
     const side = Math.min(H * 0.84, W * 0.56);
     const plot = { x: W * 0.03, y: H * 0.08, w: side, h: side };
     const px = plot.x + plot.w + W * 0.05;
-    const chart = { x: px + W * 0.03, y: H * 0.44, w: W * 0.97 - px - W * 0.03, h: H * 0.40 };
+    // the vote readout above the chart is ~8 text lines tall; on short canvases the font floor
+    // (10 px) makes it taller than 36% of H, so push the chart down to keep them apart
+    const fs = Math.max(10, Math.round(H * 0.03));
+    const chartTop = Math.max(H * 0.44, H * 0.08 + fs * 9.8);
+    const chart = { x: px + W * 0.03, y: chartTop, w: W * 0.97 - px - W * 0.03, h: H * 0.84 - chartTop };
     const panel = { x: px, y: H * 0.08, w: W * 0.97 - px };
     return { plot, chart, panel };
   }

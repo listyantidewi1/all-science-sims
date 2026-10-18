@@ -19,24 +19,24 @@ const PRESETS = {
       id: ['MULAI', 'BACA a, b, c', 'max ← a', 'JIKA b > max MAKA', '    max ← b', 'JIKA c > max MAKA', '    max ← c', 'TULIS max', 'SELESAI'],
     },
     nodes: [
-      { id: 'start', type: 'start', c: 2.5, r: 0.5, text: B('Start', 'Mulai'), line: 0, next: 'in' },
-      { id: 'in', type: 'io', c: 2.5, r: 1.5, text: B('Input a, b, c', 'Baca a, b, c'), line: 1, next: 'p1', run: (v, inp) => { v.a = inp.a; v.b = inp.b; v.c = inp.c; } },
-      { id: 'p1', type: 'process', c: 2.5, r: 2.5, text: B('max ← a', 'max ← a'), line: 2, next: 'd1', run: (v) => { v.max = v.a; } },
-      { id: 'd1', type: 'decision', c: 2.5, r: 3.7, text: B('b > max?', 'b > max?'), line: 3, cond: (v) => v.b > v.max, yes: 'p2', no: 'd2' },
-      { id: 'p2', type: 'process', c: 4.6, r: 3.7, text: B('max ← b', 'max ← b'), line: 4, next: 'd2', run: (v) => { v.max = v.b; } },
-      { id: 'd2', type: 'decision', c: 2.5, r: 5.1, text: B('c > max?', 'c > max?'), line: 5, cond: (v) => v.c > v.max, yes: 'p3', no: 'out' },
-      { id: 'p3', type: 'process', c: 4.6, r: 5.1, text: B('max ← c', 'max ← c'), line: 6, next: 'out', run: (v) => { v.max = v.c; } },
-      { id: 'out', type: 'io', c: 2.5, r: 6.5, text: B('Output max', 'Tulis max'), line: 7, next: 'end', run: (v, inp, out) => { out.push(v.max); } },
-      { id: 'end', type: 'end', c: 2.5, r: 7.5, text: B('End', 'Selesai'), line: 8 },
+      { id: 'start', type: 'start', c: 2.4, r: 0.5, text: B('Start', 'Mulai'), line: 0, next: 'in' },
+      { id: 'in', type: 'io', c: 2.4, r: 1.5, text: B('Input a, b, c', 'Baca a, b, c'), line: 1, next: 'p1', run: (v, inp) => { v.a = inp.a; v.b = inp.b; v.c = inp.c; } },
+      { id: 'p1', type: 'process', c: 2.4, r: 2.5, text: B('max ← a', 'max ← a'), line: 2, next: 'd1', run: (v) => { v.max = v.a; } },
+      { id: 'd1', type: 'decision', c: 2.4, r: 3.7, text: B('b > max?', 'b > max?'), line: 3, cond: (v) => v.b > v.max, yes: 'p2', no: 'd2' },
+      { id: 'p2', type: 'process', c: 4.8, r: 3.7, text: B('max ← b', 'max ← b'), line: 4, next: 'd2', run: (v) => { v.max = v.b; } },
+      { id: 'd2', type: 'decision', c: 2.4, r: 5.1, text: B('c > max?', 'c > max?'), line: 5, cond: (v) => v.c > v.max, yes: 'p3', no: 'out' },
+      { id: 'p3', type: 'process', c: 4.8, r: 5.1, text: B('max ← c', 'max ← c'), line: 6, next: 'out', run: (v) => { v.max = v.c; } },
+      { id: 'out', type: 'io', c: 2.4, r: 6.5, text: B('Output max', 'Tulis max'), line: 7, next: 'end', run: (v, inp, out) => { out.push(v.max); } },
+      { id: 'end', type: 'end', c: 2.4, r: 7.5, text: B('End', 'Selesai'), line: 8 },
     ],
     edges: [
       { from: 'start', to: 'in' }, { from: 'in', to: 'p1' }, { from: 'p1', to: 'd1' },
       { from: 'd1', to: 'p2', out: 'right', in: 'left', label: 'yes' },
       { from: 'd1', to: 'd2', label: 'no' },
-      { from: 'p2', to: 'd2', pts: [[4.6, 4.4], [2.5, 4.4]] },
+      { from: 'p2', to: 'd2', pts: [[4.8, 4.4], [2.4, 4.4]] },
       { from: 'd2', to: 'p3', out: 'right', in: 'left', label: 'yes' },
       { from: 'd2', to: 'out', label: 'no' },
-      { from: 'p3', to: 'out', pts: [[4.6, 5.85], [2.5, 5.85]] },
+      { from: 'p3', to: 'out', pts: [[4.8, 5.85], [2.4, 5.85]] },
       { from: 'out', to: 'end' },
     ],
   },
@@ -139,30 +139,30 @@ const PRESETS = {
     name: B('GCD by subtraction', 'FPB dengan pengurangan'),
     inputs: [{ k: 'a', v: 48 }, { k: 'b', v: 18 }],
     vars: ['a', 'b'],
-    cols: 7, rows: 7.2,
+    cols: 8, rows: 7.2,
     pseudo: {
       en: ['START', 'INPUT a, b', 'WHILE a ≠ b DO', '    IF a > b THEN', '        a ← a − b', '    ELSE', '        b ← b − a', 'END WHILE', 'OUTPUT a', 'END'],
       id: ['MULAI', 'BACA a, b', 'SELAMA a ≠ b LAKUKAN', '    JIKA a > b MAKA', '        a ← a − b', '    JIKA TIDAK', '        b ← b − a', 'AKHIR SELAMA', 'TULIS a', 'SELESAI'],
     },
     nodes: [
-      { id: 'start', type: 'start', c: 2.5, r: 0.5, text: B('Start', 'Mulai'), line: 0, next: 'in' },
-      { id: 'in', type: 'io', c: 2.5, r: 1.5, text: B('Input a, b', 'Baca a, b'), line: 1, next: 'd1', run: (v, inp) => { v.a = inp.a; v.b = inp.b; } },
-      { id: 'd1', type: 'decision', c: 2.5, r: 2.9, text: B('a ≠ b?', 'a ≠ b?'), line: 2, cond: (v) => v.a !== v.b, yes: 'd2', no: 'out' },
-      { id: 'out', type: 'io', c: 4.8, r: 2.9, text: B('Output a', 'Tulis a'), line: 8, next: 'end', run: (v, inp, out) => { out.push(v.a); } },
-      { id: 'end', type: 'end', c: 6.3, r: 2.9, text: B('End', 'Selesai'), line: 9 },
-      { id: 'd2', type: 'decision', c: 2.5, r: 4.4, text: B('a > b?', 'a > b?'), line: 3, cond: (v) => v.a > v.b, yes: 'pa', no: 'pb' },
-      { id: 'pa', type: 'process', c: 1.0, r: 5.7, text: B('a ← a − b', 'a ← a − b'), line: 4, next: 'd1', run: (v) => { v.a = v.a - v.b; } },
-      { id: 'pb', type: 'process', c: 4.3, r: 5.7, text: B('b ← b − a', 'b ← b − a'), line: 6, next: 'd1', run: (v) => { v.b = v.b - v.a; } },
+      { id: 'start', type: 'start', c: 3.1, r: 0.5, text: B('Start', 'Mulai'), line: 0, next: 'in' },
+      { id: 'in', type: 'io', c: 3.1, r: 1.5, text: B('Input a, b', 'Baca a, b'), line: 1, next: 'd1', run: (v, inp) => { v.a = inp.a; v.b = inp.b; } },
+      { id: 'd1', type: 'decision', c: 3.1, r: 2.9, text: B('a ≠ b?', 'a ≠ b?'), line: 2, cond: (v) => v.a !== v.b, yes: 'd2', no: 'out' },
+      { id: 'out', type: 'io', c: 5.5, r: 2.9, text: B('Output a', 'Tulis a'), line: 8, next: 'end', run: (v, inp, out) => { out.push(v.a); } },
+      { id: 'end', type: 'end', c: 7.35, r: 2.9, text: B('End', 'Selesai'), line: 9 },
+      { id: 'd2', type: 'decision', c: 3.1, r: 4.4, text: B('a > b?', 'a > b?'), line: 3, cond: (v) => v.a > v.b, yes: 'pa', no: 'pb' },
+      { id: 'pa', type: 'process', c: 1.4, r: 5.7, text: B('a ← a − b', 'a ← a − b'), line: 4, next: 'd1', run: (v) => { v.a = v.a - v.b; } },
+      { id: 'pb', type: 'process', c: 4.8, r: 5.7, text: B('b ← b − a', 'b ← b − a'), line: 6, next: 'd1', run: (v) => { v.b = v.b - v.a; } },
     ],
     edges: [
       { from: 'start', to: 'in' }, { from: 'in', to: 'd1' },
       { from: 'd1', to: 'out', out: 'right', in: 'left', label: 'no' },
       { from: 'out', to: 'end', out: 'right', in: 'left' },
       { from: 'd1', to: 'd2', label: 'yes' },
-      { from: 'd2', to: 'pa', out: 'left', in: 'top', label: 'yes', pts: [[1.0, 4.4]] },
-      { from: 'd2', to: 'pb', out: 'right', in: 'top', label: 'no', pts: [[4.3, 4.4]] },
-      { from: 'pa', to: 'd1', out: 'bottom', in: 'left', pts: [[1.0, 6.5], [0.3, 6.5], [0.3, 2.9]] },
-      { from: 'pb', to: 'd1', out: 'bottom', in: 'left', pts: [[4.3, 6.5], [0.3, 6.5], [0.3, 2.9]] },
+      { from: 'd2', to: 'pa', out: 'left', in: 'top', label: 'yes', pts: [[1.4, 4.4]] },
+      { from: 'd2', to: 'pb', out: 'right', in: 'top', label: 'no', pts: [[4.8, 4.4]] },
+      { from: 'pa', to: 'd1', out: 'bottom', in: 'left', pts: [[1.4, 6.5], [0.15, 6.5], [0.15, 2.9]] },
+      { from: 'pb', to: 'd1', out: 'bottom', in: 'left', pts: [[4.8, 6.5], [0.15, 6.5], [0.15, 2.9]] },
     ],
   },
 };
@@ -189,6 +189,7 @@ export function mount(rootEl) {
     vars: {},
     outputs: [],
     cur: 'start',
+    last: null,            // block executed on the most recent step (highlighted); null before the first step
     lastEdge: null,
     steps: 0,
     done: false,
@@ -209,6 +210,7 @@ export function mount(rootEl) {
     for (const v of p.vars) state.vars[v] = undefined;
     state.outputs = [];
     state.cur = 'start';
+    state.last = null;
     state.lastEdge = null;
     state.steps = 0;
     state.done = false;
@@ -247,6 +249,7 @@ export function mount(rootEl) {
       out: state.outputs.slice(outBefore).join(' '),
     });
     state.lastEdge = nextId ? { from: n.id, to: nextId, branch } : null;
+    state.last = n.id;
     state.cur = nextId;
     if (n.type === 'end' || !nextId) { state.done = true; state.running = false; }
     if (state.steps >= MAX_STEPS && !state.done) { state.done = true; state.limitHit = true; state.running = false; }
@@ -303,8 +306,9 @@ export function mount(rootEl) {
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText(T(p.name.en, p.name.id), g.fx, H * 0.035);
 
-    // edges
-    const cur = state.cur;
+    // edges. The highlighted block is the one just executed (its row is the last in the
+    // trace table and the variables show its effect); before the first step it is Start.
+    const cur = state.last ?? state.cur;
     for (const e of p.edges) {
       const pts = edgePoints(e, g);
       const hot = state.lastEdge && state.lastEdge.from === e.from && state.lastEdge.to === e.to;
@@ -364,20 +368,30 @@ export function mount(rootEl) {
       ctx.fill(); ctx.stroke();
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#f1f5f9';
-      ctx.fillText(T(n.text.en, n.text.id), b.x, b.y + 0.5);
+      const label = T(n.text.en, n.text.id);
+      const maxW = n.type === 'decision' ? b.w * 0.7 : n.type === 'io' ? b.w * 0.8 : b.w - 8;
+      ctx.font = font;
+      const tw = ctx.measureText(label).width;
+      if (tw > maxW) ctx.font = `${Math.max(7, fs * maxW / tw)}px system-ui, -apple-system, Roboto, sans-serif`;
+      ctx.fillText(label, b.x, b.y + 0.5);
+      ctx.font = font;
     }
 
     // ---------- right panel: pseudocode ----------
     const px = g.px, pw = g.pw;
     const lines = p.pseudo[getLocale() === 'id' ? 'id' : 'en'];
-    const pfs = clamp(Math.min(W * 0.0155, (H * 0.46) / (lines.length + 1) * 0.72), 7, 14);
+    let pfs = clamp(Math.min(W * 0.0155, (H * 0.46) / (lines.length + 1) * 0.72), 7, 14);
+    ctx.font = `${pfs}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+    const longest = Math.max(...lines.map((ln) => ctx.measureText(ln).width));
+    const availW = pw - pfs * 2.2;
+    if (longest > availW) pfs = Math.max(7, pfs * availW / longest);
     const lh = pfs * 1.45;
     let y = H * 0.07;
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillStyle = '#94a3b8'; ctx.font = `600 ${pfs}px system-ui, sans-serif`;
     ctx.fillText(T('Pseudocode', 'Pseudokode'), px, y); y += lh * 1.1;
-    const curNode = cur ? nodeById(cur) : null;
-    const hiLine = state.done && !state.limitHit ? lines.length - 1 : (curNode ? curNode.line : -1);
+    const hiNode = cur ? nodeById(cur) : null;
+    const hiLine = state.done && !state.limitHit ? lines.length - 1 : (hiNode ? hiNode.line : -1);
     ctx.font = `${pfs}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
     lines.forEach((ln, i) => {
       if (i === hiLine) {
@@ -494,12 +508,12 @@ export function mount(rootEl) {
       const wrap = document.createElement('div');
       wrap.className = 'ctrl';
       const lab = document.createElement('label');
-      lab.textContent = `Input ${inp.k}`;
+      lab.textContent = `${T('Input', 'Masukan')} ${inp.k}`;
       const field = document.createElement('input');
       field.type = 'number'; field.value = inp.v; field.step = 1; field.min = -999; field.max = 999;
       field.className = 'btn';
       field.style.cssText = 'width:100%;grid-column:1 / -1;font-family:var(--font-mono, monospace)';
-      field.setAttribute('aria-label', `Input ${inp.k}`);
+      field.setAttribute('aria-label', `${T('Input', 'Masukan')} ${inp.k}`);
       field.addEventListener('input', () => {
         const n = Math.round(Number(field.value));
         state.inputs[inp.k] = Number.isFinite(n) ? clamp(n, -999, 999) : 0;
@@ -512,7 +526,7 @@ export function mount(rootEl) {
 
   const presetSel = select({
     label: 'Algorithm', key: 'alg',
-    options: Object.entries(PRESETS).map(([k, v]) => ({ value: k, label: v.name.en })),
+    options: Object.entries(PRESETS).map(([k, v]) => ({ value: k, label: T(v.name.en, v.name.id) })),
     value: state.presetKey,
     onChange: (v) => { state.presetKey = v; buildInputs(); reset(); },
   });

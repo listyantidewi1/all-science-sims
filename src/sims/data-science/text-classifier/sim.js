@@ -163,11 +163,19 @@ export function mount(rootEl) {
     const font = `${fs}px system-ui, -apple-system, Roboto, sans-serif`;
     const bold = `bold ${fs}px system-ui, -apple-system, Roboto, sans-serif`;
     const mono = `${fs}px ui-monospace, Menlo, Consolas, monospace`;
+    // bold text that shrinks to fit maxW instead of running off the right edge (narrow screens)
+    const fitBold = (text, x, y, maxW) => {
+      ctx.font = bold;
+      const w = ctx.measureText(text).width;
+      if (w > maxW) ctx.font = `bold ${Math.max(7, fs * maxW / w)}px system-ui, -apple-system, Roboto, sans-serif`;
+      ctx.fillText(text, x, y);
+      ctx.font = bold;
+    };
 
     ctx.fillStyle = '#e2e8f0'; ctx.font = bold; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     const m = state.model;
-    ctx.fillText(T(`Training data: ${m.docs.spam} spam + ${m.docs.ham} ham messages, ${m.vocab.size} different words, α = ${state.alpha}`,
-      `Data latih: ${m.docs.spam} spam + ${m.docs.ham} bukan spam, ${m.vocab.size} kata berbeda, α = ${state.alpha}`), W * 0.03, H * 0.07);
+    fitBold(T(`Training data: ${m.docs.spam} spam + ${m.docs.ham} ham messages, ${m.vocab.size} different words, α = ${state.alpha}`,
+      `Data latih: ${m.docs.spam} spam + ${m.docs.ham} bukan spam, ${m.vocab.size} kata berbeda, α = ${state.alpha}`), W * 0.03, H * 0.07, W * 0.94);
 
     if (!r || !r.words.length) {
       ctx.fillStyle = '#94a3b8'; ctx.font = font; ctx.textAlign = 'center';
@@ -227,8 +235,8 @@ export function mount(rootEl) {
     // sum and posterior meter
     const my = H * 0.80;
     ctx.fillStyle = '#e2e8f0'; ctx.font = bold; ctx.textAlign = 'left';
-    ctx.fillText(T(`sum of log-odds = ${r.logOdds >= 0 ? '+' : ''}${r.logOdds.toFixed(2)}   →   P(spam | message) = 1 / (1 + e^(−sum)) = ${(r.pSpam * 100).toFixed(1)}%`,
-      `jumlah log-odds = ${r.logOdds >= 0 ? '+' : ''}${r.logOdds.toFixed(2)}   →   P(spam | pesan) = 1 / (1 + e^(−jumlah)) = ${(r.pSpam * 100).toFixed(1)}%`), W * 0.03, my - fs * 1.1);
+    fitBold(T(`sum of log-odds = ${r.logOdds >= 0 ? '+' : ''}${r.logOdds.toFixed(2)}   →   P(spam | message) = 1 / (1 + e^(−sum)) = ${(r.pSpam * 100).toFixed(1)}%`,
+      `jumlah log-odds = ${r.logOdds >= 0 ? '+' : ''}${r.logOdds.toFixed(2)}   →   P(spam | pesan) = 1 / (1 + e^(−jumlah)) = ${(r.pSpam * 100).toFixed(1)}%`), W * 0.03, my - fs * 1.1, W * 0.94);
     const mx = W * 0.03, mw = W * 0.64, mh = fs * 1.3;
     ctx.fillStyle = HAM_COL; ctx.beginPath(); ctx.roundRect(mx, my, mw, mh, 6); ctx.fill();
     ctx.fillStyle = SPAM_COL; ctx.beginPath(); ctx.roundRect(mx, my, mw * r.pSpam, mh, 6); ctx.fill();
