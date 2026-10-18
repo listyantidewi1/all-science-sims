@@ -31,7 +31,10 @@ export function mount(rootEl) {
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   const params = { fert: 0, legume: 0, rain: 1, wet: false, speed: 0.5, run: true };
-  const S = { NH4: 20, NO3: 30, P: 200, A: 20, DOM: 600, year: 0, hist: [], lastHist: -1 };
+  // Start at the model's steady state for no fertiliser / no legumes / normal rain, so the pools only
+  // move when the student changes something.
+  const INIT = { NH4: 3.5, NO3: 4.8, P: 43, A: 13, DOM: 138 };
+  const S = { ...INIT, year: 0, hist: [], lastHist: -1 };
   const F = {}; // current flows
   let anim = 0;
 
@@ -75,7 +78,7 @@ export function mount(rootEl) {
     flows();
   }
   function reset() {
-    S.NH4 = 20; S.NO3 = 30; S.P = 200; S.A = 20; S.DOM = 600; S.year = 0; S.hist = []; S.lastHist = -1;
+    Object.assign(S, INIT); S.year = 0; S.hist = []; S.lastHist = -1;
     flows();
   }
   const bloomIndex = () => 100 * (1 - Math.exp(-F.leach / 40));
@@ -96,11 +99,12 @@ export function mount(rootEl) {
     nh4: { x: 0.22, y: 0.85, w: 0.26, h: 0.14, color: '#f59e0b', name: ['Soil NH₄⁺ (ammonium)', 'NH₄⁺ tanah (amonium)'], pool: 'NH4' },
     no3: { x: 0.56, y: 0.87, w: 0.26, h: 0.14, color: '#a78bfa', name: ['Soil NO₃⁻ (nitrate)', 'NO₃⁻ tanah (nitrat)'], pool: 'NO3' },
     fert: { x: 0.05, y: 0.68, w: 0.1, h: 0.12, color: '#e2e8f0', name: ['Fertiliser', 'Pupuk'] },
+    harvest: { x: 0.05, y: 0.46, w: 0.1, h: 0.12, color: '#94a3b8', name: ['Harvest', 'Panen'] },
     water: { x: 0.93, y: 0.9, w: 0.12, h: 0.14, color: '#0ea5e9', name: ['River', 'Sungai'] },
   };
   // from, to, flow key, color, label, control-point offset (fraction) for a curved arrow
   const ARROWS = [
-    { a: 'atm', b: 'plants', f: 'fixLeg', c: '#10b981', l: ['fixation: Rhizobium (legumes)', 'fiksasi: Rhizobium (legum)'], cx: -0.12, cy: 0 },
+    { a: 'atm', b: 'plants', f: 'fixLeg', c: '#10b981', l: ['fixation: Rhizobium (legumes)', 'fiksasi: Rhizobium (legum)'], cx: -0.12, cy: 0, lt: 0.28 },
     { a: 'atm', b: 'plants', f: 'fixFree', c: '#34d399', l: ['fixation: free-living bacteria', 'fiksasi: bakteri bebas'], cx: 0.0, cy: 0.03 },
     { a: 'atm', b: 'no3', f: 'lightning', c: '#facc15', l: ['lightning', 'petir'], cx: 0.1, cy: 0 },
     { a: 'fert', b: 'nh4', f: 'fert', c: '#e2e8f0', l: ['fertiliser (Haber)', 'pupuk (Haber)'], cx: 0, cy: 0.05 },
@@ -113,7 +117,7 @@ export function mount(rootEl) {
     { a: 'dom', b: 'nh4', f: 'ammon', c: '#b45309', l: ['ammonification', 'amonifikasi'], cx: 0, cy: 0.1 },
     { a: 'no3', b: 'atm', f: 'den', c: '#a78bfa', l: ['denitrification', 'denitrifikasi'], cx: 0.06, cy: 0 },
     { a: 'no3', b: 'water', f: 'leach', c: '#ef4444', l: ['leaching / runoff', 'pelindian / limpasan'], cx: 0, cy: 0.06 },
-    { a: 'plants', b: 'fert', f: 'harvest', c: '#94a3b8', l: ['harvest', 'panen'], cx: -0.04, cy: -0.08 },
+    { a: 'plants', b: 'harvest', f: 'harvest', c: '#94a3b8', l: ['harvest (export)', 'panen (ekspor)'], cx: 0, cy: -0.06 },
   ];
 
   function dgm() { return { x0: 0, y0: 0, w: cv.width * 0.66, h: cv.height }; }
@@ -163,8 +167,8 @@ export function mount(rootEl) {
         ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.5, lw * 0.45), 0, Math.PI * 2); ctx.fill();
       }
     }
-    // label at the curve midpoint
-    const lp = quad(p0, mid, p2, 0.5);
+    // label along the curve (default: midpoint; `lt` moves it to avoid a neighbouring label)
+    const lp = quad(p0, mid, p2, ar.lt ?? 0.5);
     const fs = Math.max(8, cv.width * 0.0125);
     ctx.font = `${Math.round(fs)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
@@ -192,6 +196,10 @@ export function mount(rootEl) {
     if (id === 'fert') {
       ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`;
       ctx.fillText(`${params.fert} kg/ha/yr`, P.cx, P.cy + fs * 1.0);
+    }
+    if (id === 'harvest') {
+      ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.round(fs * 0.9)}px system-ui, sans-serif`;
+      ctx.fillText(`${F.harvest.toFixed(0)} kg/ha/yr`, P.cx, P.cy + fs * 1.0);
     }
     if (id === 'water') {
       // algae tint proportional to bloom index
@@ -240,7 +248,7 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(148,163,184,0.2)'; ctx.fillRect(x0, y, w, fs * 0.8);
     ctx.fillStyle = risk[2]; ctx.fillRect(x0, y, w * bloomIndex() / 100, fs * 0.8);
     ctx.font = `${Math.round(fs * 0.8)}px system-ui, sans-serif`; ctx.fillStyle = '#94a3b8';
-    ctx.fillText('<10 low · 10–40 moderate · 40–80 high · >80 severe (kg N/ha/yr)', x0, y + fs * 1.8);
+    ctx.fillText(T('runoff kg N/ha/yr: <10 low · 10–40 moderate · 40–80 high · >80 severe', 'limpasan kg N/ha/thn: <10 rendah · 10–40 sedang · 40–80 tinggi · >80 parah'), x0, y + fs * 1.8);
     // time chart: soil NO3 and runoff
     const gy = y + fs * 2.8, gh = H - gy - fs * 2.4, gx = x0 + fs * 2.2, gw = w - fs * 2.4;
     if (gh > 20) {
@@ -322,8 +330,8 @@ export function mount(rootEl) {
       { key: 'risk', label: 'Bloom risk' },
     ],
     procedure: [
-      'Fertiliser 0, legumes 0, rain 1.0. Run until the pools stop changing (about 5 years), then Record.',
-      'Set fertiliser to 100. Wait until steady and Record. Repeat for 200 and 300.',
+      'Fertiliser 0, legumes 0, rain 1.0. Let it run a few years to confirm the pools are steady, then Record.',
+      'Set fertiliser to 100. Wait until steady (10–15 years; raise Speed to save time) and Record. Repeat for 200 and 300.',
       'Plot runoff against fertiliser. Is it a straight line through the origin? What fraction of fertiliser is lost?',
       'Fertiliser 0, legumes 50 %. Record when steady. Compare plant N and runoff with the 100 kg fertiliser row.',
       'Fertiliser 200: record with rain 0.5 and 2.0, then with Waterlogged on. Which change cuts runoff the most, and where does the nitrogen go instead?',

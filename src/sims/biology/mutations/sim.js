@@ -167,7 +167,7 @@ export function mount(rootEl) {
     label(y, T('mRNA (transcription: T → U)', 'mRNA (transkripsi: T → U)'));
     y += fs * 0.5;
     h = drawBases(ctx, L, y, toRNA(a.origSeq), { codonNumbers: true });
-    y += h + fs * 1.5;
+    y += h + fs * 2.1; // leave room for the codon numbers under the mRNA row
     label(y, T('protein (translation)', 'protein (translasi)'));
     y += fs * 0.5;
     h = drawProtein(ctx, L, y, a.orig, null, null, a.orig.partial);
@@ -198,7 +198,7 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.roundRect(rx, y - 6, rw, h + fs * 1.4 + L.box * 1.25 + 12, 8); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#a78bfa'; ctx.font = font(fs * 0.8); ctx.textAlign = 'center'; ctx.fillText(T('ribosome', 'ribosom'), rx + rw / 2, y - 8); ctx.textAlign = 'left';
     }
-    y += h + fs * 1.5;
+    y += h + fs * 2.1;
     label(y, T('mutant protein', 'protein mutan'));
     y += fs * 0.5;
     h = drawProtein(ctx, L, y, a.mut, a.changedIdx, ribIdx - 1 + (state.rib >= nC ? 2 : 0), a.mut.partial);

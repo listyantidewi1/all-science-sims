@@ -35,7 +35,7 @@ export function mount(rootEl) {
     const hasTip = params.tip !== 'removed';
     const lightSeen = params.lightOn && params.tip === 'intact';
     const phiAbs = S.phi + params.rot;     // shoot tip direction from true vertical, + = right
-    const psiAbs = S.psi + params.rot;     // root tip direction from straight down, + = right
+    const psiAbs = S.psi + params.rot;     // root tip direction from straight down, + = clockwise (screen-left)
     // Shoot auxin fraction on the right side: light pushes auxin to the shaded side, gravity to the lower side.
     let fR = 0.5;
     if (hasTip) {
@@ -236,15 +236,17 @@ export function mount(rootEl) {
     ctx.textAlign = 'left'; ctx.font = `${Math.round(fs)}px system-ui, sans-serif`;
     ctx.fillStyle = '#94a3b8';
     const ly = y0 + h + fs * 3.9;
-    ctx.fillText(T('L/R markers: auxin on the left/right side of each organ.', 'Penanda L/R: auksin di sisi kiri/kanan tiap organ.'), x0, ly);
-    ctx.fillText(T('The side with the higher growth rate becomes the outside of the bend.', 'Sisi dengan laju tumbuh lebih tinggi menjadi sisi luar lengkungan.'), x0, ly + fs * 1.3);
+    // short lines so nothing is clipped at the right edge of the canvas
+    ctx.fillText(T('L/R markers: auxin on the left/right side', 'Penanda L/R: auksin di sisi kiri/kanan'), x0, ly);
+    ctx.fillText(T('of each organ. The faster-growing side', 'tiap organ. Sisi yang tumbuh lebih cepat'), x0, ly + fs * 1.2);
+    ctx.fillText(T('becomes the outside of the bend.', 'menjadi sisi luar lengkungan.'), x0, ly + fs * 2.4);
     ctx.fillStyle = '#ec4899';
-    ctx.fillText(T('magenta on the seedling = auxin (IAA) level', 'magenta pada kecambah = kadar auksin (IAA)'), x0, ly + fs * 2.6);
+    ctx.fillText(T('magenta on the seedling = auxin (IAA) level', 'magenta pada kecambah = kadar auksin (IAA)'), x0, ly + fs * 3.7);
     ctx.fillStyle = '#94a3b8';
     const mode = params.tip === 'removed' ? T('tip removed: no auxin source → no bending', 'ujung dibuang: tanpa sumber auksin → tidak membengkok')
-      : params.tip === 'covered' ? T('tip covered: light not sensed, gravity still acts', 'ujung ditutup: cahaya tak dirasakan, gravitasi tetap bekerja')
+      : params.tip === 'covered' ? T('tip covered: light not sensed, gravity acts', 'ujung ditutup: cahaya tak dirasakan, gravitasi bekerja')
         : T('tip intact: phototropism + gravitropism', 'ujung utuh: fototropisme + gravitropisme');
-    ctx.fillText(mode, x0, ly + fs * 3.9);
+    ctx.fillText(mode, x0, ly + fs * 5.0);
   }
 
   function draw() {

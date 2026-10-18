@@ -125,6 +125,9 @@ export function mount(rootEl) {
   // ---------- drawing ----------
   const font = (px, bold) => `${bold ? 'bold ' : ''}${Math.max(9, Math.round(px))}px system-ui, -apple-system, Roboto, sans-serif`;
   const mono = (px, bold) => `${bold ? 'bold ' : ''}${Math.max(9, Math.round(px))}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+  // Event labels (stored in English for the lab CSV) shown on the chart in the current locale.
+  const EV = { 'Small meal': ['Small meal', 'Makan kecil'], 'Large meal': ['Large meal', 'Makan besar'], 'Exercise 30 min': ['Exercise', 'Olahraga'], 'Sleep 8 h': ['Sleep', 'Tidur'], 'Insulin injection': ['Insulin', 'Insulin'] };
+  const evLabel = (l) => { const e = EV[l]; return e ? T(e[0], e[1]) : l.split(' ')[0]; };
   const hhmm = (t) => { const tt = ((t % 1440) + 1440) % 1440; return `${String(Math.floor(tt / 60)).padStart(2, '0')}:${String(Math.floor(tt % 60)).padStart(2, '0')}`; };
   function arrow(ctx, x1, y1, x2, y2, color, w) {
     ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = w; ctx.lineCap = 'round';
@@ -151,7 +154,8 @@ export function mount(rootEl) {
     ctx.strokeStyle = C.grid; ctx.fillStyle = C.dim; ctx.font = font(fs * 0.85); ctx.textAlign = 'right';
     for (let g = 0; g <= gMax; g += 4) { ctx.beginPath(); ctx.moveTo(x, Y(g)); ctx.lineTo(x + w, Y(g)); ctx.stroke(); ctx.fillText(String(g), x - 4, Y(g) + fs * 0.35); }
     ctx.textAlign = 'center';
-    for (let hr = 0; hr <= 24; hr += 3) { const xx = X(hr * 60); ctx.beginPath(); ctx.moveTo(xx, y); ctx.lineTo(xx, y + h); ctx.stroke(); ctx.fillText(`${String(hr % 24).padStart(2, '0')}:00`, xx, y + h + fs * 1.1); }
+    const hrStep = w < 420 ? 6 : 3; // fewer hour labels on a narrow chart
+    for (let hr = 0; hr <= 24; hr += hrStep) { const xx = X(hr * 60); ctx.beginPath(); ctx.moveTo(xx, y); ctx.lineTo(xx, y + h); ctx.stroke(); ctx.fillText(`${String(hr % 24).padStart(2, '0')}:00`, xx, y + h + fs * 1.1); }
     ctx.textAlign = 'left'; ctx.fillStyle = C.text; ctx.font = font(fs);
     ctx.fillText(T('Blood glucose (mmol/L)', 'Glukosa darah (mmol/L)'), x + 4, y - fs * 0.5);
     ctx.fillStyle = C.ok; ctx.font = font(fs * 0.85); ctx.fillText(T('normal 4–7', 'normal 4–7'), x + w - fs * 5, Y(HI) - 3);
@@ -166,7 +170,7 @@ export function mount(rootEl) {
     state.events.forEach((e, i) => {
       const xx = X(e.t);
       ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.beginPath(); ctx.moveTo(xx, y); ctx.lineTo(xx, y + h); ctx.stroke();
-      ctx.fillStyle = C.text; ctx.fillText(e.label.split(' ')[0], xx, y + fs * (1 + (i % 2) * 1.1));
+      ctx.fillStyle = C.text; ctx.fillText(evLabel(e.label), xx, y + fs * (1 + (i % 2) * 1.1));
     });
     // current point
     const gx = X(state.tMin), gy = Y(m.G);
@@ -200,9 +204,11 @@ export function mount(rootEl) {
       ctx.fillStyle = color ? `${color},${alpha})` : C.box;
       ctx.beginPath(); ctx.roundRect(bx, yy, bw, bh, 8); ctx.fill();
       ctx.strokeStyle = color ? `${color})` : 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1.5; ctx.stroke();
-      ctx.fillStyle = C.text; ctx.font = font(fs, true); ctx.textAlign = 'center';
+      // shrink the text when it would overflow the box
+      const fit = (txt, px, bold) => { ctx.font = font(px, bold); const tw = ctx.measureText(txt).width; if (tw > bw - 10) ctx.font = font(px * (bw - 10) / tw, bold); };
+      ctx.fillStyle = C.text; fit(title, fs, true); ctx.textAlign = 'center';
       ctx.fillText(title, bx + bw / 2, yy + fs * 1.25);
-      ctx.fillStyle = C.dim; ctx.font = font(fs * 0.85); ctx.fillText(sub, bx + bw / 2, yy + fs * 2.4);
+      ctx.fillStyle = C.dim; fit(sub, fs * 0.85, false); ctx.fillText(sub, bx + bw / 2, yy + fs * 2.4);
       ctx.textAlign = 'left';
     };
     const ins = clamp(state.flash.ins, 0, 1), glu = clamp(state.flash.glu, 0, 1);
@@ -259,12 +265,14 @@ export function mount(rootEl) {
     // header
     ctx.fillStyle = C.text; ctx.font = mono(fs * 1.5, true);
     const asleep = state.tMin < state.sleepUntil, ex = state.tMin < state.exUntil;
-    ctx.fillText(`${T('Day', 'Hari')} ${state.day}  ${hhmm(state.tMin)}`, pad, fs * 1.8);
+    const head = `${T('Day', 'Hari')} ${state.day}  ${hhmm(state.tMin)}`;
+    ctx.fillText(head, pad, fs * 1.8);
+    const flagX = pad + ctx.measureText(head).width + fs * 1.2; // start after the header, whatever its width
     ctx.font = font(fs); ctx.fillStyle = C.dim;
     const flags = [asleep ? T('sleeping', 'tidur') : '', ex ? T('exercising', 'berolahraga') : '', m.stom + m.gut > 1 ? T(`digesting ${(m.stom + m.gut).toFixed(0)} g carbs`, `mencerna ${(m.stom + m.gut).toFixed(0)} g karbohidrat`) : ''].filter(Boolean).join(' · ');
-    ctx.fillText(flags || T('fasting', 'puasa'), pad + fs * 11, fs * 1.8);
-    if (m.G < 3) { ctx.fillStyle = C.lo; ctx.font = font(fs, true); ctx.fillText(T('Severe hypoglycaemia! Eat something.', 'Hipoglikemia berat! Makan sesuatu.'), pad + fs * 11, fs * 3.2); }
-    else if (m.G > 10) { ctx.fillStyle = C.hi; ctx.font = font(fs, true); ctx.fillText(T('Hyperglycaemia: kidneys losing glucose to urine.', 'Hiperglikemia: ginjal membuang glukosa ke urine.'), pad + fs * 11, fs * 3.2); }
+    ctx.fillText(flags || T('fasting', 'puasa'), flagX, fs * 1.8);
+    if (m.G < 3) { ctx.fillStyle = C.lo; ctx.font = font(fs, true); ctx.fillText(T('Severe hypoglycaemia! Eat something.', 'Hipoglikemia berat! Makan sesuatu.'), flagX, fs * 3.2); }
+    else if (m.G > 10) { ctx.fillStyle = C.hi; ctx.font = font(fs, true); ctx.fillText(T('Hyperglycaemia: kidneys losing glucose to urine.', 'Hiperglikemia: ginjal membuang glukosa ke urine.'), flagX, fs * 3.2); }
     // charts
     const cx = pad * 1.3, cw = leftW - cx - fs;
     drawGlucoseChart(ctx, cx, fs * 5, cw, H * 0.50, fs);

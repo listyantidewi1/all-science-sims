@@ -17,13 +17,13 @@ export default {
       'With ATP off, watch the O₂ bars. How long until inside and outside are about equal? Does O₂ stop crossing at equilibrium, or just stop having a net flow?',
       'Press "+10 glucose outside" three times. Glucose crosses only at the carrier protein: does the rate keep rising with every press, or does it level off (saturation)?',
       'Open the Na⁺ channel with ATP off and watch Na⁺ pour in. Then switch ATP on. Which way does the net Na⁺ flow point now, and how many ATP does it cost per minute?',
-      'Switch ATP on with the K⁺ channel closed: K⁺ keeps piling up inside. Now open the K⁺ channel and find the point where leak and pump balance.',
+      'Close the K⁺ channel and switch ATP on. After one cycle the pump reports "no substrate": the two K⁺ outside have been pumped in and there is nothing left to carry. Open the K⁺ channel so K⁺ can leak out again and find the point where leak and pump balance.',
     ],
     id: [
       'Dengan ATP mati, amati batang O₂. Berapa lama hingga dalam dan luar hampir sama? Apakah O₂ berhenti menyeberang saat kesetimbangan, atau hanya berhenti punya aliran neto?',
       'Tekan "+10 glucose outside" tiga kali. Glukosa hanya menyeberang di protein pembawa: apakah lajunya terus naik tiap kali ditekan, atau mendatar (jenuh)?',
       'Buka kanal Na⁺ dengan ATP mati dan amati Na⁺ membanjir masuk. Lalu nyalakan ATP. Ke mana arah aliran neto Na⁺ sekarang, dan berapa ATP yang dipakai per menit?',
-      'Nyalakan ATP dengan kanal K⁺ tertutup: K⁺ terus menumpuk di dalam. Sekarang buka kanal K⁺ dan temukan titik ketika kebocoran dan pompa seimbang.',
+      'Tutup kanal K⁺ lalu nyalakan ATP. Setelah satu siklus pompa menampilkan "tak ada substrat": dua K⁺ di luar sudah dipompa masuk dan tidak ada lagi yang bisa diangkut. Buka kanal K⁺ agar K⁺ bisa bocor keluar lagi dan temukan titik ketika kebocoran dan pompa seimbang.',
     ],
   },
 

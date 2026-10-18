@@ -257,11 +257,16 @@ export function mount(rootEl) {
       ctx.fillText(T('exocytosis: vesicle fuses, contents released outside (uses ATP)', 'eksositosis: vesikel berfusi, isi dilepas ke luar (memakai ATP)'), m.x + m.t, y + R + fs * 1.4);
     }
   }
+  // [label, colour, sign, reason]; reason: 'closed' (no open route), 'equilibrium', or 'slow'
   function flowText(type) {
     const f = S.flow[type];
-    if (f > 0.6) return [T('net out → in', 'neto luar → dalam'), '#22c55e', 1];
-    if (f < -0.6) return [T('net in → out', 'neto dalam → luar'), '#f97316', -1];
-    return [T('≈ 0 (equilibrium)', '≈ 0 (setimbang)'), '#94a3b8', 0];
+    if (f > 0.6) return [T('net out → in', 'neto luar → dalam'), '#22c55e', 1, ''];
+    if (f < -0.6) return [T('net in → out', 'neto dalam → luar'), '#f97316', -1, ''];
+    const closed = (type === 'na' && !params.naOpen && !params.atp) || (type === 'k' && !params.kOpen && !params.atp);
+    if (closed) return [T('0 (no open route)', '0 (tak ada jalur terbuka)'), '#94a3b8', 0, 'closed'];
+    const c = counts(type);
+    if (Math.abs(c.in - c.out) <= 3) return [T('≈ 0 (equilibrium)', '≈ 0 (setimbang)'), '#94a3b8', 0, 'equilibrium'];
+    return ['≈ 0', '#94a3b8', 0, 'slow'];
   }
   function drawBars(ctx) {
     const W = cv.width, H = cv.height, a = area();
@@ -363,7 +368,7 @@ export function mount(rootEl) {
       return {
         particle: Array.isArray(t.label) ? t.label[0] : t.label, t: S.time,
         inside: `${c.in} (${c.in * MM_PER_PARTICLE})`, outside: `${c.out} (${c.out * MM_PER_PARTICLE})`,
-        flow: ft[2] > 0 ? 'outside → inside' : ft[2] < 0 ? 'inside → outside' : 'none (equilibrium)',
+        flow: ft[2] > 0 ? 'outside → inside' : ft[2] < 0 ? 'inside → outside' : ft[3] === 'closed' ? 'none (no open route)' : ft[3] === 'equilibrium' ? 'none (equilibrium)' : '≈ none',
         route: t.route[0], atpOn: params.atp ? 'yes' : 'no', atp: S.atpUsed,
       };
     },

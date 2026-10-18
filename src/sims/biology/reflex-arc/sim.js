@@ -389,7 +389,7 @@ export function mount(rootEl) {
     for (const s of stages) {
       ctx.fillStyle = s.color; ctx.fillRect(px, y - fs * 0.7, fs * 0.6, fs * 0.6);
       ctx.fillStyle = C.text;
-      const detail = s.kind === 'travel' && s.d ? `${s.d} m / ${s.v} m/s` : '';
+      const detail = s.kind === 'travel' && s.d && barW > 250 ? `${s.d} m / ${s.v} m/s` : ''; // drop d/v on narrow panels
       ctx.fillText(T(...s.label), px + fs, y);
       ctx.textAlign = 'right'; ctx.fillText(`${detail}  ${s.dur.toFixed(1)} ms`, px + barW, y); ctx.textAlign = 'left';
       y += fs * 1.3;

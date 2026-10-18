@@ -20,6 +20,12 @@ const STAGE_NAME = {
   assemble: ['Assembly', 'Perakitan'], lyse: ['Lysis & release', 'Lisis & pelepasan'], integrate: ['Integration (prophage)', 'Integrasi (profag)'],
   divide: ['Host division', 'Pembelahan inang'], induce: ['Induction (UV)', 'Induksi (UV)'],
 };
+// One-word pill labels for the stage strip.
+const STAGE_SHORT = {
+  attach: ['Attachment', 'Pelekatan'], inject: ['Injection', 'Penyuntikan'], replicate: ['Replication', 'Replikasi'],
+  assemble: ['Assembly', 'Perakitan'], lyse: ['Lysis', 'Lisis'], integrate: ['Integration', 'Integrasi'],
+  divide: ['Division', 'Pembelahan'], induce: ['Induction', 'Induksi'],
+};
 const STAGE_DESC = {
   attach: ['Tail fibres bind receptors on the cell wall', 'Serabut ekor mengikat reseptor di dinding sel'],
   inject: ['Viral DNA is pushed through the tail into the cell', 'DNA virus didorong lewat ekor ke dalam sel'],
@@ -136,7 +142,8 @@ export function mount(rootEl) {
     if (!params.auto) return;
     const dm = dt * params.speed;
     advance(dm);
-    if (blocked()) { state.progress = Math.min(state.progress, 0.55); return; }
+    // Stall the animation before the blocked step completes (lysis: before the burst is drawn).
+    if (blocked()) { state.progress = Math.min(state.progress, stageId() === 'lyse' ? 0.3 : 0.55); return; }
     state.progress += dm / stageDur(stageId());
     if (state.progress >= 1) nextStage();
     if (state.blockedFlash > 0) state.blockedFlash -= dt;
@@ -325,7 +332,7 @@ export function mount(rootEl) {
         ctx.beginPath(); ctx.roundRect(px + 2, py, (pw - 4) * clamp(state.progress, 0, 1), ph, 6); ctx.fill();
       }
       ctx.fillStyle = isCur ? '#fff' : '#cbd5e1';
-      const lbl = T(STAGE_NAME[sid][0], STAGE_NAME[sid][1]).split(' ')[0].replace(/[(&]/g, '');
+      const lbl = T(STAGE_SHORT[sid][0], STAGE_SHORT[sid][1]);
       ctx.fillText(lbl, px + pw / 2, py + ph * 0.7);
       if (isDrug) {
         ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
@@ -383,23 +390,35 @@ export function mount(rootEl) {
       for (let i = 0; i < hist.length; i++) { const p = hist[i]; if (i === 0) ctx.moveTo(xOf(p.t), yVir(p.V)); else ctx.lineTo(xOf(p.t), yVir(p.V)); }
       ctx.stroke();
     }
-    // readouts
-    const fs = Math.round(Math.max(10, w * 0.034));
+    // readouts (wrapped onto more lines when the panel is narrow)
+    const fs = Math.round(Math.max(9, Math.min(13, w * 0.034)));
     ctx.font = `${fs}px system-ui, sans-serif`;
     let infCount = 0; for (const q of state.infected) infCount += q.n;
+    const narrow = w < 330;
     const lines = [
       [`t = ${state.t.toFixed(1)} min   ${T('cycles', 'siklus')}: ${state.cycles}`, '#e2e8f0'],
-      [`${T('uninfected', 'belum terinfeksi')}: ${Math.round(state.H)}   ${T('lysogens', 'lisogen')}: ${Math.round(state.Lg)}   ${T('infected', 'terinfeksi')}: ${Math.round(infCount)}`, '#38bdf8'],
-      [`${T('free virions', 'virion bebas')}: ${state.V >= 1e4 ? state.V.toExponential(2) : Math.round(state.V)}`, '#a78bfa'],
-      [`${T('burst size', 'ukuran ledakan')} B = ${params.burst}, ${T('latent period', 'periode laten')} = ${params.latent} min`, '#94a3b8'],
     ];
+    if (narrow) {
+      lines.push([`${T('uninfected', 'belum terinfeksi')}: ${Math.round(state.H)}   ${T('lysogens', 'lisogen')}: ${Math.round(state.Lg)}`, '#38bdf8']);
+      lines.push([`${T('infected', 'terinfeksi')}: ${Math.round(infCount)}`, '#38bdf8']);
+    } else {
+      lines.push([`${T('uninfected', 'belum terinfeksi')}: ${Math.round(state.H)}   ${T('lysogens', 'lisogen')}: ${Math.round(state.Lg)}   ${T('infected', 'terinfeksi')}: ${Math.round(infCount)}`, '#38bdf8']);
+    }
+    lines.push([`${T('free virions', 'virion bebas')}: ${state.V >= 1e4 ? state.V.toExponential(2) : Math.round(state.V)}`, '#a78bfa']);
+    if (narrow) {
+      lines.push([`B = ${params.burst}, ${T('latent period', 'periode laten')} = ${params.latent} min`, '#94a3b8']);
+    } else {
+      lines.push([`${T('burst size', 'ukuran ledakan')} B = ${params.burst}, ${T('latent period', 'periode laten')} = ${params.latent} min`, '#94a3b8']);
+    }
     let ly = gy + gh + 44;
     for (const [txt, col] of lines) { ctx.fillStyle = col; ctx.fillText(txt, x0 + 4, ly); ly += fs + 4; }
     if (params.drug !== 'none') {
       ctx.fillStyle = '#ef4444';
       const dn = DRUG_NAME[params.drug];
       ctx.fillText(`${T('drug', 'obat')}: ${T(dn[0], dn[1])}`, x0 + 4, ly);
+      ly += fs + 4;
     }
+    return ly;
   }
 
   function draw() {
@@ -409,12 +428,15 @@ export function mount(rootEl) {
     const split = W * 0.56;
     drawCellPanel(ctx, 0, 0, split, H);
     ctx.strokeStyle = 'rgba(148,163,184,0.25)'; ctx.beginPath(); ctx.moveTo(split, H * 0.04); ctx.lineTo(split, H * 0.96); ctx.stroke();
-    drawChart(ctx, split + W * 0.01, 0, W - split - W * 0.02, H * 0.72);
-    ctx.fillStyle = '#64748b';
-    ctx.font = `${Math.round(Math.max(9, W * 0.016))}px system-ui, sans-serif`;
-    ctx.textAlign = 'right';
-    ctx.fillText(T('Not to scale: T4 ≈ 200 nm, E. coli ≈ 2 µm', 'Tidak berskala: T4 ≈ 200 nm, E. coli ≈ 2 µm'), W - 8, H - 6);
-    ctx.textAlign = 'left';
+    const endY = drawChart(ctx, split + W * 0.01, 0, W - split - W * 0.02, H * 0.72);
+    if (endY < H - 8) {
+      // scale note only when the readouts leave room for it
+      ctx.fillStyle = '#64748b';
+      ctx.font = `${Math.round(Math.max(9, W * 0.016))}px system-ui, sans-serif`;
+      ctx.textAlign = 'right';
+      ctx.fillText(T('Not to scale: T4 ≈ 200 nm, E. coli ≈ 2 µm', 'Tidak berskala: T4 ≈ 200 nm, E. coli ≈ 2 µm'), W - 8, H - 6);
+      ctx.textAlign = 'left';
+    }
   }
 
   // ---------- controls ----------

@@ -9,7 +9,9 @@ const gauss = (d, mu, sg) => Math.exp(-0.5 * ((d - mu) / sg) ** 2);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 function hormones(d, fert) {
   const lh = clamp(0.12 + 0.88 * gauss(d, 13.5, 0.7) + 0.05 * gauss(d, 13.5, 2.5), 0, 1);
-  const fsh = clamp(0.30 + 0.22 * gauss(d, 3, 2.5) - 0.08 * gauss(d, 10, 2) + 0.35 * gauss(d, 13.5, 0.9) - 0.12 * clamp((d - 15) / 6, 0, 1) + (fert ? 0 : 0.15 * gauss(d, 28, 1.5)), 0.08, 1);
+  // FSH: highest in the early follicular phase (scaled to 1 at ~day 3), a smaller mid-cycle bump with the LH surge,
+  // low in the luteal phase, rising again at the end of the cycle unless hCG (fertilisation) keeps it suppressed.
+  const fsh = clamp((0.30 + 0.30 * gauss(d, 3, 2.5) - 0.08 * gauss(d, 10, 2) + 0.22 * gauss(d, 13.5, 0.9) - 0.12 * clamp((d - 15) / 6, 0, 1) + (fert ? 0 : 0.15 * gauss(d, 28, 1.5))) / 0.60, 0.08, 1);
   let e2 = 0.12 + 0.78 * gauss(d, 12.2, 1.9) + 0.42 * gauss(d, 21.5, 3.2);
   let p4 = 0.04 + 0.96 * gauss(d, 21.5, 3.4);
   if (fert && d > 21.5) { p4 = 0.04 + 0.96 * (1 + 0.04 * (d - 21.5)); e2 = 0.12 + 0.42 * (1 + 0.03 * (d - 21.5)); }
@@ -97,7 +99,15 @@ export function mount(rootEl) {
     }
     // legend
     ctx.font = font(fs * 0.9);
-    curves.forEach(([k, col, lab], i) => { const lx = x + w - fs * 22 + i * fs * 5.5; ctx.fillStyle = col; ctx.fillRect(lx, y - fs * 1.35, fs * 1.4, fs * 0.35); ctx.fillText(lab, lx + fs * 1.7, y - fs * 1.0); });
+    // legend laid out from the right edge using measured label widths so nothing is clipped
+    let lx = x + w;
+    for (let i = curves.length - 1; i >= 0; i--) {
+      const [k, col, lab] = curves[i];
+      const tw = ctx.measureText(lab).width;
+      lx -= tw + fs * 1.7;
+      ctx.fillStyle = col; ctx.fillRect(lx, y - fs * 1.35, fs * 1.4, fs * 0.35); ctx.fillText(lab, lx + fs * 1.7, y - fs * 1.0);
+      lx -= fs * 1.2;
+    }
     ctx.fillStyle = C.dim; ctx.save(); ctx.translate(x - fs * 1.1, y + h / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText(T('relative level (each scaled to own peak)', 'kadar relatif (tiap diskalakan ke puncaknya)'), 0, 0); ctx.restore();
     // day marker
     const mx = X(state.day), h0 = hormones(state.day, state.fert);
@@ -182,7 +192,7 @@ export function mount(rootEl) {
     ctx.fillStyle = C.dim;
     ctx.fillText(T(`highest (relative): ${dominant(hh)}`, `tertinggi (relatif): ${dominant(hh)}`), x, yy + fs * 0.2);
     ctx.fillText(T(`endometrium ${endometrium(d, state.fert).toFixed(1)} mm · basal temp ${bbt(hh).toFixed(1)} °C`, `endometrium ${endometrium(d, state.fert).toFixed(1)} mm · suhu basal ${bbt(hh).toFixed(1)} °C`), x, yy + fs * 1.6);
-    if (state.fert) { ctx.fillStyle = '#fde68a'; ctx.fillText(T('fertilisation on: hCG keeps progesterone high, no menstruation', 'fertilisasi: hCG menjaga progesteron tinggi, tidak ada menstruasi'), x, yy + fs * 3); }
+    if (state.fert) { ctx.fillStyle = '#fde68a'; ctx.fillText(d >= 21 ? T('fertilisation on: hCG keeps progesterone high, no menstruation', 'fertilisasi: hCG menjaga progesteron tinggi, tidak ada menstruasi') : T('fertilisation on: embryo implants ~day 21', 'fertilisasi: embrio berimplantasi ~hari 21'), x, yy + fs * 3); }
   }
 
   function draw() {

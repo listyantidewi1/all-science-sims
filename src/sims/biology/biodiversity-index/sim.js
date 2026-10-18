@@ -50,8 +50,12 @@ export function mount(rootEl) {
 
   function weights(preset) {
     if (preset !== 'custom') return PRESETS[preset].w;
-    const w = [];
-    for (let i = 0; i < params.richness; i++) w.push([i, Math.pow(1 - params.dominance * 0.95, i)]);
+    // dominance 0: all S species equally common; dominance 1: species 0 makes up 90 % of individuals
+    // and the other S−1 species share the rest equally (so every species stays present in the plot).
+    const S = params.richness, w = [];
+    if (S <= 1) return [[0, 1]];
+    const q = 1 / S + params.dominance * (0.9 - 1 / S);
+    for (let i = 0; i < S; i++) w.push([i, i === 0 ? q : (1 - q) / (S - 1)]);
     return w;
   }
   function build(h) {
@@ -103,7 +107,7 @@ export function mount(rootEl) {
   function panelRect(i) {
     const W = cv.width, H = cv.height;
     const pw = W * 0.47, x = W * 0.02 + i * W * 0.49;
-    const gridH = H * 0.46, gy = H * 0.1;
+    const gridH = H * 0.44, gy = H * 0.13;
     return { x, y: gy, w: pw, h: gridH, cw: pw / COLS, ch: gridH / ROWS };
   }
   function cellAt(x, y) {
@@ -184,7 +188,7 @@ export function mount(rootEl) {
     }
     // scale bar
     ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.round(fs * 0.85)}px system-ui, sans-serif`;
-    ctx.fillText(`1 ${T('cell', 'sel')} = 1 m²  ·  ${T('click to place/remove a quadrat', 'klik untuk meletakkan/menghapus kuadrat')}`, r.x, r.y + r.h + fs * 1.1);
+    ctx.fillText(r.w < 260 ? `1 ${T('cell', 'sel')} = 1 m²` : `1 ${T('cell', 'sel')} = 1 m²  ·  ${T('click to place/remove a quadrat', 'klik untuk meletakkan/menghapus kuadrat')}`, r.x, r.y + r.h + fs * 1.1);
 
     // stats
     const st = sampleStats(h);

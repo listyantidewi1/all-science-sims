@@ -41,14 +41,16 @@ export function mount(rootEl) {
   function newCase() {
     const keys = ['A', 'B', 'C'].sort(() => Math.random() - 0.5);
     const matchKey = Math.random() < 0.5 ? 'A' : 'B';
-    gel.lanes = [{ id: 'L', name: 'Ladder', prof: { uncut: LADDER, cut: LADDER } }];
-    ['S1', 'S2', 'S3'].forEach((id, i) => { gel.lanes.push({ id, name: T(`Suspect ${i + 1}`, `Tersangka ${i + 1}`), prof: PROFILES[keys[i]], key: keys[i] }); if (keys[i] === matchKey) gel.truth = id; });
-    gel.lanes.push({ id: 'CS', name: T('Crime scene', 'TKP'), prof: PROFILES[matchKey], key: matchKey });
+    // names are [en, id] pairs resolved at draw time so a locale switch updates the labels
+    gel.lanes = [{ id: 'L', name: ['Ladder', 'Tangga'], prof: { uncut: LADDER, cut: LADDER } }];
+    ['S1', 'S2', 'S3'].forEach((id, i) => { gel.lanes.push({ id, name: [`Suspect ${i + 1}`, `Tersangka ${i + 1}`], prof: PROFILES[keys[i]], key: keys[i] }); if (keys[i] === matchKey) gel.truth = id; });
+    gel.lanes.push({ id: 'CS', name: ['Crime scene', 'TKP'], prof: PROFILES[matchKey], key: matchKey });
     gel.guess = ''; gel.selected = null; gel.t = 0; gel.running = false;
   }
   newCase();
 
   const fragments = (lane) => (gel.enzyme ? lane.prof.cut : lane.prof.uncut);
+  const laneName = (lane) => T(lane.name[0], lane.name[1]);
   const distance = (bp) => D_REF * (gel.V / 100) * (gel.t / 60) * mobility(bp);
   // Estimate a size from the ladder by linear interpolation of log(size) vs distance.
   function estimateSize(d) {
@@ -122,7 +124,7 @@ export function mount(rootEl) {
     ctx.fillText(pcr.running ? `${ph[0]} · ${ph[1]}` : T('press Run PCR', 'tekan Jalankan PCR'), x + w / 2, sy + gap + fs * 2.6);
     ctx.textAlign = 'left';
     // readout
-    const ry = sy + fs * 5.4;
+    const ry = sy + fs * 6.6; // below the phase caption even when the strands are fully separated
     ctx.fillStyle = C.text; ctx.font = mono(fs * 1.5, true);
     ctx.fillText(`${T('cycle', 'siklus')} ${pcr.cycle} → 2^${pcr.cycle} = ${fmtInt(2 ** pcr.cycle)}`, x, ry);
     ctx.fillStyle = C.dim; ctx.font = font(fs * 0.85);
@@ -147,7 +149,7 @@ export function mount(rootEl) {
 
   function drawGel(ctx, x, y, w, h, fs) {
     ctx.fillStyle = C.text; ctx.font = font(fs * 1.1, true); ctx.fillText(T('Agarose gel', 'Gel agarosa') + ` — ${gel.V} V, ${gel.t.toFixed(0)} min` + (gel.enzyme ? T(' · cut with EcoRI', ' · dipotong EcoRI') : ''), x, y + fs);
-    const gx = x + fs * 3.2, gy = y + fs * 2.4, gw = w - fs * 6.5, gh = h - fs * 4.2;
+    const gx = x + fs * 3.2, gy = y + fs * 2.4, gw = w - fs * 3.6, gh = h - fs * 4.2;
     const mmPx = gh / GEL_MM; const wellY = gy + fs * 1.2;
     ctx.fillStyle = C.gel; ctx.beginPath(); ctx.roundRect(gx, gy, gw, gh, 6); ctx.fill();
     ctx.strokeStyle = C.gelEdge; ctx.lineWidth = 2; ctx.stroke();
@@ -165,7 +167,7 @@ export function mount(rootEl) {
       const lx = gx + laneW * (i + 0.5);
       ctx.fillStyle = C.well; ctx.fillRect(lx - bandW / 2, wellY - fs * 0.5, bandW, fs * 0.5);
       ctx.fillStyle = lane.id === gel.guess ? C.sel : C.dim; ctx.font = font(fs * 0.85, lane.id === 'CS' || lane.id === gel.guess); ctx.textAlign = 'center';
-      ctx.fillText(lane.name, lx, gy - fs * 0.4);
+      ctx.fillText(laneName(lane), lx, gy - fs * 0.4);
       for (const bp of fragments(lane)) {
         const d = distance(bp);
         if (d > GEL_MM - 1) continue;                       // ran off the gel
@@ -181,11 +183,6 @@ export function mount(rootEl) {
       if (gel.t > 0) { const fy = wellY + Math.min(GEL_MM - 1, D_REF * (gel.V / 100) * (gel.t / 60) * 1.05) * mmPx; ctx.fillStyle = 'rgba(96,165,250,0.35)'; ctx.fillRect(lx - bandW / 2, fy - 1, bandW, 2); }
     });
     ctx.textAlign = 'left';
-    // right-side info column
-    const ix = gx + gw + fs * 0.6;
-    ctx.fillStyle = C.dim; ctx.font = font(fs * 0.8);
-    ctx.fillText(T('click a band', 'klik pita'), ix, gy + fs);
-    ctx.fillText(T('to measure', 'untuk mengukur'), ix, gy + fs * 2);
     // selection readout under the gel
     let ty = gy + gh + fs * 1.3;
     ctx.font = font(fs * 0.9);
@@ -201,10 +198,11 @@ export function mount(rootEl) {
       const ok = gel.guess === gel.truth;
       const lane = gel.lanes.find((l) => l.id === gel.guess);
       const same = lane && sameProfile(lane);
+      const nm = lane ? laneName(lane) : '';
       ctx.fillStyle = ok ? C.ok : (same ? '#f59e0b' : C.bad); ctx.font = font(fs, true);
-      ctx.fillText(ok ? T(`${lane.name} matches the crime scene — correct!`, `${lane.name} cocok dengan TKP — benar!`)
-        : same ? T(`${lane.name} has the same bands as the crime scene here, but so does another suspect. Try the restriction enzyme.`, `${lane.name} berpita sama dengan TKP di sini, tetapi tersangka lain juga. Coba enzim restriksi.`)
-          : T(`${lane.name} does not match: compare the band positions again.`, `${lane.name} tidak cocok: bandingkan lagi posisi pitanya.`), x, ty);
+      ctx.fillText(ok ? T(`${nm} matches the crime scene — correct!`, `${nm} cocok dengan TKP — benar!`)
+        : same ? T(`${nm} has the same bands as the crime scene here, but so does another suspect. Try the restriction enzyme.`, `${nm} berpita sama dengan TKP di sini, tetapi tersangka lain juga. Coba enzim restriksi.`)
+          : T(`${nm} does not match: compare the band positions again.`, `${nm} tidak cocok: bandingkan lagi posisi pitanya.`), x, ty);
     }
   }
 
@@ -228,7 +226,7 @@ export function mount(rootEl) {
     const li = clamp(Math.floor((px - geo.gx) / geo.laneW), 0, gel.lanes.length - 1);
     const lane = gel.lanes[li];
     let best = null;
-    for (const bp of fragments(lane)) { const d = distance(bp); const by = geo.wellY + d * geo.mmPx; const dist = Math.abs(by - py); if (dist < 14 && (!best || dist < best.dist)) best = { lane: lane.id, laneName: lane.name, bp, d, dist }; }
+    for (const bp of fragments(lane)) { const d = distance(bp); const by = geo.wellY + d * geo.mmPx; const dist = Math.abs(by - py); if (dist < 14 && (!best || dist < best.dist)) best = { lane: lane.id, laneName: laneName(lane), bp, d, dist }; }
     gel.selected = best;
   };
   cv.canvas.addEventListener('pointerdown', onDown);
@@ -268,7 +266,7 @@ export function mount(rootEl) {
     source: () => {
       const lane = gel.lanes.find((l) => l.id === gel.labLane); if (!lane || gel.t <= 0) return null;
       const bands = fragments(lane).map((bp) => `${bp}→${distance(bp) > GEL_MM - 1 ? 'off gel' : distance(bp).toFixed(1)}`).join('; ');
-      return { lane: lane.name, enzyme: gel.enzyme ? 'EcoRI' : 'none', V: gel.V, t: Math.round(gel.t), bands, match: lane.id === 'CS' ? '(crime scene)' : lane.id === 'L' ? '(ladder)' : sameProfile(lane) ? 'yes' : 'no' };
+      return { lane: lane.name[0], enzyme: gel.enzyme ? 'EcoRI' : 'none', V: gel.V, t: Math.round(gel.t), bands, match: lane.id === 'CS' ? '(crime scene)' : lane.id === 'L' ? '(ladder)' : sameProfile(lane) ? 'yes' : 'no' };
     },
   });
   ctrlPanel.appendChild(lab.el);

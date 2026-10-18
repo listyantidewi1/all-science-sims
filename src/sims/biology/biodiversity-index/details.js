@@ -16,13 +16,13 @@ export default {
     en: [
       'Place one quadrat in the forest and one in the plantation. Then add quadrats one at a time and watch Simpson D: after how many quadrats does it stop changing much?',
       'Compare 5 quadrats in the forest with 5 in the plantation. Which habitat has the higher richness S, and which has the higher evenness J?',
-      'Set habitat B to Custom with richness 8 and dominance 0. Then raise dominance towards 1. Richness does not change, so why do D and H fall?',
+      'Set habitat B to Custom with richness 8 and dominance 0. Then raise dominance towards 1. All 8 species are still in the plot, so why do D and H fall? Why might your sample now show fewer than 8 species?',
       'Move the disturbance slider slowly from 0 to 100 %. Which species disappear first, and which index reacts first: Simpson or Shannon?',
     ],
     id: [
       'Letakkan satu kuadrat di hutan dan satu di perkebunan. Lalu tambahkan kuadrat satu per satu dan amati Simpson D: setelah berapa kuadrat nilainya hampir tidak berubah lagi?',
       'Bandingkan 5 kuadrat di hutan dengan 5 di perkebunan. Habitat mana yang kekayaan S-nya lebih tinggi, dan mana yang kemerataan J-nya lebih tinggi?',
-      'Atur habitat B ke Custom dengan kekayaan 8 dan dominansi 0. Lalu naikkan dominansi menuju 1. Kekayaan tidak berubah, jadi mengapa D dan H turun?',
+      'Atur habitat B ke Custom dengan kekayaan 8 dan dominansi 0. Lalu naikkan dominansi menuju 1. Kedelapan spesies masih ada di petak, jadi mengapa D dan H turun? Mengapa sampelmu kini mungkin menunjukkan kurang dari 8 spesies?',
       'Geser kontrol gangguan perlahan dari 0 ke 100 %. Spesies mana yang hilang lebih dulu, dan indeks mana yang bereaksi lebih dulu: Simpson atau Shannon?',
     ],
   },

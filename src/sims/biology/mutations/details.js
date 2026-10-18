@@ -4,26 +4,26 @@ export default {
     en: [
       'Transcribe a DNA coding sequence into mRNA and translate it with the genetic code table, reading codons in the correct frame from AUG.',
       'Classify point mutations as silent, missense or nonsense from the codon change, and explain why a one-base insertion or deletion causes a frameshift that changes every downstream codon.',
-      'Relate the sickle-cell mutation (GAG → GTG, Glu → Val at codon 6 of β-globin) to the altered protein and its consequences.',
+      'Relate the sickle-cell mutation (GAG → GTG, Glu → Val at codon 6 of mature β-globin, codon 7 in the sim which counts the start codon) to the altered protein and its consequences.',
     ],
     id: [
       'Mentranskripsikan urutan DNA pengode menjadi mRNA dan mentranslasikannya dengan tabel kode genetik, membaca kodon dalam kerangka yang benar dari AUG.',
       'Mengklasifikasikan mutasi titik sebagai diam, missense atau nonsense dari perubahan kodon, dan menjelaskan mengapa insersi atau delesi satu basa menyebabkan pergeseran kerangka yang mengubah semua kodon di hilir.',
-      'Mengaitkan mutasi sel sabit (GAG → GTG, Glu → Val pada kodon 6 β-globin) dengan protein yang berubah dan akibatnya.',
+      'Mengaitkan mutasi sel sabit (GAG → GTG, Glu → Val pada kodon 6 β-globin matang, kodon 7 dalam simulasi yang menghitung kodon awal) dengan protein yang berubah dan akibatnya.',
     ],
   },
   tryThis: {
     en: [
       'Choose Substitution at position 21 and try each of the four bases. Which give the same amino acid (silent), which change it (missense), and does any create a stop codon?',
       'Press the Sickle-cell preset. Which base changed, which codon, and which amino acid? Why does one amino acid matter so much here?',
-      'Delete the base at position 4. How many amino acids after the change are different? Now delete three bases in a row (positions 4, 5, 6 one after another using Apply and keep) and compare.',
-      'Find a substitution that turns codon 3 (CAC, His) into a stop codon. How long is the protein now?',
+      'Delete the base at position 4. How many amino acids after the change are different? Now delete three bases in a row (delete base 4, press "Keep mutation", and repeat twice more) and compare.',
+      'Find a substitution that turns codon 9 (AAG, Lys) into a stop codon. How long is the protein now?',
     ],
     id: [
       'Pilih Substitusi pada posisi 21 dan coba keempat basa. Mana yang memberi asam amino yang sama (diam), mana yang mengubahnya (missense), dan adakah yang membuat kodon stop?',
       'Tekan preset Sel sabit. Basa mana yang berubah, kodon mana, dan asam amino apa? Mengapa satu asam amino begitu berpengaruh di sini?',
-      'Hapus basa pada posisi 4. Berapa asam amino setelah perubahan yang berbeda? Sekarang hapus tiga basa berturut-turut (posisi 4, 5, 6 satu per satu dengan Terapkan dan simpan) dan bandingkan.',
-      'Temukan substitusi yang mengubah kodon 3 (CAC, His) menjadi kodon stop. Berapa panjang proteinnya sekarang?',
+      'Hapus basa pada posisi 4. Berapa asam amino setelah perubahan yang berbeda? Sekarang hapus tiga basa berturut-turut (hapus basa 4, tekan "Keep mutation", lalu ulangi dua kali lagi) dan bandingkan.',
+      'Temukan substitusi yang mengubah kodon 9 (AAG, Lys) menjadi kodon stop. Berapa panjang proteinnya sekarang?',
     ],
   },
 

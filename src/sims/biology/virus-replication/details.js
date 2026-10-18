@@ -17,13 +17,13 @@ export default {
       'Run the lytic cycle on Auto with burst size 100 and time to lysis 25 min. Note the time at which free virions first exceed 1000 and when the host population crashes.',
       'Double the burst size to 200. Does the host population crash in half the time, or sooner than that? Record both runs in the lab.',
       'Switch to the lysogenic cycle and reset. How many host divisions happen before the first virions appear? Why do the host cells survive longer?',
-      'Set "Antiviral blocks" to Assembly, then to Attachment. Which drug stops the population of free virions from rising at all, and which one still lets infected cells die?',
+      'Set "Antiviral blocks" to Assembly, press Reset and run; then do the same with Attachment. Which drug stops the population of free virions from rising at all, and which one still lets infected cells die?',
     ],
     id: [
       'Jalankan siklus litik dengan Auto, ukuran ledakan 100 dan waktu lisis 25 menit. Catat waktu saat virion bebas pertama kali melampaui 1000 dan saat populasi inang runtuh.',
       'Gandakan ukuran ledakan menjadi 200. Apakah populasi inang runtuh dalam separuh waktu, atau lebih cepat lagi? Rekam kedua percobaan di lab.',
       'Pindah ke siklus lisogenik dan reset. Berapa kali inang membelah sebelum virion pertama muncul? Mengapa sel inang bertahan lebih lama?',
-      'Atur "Antiviral blocks" ke Assembly, lalu ke Attachment. Obat mana yang mencegah virion bebas bertambah sama sekali, dan mana yang tetap membiarkan sel terinfeksi mati?',
+      'Atur "Antiviral blocks" ke Assembly, tekan Reset dan jalankan; lalu lakukan hal yang sama dengan Attachment. Obat mana yang mencegah virion bebas bertambah sama sekali, dan mana yang tetap membiarkan sel terinfeksi mati?',
     ],
   },
 
