@@ -167,7 +167,7 @@ export function mount(rootEl) {
     // Object: an arrow at a compressed distance (far = further left)
     const u = objectMM();
     const frac = clamp((params.logU - 1) / 2, 0, 1);                 // 0 near, 1 far
-    const xO = xG - W * (0.06 + 0.30 * frac);
+    const xO = xG - W * (0.06 + 0.24 * frac);          // never nearer than ~6 % of the width to the left edge
     const arrowH = eyeRy * (0.6 + 0.6 * (1 - frac));
     ctx.strokeStyle = '#34d399'; ctx.lineWidth = 3; ctx.lineCap = 'round';
     ctx.beginPath(); ctx.moveTo(xO, cy); ctx.lineTo(xO, cy - arrowH); ctx.stroke();
@@ -175,9 +175,11 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(xO, cy - arrowH - 8); ctx.lineTo(xO - 7, cy - arrowH + 4); ctx.lineTo(xO + 7, cy - arrowH + 4); ctx.closePath(); ctx.fill();
     ctx.lineCap = 'butt';
     ctx.fillStyle = '#a7f3d0'; ctx.font = font(small); ctx.textAlign = 'center';
-    ctx.fillText(T('object', 'benda'), xO, cy + small * 1.4);
-    ctx.fillText(fmtDist(u), xO, cy + small * 2.6);
-    if (frac > 0.85) { ctx.fillStyle = '#6ee7b7'; ctx.fillText(T('(far away)', '(sangat jauh)'), xO, cy + small * 3.8); }
+    const farTxt = T('(far away)', '(sangat jauh)');
+    const xOl = Math.max(xO, ctx.measureText(farTxt).width / 2 + 4);   // labels stay on the canvas
+    ctx.fillText(T('object', 'benda'), xOl, cy + small * 1.4);
+    ctx.fillText(fmtDist(u), xOl, cy + small * 2.6);
+    if (frac > 0.85) { ctx.fillStyle = '#6ee7b7'; ctx.fillText(farTxt, xOl, cy + small * 3.8); }
 
     // Glasses lens
     const gHalf = 8.5 * s;
@@ -185,13 +187,15 @@ export function mount(rootEl) {
       ctx.fillStyle = 'rgba(56,189,248,0.35)'; ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 1.5;
       lensShape(ctx, xG, cy, gHalf, params.Pg, s); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#7dd3fc'; ctx.font = font(small); ctx.textAlign = 'center';
-      ctx.fillText(fmtD(params.Pg), xG, cy - gHalf - small * 0.6);
-      ctx.fillText(params.Pg > 0 ? T('convex', 'cembung') : T('concave', 'cekung'), xG, cy - gHalf - small * 1.7);
+      // labels under the lens (above it they collide with the readout); one line on narrow canvases
+      const kind = params.Pg > 0 ? T('convex', 'cembung') : T('concave', 'cekung');
+      if (W < 640) ctx.fillText(`${fmtD(params.Pg)} ${kind}`, xG, cy + gHalf + Math.max(10, small) * 1.2);
+      else { ctx.fillText(fmtD(params.Pg), xG, cy + gHalf + small * 1.4); ctx.fillText(kind, xG, cy + gHalf + small * 2.5); }
     } else {
       ctx.strokeStyle = 'rgba(56,189,248,0.35)'; ctx.setLineDash([3, 4]); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(xG, cy - gHalf); ctx.lineTo(xG, cy + gHalf); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(125,211,252,0.6)'; ctx.font = font(small); ctx.textAlign = 'center';
-      ctx.fillText(T('no glasses', 'tanpa kacamata'), xG, cy - gHalf - small * 0.6);
+      ctx.fillText(T('no glasses', 'tanpa kacamata'), xG, cy + gHalf + Math.max(10, small) * 1.2);
     }
 
     // Rays: marginal (top/bottom) and axial, from the on-axis object point
@@ -236,7 +240,7 @@ export function mount(rootEl) {
 
     // Readout panel (top-left)
     ctx.textAlign = 'left';
-    const lx = W * 0.02, ly = H * 0.045, lh = small * 1.45;
+    const lx = W * 0.02, ly = H * 0.045, lh = Math.max(10, small) * 1.3;   // font() never goes below 10 px
     ctx.font = font(small * 1.1, true); ctx.fillStyle = '#e2e8f0';
     ctx.fillText(condName(state.condition), lx, ly);
     ctx.font = font(small); ctx.fillStyle = '#cbd5e1';
@@ -284,28 +288,28 @@ export function mount(rootEl) {
 
   // Controls
   const distS = slider({
-    label: 'Object distance', key: 'dist', min: 1, max: 3, step: 0.01, value: params.logU,
+    label: T('Object distance', 'Jarak benda'), key: 'dist', min: 1, max: 3, step: 0.01, value: params.logU,
     format: (v) => fmtDist(Math.pow(10, v) * 10),
     onInput: (v) => { params.logU = v; },
   });
   const lenS = slider({
-    label: 'Eyeball length (mm)', key: 'eye', min: 21, max: 27.5, step: 0.1, value: params.d,
+    label: T('Eyeball length (mm)', 'Panjang bola mata (mm)'), key: 'eye', min: 21, max: 27.5, step: 0.1, value: params.d,
     format: (v) => v.toFixed(1),
     onInput: (v) => { params.d = v; },
   });
   const pgS = slider({
-    label: 'Glasses power (D)', key: 'lens', min: -6, max: 6, step: 0.25, value: params.Pg,
+    label: T('Glasses power (D)', 'Kekuatan kacamata (D)'), key: 'lens', min: -6, max: 6, step: 0.25, value: params.Pg,
     format: (v) => fmtD(v),
     onInput: (v) => { params.Pg = v; },
   });
-  const afT = toggle({ label: 'Auto-focus (accommodation, up to 8 D)', key: 'focus', value: false, onChange: (v) => { params.autoFocus = v; } });
+  const afT = toggle({ label: T('Auto-focus (accommodation, up to 8 D)', 'Fokus otomatis (akomodasi, maks. 8 D)'), key: 'focus', value: false, onChange: (v) => { params.autoFocus = v; } });
   const preset = (label, dmm) => button({ label, onClick: () => { lenS.apply(dmm); } });
-  const normalB = preset('Normal (24 mm)', 24);
-  const myopiaB = preset('Myopia (26 mm)', 26);
-  const hyperB = preset('Hyperopia (22 mm)', 22);
-  const noGlass = button({ label: 'Remove glasses', onClick: () => pgS.apply(0) });
-  const farB = button({ label: 'Look far (10 m)', onClick: () => distS.apply(3) });
-  const nearB = button({ label: 'Read (25 cm)', onClick: () => distS.apply(Math.log10(25)) });
+  const normalB = preset(T('Normal (24 mm)', 'Normal (24 mm)'), 24);
+  const myopiaB = preset(T('Myopia (26 mm)', 'Miopi (26 mm)'), 26);
+  const hyperB = preset(T('Hyperopia (22 mm)', 'Hipermetropi (22 mm)'), 22);
+  const noGlass = button({ label: T('Remove glasses', 'Lepas kacamata'), onClick: () => pgS.apply(0) });
+  const farB = button({ label: T('Look far (10 m)', 'Lihat jauh (10 m)'), onClick: () => distS.apply(3) });
+  const nearB = button({ label: T('Read (25 cm)', 'Membaca (25 cm)'), onClick: () => distS.apply(Math.log10(25)) });
   ctrlPanel.append(distS.el, lenS.el, pgS.el, row(afT), row(normalB, myopiaB, hyperB), row(farB, nearB, noGlass));
 
   const lab = labPanel({
@@ -320,9 +324,9 @@ export function mount(rootEl) {
       { key: 'sharp', label: 'Sharp?' },
     ],
     procedure: [
-      'Turn Auto-focus off and press "Look far". Set the eyeball to 24 mm with no glasses: record (blur should be 0.00).',
-      'Set the eyeball to 26 mm. Record the blur with no glasses, then slide the glasses power until the blur reads 0.00 and record again.',
-      'Repeat for 28 mm, 22 mm and 21 mm. Note the sign of the lens each time.',
+      'Turn Auto-focus off and press "Look far". Set the eyeball to 24 mm with no glasses: record (the readout should say "sharp").',
+      'Set the eyeball to 26 mm. Record the blur with no glasses, then slide the glasses power until the readout says "sharp" and record again.',
+      'Repeat for 27 mm, 22 mm and 21 mm. Note the sign of the lens each time.',
       'Set 24 mm, no glasses, press "Read (25 cm)". Record the blur, then turn Auto-focus on and record again.',
       'Plot glasses power against eyeball length. Is it close to a straight line? How many dioptres per millimetre?',
     ],

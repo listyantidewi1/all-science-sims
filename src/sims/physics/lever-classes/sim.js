@@ -118,7 +118,7 @@ export function mount(rootEl) {
       ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(pF.x, pF.y); ctx.lineTo(pF.x, pF.y + r); ctx.stroke();
     } else if (params.lever === 'forearm') {
       // upper arm standing above the elbow
-      const uw = clamp(W * 0.05, 18, 44), uh = H * 0.42;
+      const uw = clamp(W * 0.05, 18, 44), uh = H * 0.28;
       ctx.fillStyle = '#fde68a'; ctx.strokeStyle = '#d97706'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.roundRect(pF.x - uw / 2, pF.y - uh, uw, uh, uw / 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(pF.x, pF.y, barW * 0.9, 0, Math.PI * 2); ctx.fill();
@@ -148,7 +148,7 @@ export function mount(rootEl) {
     if (params.lever === 'forearm') {
       // biceps: from the upper arm down to the insertion point
       ctx.strokeStyle = c.lifts ? '#ef4444' : '#f87171'; ctx.lineWidth = clamp(barW * 1.4 * (0.6 + 0.4 * clamp(c.needed / 800, 0, 1)), 6, 24); ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(pF.x - 4, pF.y - H * 0.38);
+      ctx.beginPath(); ctx.moveTo(pF.x - 4, pF.y - H * 0.25);
       ctx.quadraticCurveTo(pF.x - clamp(W * 0.04, 8, 30), pF.y - H * 0.2, pE.x, pE.y);
       ctx.stroke(); ctx.lineCap = 'butt';
       // hand
@@ -164,8 +164,8 @@ export function mount(rootEl) {
     // Load arrow (down) from the block
     const la = clamp(H * 0.08 + H * 0.16 * (params.load / maxF), 14, H * 0.25);
     arrow(ctx, pL.x, pL.y + barW, pL.x, pL.y + barW + la, '#a78bfa', clamp(W * 0.006, 2, 5));
-    ctx.fillStyle = '#c4b5fd'; ctx.font = font(fs, true); ctx.textAlign = 'center';
-    ctx.fillText(`${T('Load', 'Beban')} ${params.load.toFixed(0)} N`, pL.x, pL.y + barW + la + fs * 1.2);
+    ctx.fillStyle = '#c4b5fd'; ctx.font = font(fs, true); ctx.textAlign = 'left';
+    ctx.fillText(`${T('Load', 'Beban')} ${params.load.toFixed(0)} N`, pL.x + fs * 0.8, pL.y + barW + la * 0.6);
 
     // Effort arrow
     const ea = clamp(H * 0.06 + H * 0.2 * clamp(params.effortApplied / 1000, 0, 1), 12, H * 0.28);
@@ -174,10 +174,20 @@ export function mount(rootEl) {
     const tipGap = barW * 0.9;
     arrow(ctx, pE.x, pE.y - dir * (tipGap + ea), pE.x, pE.y - dir * tipGap, effColor, clamp(W * 0.007, 2.5, 6));
     ctx.fillStyle = effColor; ctx.font = font(fs, true);
-    const eLabelY = Lv.effortDown ? pE.y - tipGap - ea - fs * 0.6 : pE.y + tipGap + ea + fs * 1.2;
-    ctx.fillText(`${T('Effort', 'Kuasa')} ${params.effortApplied.toFixed(0)} N`, pE.x, eLabelY);
-    ctx.font = font(fs * 0.9);
-    ctx.fillText(`${T('needed', 'perlu')} ${c.needed >= 10000 ? '>9999' : c.needed.toFixed(c.needed < 10 ? 1 : 0)} N`, pE.x, eLabelY + (Lv.effortDown ? -fs * 1.1 : fs * 1.1));
+    const neededTxt = `${T('needed', 'perlu')} ${c.needed >= 10000 ? '>9999' : c.needed.toFixed(c.needed < 10 ? 1 : 0)} N`;
+    if (Lv.effortDown) {
+      ctx.textAlign = 'center';
+      const eLabelY = pE.y - tipGap - ea - fs * 0.6;
+      ctx.fillText(`${T('Effort', 'Kuasa')} ${params.effortApplied.toFixed(0)} N`, pE.x, eLabelY);
+      ctx.font = font(fs * 0.9); ctx.fillText(neededTxt, pE.x, eLabelY - fs * 1.1);
+    } else {
+      const right = pE.x < W * 0.7;
+      ctx.textAlign = right ? 'left' : 'right';
+      const lx = pE.x + (right ? 1 : -1) * fs * 0.9, ly = pE.y + tipGap + ea * 0.5;
+      ctx.fillText(`${T('Effort', 'Kuasa')} ${params.effortApplied.toFixed(0)} N`, lx, ly);
+      ctx.font = font(fs * 0.9); ctx.fillText(neededTxt, lx, ly + fs * 1.1);
+    }
+    ctx.textAlign = 'center';
     // Handle knob
     ctx.fillStyle = '#ffffff'; ctx.strokeStyle = effColor; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.arc(pE.x, pE.y, clamp(W * 0.014, 7, 12), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
@@ -216,11 +226,16 @@ export function mount(rootEl) {
     ctx.font = font(fs, true); ctx.fillStyle = effColor;
     ctx.fillText(c.lifts ? T('It lifts!', 'Terangkat!') : T('Not enough effort', 'Kuasa belum cukup'), px, y);
 
-    // Class hint, top right
+    // Class hint: top right
+    const narrow = W < 640;
     ctx.textAlign = 'right'; ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.9);
     const order = { 1: T('load – fulcrum – effort', 'beban – tumpu – kuasa'), 2: T('fulcrum – load – effort', 'tumpu – beban – kuasa'), 3: T('fulcrum – effort – load', 'tumpu – kuasa – beban') }[Lv.cls];
-    ctx.fillText(`${T('Class', 'Kelas')} ${Lv.cls}: ${order}`, W - W * 0.02, fs * 1.4);
-    ctx.fillText(T('Drag the white knob to move the effort', 'Geser bulatan putih untuk memindahkan kuasa'), W - W * 0.02, fs * 2.75);
+    // (on narrow canvases there is no room; the readout title already names the class)
+    if (!narrow) {
+      const hx = W - W * 0.02, hy = fs * 1.4;
+      ctx.fillText(`${T('Class', 'Kelas')} ${Lv.cls}: ${order}`, hx, hy);
+      ctx.fillText(T('Drag the white knob to move the effort', 'Geser bulatan putih untuk memindahkan kuasa'), hx, hy + fs * 1.35);
+    }
     ctx.textAlign = 'left';
   }
 
@@ -235,14 +250,14 @@ export function mount(rootEl) {
       const s = Lv.fulcrum + (x - g.fx) / (g.ppm * Math.max(0.5, Math.cos(state.theta)));
       state.effortPos = clamp(s, Lv.effortRange[0], Lv.effortRange[1]);
     },
-    handles: () => { const g = geom(); const p = pt(g, state.effortPos); return [{ id: 'effort', x: p.x, y: p.y, label: 'Effort point (drag along the bar)' }]; },
+    handles: () => { const g = geom(); const p = pt(g, state.effortPos); return [{ id: 'effort', x: p.x, y: p.y, label: T('Effort point (drag along the bar)', 'Titik kuasa (geser sepanjang batang)') }]; },
     cursor: 'default', hoverCursor: 'grab',
   });
 
   // Controls
   const leverSel = select({
-    label: 'Lever', key: 'lever',
-    options: Object.entries(LEVERS).map(([value, L]) => ({ value, label: `${L.label.en} / ${L.label.id}` })),
+    label: T('Lever', 'Tuas'), key: 'lever',
+    options: Object.entries(LEVERS).map(([value, L]) => ({ value, label: T(L.label.en, L.label.id) })),
     value: params.lever,
     onChange: (v) => {
       if (!LEVERS[v]) return;
@@ -250,10 +265,10 @@ export function mount(rootEl) {
       if (v === 'forearm' || v === 'class3') { loadS.apply(Math.min(params.load, 60)); }
     },
   });
-  const loadS = slider({ label: 'Load (N)', key: 'load', min: 5, max: 500, step: 5, value: params.load, format: (v) => v.toFixed(0), onInput: (v) => { params.load = v; } });
-  const effS = slider({ label: 'Effort applied (N)', key: 'effort', min: 0, max: 1000, step: 5, value: params.effortApplied, format: (v) => v.toFixed(0), onInput: (v) => { params.effortApplied = v; } });
-  const justB = button({ label: 'Set effort = needed', onClick: () => { const c = calc(); effS.apply(Math.min(1000, Math.ceil(c.needed / 5) * 5)); } });
-  const resetB = button({ label: 'Reset effort position', onClick: () => { state.effortPos = lever().effort; } });
+  const loadS = slider({ label: T('Load (N)', 'Beban (N)'), key: 'load', min: 5, max: 500, step: 5, value: params.load, format: (v) => v.toFixed(0), onInput: (v) => { params.load = v; } });
+  const effS = slider({ label: T('Effort applied (N)', 'Kuasa yang diberikan (N)'), key: 'effort', min: 0, max: 1000, step: 5, value: params.effortApplied, format: (v) => v.toFixed(0), onInput: (v) => { params.effortApplied = v; } });
+  const justB = button({ label: T('Set effort = needed', 'Atur kuasa = yang diperlukan'), onClick: () => { const c = calc(); effS.apply(Math.min(1000, Math.ceil(c.needed / 5) * 5)); } });
+  const resetB = button({ label: T('Reset effort position', 'Atur ulang posisi kuasa'), onClick: () => { state.effortPos = lever().effort; } });
   ctrlPanel.append(leverSel.el, loadS.el, effS.el, row(justB, resetB));
 
   const lab = labPanel({

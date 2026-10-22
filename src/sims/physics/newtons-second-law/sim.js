@@ -18,20 +18,23 @@ export function mount(rootEl) {
   const cv = createCanvas(canvasWrap, { aspect: 16 / 9 });
 
   const p = { F: 10, m: 2, friction: false };
-  const st = { running: false, t: 0, x: 0, v: 0, dots: [], samples: [], nextDot: 0, nextSample: 0, done: false, wheel: 0 };
+  const st = { running: false, t: 0, x: 0, v: 0, dots: [], samples: [], fitFrom: 0, nextDot: 0, nextSample: 0, done: false, wheel: 0 };
   const fmt = (v, dp) => (getLocale() === 'id' ? v.toFixed(dp).replace('.', ',') : v.toFixed(dp));
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
   function forces() {
     const fMax = p.friction ? MU * p.m * G : 0;
-    // static friction holds the cart if the push is too small and it is not already moving
-    let f = 0;
-    if (p.friction) f = (st.v > 1e-6 || p.F > fMax) ? fMax : p.F;
-    const Fnet = Math.max(0, p.F - f);
+    const moving = st.v > 1e-6;
+    // At rest, static friction matches the push up to μmg, so the cart stays put while F ≤ μmg.
+    // Once moving, kinetic friction μmg acts whatever the push: F_net = F − μmg may be negative
+    // (the cart slows down) if the push is reduced below μmg mid-run.
+    const f = moving ? fMax : Math.min(p.F, fMax);
+    const Fnet = moving ? p.F - f : Math.max(0, p.F - f);
     return { f, Fnet, a: Fnet / p.m };
   }
 
   function reset() {
-    st.running = false; st.t = 0; st.x = 0; st.v = 0; st.dots = [0]; st.samples = [{ t: 0, v: 0 }];
+    st.running = false; st.t = 0; st.x = 0; st.v = 0; st.dots = [0]; st.samples = [{ t: 0, v: 0 }]; st.fitFrom = 0;
     st.nextDot = TICK; st.nextSample = TICK; st.done = false;
     startBtn.label = T('Start', 'Mulai');
   }
@@ -43,7 +46,9 @@ export function mount(rootEl) {
     while (rem > 1e-9) {
       const h = Math.max(1e-6, Math.min(rem, st.nextDot - st.t, 1 / 240));
       const { a } = forces();
-      st.v += a * h; st.x += st.v * h; st.t += h;
+      const wasMoving = st.v > 1e-6;
+      st.v = Math.max(0, st.v + a * h); st.x += st.v * h; st.t += h;
+      if (wasMoving && st.v <= 1e-6) st.fitFrom = st.samples.length;   // friction stopped the cart: new phase
       st.wheel += st.v * h;
       rem -= h;
       if (st.t >= st.nextDot - 1e-9) {
@@ -54,16 +59,21 @@ export function mount(rootEl) {
     }
   }
 
-  // least-squares slope of v against t over the recorded samples
-  function measuredA() {
-    const s = st.samples;
+  // Least-squares line v = a·t + b through the samples recorded since F, m or friction last changed
+  // (or since friction stopped the cart), so the measured slope belongs to the current settings.
+  function measuredFit() {
+    const s = st.samples.slice(st.fitFrom);
     if (s.length < 4) return null;
     let st_ = 0, sv = 0, stt = 0, stv = 0;
     for (const q of s) { st_ += q.t; sv += q.v; stt += q.t * q.t; stv += q.t * q.v; }
     const n = s.length, den = n * stt - st_ * st_;
     if (Math.abs(den) < 1e-12) return null;
-    return (n * stv - st_ * sv) / den;
+    const a = (n * stv - st_ * sv) / den;
+    return { a, b: (sv - a * st_) / n };
   }
+  const measuredA = () => { const fit = measuredFit(); return fit ? fit.a : null; };
+  // settings changed: the old samples no longer describe the current acceleration
+  const newPhase = () => { if (st.t > 0) st.fitFrom = st.samples.length; };   // first sample taken after the change
 
   function arrow(ctx, x1, y1, x2, y2, color, width) {
     const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
@@ -80,14 +90,15 @@ export function mount(rootEl) {
     if (W < 10 || H < 10) return;
     ctx.fillStyle = '#0b1220'; ctx.fillRect(0, 0, W, H);
     const { f, Fnet, a } = forces();
-    const x0 = W * 0.06, x1 = W * 0.94, pxm = (x1 - x0) / TRACK;
+    // the track starts far enough from the left edge for the cart and its friction arrow to be visible at x = 0
+    const x0 = W * 0.16, x1 = W * 0.9, pxm = (x1 - x0) / TRACK;   // the heaviest cart still fits at either end
     const fs = Math.max(10, W * 0.017);
 
     // ---- track scene ----
     const groundY = H * 0.36;
     ctx.fillStyle = '#1e293b'; ctx.fillRect(0, groundY, W, H * 0.035);
     ctx.fillStyle = '#64748b'; ctx.font = `${fs}px ${SANS}`; ctx.textAlign = 'center';
-    for (let m = 0; m <= TRACK; m += 2) { ctx.fillRect(x0 + m * pxm - 0.5, groundY, 1, H * 0.035); ctx.fillText(`${m} m`, x0 + m * pxm, groundY + H * 0.07); }
+    for (let m = 0; m <= TRACK; m += 2) { ctx.fillRect(x0 + m * pxm - 0.5, groundY, 1, H * 0.035); ctx.fillText(`${m} m`, x0 + m * pxm, groundY + H * 0.035 + fs * 1.05); }
     if (p.friction) {
       ctx.fillStyle = '#7c2d12';
       for (let xx = x0; xx < x1; xx += 9) ctx.fillRect(xx, groundY, 4, 3);
@@ -106,23 +117,33 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fff'; ctx.font = `bold ${fs}px ${SANS}`; ctx.textAlign = 'center';
     ctx.fillText(`${fmt(p.m, 1)} kg`, cx, cy + ch / 2 + fs * 0.35);
     // force arrows (1 N = scale px)
-    const sc = W * 0.006;
+    const sc = W * 0.0035;
     const ay = cy + ch * 0.5;
-    if (p.F > 0) { arrow(ctx, cx + cw / 2, ay, cx + cw / 2 + p.F * sc, ay, '#22c55e', 4); ctx.fillStyle = '#22c55e'; ctx.textAlign = 'left'; ctx.fillText(`F = ${fmt(p.F, 0)} N`, cx + cw / 2 + p.F * sc + 6, ay - 6); }
-    if (f > 0) { arrow(ctx, cx - cw / 2, ay, cx - cw / 2 - f * sc, ay, '#f97316', 4); ctx.fillStyle = '#f97316'; ctx.textAlign = 'right'; ctx.fillText(`f = ${fmt(f, 1)} N`, cx - cw / 2 - f * sc - 6, ay - 6); }
-    // net force arrow above the cart
-    if (Fnet > 0) { arrow(ctx, cx, cy - H * 0.05, cx + Fnet * sc, cy - H * 0.05, '#fbbf24', 3); ctx.fillStyle = '#fbbf24'; ctx.textAlign = 'left'; ctx.fillText(`F_net = ${fmt(Fnet, 1)} N`, cx + Fnet * sc + 6, cy - H * 0.05 + 4); }
-    else if (p.friction && p.F > 0 && st.v < 1e-6) { ctx.fillStyle = '#f97316'; ctx.textAlign = 'center'; ctx.fillText(T('Push too small: static friction holds the cart (F_net = 0)', 'Dorongan terlalu kecil: gesekan statis menahan kereta (F_net = 0)'), W / 2, H * 0.06); }
+    // labels sit beyond the arrow tips (kept on the canvas), level with the cart top
+    if (p.F > 0) {
+      arrow(ctx, cx + cw / 2, ay, cx + cw / 2 + p.F * sc, ay, '#22c55e', 4); ctx.fillStyle = '#22c55e'; ctx.textAlign = 'left';
+      const txt = `F = ${fmt(p.F, 0)} N`;
+      ctx.fillText(txt, Math.min(cx + cw / 2 + p.F * sc + 6, W - ctx.measureText(txt).width - 4), ay - 6);
+    }
+    if (f > 0) {
+      arrow(ctx, cx - cw / 2, ay, cx - cw / 2 - f * sc, ay, '#f97316', 4); ctx.fillStyle = '#f97316'; ctx.textAlign = 'right';
+      const txt = `f = ${fmt(f, 1)} N`;
+      ctx.fillText(txt, Math.max(cx - cw / 2 - f * sc - 6, ctx.measureText(txt).width + 4), ay - 6);
+    }
+    // net force arrow above the cart (points left while kinetic friction exceeds the push)
+    const netY = cy - Math.max(H * 0.05, fs * 1.8);
+    if (Math.abs(Fnet) > 1e-9) { arrow(ctx, cx, netY, cx + Fnet * sc, netY, '#fbbf24', 3); ctx.fillStyle = '#fbbf24'; ctx.textAlign = Fnet > 0 ? 'left' : 'right'; ctx.fillText(`F_net = ${fmt(Fnet, 1)} N`, cx + Fnet * sc + (Fnet > 0 ? 6 : -6), netY + 4); }
+    else if (p.friction && p.F > 0 && st.v < 1e-6) { ctx.fillStyle = '#f97316'; ctx.textAlign = 'center'; ctx.fillText(T('Push too small: static friction holds the cart (F_net = 0)', 'Dorongan terlalu kecil: gesekan statis menahan kereta (F_net = 0)'), W / 2, H * 0.04 + fs * 2.4); }
     // readouts
     ctx.fillStyle = '#e2e8f0'; ctx.font = `${fs}px ${MONO}`; ctx.textAlign = 'left';
     ctx.fillText(`t = ${fmt(st.t, 2)} s   x = ${fmt(st.x, 2)} m   v = ${fmt(st.v, 2)} m/s`, x0, H * 0.04 + fs);
     if (st.done) { ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'right'; ctx.fillText(T('end of track — press Reset', 'ujung lintasan — tekan Reset'), x1, H * 0.04 + fs); }
 
     // ---- ticker tape ----
-    const ty = H * 0.47, th = H * 0.08;
+    const ty = H * 0.5, th = H * 0.07;
     ctx.fillStyle = '#f1f5f9'; ctx.fillRect(x0 - 10, ty, x1 - x0 + 20, th);
     ctx.fillStyle = '#475569'; ctx.font = `${fs * 0.9}px ${SANS}`; ctx.textAlign = 'left';
-    ctx.fillText(T(`ticker tape: one dot every ${TICK} s (same scale as the track)`, `pita ketik: satu titik tiap ${TICK} s (skala sama dengan lintasan)`), x0, ty - 5);
+    if (W >= 640) ctx.fillText(T(`ticker tape: one dot every ${TICK} s (same scale as the track)`, `pita ketik: satu titik tiap ${TICK} s (skala sama dengan lintasan)`), x0, ty - 5);
     ctx.fillStyle = '#0f172a';
     for (let i = 0; i < st.dots.length; i++) {
       const dx = x0 + st.dots[i] * pxm;
@@ -156,17 +177,19 @@ export function mount(rootEl) {
     ctx.strokeStyle = 'rgba(251,191,36,0.6)'; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(gx, gy + gh);
     const tEnd = Math.min(TMAX, a > 0 ? vmax / a : TMAX);
-    ctx.lineTo(gx + (tEnd / TMAX) * gw, gy + gh - Math.min(1, a * tEnd / vmax) * gh); ctx.stroke(); ctx.setLineDash([]);
+    ctx.lineTo(gx + (tEnd / TMAX) * gw, gy + gh - Math.max(0, Math.min(1, a * tEnd / vmax)) * gh); ctx.stroke(); ctx.setLineDash([]);
     ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5; ctx.beginPath();
-    st.samples.forEach((q, i) => {
-      const xx = gx + Math.min(1, q.t / TMAX) * gw, yy = gy + gh - Math.min(1, q.v / vmax) * gh;
+    st.samples.filter((q) => q.t <= TMAX + 1e-9).forEach((q, i) => {
+      const xx = gx + (q.t / TMAX) * gw, yy = gy + gh - Math.min(1, q.v / vmax) * gh;
       i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy);
     });
     ctx.stroke();
-    // slope triangle on the last second of data
-    const am = measuredA();
-    if (am != null && st.t > 0.5) {
-      const t2 = Math.min(st.t, TMAX), t1 = Math.max(0, t2 - 1), v1 = Math.min(vmax, am * t1), v2 = Math.min(vmax, am * t2);
+    // slope triangle on the last second of the fitted line
+    const fit = measuredFit(), am = fit ? fit.a : null;
+    const tFit0 = st.samples[st.fitFrom] ? st.samples[st.fitFrom].t : 0;
+    if (am != null && st.t > tFit0 + 0.3) {
+      const vFit = (t) => clamp(am * t + fit.b, 0, vmax);
+      const t2 = Math.min(st.t, TMAX), t1 = Math.max(tFit0, t2 - 1), v1 = vFit(t1), v2 = vFit(t2);
       const X = (t) => gx + (t / TMAX) * gw, Y = (v) => gy + gh - (v / vmax) * gh;
       ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(X(t1), Y(v1)); ctx.lineTo(X(t2), Y(v1)); ctx.lineTo(X(t2), Y(v2)); ctx.stroke();
@@ -175,9 +198,16 @@ export function mount(rootEl) {
     }
 
     // ---- formula box ----
-    const bx = W * 0.63, by = H * 0.6, bw = W * 0.35;
-    const lh = fs * 1.6;
-    const lines = [
+    const narrow = W < 640;
+    const bx = narrow ? W * 0.56 : W * 0.63, by = narrow ? H * 0.56 : H * 0.6, bw = narrow ? W * 0.42 : W * 0.35;
+    const lh = fs * (narrow ? 1.5 : 1.6);
+    const lines = narrow ? [
+      ['a = F_net / m', '#fbbf24', true, MONO],
+      [`F_net = ${fmt(p.F, 0)} − ${fmt(f, 1)} = ${fmt(Fnet, 1)} N`, '#e2e8f0', false, MONO],
+      [`a = ${fmt(Fnet, 1)}/${fmt(p.m, 1)} = ${fmt(a, 2)} m/s²`, '#e2e8f0', false, MONO],
+      [am == null ? T('run the cart…', 'jalankan kereta…') : `${T('slope', 'kemiringan')}: ${fmt(am, 2)} m/s²`, '#38bdf8', false, MONO],
+      ...(p.friction ? [[`f = μmg = ${fmt(MU * p.m * G, 1)} N`, '#f97316', false, MONO]] : []),
+    ] : [
       [T('Newton\'s second law', 'Hukum II Newton'), '#e2e8f0', true, SANS],
       ['a = F_net / m', '#fbbf24', true, MONO],
       [`F_net = F − f = ${fmt(p.F, 0)} − ${fmt(f, 1)} = ${fmt(Fnet, 1)} N`, '#e2e8f0', false, MONO],
@@ -196,9 +226,9 @@ export function mount(rootEl) {
   }
 
   // ---------- controls ----------
-  const forceS = slider({ label: T('Applied force F (N)', 'Gaya dorong F (N)'), key: 'force', min: 0, max: 50, step: 1, value: p.F, onInput: (v) => { p.F = v; } });
-  const massS = slider({ label: T('Mass m (kg)', 'Massa m (kg)'), key: 'mass', min: 1, max: 10, step: 0.5, value: p.m, format: (v) => v.toFixed(1), onInput: (v) => { p.m = v; } });
-  const fricT = toggle({ label: T(`Friction (μ = ${MU})`, `Gesekan (μ = ${MU})`), key: 'friction', value: false, onChange: (v) => { p.friction = v; } });
+  const forceS = slider({ label: T('Applied force F (N)', 'Gaya dorong F (N)'), key: 'force', min: 0, max: 50, step: 1, value: p.F, onInput: (v) => { p.F = v; newPhase(); } });
+  const massS = slider({ label: T('Mass m (kg)', 'Massa m (kg)'), key: 'mass', min: 1, max: 10, step: 0.5, value: p.m, format: (v) => v.toFixed(1), onInput: (v) => { p.m = v; newPhase(); } });
+  const fricT = toggle({ label: T(`Friction (μ = ${MU})`, `Gesekan (μ = ${MU})`), key: 'friction', value: false, onChange: (v) => { p.friction = v; newPhase(); } });
   const startBtn = button({ label: T('Start', 'Mulai'), primary: true, onClick: () => {
     if (st.done) reset();
     st.running = !st.running;

@@ -46,9 +46,11 @@ export function mount(rootEl) {
     let rem = dt;
     while (rem > 1e-9) {
       const h = Math.max(1e-6, Math.min(rem, 1 / 120, TMAX - st.t));
-      st.v = p.preset === 'manual' ? p.v : PRESETS[p.preset](st.t);
-      st.x += st.v * h;
+      // midpoint rule: exact for the constant and uniformly accelerating presets, so x equals the area under v–t
+      const vel = (t) => (p.preset === 'manual' ? p.v : PRESETS[p.preset](t));
+      st.x += vel(st.t + h / 2) * h;
       st.t += h; rem -= h; st.sampleAcc += h;
+      st.v = vel(st.t);
       if (st.sampleAcc >= SAMPLE - 1e-9) {
         st.sampleAcc = 0;
         st.hist.push({ t: st.t, x: st.x, v: st.v });
@@ -61,10 +63,15 @@ export function mount(rootEl) {
   const score = () => (st.errN ? Math.max(0, 100 * (1 - (st.errSum / st.errN) / 20)) : null);
 
   // ---- drawing ----
+  // number of horizontal gridlines that gives round tick values (50, 100, 200 … m; 5 m/s)
+  function niceDivisions(range) {
+    for (const step of [5, 50, 100, 200, 250, 500, 1000]) if (range % step === 0 && range / step <= 8 && range / step >= 2) return range / step;
+    return 4;
+  }
   function axes(ctx, g, xlab, ylab, ymin, ymax, fs, yfmt) {
     ctx.fillStyle = '#111c33'; ctx.beginPath(); ctx.roundRect(g.x - fs * 3, g.y - fs * 1.6, g.w + fs * 4, g.h + fs * 3.6, 8); ctx.fill();
     ctx.strokeStyle = '#334155'; ctx.lineWidth = 1;
-    const nY = 4;
+    const nY = niceDivisions(ymax - ymin);
     for (let i = 0; i <= nY; i++) {
       const yv = ymin + (ymax - ymin) * i / nY, yy = g.y + g.h - (i / nY) * g.h;
       ctx.beginPath(); ctx.moveTo(g.x, yy); ctx.lineTo(g.x + g.w, yy); ctx.stroke();
@@ -118,8 +125,8 @@ export function mount(rootEl) {
     ctx.fillText(`t = ${fmt(st.t, 1)} s    x = ${fmt(st.x, 1)} m    v = ${fmt(st.v, 1)} m/s`, rx0, H * 0.08);
     if (p.target !== 'none') {
       const sc = score();
-      ctx.fillStyle = '#fbbf24'; ctx.textAlign = 'right';
-      ctx.fillText(`${T(TARGETS[p.target].en, TARGETS[p.target].id)}  ${sc == null ? '' : `${T('match', 'kecocokan')} ${fmt(sc, 0)}%`}`, rx1, H * 0.08);
+      ctx.fillStyle = '#fbbf24'; ctx.textAlign = 'left';
+      ctx.fillText(`${T(TARGETS[p.target].en, TARGETS[p.target].id)}  ${sc == null ? '' : `${T('match', 'kecocokan')} ${fmt(sc, 0)}%`}`, rx0, H * 0.08 + fs * 1.4);
     }
 
     // ---- speedometer ----
@@ -180,11 +187,11 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.moveTo(X1(A.t), Y1(A.x)); ctx.lineTo(X1(B.t), Y1(A.x)); ctx.lineTo(X1(B.t), Y1(B.x)); ctx.stroke();
       ctx.fillStyle = '#f472b6'; ctx.textAlign = 'left';
       const slope = Math.abs(dt) > 1e-6 ? dx / dt : 0;
-      ctx.fillText(`${T('slope', 'kemiringan')} = Δx/Δt = ${fmt(dx, 1)}/${fmt(dt, 1)} = ${fmt(slope, 1)} m/s`, g1.x + 4, g1.y + g1.h - 6);
+      ctx.fillText(W < 640 ? `Δx/Δt = ${fmt(dx, 1)}/${fmt(dt, 1)} = ${fmt(slope, 1)} m/s` : `${T('slope', 'kemiringan')} = Δx/Δt = ${fmt(dx, 1)}/${fmt(dt, 1)} = ${fmt(slope, 1)} m/s`, g1.x + 4, g1.y + fs * 1.1);
     }
     // area readout
     ctx.fillStyle = '#38bdf8'; ctx.textAlign = 'left'; ctx.font = `${fs * 0.85}px ${MONO}`;
-    ctx.fillText(`${T('shaded area', 'luas arsiran')} = Σ v·Δt = ${fmt(st.x, 1)} m = Δx`, g2.x + 4, g2.y + g2.h - 6);
+    ctx.fillText(W < 640 ? `${T('area', 'luas')} = ${fmt(st.x, 1)} m = Δx` : `${T('shaded area', 'luas arsiran')} = Σ v·Δt = ${fmt(st.x, 1)} m = Δx`, g2.x + 4, g2.y + fs * 1.1);
     ctx.textAlign = 'left';
   }
 
@@ -192,7 +199,7 @@ export function mount(rootEl) {
   const vS = slider({ label: T('Velocity v (m/s)', 'Kecepatan v (m/s)'), key: 'v', min: VMIN, max: VMAX, step: 0.5, value: p.v, format: (v) => v.toFixed(1), onInput: (v) => {
     p.v = v;
     if (p.preset !== 'manual') { p.preset = 'manual'; presetSel.value = 'manual'; }
-    if (!st.running) st.v = v;
+    if (!st.running) { st.v = v; if (st.t === 0) st.hist = [{ t: 0, x: 0, v }]; }
   } });
   const presetSel = select({
     label: T('Drive', 'Cara mengemudi'), key: 'preset',

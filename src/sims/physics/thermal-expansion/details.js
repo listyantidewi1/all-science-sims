@@ -17,13 +17,13 @@ export default {
       'Rail scene: set the gap to 20 mm and heat the steel rail. At what temperature does it buckle? Now try aluminium.',
       'Keep the temperature fixed and move the rail length slider. Does ΔL change in proportion to L?',
       'Ring and ball: heat only the ball until it sticks, then turn on "Heat the ring too". Why does it pass again?',
-      'Bimetal strip: find the temperature at which the thermostat contact opens. Cool it below 20 °C: which way does it bend?',
+      'Bimetal strip: find the temperature at which the strip pushes the thermostat switch open. Cool it below 20 °C: which way does it bend?',
     ],
     id: [
       'Adegan rel: atur celah 20 mm dan panaskan rel baja. Pada suhu berapa rel melengkung? Sekarang coba aluminium.',
       'Tahan suhu tetap dan geser panjang rel. Apakah ΔL berubah sebanding dengan L?',
       'Cincin dan bola: panaskan bola saja sampai tersangkut, lalu nyalakan "Panaskan cincin juga". Mengapa bola lolos lagi?',
-      'Keping bimetal: cari suhu saat kontak termostat terbuka. Dinginkan di bawah 20 °C: ke arah mana keping melengkung?',
+      'Keping bimetal: cari suhu saat keping menekan sakelar termostat hingga terbuka. Dinginkan di bawah 20 °C: ke arah mana keping melengkung?',
     ],
   },
 

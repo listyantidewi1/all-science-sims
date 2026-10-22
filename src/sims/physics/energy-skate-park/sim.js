@@ -119,8 +119,8 @@ export function mount(rootEl) {
     const ctx = cv.ctx, W = cv.width, H = cv.height;
     if (W < 10 || H < 10) return;
     if (tab.dirty) rebuild();
-    scale = Math.min((W * 0.72) / XMAX, (H * 0.6) / YMAX);
-    gx0 = W * 0.03; gy0 = H * 0.78;
+    scale = Math.min((W * 0.7) / XMAX, (H * 0.6) / YMAX);
+    gx0 = W * 0.06; gy0 = H * 0.78;      // left margin leaves room for the "10 m" axis label
     const fs = Math.max(10, W * 0.016);
     ctx.fillStyle = '#0b1220'; ctx.fillRect(0, 0, W, H);
     // height grid
@@ -162,7 +162,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0'; ctx.font = `bold ${fs * 1.3}px ${MONO}`; ctx.textAlign = 'left';
     ctx.fillText(`v = ${fmt(Math.abs(st.v), 2)} m/s`, WX(0), H * 0.07);
     ctx.font = `${fs * 0.9}px ${MONO}`; ctx.fillStyle = '#94a3b8';
-    ctx.fillText(`h = ${fmt(q.y, 2)} m    v_max = ${fmt(st.vmax, 2)} m/s    m = ${fmt(p.m, 0)} kg    μ = ${fmt(p.mu, 2)}`, WX(0), H * 0.07 + fs * 1.5);
+    ctx.fillText(W < 640 ? `h = ${fmt(q.y, 2)} m   v_max = ${fmt(st.vmax, 2)} m/s` : `h = ${fmt(q.y, 2)} m    v_max = ${fmt(st.vmax, 2)} m/s    m = ${fmt(p.m, 0)} kg    μ = ${fmt(p.mu, 2)}`, WX(0), H * 0.07 + fs * 1.5);
     if (st.rest) { ctx.fillStyle = '#f97316'; ctx.fillText(T('stopped by friction', 'berhenti karena gesekan'), WX(0), H * 0.07 + fs * 3); }
     else if (!st.running) { ctx.fillStyle = '#34d399'; ctx.fillText(T('drag the cart to choose a release point, then Release', 'seret kereta untuk memilih titik pelepasan, lalu Lepaskan'), WX(0), H * 0.07 + fs * 3); }
 
@@ -179,22 +179,22 @@ export function mount(rootEl) {
       const frac = clamp(b.v / tot, 0, 1), x = bx + i * colW + colW * 0.15, w = colW * 0.7;
       ctx.fillStyle = '#1e293b'; ctx.fillRect(x, by, w, bh);
       ctx.fillStyle = b.c; ctx.fillRect(x, by + bh - frac * bh, w, frac * bh);
-      ctx.fillStyle = '#e2e8f0'; ctx.font = `${fs * 0.8}px ${MONO}`; ctx.textAlign = 'center';
+      ctx.fillStyle = '#e2e8f0'; ctx.font = `${Math.min(fs * 0.8, colW * 0.42)}px ${MONO}`; ctx.textAlign = 'center';
       ctx.fillText(fmt(b.v, 0), x + w / 2, by + bh + fs);
-      ctx.fillStyle = b.c; ctx.font = `${fs * 0.85}px ${SANS}`; ctx.fillText(b.l, x + w / 2, by + bh + fs * 2.2);
+      ctx.fillStyle = b.c; ctx.font = `${Math.min(fs * 0.85, colW * 0.36)}px ${SANS}`; ctx.fillText(b.l, x + w / 2, by + bh + fs * 2.2);
     });
 
     // ---- formula box ----
-    const fy = H * 0.84, lh = fs * 1.5;
+    const fy = H * 0.84, lh = Math.min(fs * 1.5, H * 0.14 / 3);   // three lines always fit inside the box
     ctx.fillStyle = 'rgba(17,28,51,0.95)'; ctx.beginPath(); ctx.roundRect(W * 0.02, fy, W * 0.96, H * 0.14, 8); ctx.fill();
     ctx.textAlign = 'left'; ctx.font = `${fs * 0.95}px ${MONO}`;
-    ctx.fillStyle = '#34d399'; ctx.fillText(`PE = m·g·h = ${fmt(p.m, 0)} × ${G} × ${fmt(q.y, 2)} = ${fmt(pe, 0)} J`, W * 0.04, fy + lh * 0.9);
-    ctx.fillStyle = '#38bdf8'; ctx.fillText(`KE = ½·m·v² = ½ × ${fmt(p.m, 0)} × ${fmt(Math.abs(st.v), 2)}² = ${fmt(ke, 0)} J`, W * 0.04, fy + lh * 1.8);
-    ctx.fillStyle = '#a78bfa'; ctx.fillText(`PE + KE + ${T('heat', 'kalor')} = ${fmt(pe + ke + eth, 0)} J = m·g·h₀ (${T('constant', 'tetap')})`, W * 0.04, fy + lh * 2.7);
+    ctx.fillStyle = '#34d399'; ctx.fillText(`PE = m·g·h = ${fmt(p.m, 0)} × ${G} × ${fmt(q.y, 2)} = ${fmt(pe, 0)} J`, W * 0.04, fy + lh * 0.85);
+    ctx.fillStyle = '#38bdf8'; ctx.fillText(`KE = ½·m·v² = ½ × ${fmt(p.m, 0)} × ${fmt(Math.abs(st.v), 2)}² = ${fmt(ke, 0)} J`, W * 0.04, fy + lh * 1.75);
+    ctx.fillStyle = '#a78bfa'; ctx.fillText(`PE + KE + ${T('heat', 'kalor')} = ${fmt(pe + ke + eth, 0)} J = m·g·h₀ (${T('constant', 'tetap')})`, W * 0.04, fy + lh * 2.65);
     if (st.markRec) {
       ctx.fillStyle = '#fbbf24'; ctx.textAlign = 'right';
-      ctx.fillText(T(`at marker: h = ${fmt(st.markRec.h, 2)} m, v = ${fmt(st.markRec.v, 2)} m/s`, `di penanda: h = ${fmt(st.markRec.h, 2)} m, v = ${fmt(st.markRec.v, 2)} m/s`), W * 0.96, fy + lh * 0.9);
-      ctx.fillText(`PE ${fmt(st.markRec.pe, 0)} J  KE ${fmt(st.markRec.ke, 0)} J  ${T('heat', 'kalor')} ${fmt(st.markRec.eth, 0)} J`, W * 0.96, fy + lh * 1.8);
+      ctx.fillText(T(`at marker: h = ${fmt(st.markRec.h, 2)} m, v = ${fmt(st.markRec.v, 2)} m/s`, `di penanda: h = ${fmt(st.markRec.h, 2)} m, v = ${fmt(st.markRec.v, 2)} m/s`), W * 0.96, fy + lh * 0.85);
+      ctx.fillText(`PE ${fmt(st.markRec.pe, 0)} J  KE ${fmt(st.markRec.ke, 0)} J  ${T('heat', 'kalor')} ${fmt(st.markRec.eth, 0)} J`, W * 0.96, fy + lh * 1.75);
     }
     ctx.textAlign = 'left';
   }
@@ -209,6 +209,11 @@ export function mount(rootEl) {
       if (Math.abs(x - WX(mk.x)) < hitR() && y > WY(mk.y) - scale * 1.6 && y < WY(mk.y)) return 'marker';
       for (let i = pts.length - 1; i >= 0; i--) if (Math.hypot(x - WX(pts[i].x), y - WY(pts[i].y)) < hitR()) return `p${i}`;
       return null;
+    },
+    onStart(id) {
+      // reshaping the track under a moving cart would break the energy bookkeeping: stop the run;
+      // onEnd then puts the cart back at its release point on the new track
+      if (id.startsWith('p') && st.running) { st.running = false; relBtn.label = T('Release', 'Lepaskan'); }
     },
     onDrag(id, x, y) {
       const wx = (x - gx0) / scale, wy = (gy0 - y) / scale;
@@ -234,9 +239,13 @@ export function mount(rootEl) {
 
   // ---------- controls ----------
   const muS = slider({ label: T('Friction μ', 'Gesekan μ'), key: 'friction', min: 0, max: 0.3, step: 0.01, value: 0, format: (v) => v.toFixed(2), onInput: (v) => { p.mu = v; } });
-  const massS = slider({ label: T('Cart mass m (kg)', 'Massa kereta m (kg)'), key: 'mass', min: 20, max: 80, step: 5, value: 40, onInput: (v) => { p.m = v; st.E0 = PE() + KE() + st.Eth; } });
+  // every energy is proportional to m, so scale them all: the speed is unchanged and the total stays m·g·h₀
+  const massS = slider({ label: T('Cart mass m (kg)', 'Massa kereta m (kg)'), key: 'mass', min: 20, max: 80, step: 5, value: 40, onInput: (v) => {
+    const k = v / p.m; p.m = v; st.E0 *= k; st.Eth *= k;
+    if (st.markRec) { st.markRec.pe *= k; st.markRec.ke *= k; st.markRec.eth *= k; }
+  } });
   const relBtn = button({ label: T('Release', 'Lepaskan'), primary: true, onClick: () => {
-    if (st.rest) return;
+    if (st.rest) placeAt(st.s0);          // stopped by friction: release again from the same point
     st.running = !st.running;
     relBtn.label = st.running ? T('Pause', 'Jeda') : T('Continue', 'Lanjutkan');
   } });

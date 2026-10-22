@@ -16,13 +16,13 @@ export default {
     en: [
       'Keep the force at 600 N and switch between the four objects. Read the pressure each time: by what factor does it change from the flat shoe to the heel?',
       'Choose the flat shoe and halve the force. Does the sink depth also halve?',
-      'Drag the area slider until the pressure reads exactly 100 kPa. What area is that for a 600 N force?',
+      'Drag the area slider until the pressure reads about 100 kPa. What area is that for a 600 N force?',
       'Make the ground firmer and find the smallest area that still keeps a 600 N person from sinking more than 2 cm.',
     ],
     id: [
       'Pertahankan gaya 600 N dan ganti-ganti keempat benda. Baca tekanannya setiap kali: berapa kali lipat perubahannya dari sepatu datar ke hak sepatu?',
       'Pilih sepatu datar dan kurangi gayanya menjadi setengah. Apakah kedalaman tenggelamnya juga menjadi setengah?',
-      'Geser slider luas sampai tekanan tepat menunjukkan 100 kPa. Berapa luas itu untuk gaya 600 N?',
+      'Geser slider luas sampai tekanan menunjukkan sekitar 100 kPa. Berapa luas itu untuk gaya 600 N?',
       'Buat tanah lebih keras dan cari luas terkecil yang masih membuat orang 600 N tenggelam tidak lebih dari 2 cm.',
     ],
   },

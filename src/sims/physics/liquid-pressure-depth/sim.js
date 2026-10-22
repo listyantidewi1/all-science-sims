@@ -79,8 +79,9 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 + Math.cos(a + 2.6) * 6, y1 + Math.sin(a + 2.6) * 6); ctx.lineTo(x1 + Math.cos(a - 2.6) * 6, y1 + Math.sin(a - 2.6) * 6); ctx.closePath(); ctx.fillStyle = '#f87171'; ctx.fill();
     }
-    ctx.fillStyle = '#fde68a'; ctx.font = font(fs * 0.95, true); ctx.textAlign = 'left';
-    ctx.fillText(label, p.x + r + L + 8, p.y + fs * 0.35);
+    ctx.fillStyle = '#fde68a'; ctx.font = font(fs * 0.95, true); ctx.textAlign = 'center';
+    const lines = Array.isArray(label) ? label : [label];
+    lines.forEach((ln, i) => ctx.fillText(ln, p.x, p.y + r + L + fs * (1.2 + 1.1 * i)));
   }
 
   function drawBottle(ctx, fs) {
@@ -154,7 +155,7 @@ export function mount(rootEl) {
     // probe
     const p = probePos();
     const h = probeDepth();
-    drawProbe(ctx, p, fs, `h = ${h.toFixed(2)} m   P = ${fmtP(pressure(h))}`);
+    drawProbe(ctx, p, fs, [`h = ${h.toFixed(2)} m`, `P = ${fmtP(pressure(h))}`]);
     // readout, top right
     ctx.textAlign = 'right';
     const rx = W * 0.98; let y = fs * 1.4; const lh = fs * 1.35;
@@ -196,7 +197,7 @@ export function mount(rootEl) {
       ctx.strokeStyle = 'rgba(226,232,240,0.35)'; ctx.setLineDash([6, 6]); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(x1, y); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = '#e2e8f0';
-      ctx.fillText(`${d} m   ${fmtP(pressure(d))}   ${T('total', 'mutlak')} ${((pressure(d) + P_ATM) / P_ATM).toFixed(1)} atm`, 8, y - 4);
+      ctx.fillText(W < 640 ? `${d} m  ${fmtP(pressure(d))}` : `${d} m   ${fmtP(pressure(d))}   ${T('total', 'mutlak')} ${((pressure(d) + P_ATM) / P_ATM).toFixed(1)} atm`, 8, y - 4);
     }
     // diver (the probe)
     const p = probePos();
@@ -216,22 +217,25 @@ export function mount(rootEl) {
       const by = p.y - r - ph * Math.max(10, p.y - surfY - 10);
       if (by > surfY) { ctx.beginPath(); ctx.arc(p.x + r * 2.8 + Math.sin(ph * 12 + k) * 4, by, 2 + k * 0.6, 0, Math.PI * 2); ctx.fill(); }
     }
-    drawProbe(ctx, { x: p.x + r * 2.6, y: p.y }, fs, `h = ${h.toFixed(1)} m   P = ${fmtP(pressure(h))}`);
+    drawProbe(ctx, { x: p.x + r * 2.6, y: p.y }, fs, [`h = ${h.toFixed(1)} m`, `P = ${fmtP(pressure(h))}`]);
     // readout, right side
     ctx.textAlign = 'right';
     const rx = W * 0.98; let y = surfY + fs * 1.6; const lh = fs * 1.35;
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs, true);
+    const narrow = W < 640;
     ctx.fillText(`${T(liq.label.en, liq.label.id)}  ρ = ${liq.rho} kg/m³`, rx, y); y += lh;
     ctx.font = font(fs); ctx.fillStyle = '#cbd5e1';
-    ctx.fillText(`P = ρ g h = ${liq.rho} × ${G} × ${h.toFixed(1)}`, rx, y); y += lh;
+    if (!narrow) { ctx.fillText(`P = ρ g h = ${liq.rho} × ${G} × ${h.toFixed(1)}`, rx, y); y += lh; }
     ctx.fillStyle = '#4ade80'; ctx.font = font(fs * 1.05, true);
     ctx.fillText(`${T('gauge', 'hidrostatis')} P = ${fmtP(pressure(h))}`, rx, y); y += lh;
     ctx.fillStyle = '#cbd5e1'; ctx.font = font(fs);
-    ctx.fillText(`${T('absolute', 'mutlak')} = P + 101.3 kPa = ${fmtP(pressure(h) + P_ATM)}`, rx, y); y += lh;
+    ctx.fillText(narrow ? `${T('absolute', 'mutlak')} = ${fmtP(pressure(h) + P_ATM)}` : `${T('absolute', 'mutlak')} = P + 101.3 kPa = ${fmtP(pressure(h) + P_ATM)}`, rx, y); y += lh;
     ctx.fillText(`= ${((pressure(h) + P_ATM) / P_ATM).toFixed(2)} atm`, rx, y); y += lh;
-    ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.85);
-    ctx.fillText(T(`every 10 m adds ${(liq.rho * G * 10 / 1000).toFixed(0)} kPa ≈ ${(liq.rho * G * 10 / P_ATM).toFixed(2)} atm`, `setiap 10 m menambah ${(liq.rho * G * 10 / 1000).toFixed(0)} kPa ≈ ${(liq.rho * G * 10 / P_ATM).toFixed(2)} atm`), rx, y); y += lh;
-    ctx.fillText(T('Drag the diver up and down', 'Geser penyelam naik-turun'), rx, y);
+    if (!narrow) {
+      ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.85);
+      ctx.fillText(T(`every 10 m adds ${(liq.rho * G * 10 / 1000).toFixed(0)} kPa ≈ ${(liq.rho * G * 10 / P_ATM).toFixed(2)} atm`, `setiap 10 m menambah ${(liq.rho * G * 10 / 1000).toFixed(0)} kPa ≈ ${(liq.rho * G * 10 / P_ATM).toFixed(2)} atm`), rx, y); y += lh;
+      ctx.fillText(T('Drag the diver up and down', 'Geser penyelam naik-turun'), rx, y);
+    }
     ctx.textAlign = 'left';
   }
 
@@ -262,26 +266,26 @@ export function mount(rootEl) {
         state.probeDepthSea = clamp((y - g.surfY) / g.pxPerM, 0, SEA_DEPTH);
       }
     },
-    handles: () => { const p = probePos(); return [{ id: 'probe', x: p.x, y: p.y, label: params.scene === 'bottle' ? 'Pressure probe (drag up/down)' : 'Diver (drag up/down)' }]; },
+    handles: () => { const p = probePos(); return [{ id: 'probe', x: p.x, y: p.y, label: params.scene === 'bottle' ? T('Pressure probe (drag up/down)', 'Sensor tekanan (geser naik/turun)') : T('Diver (drag up/down)', 'Penyelam (geser naik/turun)') }]; },
     cursor: 'default', hoverCursor: 'grab',
   });
 
   // Controls
   const sceneSel = select({
-    label: 'Scene', key: 'scene',
-    options: [{ value: 'bottle', label: 'Bottle with holes / Botol berlubang' }, { value: 'sea', label: 'Diver in the sea / Penyelam di laut' }],
+    label: T('Scene', 'Adegan'), key: 'scene',
+    options: [{ value: 'bottle', label: T('Bottle with holes', 'Botol berlubang') }, { value: 'sea', label: T('Diver in the sea', 'Penyelam di laut') }],
     value: params.scene,
     onChange: (v) => { if (v === 'bottle' || v === 'sea') params.scene = v; },
   });
   const liqSel = select({
-    label: 'Liquid', key: 'liquid',
-    options: LIQUIDS.map((l) => ({ value: l.id, label: `${l.label.en} / ${l.label.id} (${l.rho} kg/m³)` })),
+    label: T('Liquid', 'Zat cair'), key: 'liquid',
+    options: LIQUIDS.map((l) => ({ value: l.id, label: `${T(l.label.en, l.label.id)} (${l.rho} kg/m³)` })),
     value: params.liquid,
     onChange: (v) => { if (LIQUIDS.some((l) => l.id === v)) params.liquid = v; },
   });
-  const levelS = slider({ label: 'Liquid level in bottle (m)', key: 'level', min: 0.2, max: 1.0, step: 0.05, value: params.level, format: (v) => v.toFixed(2), onInput: (v) => { params.level = v; } });
-  const diverB = button({ label: 'Diver scene (sea water, 10 m)', onClick: () => { sceneSel.apply('sea'); liqSel.apply('salt'); state.probeDepthSea = 10; } });
-  const bottleB = button({ label: 'Bottle scene (water, full)', onClick: () => { sceneSel.apply('bottle'); liqSel.apply('water'); levelS.apply(1.0); state.probeDepthBottle = 0.5; } });
+  const levelS = slider({ label: T('Liquid level in bottle (m)', 'Tinggi zat cair dalam botol (m)'), key: 'level', min: 0.2, max: 1.0, step: 0.05, value: params.level, format: (v) => v.toFixed(2), onInput: (v) => { params.level = v; } });
+  const diverB = button({ label: T('Diver scene (sea water, 10 m)', 'Adegan penyelam (air laut, 10 m)'), onClick: () => { sceneSel.apply('sea'); liqSel.apply('salt'); state.probeDepthSea = 10; } });
+  const bottleB = button({ label: T('Bottle scene (water, full)', 'Adegan botol (air, penuh)'), onClick: () => { sceneSel.apply('bottle'); liqSel.apply('water'); levelS.apply(1.0); state.probeDepthBottle = 0.5; } });
   ctrlPanel.append(sceneSel.el, liqSel.el, levelS.el, row(bottleB, diverB));
 
   const lab = labPanel({

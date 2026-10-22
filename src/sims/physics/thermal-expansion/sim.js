@@ -23,7 +23,7 @@ const BALL_D = 30.00;     // mm, at 20 °C
 const RING_D = 30.02;     // mm, hole diameter at 20 °C
 const STRIP_L = 100;      // mm
 const STRIP_T = 1;        // mm, thickness of each layer
-const CONTACT_GAP = 4;    // mm, thermostat contact distance from the cold tip
+const CONTACT_GAP = 4;    // mm, gap between the cold tip and the button of the thermostat's cut-out switch
 
 export function mount(rootEl) {
   const canvasWrap = document.createElement('div'); rootEl.appendChild(canvasWrap);
@@ -79,7 +79,8 @@ export function mount(rootEl) {
     const gapM = p.gap / 1000;
     const closes = dL >= gapM - 1e-12;
     // visual scale: rail = 55% of the width; expansion and gap drawn ×EXAG
-    const x0 = W * 0.14, Lpx = W * 0.55, pxPerM = Lpx / Lm;
+    // (shrink the scale when a short rail + wide gap ×EXAG would push the stop off the canvas)
+    const x0 = W * 0.14, pxPerM = Math.min(W * 0.55 / Lm, W * 0.78 / (Lm + gapM * EXAG)), Lpx = Lm * pxPerM;
     const gapPx = gapM * EXAG * pxPerM;
     const dLpx = Math.min(dL * EXAG * pxPerM, gapPx);
     const y = H * 0.56, rh = Math.max(10, H * 0.06);
@@ -104,13 +105,11 @@ export function mount(rootEl) {
     } else {
       ctx.fillRect(x0, y, Lpx + dLpx, rh);
     }
-    // heat glow
-    if (dt > 0) {
-      ctx.fillStyle = `rgba(239,68,68,${Math.min(0.45, dt / 600)})`;
-      ctx.fillRect(x0, y, Lpx + dLpx, rh);
-    } else if (dt < 0) {
-      ctx.fillStyle = `rgba(96,165,250,${Math.min(0.45, -dt / 60)})`;
-      ctx.fillRect(x0, y, Lpx + dLpx, rh);
+    // heat glow (follows the buckled shape when the rail has bent)
+    if (dt !== 0) {
+      const glow = dt > 0 ? `rgba(239,68,68,${Math.min(0.45, dt / 600)})` : `rgba(96,165,250,${Math.min(0.45, -dt / 60)})`;
+      if (bend > 0) { ctx.strokeStyle = glow; ctx.stroke(); }
+      else { ctx.fillStyle = glow; ctx.fillRect(x0, y, Lpx + dLpx, rh); }
     }
     // cold-length marker and ΔL bracket
     ctx.strokeStyle = '#fbbf24'; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.5;
@@ -123,12 +122,12 @@ export function mount(rootEl) {
       ctx.fillStyle = '#f87171';
       ctx.fillText(`ΔL ×${EXAG}`, x0 + Lpx + dLpx / 2, y + rh + H * 0.16);
     }
-    // gap label
+    // gap label (hidden once the rail has closed the gap and buckled over it)
     ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'center';
-    ctx.fillText(T(`gap ${fmtNum(p.gap, 0)} mm (drawn ×${EXAG})`, `celah ${fmtNum(p.gap, 0)} mm (digambar ×${EXAG})`), x0 + Lpx + gapPx / 2, y - H * 0.03);
+    if (!closes) ctx.fillText(T(`gap ${fmtNum(p.gap, 0)} mm (drawn ×${EXAG})`, `celah ${fmtNum(p.gap, 0)} mm (digambar ×${EXAG})`), x0 + Lpx + gapPx / 2, y - H * 0.03);
     // L label
     ctx.fillStyle = '#e2e8f0'; ctx.font = `${Math.max(11, W * 0.018)}px ${SANS}`;
-    ctx.fillText(`L = ${fmtNum(Lm, 1)} m`, x0 + Lpx / 2, y + rh + H * 0.16);
+    ctx.fillText(`L = ${fmtNum(Lm, 1)} m`, x0 + Lpx / 2, y + rh + H * 0.23);   // below the ΔL label row
     // formula
     const dLmm = dL * 1000;
     formulaBox(ctx, W * 0.33, H * 0.05, W * 0.64, [
@@ -152,38 +151,40 @@ export function mount(rootEl) {
     const dRing = RING_D * (1 + (p.heatRing ? STEEL.alpha * dt : 0)); // ring is steel
     const fits = dBall <= dRing;
     // draw: ring on a stand, ball above it. Visual exaggeration ×EXAG for the size change.
-    const cx = W * 0.5, ringY = H * 0.62, R0 = H * 0.17;
-    const ringR = R0 * (dRing / RING_D - 1) * EXAG + R0;
-    const ballR = R0 * (BALL_D / RING_D) * (1 + (dBall / BALL_D - 1) * EXAG);
+    // Both diameters are drawn relative to the cold hole (RING_D) with the same ×EXAG factor, so the
+    // ball is drawn smaller than the hole exactly when it really fits.
+    const cx = W * 0.3, ringY = H * 0.6, R0 = H * 0.15;
+    const ringR = R0 * (1 + (dRing / RING_D - 1) * EXAG);
+    const ballR = Math.max(R0 * 0.3, R0 * (1 + (dBall / RING_D - 1) * EXAG));
     // stand
-    ctx.fillStyle = '#475569'; ctx.fillRect(cx - 6, ringY, 12, H * 0.3); ctx.fillRect(cx - W * 0.12, H * 0.9, W * 0.24, H * 0.03);
+    ctx.fillStyle = '#475569'; ctx.fillRect(cx - 6, ringY, 12, H * 0.3); ctx.fillRect(cx - W * 0.12, H * 0.88, W * 0.24, H * 0.03);
     // ring
     ctx.strokeStyle = p.heatRing && dt > 0 ? '#f87171' : STEEL.color; ctx.lineWidth = Math.max(8, H * 0.03);
     ctx.beginPath(); ctx.arc(cx, ringY, ringR + ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
-    // ball: it sits in the ring if it fits, otherwise rests on top
+    // ball: it drops through the ring if it fits, otherwise rests in the mouth of the ring
     const phase = (Math.sin(now * 1.5) + 1) / 2;
-    const ballY = fits ? ringY - R0 * 1.6 + phase * R0 * 3.2 : ringY - ballR - ctx.lineWidth * 0.3;
+    const ballY = fits ? ringY - R0 * 1.2 + phase * R0 * 2.4 : ringY - Math.sqrt(Math.max(0, ballR * ballR - ringR * ringR)) - ctx.lineWidth * 0.3;
     ctx.fillStyle = m.color;
-    ctx.beginPath(); ctx.arc(cx, fits ? ballY : ballY, ballR, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, ballY, ballR, 0, Math.PI * 2); ctx.fill();
     if (dt > 0) { ctx.fillStyle = `rgba(239,68,68,${Math.min(0.5, dt / 500)})`; ctx.fill(); }
     ctx.strokeStyle = '#0b1220'; ctx.lineWidth = 2; ctx.stroke();
     // labels
     ctx.textAlign = 'center'; ctx.fillStyle = '#e2e8f0'; ctx.font = `${Math.max(11, W * 0.018)}px ${SANS}`;
-    ctx.fillText(T(`${m.en} ball`, `Bola ${m.idn.toLowerCase()}`), cx, H * 0.95);
+    ctx.fillText(T(`${m.en} ball`, `Bola ${m.idn.toLowerCase()}`), cx, H * 0.97);
     ctx.fillStyle = fits ? '#86efac' : '#f87171'; ctx.font = `bold ${Math.max(13, W * 0.028)}px ${SANS}`;
-    ctx.fillText(fits ? T('Ball passes through', 'Bola lolos melewati cincin') : T('Ball is stuck!', 'Bola tersangkut!'), cx, H * 0.1);
-    formulaBox(ctx, W * 0.02, H * 0.16, W * 0.44, [
+    ctx.fillText(fits ? T('Ball passes through', 'Bola lolos melewati cincin') : T('Ball is stuck!', 'Bola tersangkut!'), W * 0.55, H * 0.1);
+    const boxBottom = formulaBox(ctx, W * 0.47, H * 0.16, W * 0.51, [
       { text: T('Ball (at 20 °C: 30.00 mm)', 'Bola (pada 20 °C: 30,00 mm)'), bold: true },
       { text: `ΔD = ${alphaStr(m.alpha)} × ${fmtNum(BALL_D, 2)} mm × ${fmtNum(dt, 0)} °C`, mono: true },
       { text: `D = ${fmtNum(dBall, 3)} mm`, mono: true, color: m.color === '#94a3b8' ? '#e2e8f0' : m.color, bold: true },
     ], W);
-    formulaBox(ctx, W * 0.54, H * 0.16, W * 0.44, [
+    formulaBox(ctx, W * 0.47, boxBottom + 8, W * 0.51, [
       { text: T('Steel ring hole (at 20 °C: 30.02 mm)', 'Lubang cincin baja (pada 20 °C: 30,02 mm)'), bold: true },
       { text: p.heatRing ? `ΔD = ${alphaStr(STEEL.alpha)} × ${fmtNum(RING_D, 2)} mm × ${fmtNum(dt, 0)} °C` : T('ring kept at 20 °C', 'cincin tetap 20 °C'), mono: true },
       { text: `D = ${fmtNum(dRing, 3)} mm`, mono: true, color: '#cbd5e1', bold: true },
     ], W);
     ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.max(10, W * 0.015)}px ${SANS}`; ctx.textAlign = 'center';
-    ctx.fillText(T(`size change drawn ×${EXAG}`, `perubahan ukuran digambar ×${EXAG}`), cx, H * 0.47);
+    ctx.fillText(T(`size change drawn ×${EXAG}`, `perubahan ukuran digambar ×${EXAG}`), W * 0.725, H * 0.72);
   }
 
   function drawBimetal(ctx, W, H) {
@@ -229,17 +230,21 @@ export function mount(rootEl) {
     // cold reference line
     ctx.strokeStyle = 'rgba(251,191,36,0.6)'; ctx.setLineDash([4, 3]); ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + STRIP_L * pxPerMm, y0); ctx.stroke(); ctx.setLineDash([]);
-    // thermostat contact above the tip
+    // Cut-out switch above the tip: when the bending strip pushes its button up, the switch's own
+    // contacts open and the heater turns off (a gap at room temperature, touching when hot).
     const tipX = x0 + STRIP_L * pxPerMm, contactY = y0 - CONTACT_GAP * pxPerMm - thick;
     ctx.fillStyle = open ? '#f87171' : '#86efac';
     ctx.fillRect(tipX - 14, contactY - 6, 20, 6);
     ctx.fillRect(tipX - 3, contactY - H * 0.25, 6, H * 0.25 - 6);
+    ctx.fillStyle = '#94a3b8'; ctx.font = `${Math.max(10, W * 0.015)}px ${SANS}`; ctx.textAlign = 'right';
+    ctx.fillText(T('cut-out switch', 'sakelar pemutus'), tipX - 8, contactY - H * 0.18);
     // tip and deflection arrow
     const tip = pt(STRIP_L, 0);
     ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(tipX + 18, y0); ctx.lineTo(tipX + 18, tip.y); ctx.stroke();
     ctx.fillStyle = '#fbbf24'; ctx.font = `${Math.max(11, W * 0.018)}px ${MONO}`; ctx.textAlign = 'left';
-    ctx.fillText(`d = ${fmtNum(deflMm, 1)} mm`, tipX + 24, (y0 + tip.y) / 2 + 4);
+    const dTxt = `d = ${fmtNum(deflMm, 1)} mm`;
+    ctx.fillText(dTxt, Math.min(tipX + 24, W - ctx.measureText(dTxt).width - 4), (y0 + tip.y) / 2 + 4);
     // labels
     ctx.font = `${Math.max(11, W * 0.018)}px ${SANS}`; ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'left';
     const s1 = pt(STRIP_L * 0.5, tv * 1.1), s2 = pt(STRIP_L * 0.5, -tv * 1.1);
@@ -247,10 +252,28 @@ export function mount(rootEl) {
     ctx.fillText(T(`steel, α = ${alphaStr(STEEL.alpha)}`, `baja, α = ${alphaStr(STEEL.alpha)}`), s1.x, s1.y - 10);
     ctx.fillText(T(`brass, α = ${alphaStr(BRASS.alpha)}`, `kuningan, α = ${alphaStr(BRASS.alpha)}`), s2.x, s2.y + 20);
     ctx.fillStyle = open ? '#f87171' : '#86efac'; ctx.font = `bold ${Math.max(12, W * 0.024)}px ${SANS}`;
-    ctx.fillText(open ? T('Contact open: heater OFF (thermostat)', 'Kontak terbuka: pemanas MATI (termostat)') : T('Contact closed: heater ON', 'Kontak tertutup: pemanas HIDUP'), W * 0.5, H * 0.1);
+    ctx.fillText(open
+      ? T('Strip pushes the switch open: heater OFF', 'Keping menekan sakelar hingga terbuka: pemanas MATI')
+      : T('Switch closed: heater ON', 'Sakelar tertutup: pemanas HIDUP'), W * 0.5, H * 0.1);
     const dLb = deltaL(BRASS.alpha, Lm, dt) * 1000, dLs = deltaL(STEEL.alpha, Lm, dt) * 1000;
-    formulaBox(ctx, W * 0.02, H * 0.7, W * 0.96, [
-      { text: T(`Brass stretches ${fmtNum(dLb, 3)} mm, steel only ${fmtNum(dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), so the strip bends toward the steel.`, `Kuningan memanjang ${fmtNum(dLb, 3)} mm, baja hanya ${fmtNum(dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), sehingga keping melengkung ke arah baja.`) },
+    // which way it bends depends on the sign of ΔT: toward steel (lower α) when hot, toward brass when cold
+    const hot = dt > 0.5, cold = dt < -0.5;
+    const bendWide = hot
+      ? T(`Brass stretches ${fmtNum(dLb, 3)} mm, steel only ${fmtNum(dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), so the strip bends toward the steel.`, `Kuningan memanjang ${fmtNum(dLb, 3)} mm, baja hanya ${fmtNum(dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), sehingga keping melengkung ke arah baja.`)
+      : cold
+        ? T(`Brass shrinks ${fmtNum(-dLb, 3)} mm, steel only ${fmtNum(-dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), so the strip bends toward the brass.`, `Kuningan menyusut ${fmtNum(-dLb, 3)} mm, baja hanya ${fmtNum(-dLs, 3)} mm (L = 100 mm, ΔT = ${fmtNum(dt, 0)} °C), sehingga keping melengkung ke arah kuningan.`)
+        : T('At 20 °C both layers have their original length (100 mm), so the strip is straight.', 'Pada 20 °C kedua lapisan masih sepanjang semula (100 mm), sehingga keping lurus.');
+    const bendNarrow = hot ? T('→ the strip bends toward the steel', '→ keping melengkung ke arah baja')
+      : cold ? T('→ the strip bends toward the brass', '→ keping melengkung ke arah kuningan')
+        : T('→ the strip stays straight', '→ keping tetap lurus');
+    ctx.font = `${Math.max(10, W * 0.018)}px ${SANS}`;
+    const compact = W < 640 || ctx.measureText(bendWide).width > W * 0.96 - 20;   // long sentence would overflow the box
+    formulaBox(ctx, W * 0.02, H * 0.7, W * 0.96, compact ? [
+      { text: T(`ΔL: brass ${fmtNum(dLb, 3)} mm, steel ${fmtNum(dLs, 3)} mm`, `ΔL: kuningan ${fmtNum(dLb, 3)} mm, baja ${fmtNum(dLs, 3)} mm`) },
+      { text: bendNarrow },
+      { text: `κ = ${fmtNum(kappa, 2)} /m   d = ${fmtNum(deflMm, 1)} mm`, mono: true, color: '#fbbf24' },
+    ] : [
+      { text: bendWide },
       { text: `κ = 3(α_brass − α_steel)ΔT / (2h) = ${fmtNum(kappa, 2)} /m   →   d ≈ (1 − cos(κL))/κ = ${fmtNum(deflMm, 1)} mm`, mono: true, color: '#fbbf24' },
       { text: T('Drawn to scale (layer thickness enlarged). Model assumes equal thickness and stiffness.', 'Digambar sesuai skala (tebal lapisan diperbesar). Model mengasumsikan tebal dan kekakuan yang sama.'), color: '#94a3b8' },
     ], W);
@@ -263,7 +286,7 @@ export function mount(rootEl) {
     if (p.scene === 'rail') drawRail(ctx, W, H);
     else if (p.scene === 'ring') drawRingBall(ctx, W, H);
     else drawBimetal(ctx, W, H);
-    thermometer(ctx, W * 0.05, H * 0.1, H * 0.6, W);
+    thermometer(ctx, Math.max(W * 0.05, 26), H * 0.1, H * 0.52, W);   // keeps the "°C" reading on the canvas
     ctx.fillStyle = '#64748b'; ctx.font = `${Math.max(10, W * 0.014)}px ${SANS}`; ctx.textAlign = 'right';
     ctx.fillText(`ΔT = T − 20 °C = ${fmtNum(dT(), 0)} °C`, W * 0.98, H * 0.97);
     ctx.textAlign = 'left';

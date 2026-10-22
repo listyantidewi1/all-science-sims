@@ -39,7 +39,9 @@ export function mount(rootEl) {
   }
 
   function step(dt) {
-    state.d1 += (params.d1 - state.d1) * Math.min(1, 8 * dt);
+    // if F₂ is smaller than the load the small piston cannot be pushed in at all
+    const target = calc().lifts ? params.d1 : 0;
+    state.d1 += (target - state.d1) * Math.min(1, 8 * dt);
   }
 
   // Geometry shared by draw and drag: cylinder positions in CSS px.
@@ -164,9 +166,11 @@ export function mount(rootEl) {
 
     // Area labels on pistons, travel markers
     ctx.fillStyle = '#0b1220'; ctx.font = font(fs * 0.85, true); ctx.textAlign = 'center';
-    if (g.w1 > fs * 3.5) ctx.fillText(`A₁ ${params.A1.toFixed(1)} cm²`, g.x1, g.p1y - ph / 2 + fs * 0.33);
+    const a1Txt = `A₁ ${params.A1.toFixed(1)} cm²`;
+    const a1Fits = ctx.measureText(a1Txt).width + 6 < g.w1;   // label goes on the piston only if it fits
+    if (a1Fits) ctx.fillText(a1Txt, g.x1, g.p1y - ph / 2 + fs * 0.33);
     ctx.fillText(`A₂ ${A2().toFixed(0)} cm²`, g.x2, g.p2y - ph / 2 + fs * 0.33);
-    if (g.w1 <= fs * 3.5) { ctx.fillStyle = '#fde68a'; ctx.textAlign = 'right'; ctx.fillText(`A₁ ${params.A1.toFixed(1)} cm²`, g.x1 - g.w1 / 2 - 6, g.p1y - ph / 2 + fs * 0.33); }
+    if (!a1Fits) { ctx.fillStyle = '#fde68a'; ctx.textAlign = 'right'; ctx.fillText(a1Txt, Math.max(g.x1 - g.w1 / 2 - 6, ctx.measureText(a1Txt).width + 2), g.p1y - ph / 2 + fs * 0.33); }
     // rest-level dashed line and d markers
     ctx.strokeStyle = 'rgba(226,232,240,0.5)'; ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(g.x1 - g.w1 / 2 - fs * 2.5, g.restY); ctx.lineTo(g.x2 + g.w2 / 2 + fs * 0.8, g.restY); ctx.stroke();
@@ -176,13 +180,14 @@ export function mount(rootEl) {
       ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(mx, g.restY); ctx.lineTo(mx, g.p1y); ctx.stroke();
       ctx.fillStyle = '#fca5a5'; ctx.font = font(fs * 0.9, true); ctx.textAlign = 'right';
-      ctx.fillText(`d₁ = ${fmtCm(c.d1)}`, mx - 4, (g.restY + g.p1y) / 2 + fs * 0.35);
-      const mx2 = g.x2 - g.w2 / 2 - fs * 0.8;
+      const d1Txt = `d₁ = ${fmtCm(c.d1)}`;
+      ctx.fillText(d1Txt, Math.max(mx - 4, ctx.measureText(d1Txt).width + 2), (g.restY + g.p1y) / 2 + fs * 0.35);   // stays on the canvas
+      const mx2 = g.x2 - g.w2 / 2 + fs * 0.8;
       ctx.strokeStyle = '#4ade80';
       ctx.beginPath(); ctx.moveTo(mx2, g.restY); ctx.lineTo(mx2, g.p2y); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(mx2 - 4, g.p2y); ctx.lineTo(mx2 + 4, g.p2y); ctx.stroke();
-      ctx.fillStyle = '#86efac';
-      ctx.fillText(`d₂ = ${fmtCm(c.d2)}`, mx2 - 4, g.p2y - fs * 0.4);
+      ctx.beginPath(); ctx.moveTo(mx2 - 4, g.p2y); ctx.lineTo(mx2 + 4, g.p2y); ctx.moveTo(mx2 - 4, g.restY); ctx.lineTo(mx2 + 4, g.restY); ctx.stroke();
+      ctx.fillStyle = '#86efac'; ctx.textAlign = 'left';
+      ctx.fillText(`d₂ = ${fmtCm(c.d2)}`, mx2 + 6, g.restY + fs * 1.3);
     }
     // handle knob on piston 1
     ctx.fillStyle = '#fff'; ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3;
@@ -191,21 +196,25 @@ export function mount(rootEl) {
     // Readout in the floor band, two columns
     ctx.textAlign = 'left';
     const lh = fs * 1.35;
-    const colL = W * 0.02, colR = W * 0.52;
+    const narrow = W < 640;
+    const colL = W * 0.02, colR = narrow ? W * 0.62 : W * 0.52;
     let y = g.floorY + fs * 1.5;
     ctx.font = font(fs); ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`P = F₁/A₁ = ${fmtP(c.P)} ${T('(same on both sides)', '(sama di kedua sisi)')}`, colL, y);
-    ctx.fillText(`F₁d₁ = ${c.W1.toFixed(1)} J   F₂d₂ = ${c.W2.toFixed(1)} J`, colR, y); y += lh;
-    ctx.fillText(`F₂ = F₁ × A₂/A₁ = ${params.F1.toFixed(0)} × ${params.ratio.toFixed(0)} = ${fmtF(c.F2)}`, colL, y);
+    ctx.fillText(narrow ? `P = F₁/A₁ = ${fmtP(c.P)}` : `P = F₁/A₁ = ${fmtP(c.P)} ${T('(same on both sides)', '(sama di kedua sisi)')}`, colL, y);
+    ctx.fillText(narrow ? `F₁d₁ = ${c.W1.toFixed(1)} J` : `F₁d₁ = ${c.W1.toFixed(1)} J   F₂d₂ = ${c.W2.toFixed(1)} J`, colR, y); y += lh;
+    if (narrow) { ctx.fillText(`F₂d₂ = ${c.W2.toFixed(1)} J`, colR, y); }
+    ctx.fillText(narrow ? `F₂ = ${params.F1.toFixed(0)} × ${params.ratio.toFixed(0)} = ${fmtF(c.F2)}` : `F₂ = F₁ × A₂/A₁ = ${params.F1.toFixed(0)} × ${params.ratio.toFixed(0)} = ${fmtF(c.F2)}`, colL, y);
+    y += lh;
     if (loadN() > 0) {
       ctx.fillStyle = c.lifts ? '#4ade80' : '#f97316'; ctx.font = font(fs, true);
-      ctx.fillText(c.lifts ? T('Lifts the load!', 'Beban terangkat!') : `${T('Need F₁ ≥', 'Perlu F₁ ≥')} ${fmtF(c.needF1)}`, colR, y);
+      ctx.fillText(c.lifts ? T('Lifts the load!', 'Beban terangkat!') : `${T('Need F₁ ≥', 'Perlu F₁ ≥')} ${fmtF(c.needF1)}${narrow ? '' : ' — ' + T('piston stuck', 'piston tidak bergerak')}`, colR, y);
       ctx.font = font(fs); ctx.fillStyle = '#e2e8f0';
     }
-    y += lh;
-    ctx.fillText(`d₂ = d₁ × A₁/A₂ = ${c.d1.toFixed(1)} / ${params.ratio.toFixed(0)} = ${fmtCm(c.d2)}`, colL, y);
-    ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.85);
-    ctx.fillText(T('Drag the white knob to push the small piston', 'Geser bulatan putih: dorong piston kecil'), colR, y);
+    ctx.fillText(narrow ? `d₂ = ${c.d1.toFixed(1)} / ${params.ratio.toFixed(0)} = ${fmtCm(c.d2)}` : `d₂ = d₁ × A₁/A₂ = ${c.d1.toFixed(1)} / ${params.ratio.toFixed(0)} = ${fmtCm(c.d2)}`, colL, y);
+    if (!narrow && loadN() === 0) {
+      ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.85);
+      ctx.fillText(T('Drag the white knob to push the small piston', 'Geser bulatan putih: dorong piston kecil'), colR, y);
+    }
     ctx.textAlign = 'left';
   }
 
@@ -220,20 +229,20 @@ export function mount(rootEl) {
       const g = geom();
       const faceY = y + grabOff + clamp(g.H * 0.03, 6, 16) + g.H * 0.12;
       const d = (faceY - g.restY) / g.pxPerCm;
-      params.d1 = clamp(d, 0, MAX_STROKE_CM); state.d1 = params.d1;
+      params.d1 = clamp(d, 0, MAX_STROKE_CM); if (calc().lifts) state.d1 = params.d1;
       strokeS.value = params.d1;
     },
-    handles: () => { const g = geom(); return [{ id: 'p1', x: g.x1, y: g.p1y - clamp(g.H * 0.03, 6, 16) - g.H * 0.12, label: 'Small piston (drag down to push)' }]; },
+    handles: () => { const g = geom(); return [{ id: 'p1', x: g.x1, y: g.p1y - clamp(g.H * 0.03, 6, 16) - g.H * 0.12, label: T('Small piston (drag down to push)', 'Piston kecil (seret ke bawah untuk mendorong)') }]; },
     cursor: 'default', hoverCursor: 'grab',
   });
 
   // Controls
-  const a1S = slider({ label: 'Small piston area A₁ (cm²)', key: 'a1', min: 1, max: 100, step: 1, value: params.A1, format: (v) => v.toFixed(0), onInput: (v) => { params.A1 = v; } });
-  const ratioS = slider({ label: 'Area ratio A₂/A₁', key: 'ratio', min: 1, max: 100, step: 1, value: params.ratio, format: (v) => `${v.toFixed(0)} : 1`, onInput: (v) => { params.ratio = v; } });
-  const f1S = slider({ label: 'Input force F₁ (N)', key: 'f1', min: 10, max: 1000, step: 10, value: params.F1, format: (v) => v.toFixed(0), onInput: (v) => { params.F1 = v; } });
-  const strokeS = slider({ label: 'Small piston stroke d₁ (cm)', key: 'd1', min: 0, max: MAX_STROKE_CM, step: 0.5, value: 0, format: (v) => v.toFixed(1), onInput: (v) => { params.d1 = v; } });
-  const loadSel = select({ label: 'Load on big piston', key: 'load', options: LOADS.map((l) => ({ value: l.id, label: `${l.label.en} / ${l.label.id}` })), value: params.load, onChange: (v) => { if (LOADS.some((l) => l.id === v)) params.load = v; } });
-  const carB = button({ label: 'Lift a car', primary: true, onClick: () => { a1S.apply(5); ratioS.apply(40); f1S.apply(300); loadSel.apply('car'); strokeS.apply(20); } });
+  const a1S = slider({ label: T('Small piston area A₁ (cm²)', 'Luas piston kecil A₁ (cm²)'), key: 'a1', min: 1, max: 100, step: 1, value: params.A1, format: (v) => v.toFixed(0), onInput: (v) => { params.A1 = v; } });
+  const ratioS = slider({ label: T('Area ratio A₂/A₁', 'Perbandingan luas A₂/A₁'), key: 'ratio', min: 1, max: 100, step: 1, value: params.ratio, format: (v) => `${v.toFixed(0)} : 1`, onInput: (v) => { params.ratio = v; } });
+  const f1S = slider({ label: T('Input force F₁ (N)', 'Gaya masukan F₁ (N)'), key: 'f1', min: 10, max: 1000, step: 10, value: params.F1, format: (v) => v.toFixed(0), onInput: (v) => { params.F1 = v; } });
+  const strokeS = slider({ label: T('Small piston stroke d₁ (cm)', 'Langkah piston kecil d₁ (cm)'), key: 'd1', min: 0, max: MAX_STROKE_CM, step: 0.5, value: 0, format: (v) => v.toFixed(1), onInput: (v) => { params.d1 = v; } });
+  const loadSel = select({ label: T('Load on big piston', 'Beban di piston besar'), key: 'load', options: LOADS.map((l) => ({ value: l.id, label: T(l.label.en, l.label.id) })), value: params.load, onChange: (v) => { if (LOADS.some((l) => l.id === v)) params.load = v; } });
+  const carB = button({ label: T('Lift a car', 'Angkat mobil'), primary: true, onClick: () => { a1S.apply(5); ratioS.apply(40); f1S.apply(300); loadSel.apply('car'); strokeS.apply(20); } });
   const resetB = button({ label: 'Reset', onClick: () => { a1S.apply(10); ratioS.apply(10); f1S.apply(100); loadSel.apply('none'); strokeS.apply(0); } });
   ctrlPanel.append(a1S.el, ratioS.el, f1S.el, strokeS.el, loadSel.el, row(carB, resetB));
 
@@ -261,7 +270,8 @@ export function mount(rootEl) {
     predict: 'If the big piston has 20 times the area of the small one, how many times bigger is F₂, and how many times smaller is d₂?',
     source: () => {
       const c = calc();
-      return { A1: params.A1, A2: A2(), F1: params.F1, F2: c.F2, P: c.P / 1000, d1: params.d1, d2: params.d1 / params.ratio, W1: params.F1 * params.d1 / 100, W2: c.F2 * (params.d1 / params.ratio) / 100 };
+      const d1 = c.lifts ? params.d1 : 0;   // a load heavier than F₂ does not move: no stroke, no work
+      return { A1: params.A1, A2: A2(), F1: params.F1, F2: c.F2, P: c.P / 1000, d1, d2: d1 / params.ratio, W1: params.F1 * d1 / 100, W2: c.F2 * (d1 / params.ratio) / 100 };
     },
   });
   ctrlPanel.appendChild(lab.el);

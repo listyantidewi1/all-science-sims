@@ -42,7 +42,13 @@ export function mount(rootEl) {
     if (P >= 1000) return `${(P / 1000).toFixed(P >= 1e5 ? 0 : 1)} kPa`;
     return `${P.toFixed(0)} Pa`;
   }
-  function fmtNum(n) { return n >= 1e6 ? n.toExponential(2) : n.toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+  // SI digit grouping with spaces (40 000 Pa), as in the Learn text: a comma would read as a decimal point in Indonesian
+  // large values in powers-of-ten form (6.00 × 10⁸) rather than calculator notation (6.00e+8)
+  const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+  function fmtNum(n) {
+    if (n >= 1e6) { const e = Math.floor(Math.log10(n)); return `${(n / 10 ** e).toFixed(2)} × 10${String(e).split('').map((d) => SUP[d]).join('')}`; }
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
 
   function step(dt) {
     const tgt = targetDepth();
@@ -104,7 +110,7 @@ export function mount(rootEl) {
     const colW = Math.max(plateW, clamp(W * 0.012, 6, 14));
     const weightH = clamp(H * 0.07 + H * 0.12 * Math.sqrt(params.force / 1000), 16, H * 0.22);
     const weightW = clamp(W * 0.08 + W * 0.1 * Math.sqrt(params.force / 1000), 40, sceneW * 0.4);
-    const weightBottom = plateBottom - plateH - H * 0.06;
+    const weightBottom = Math.min(plateBottom, surfaceY) - plateH - H * 0.06;   // the weight stays above the sand
     ctx.fillStyle = '#f59e0b';
     ctx.fillRect(cx - plateW / 2, plateBottom - plateH, plateW, plateH);
     if (obj.id === 'pin') {
@@ -128,11 +134,13 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.roundRect(cx - weightW / 2, weightBottom - weightH, weightW, weightH, 8); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#fff'; ctx.font = font(fs * 1.1, true); ctx.textAlign = 'center';
     ctx.fillText(`F = ${params.force.toFixed(0)} N`, cx, weightBottom - weightH / 2 + fs * 0.4);
-    // force arrow above the block
+    // force arrow above the block (skipped on narrow canvases, where it would cross the readout; F is on the block)
+    if (W >= 640) {
     const arrowTop = weightBottom - weightH - H * 0.14, arrowBot = weightBottom - weightH - 6;
     ctx.strokeStyle = '#ef4444'; ctx.fillStyle = '#ef4444'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(cx, arrowTop); ctx.lineTo(cx, arrowBot - 8); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(cx, arrowBot); ctx.lineTo(cx - 7, arrowBot - 11); ctx.lineTo(cx + 7, arrowBot - 11); ctx.closePath(); ctx.fill();
+    }
 
     // Contact area label under the plate
     ctx.fillStyle = '#1f2937'; ctx.font = font(fs * 0.9, true); ctx.textAlign = 'center';
@@ -189,18 +197,22 @@ export function mount(rootEl) {
       ctx.fillStyle = active ? '#fde68a' : '#94a3b8'; ctx.font = font(fs * 0.85);
       ctx.fillText(fmtPa(Po), bx, by + bh + fs * 1.05);
       const dd = Math.min(SAND_DEPTH_CM, Po / 1000 / Math.max(0.01, params.firmness));
-      ctx.textAlign = 'right';
-      ctx.fillText(dd >= SAND_DEPTH_CM ? T('sinks to bottom', 'sampai dasar') : `${T('sinks', 'tenggelam')} ${dd.toFixed(dd < 1 ? 2 : 1)} cm`, sx + sw - fs * 0.6, by + bh + fs * 1.05);
+      if (W >= 640) {
+        ctx.textAlign = 'right';
+        ctx.fillText(dd >= SAND_DEPTH_CM ? T('sinks to bottom', 'sampai dasar') : `${T('sinks', 'tenggelam')} ${dd.toFixed(dd < 1 ? 2 : 1)} cm`, sx + sw - fs * 0.6, by + bh + fs * 1.05);
+      }
     });
-    ctx.fillStyle = '#64748b'; ctx.font = font(fs * 0.75); ctx.textAlign = 'left';
-    ctx.fillText(T('bars: log scale', 'batang: skala log'), sx + fs * 0.6, H * 0.96 - fs * 0.3);
+    if (W >= 640) {
+      ctx.fillStyle = '#64748b'; ctx.font = font(fs * 0.75); ctx.textAlign = 'left';
+      ctx.fillText(T('bars: log scale', 'batang: skala log'), sx + fs * 0.6, H * 0.96 - fs * 0.3);
+    }
     ctx.textAlign = 'left';
   }
 
   // Controls
   const objSel = select({
-    label: 'Object', key: 'object',
-    options: OBJECTS.map((o) => ({ value: o.id, label: `${o.label.en} / ${o.label.id} (${o.areaCm2 < 1 ? `${o.areaCm2 * 100} mm²` : `${o.areaCm2} cm²`})` })),
+    label: T('Object', 'Benda'), key: 'object',
+    options: OBJECTS.map((o) => ({ value: o.id, label: `${T(o.label.en, o.label.id)} (${o.areaCm2 < 1 ? `${o.areaCm2 * 100} mm²` : `${o.areaCm2} cm²`})` })),
     value: params.object,
     onChange: (v) => {
       const o = OBJECTS.find((k) => k.id === v);
@@ -210,15 +222,15 @@ export function mount(rootEl) {
       params.logArea = Math.log10(o.areaCm2);
     },
   });
-  const forceS = slider({ label: 'Force F (N)', key: 'force', min: 5, max: 1000, step: 5, value: params.force, format: (v) => v.toFixed(0), onInput: (v) => { params.force = v; } });
+  const forceS = slider({ label: T('Force F (N)', 'Gaya F (N)'), key: 'force', min: 5, max: 1000, step: 5, value: params.force, format: (v) => v.toFixed(0), onInput: (v) => { params.force = v; } });
   const areaS = slider({
-    label: 'Contact area A', key: 'area', min: -2, max: 4, step: 0.02, value: params.logArea,
+    label: T('Contact area A', 'Luas bidang sentuh A'), key: 'area', min: -2, max: 4, step: 0.02, value: params.logArea,
     format: (v) => fmtArea(Math.pow(10, v)),
     onInput: (v) => { params.logArea = v; },
   });
-  const firmS = slider({ label: 'Ground firmness (kPa per cm)', key: 'firmness', min: 0.5, max: 20, step: 0.5, value: params.firmness, format: (v) => v.toFixed(1), onInput: (v) => { params.firmness = v; } });
-  const personB = button({ label: 'Person: 600 N', onClick: () => forceS.apply(600) });
-  const thumbB = button({ label: 'Thumb push: 10 N', onClick: () => forceS.apply(10) });
+  const firmS = slider({ label: T('Ground firmness (kPa per cm)', 'Kekerasan tanah (kPa per cm)'), key: 'firmness', min: 0.5, max: 20, step: 0.5, value: params.firmness, format: (v) => v.toFixed(1), onInput: (v) => { params.firmness = v; } });
+  const personB = button({ label: T('Person: 600 N', 'Orang: 600 N'), onClick: () => forceS.apply(600) });
+  const thumbB = button({ label: T('Thumb push: 10 N', 'Tekanan ibu jari: 10 N'), onClick: () => forceS.apply(10) });
   ctrlPanel.append(objSel.el, forceS.el, areaS.el, firmS.el, row(personB, thumbB));
 
   const lab = labPanel({

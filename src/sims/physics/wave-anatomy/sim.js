@@ -46,7 +46,9 @@ export function mount(rootEl) {
     return { ax: state.ruler.ax * g.W, ay: state.ruler.ay * g.H, bx: state.ruler.bx * g.W, by: state.ruler.by * g.H, g };
   }
   const yRope = (xm, t) => params.A * Math.sin(kWave() * xm - omega() * t);        // cm
-  const xiSpring = (xm, t) => params.A * Math.sin(kWave() * xm - omega() * t);     // cm (visual scale applied later)
+  // Coil displacement ξ = A·cos(kx − ωt): a quarter-cycle ahead of the rope, so the compressions
+  // (where ∂ξ/∂x is most negative, kx − ωt = π/2) sit directly below the rope's crests.
+  const xiSpring = (xm, t) => params.A * Math.cos(kWave() * xm - omega() * t);     // cm (visual scale applied later)
 
   function step(dt) { if (!state.paused) state.t += dt; }
 
@@ -118,8 +120,9 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(x0, yL - coilH / 2); ctx.lineTo(x1, yL - coilH / 2); ctx.moveTo(x0, yL + coilH / 2); ctx.lineTo(x1, yL + coilH / 2); ctx.stroke();
     const spacing = (x1 - x0) / N_COILS;
     const dxm = ROPE_M / N_COILS;
-    // visual displacement scale: full amplitude ≈ 0.95 coil spacing, reduced for short λ so coils never cross
-    const visScale = (spacing * 0.95 / A_MAX_CM) * Math.min(1, 0.6 / Math.max(1e-6, k * dxm));
+    // visual displacement scale (px per cm): at most 2 coil spacings at full amplitude, and small enough
+    // that the strongest squeeze is 60 % of a spacing, so coils never cross and compressions stay easy to see
+    const visScale = Math.min(spacing * 2 / A_MAX_CM, 0.6 / (A_MAX_CM * Math.max(1e-6, k / ppm)));
     ctx.lineWidth = clamp(W * 0.003, 1.5, 3);
     let prevX = null;
     for (let i = 0; i <= N_COILS; i++) {
@@ -141,11 +144,8 @@ export function mount(rootEl) {
     // marker track
     ctx.strokeStyle = 'rgba(248,113,113,0.5)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(mx - params.A * visScale, yL + coilH / 2 + 6); ctx.lineTo(mx + params.A * visScale, yL + coilH / 2 + 6); ctx.stroke();
-    // compression where k x - w t = π (+2πn): coils bunch; rarefaction where = 0 (+2πn)
-    let xcomp = (Math.PI + phase0) / k;
-    xcomp -= Math.floor((xcomp - 0.4) / lam) * lam;
-    if (xcomp < 0.4) xcomp += lam;
-    const xcomp2 = xcomp + lam, xrar = xcomp + lam / 2;
+    // compression where k x - w t = π/2 (+2πn), i.e. under each crest; rarefaction half a wavelength on
+    const xcomp = xc, xcomp2 = xc2, xrar = xt;
     ctx.font = font(fs * 0.9, true); ctx.textAlign = 'center';
     if (xcomp <= ROPE_M) { ctx.fillStyle = '#c7d2fe'; ctx.fillText(T('compression', 'rapatan'), x0 + xcomp * ppm, yL - coilH / 2 - fs * 0.6); }
     if (xrar <= ROPE_M) { ctx.fillStyle = '#c7d2fe'; ctx.fillText(T('rarefaction', 'renggangan'), x0 + xrar * ppm, yL - coilH / 2 - fs * 0.6); }
@@ -154,17 +154,19 @@ export function mount(rootEl) {
     // ---------- Titles, readout ----------
     ctx.textAlign = 'left'; ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs, true);
     ctx.fillText(T('Transverse wave (rope)', 'Gelombang transversal (tali)'), x0, fs * 1.4);
-    ctx.fillText(T('Longitudinal wave (spring)', 'Gelombang longitudinal (pegas)'), x0, yL - coilH / 2 - fs * 2.2);
+    const title2 = T('Longitudinal wave (spring)', 'Gelombang longitudinal (pegas)');
+    ctx.fillText(title2, x0, yL - coilH / 2 - fs * 2.2);
+    const title2W = ctx.measureText(title2).width;
     ctx.font = font(fs * 0.8); ctx.fillStyle = '#94a3b8';
-    ctx.fillText(T('coil displacement exaggerated', 'pergeseran lilitan dibesar-besarkan'), x0 + fs * 15, yL - coilH / 2 - fs * 2.2);
+    if (W >= 640) ctx.fillText(T('coil displacement exaggerated', 'pergeseran lilitan dibesar-besarkan'), x0 + title2W + fs, yL - coilH / 2 - fs * 2.2);
     ctx.textAlign = 'right'; ctx.fillStyle = '#cbd5e1'; ctx.font = font(fs);
     ctx.fillText(`f = ${params.f.toFixed(2)} Hz   T = 1/f = ${period().toFixed(2)} s`, x1, fs * 1.4);
     ctx.fillText(`v = ${params.v.toFixed(2)} m/s   λ = v/f = ${lam.toFixed(2)} m`, x1, fs * 2.75);
     ctx.fillStyle = state.paused ? '#fbbf24' : '#64748b'; ctx.font = font(fs * 0.9, true);
     ctx.fillText(state.paused ? T('PAUSED', 'JEDA') : `t = ${t.toFixed(1)} s`, x1, yL - coilH / 2 - fs * 2.2);
     // direction of travel
-    ctx.fillStyle = '#f59e0b'; ctx.font = font(fs * 0.9, true); ctx.textAlign = 'center';
-    ctx.fillText(`v →  ${T('wave travels right', 'gelombang merambat ke kanan')}`, W / 2, H * 0.52 - fs * 0.2);
+    ctx.fillStyle = '#f59e0b'; ctx.font = font(fs * 0.9, true); ctx.textAlign = 'right';
+    ctx.fillText(`v →  ${T('wave travels right', 'gelombang merambat ke kanan')}`, x1, yL - coilH / 2 - fs * 3.5);
     // metre scale at the very bottom
     ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1; ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.8); ctx.textAlign = 'center';
     for (let m = 0; m <= ROPE_M; m++) {
@@ -204,17 +206,17 @@ export function mount(rootEl) {
       const fx = clamp(x / g.W, 0.01, 0.99), fy = clamp(y / g.H, 0.03, 0.97);
       if (id === 'rA') { state.ruler.ax = fx; state.ruler.ay = fy; } else { state.ruler.bx = fx; state.ruler.by = fy; }
     },
-    handles: () => { const r = rulerPx(); return [{ id: 'rA', x: r.ax, y: r.ay, label: 'Ruler end A' }, { id: 'rB', x: r.bx, y: r.by, label: 'Ruler end B' }]; },
+    handles: () => { const r = rulerPx(); return [{ id: 'rA', x: r.ax, y: r.ay, label: T('Ruler end A', 'Ujung penggaris A') }, { id: 'rB', x: r.bx, y: r.by, label: T('Ruler end B', 'Ujung penggaris B') }]; },
     cursor: 'default', hoverCursor: 'grab',
   });
 
   // Controls
-  const ampS = slider({ label: 'Amplitude A (cm)', key: 'amplitude', min: 2, max: A_MAX_CM, step: 1, value: params.A, format: (v) => v.toFixed(0), onInput: (v) => { params.A = v; } });
-  const freqS = slider({ label: 'Frequency f (Hz)', key: 'frequency', min: 0.25, max: 2, step: 0.05, value: params.f, format: (v) => v.toFixed(2), onInput: (v) => { params.f = v; } });
-  const speedS = slider({ label: 'Wave speed v (m/s)', key: 'speed', min: 0.5, max: 4, step: 0.1, value: params.v, format: (v) => v.toFixed(1), onInput: (v) => { params.v = v; } });
-  const pauseB = button({ label: 'Pause / Play', primary: true, onClick: () => { state.paused = !state.paused; } });
-  const stepB = button({ label: 'Step +T/8', onClick: () => { state.paused = true; state.t += period() / 8; } });
-  const rulerB = button({ label: 'Reset ruler', onClick: () => { state.ruler = null; } });
+  const ampS = slider({ label: T('Amplitude A (cm)', 'Amplitudo A (cm)'), key: 'amplitude', min: 2, max: A_MAX_CM, step: 1, value: params.A, format: (v) => v.toFixed(0), onInput: (v) => { params.A = v; } });
+  const freqS = slider({ label: T('Frequency f (Hz)', 'Frekuensi f (Hz)'), key: 'frequency', min: 0.25, max: 2, step: 0.05, value: params.f, format: (v) => v.toFixed(2), onInput: (v) => { params.f = v; } });
+  const speedS = slider({ label: T('Wave speed v (m/s)', 'Cepat rambat v (m/s)'), key: 'speed', min: 0.5, max: 4, step: 0.1, value: params.v, format: (v) => v.toFixed(1), onInput: (v) => { params.v = v; } });
+  const pauseB = button({ label: T('Pause / Play', 'Jeda / Putar'), primary: true, onClick: () => { state.paused = !state.paused; } });
+  const stepB = button({ label: T('Step +T/8', 'Maju +T/8'), onClick: () => { state.paused = true; state.t += period() / 8; } });
+  const rulerB = button({ label: T('Reset ruler', 'Atur ulang penggaris'), onClick: () => { state.ruler = null; } });
   ctrlPanel.append(ampS.el, freqS.el, speedS.el, row(pauseB, stepB, rulerB));
 
   const lab = labPanel({

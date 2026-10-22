@@ -42,14 +42,13 @@ const OBJECTS = {
   ],
 };
 
-// Count significant figures in a numeric string as a pupil would write it.
+// Count significant figures in a numeric string as a pupil would write it. Every digit of a
+// scale reading was read off the instrument, so a trailing zero (50 mm, 120 g) counts too;
+// only leading zeros (0.047) are place-holders.
 function sigFigs(str) {
   let s = String(str).trim().replace(/^[-+]/, '');
   if (!/^\d*\.?\d*$/.test(s) || s === '' || s === '.') return 0;
-  const hasPoint = s.includes('.');
-  let digits = s.replace('.', '');
-  digits = digits.replace(/^0+/, '');
-  if (!hasPoint) digits = digits.replace(/0+$/, '');
+  const digits = s.replace('.', '').replace(/^0+/, '');
   return digits.length;
 }
 
@@ -109,8 +108,9 @@ export function mount(rootEl) {
     const spec = INSTR[st.instr];
     st.entered = v; st.enteredStr = input.value.trim(); st.tries++;
     const diff = Math.abs(v - st.obj.trueVal);
-    // Accept anything within one uncertainty (plus a little slack for rounding).
-    const ok = diff <= spec.unc * 1.2 + 1e-9;
+    // Accept anything within one uncertainty (half the smallest division). newObject() never
+    // generates a value on a half-division, so exactly one scale reading is accepted.
+    const ok = diff <= spec.unc + 1e-9;
     st.result = ok ? 'ok' : 'off';
     st.flash = now;
     const sf = sigFigs(st.enteredStr);
@@ -173,8 +173,8 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox, ry + rh * 0.5); ctx.moveTo(ox + ow, oy); ctx.lineTo(ox + ow, ry + rh * 0.5); ctx.stroke();
     ctx.setLineDash([]);
     // zoom inset around the far end of the object
-    const zoom = 4, zw = W * 0.34, zh = H * 0.2, zx = W * 0.63, zy = H * 0.12;
-    drawZoomBox(ctx, zx, zy, zw, zh, T('zoom ×4 at the far end', 'perbesaran ×4 di ujung benda'));
+    const zoom = 4, zw = W * 0.34, zh = H * 0.2, zx = W * 0.63, zy = W < 640 ? H * 0.24 : H * 0.12;   // lower on narrow canvases, clear of the header
+    drawZoomBox(ctx, zx, zy, zw, zh, W < 640 ? T('zoom ×4', 'perbesaran ×4') : T('zoom ×4 at the far end', 'perbesaran ×4 di ujung benda'));
     ctx.save(); ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
     const cxmm = o.start + o.trueVal, zpx = pxmm * zoom;
     const cx = zx + zw / 2, baseY = zy + zh * 0.55;
@@ -185,8 +185,7 @@ export function mount(rootEl) {
       const x = cx + (mm - cxmm) * zpx;
       const len = mm % 10 === 0 ? zh * 0.3 : mm % 5 === 0 ? zh * 0.2 : zh * 0.12;
       ctx.fillRect(x - 1, baseY, 2, len);
-      if (mm % 10 === 0) ctx.fillText(String(mm / 10), x, baseY + zh * 0.42);
-      else if (mm % 5 === 0) ctx.fillText(String(mm % 10), x, baseY + zh * 0.42);
+      if (mm % 10 === 0) ctx.fillText(String(mm / 10), x, baseY + zh * 0.42);   // cm labels only, as on the ruler
     }
     ctx.fillStyle = o.color;
     ctx.fillRect(zx, zy, cx - zx, baseY - zy - 2);
@@ -195,7 +194,7 @@ export function mount(rootEl) {
     ctx.restore();
     // start-mark note
     ctx.fillStyle = '#cbd5e1'; ctx.font = `${Math.max(11, H * 0.03)}px ${SANS}`; ctx.textAlign = 'left';
-    ctx.fillText(T(`The ${o.en} starts at the ${o.start / 10} cm mark. Length = end − start.`, `${o.id[0].toUpperCase() + o.id.slice(1)} mulai di tanda ${o.start / 10} cm. Panjang = ujung − awal.`), W * 0.05, H * 0.32);
+    ctx.fillText(T(`The ${o.en} starts at the ${o.start / 10} cm mark. Length = end − start.`, `${o.id[0].toUpperCase() + o.id.slice(1)} mulai di tanda ${o.start / 10} cm. Panjang = ujung − awal.`), W * 0.05, H * 0.9);
   }
 
   function drawCaliper(ctx, W, H) {
@@ -212,9 +211,9 @@ export function mount(rootEl) {
       const x = x0 + mm * pxmm;
       const len = mm % 10 === 0 ? mh * 0.5 : mm % 5 === 0 ? mh * 0.35 : mh * 0.2;
       ctx.fillRect(x - 0.6, my, 1.2, len);
-      if (mm % 10 === 0) ctx.fillText(String(mm), x, my + mh * 0.85);
+      if (mm % 10 === 0) ctx.fillText(mm === spec.max ? 'mm' : String(mm), x, my + mh * 0.85);
     }
-    ctx.textAlign = 'left'; ctx.fillText('mm', x0 + W * 0.84 - 30, my + mh * 0.85);
+    ctx.textAlign = 'left';
     // fixed jaw
     ctx.fillStyle = '#94a3b8';
     ctx.fillRect(x0 - W * 0.04, jawTop, W * 0.04, my - jawTop);
@@ -236,12 +235,13 @@ export function mount(rootEl) {
       ctx.fillRect(x - 0.6, vy, 1.2, k % 5 === 0 ? vh * 0.45 : vh * 0.3);
       if (k % 5 === 0) ctx.fillText(String(k), x, vy + vh * 0.85);
     }
-    ctx.fillStyle = '#0b1220';
+    ctx.fillStyle = '#e2e8f0';
     ctx.font = `bold ${Math.max(11, H * 0.03)}px ${SANS}`;
     ctx.fillText(T(o.en, o.id), ox + ow / 2, jawTop - 8);
     // zoom inset ×3 of the vernier region
-    const zoom = 3, zw = W * 0.5, zh = H * 0.26, zx = W * 0.47, zy = H * 0.1;
-    drawZoomBox(ctx, zx, zy, zw, zh, T('zoom ×3: main scale above, vernier below', 'perbesaran ×3: skala utama di atas, nonius di bawah'));
+    const narrowZ = W < 640;
+    const zoom = 3, zw = W * 0.5, zh = narrowZ ? H * 0.15 : H * 0.26, zx = W * 0.47, zy = narrowZ ? H * 0.24 : H * 0.1;
+    drawZoomBox(ctx, zx, zy, zw, zh, narrowZ ? T('zoom ×3', 'perbesaran ×3') : T('zoom ×3: main scale above, vernier below', 'perbesaran ×3: skala utama di atas, nonius di bawah'));
     ctx.save(); ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
     const zpx = pxmm * zoom;
     const leftMM = r - 1.5;                       // mm shown at the left edge of the inset
@@ -273,12 +273,14 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(X(r), midY - zh * 0.3); ctx.lineTo(X(r), midY + zh * 0.3); ctx.stroke();
     ctx.restore();
     ctx.fillStyle = '#cbd5e1'; ctx.font = `${Math.max(11, H * 0.03)}px ${SANS}`; ctx.textAlign = 'left';
-    ctx.fillText(T('Blue: vernier zero (main scale reading, whole mm). Red: the vernier line that lines up (tenths).', 'Biru: nol nonius (skala utama, mm bulat). Merah: garis nonius yang berimpit (persepuluhan).'), W * 0.05, H * 0.95);
+    ctx.fillText(narrowZ
+      ? T('Blue: whole mm. Red: tenths.', 'Biru: mm bulat. Merah: persepuluhan.')
+      : T('Blue: vernier zero (main scale reading, whole mm). Red: the vernier line that lines up (tenths).', 'Biru: nol nonius (skala utama, mm bulat). Merah: garis nonius yang berimpit (persepuluhan).'), W * 0.05, H * 0.95);
   }
 
   function drawBalance(ctx, W, H) {
     const o = st.obj, spec = INSTR.balance;
-    const cx = W * 0.3, cy = H * 0.5, R = Math.min(W * 0.22, H * 0.36);
+    const cx = W * 0.3, cy = H * 0.56, R = Math.min(W * 0.22, H * 0.33);
     // dial
     ctx.fillStyle = '#f8fafc';
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
@@ -316,10 +318,12 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.roundRect(px - ow / 2, py - oh, ow, oh, 14); ctx.fill();
     ctx.strokeStyle = '#0b1220'; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = o.color === '#1f2937' ? '#e2e8f0' : '#0b1220';
-    ctx.font = `bold ${Math.max(11, H * 0.032)}px ${SANS}`; ctx.textAlign = 'center';
-    ctx.fillText(T(o.en, o.id), px, py - oh / 2 + 4);
+    const objName = T(o.en, o.id);
+    // shrink the name so it fits on the object at narrow widths
+    ctx.font = `bold ${Math.min(Math.max(11, H * 0.032), (ow * 0.92) / (objName.length * 0.58))}px ${SANS}`; ctx.textAlign = 'center';
+    ctx.fillText(objName, px, py - oh / 2 + 4);
     ctx.fillStyle = '#cbd5e1'; ctx.font = `${Math.max(11, H * 0.03)}px ${SANS}`; ctx.textAlign = 'left';
-    ctx.fillText(T('Dial: 0–200 g, smallest division 5 g, so the uncertainty is ± 2.5 g.', 'Jarum: 0–200 g, skala terkecil 5 g, jadi ketidakpastian ± 2,5 g.'), W * 0.05, H * 0.95);
+    if (W >= 640) ctx.fillText(T('Dial: 0–200 g, smallest division 5 g, so the uncertainty is ± 2.5 g.', 'Jarum: 0–200 g, skala terkecil 5 g, jadi ketidakpastian ± 2,5 g.'), W * 0.05, H * 0.95);
   }
 
   function drawZoomBox(ctx, x, y, w, h, label) {
@@ -347,12 +351,14 @@ export function mount(rootEl) {
     else if (st.instr === 'caliper') drawCaliper(ctx, W, H);
     else drawBalance(ctx, W, H);
 
-    // result stamp
+    // result stamp (placed in the free area of each instrument's layout)
+    const bw = W * 0.22, bh = H * 0.09;
+    const bx = st.instr === 'balance' ? W * 0.55 : W * 0.05;
+    const by = st.instr === 'ruler' ? H * 0.36 : st.instr === 'caliper' ? H * 0.24 : H * 0.2;
     if (st.result) {
       const age = now - st.flash;
       const ok = st.result === 'ok';
       ctx.fillStyle = ok ? 'rgba(34,197,94,0.92)' : 'rgba(239,68,68,0.92)';
-      const bw = W * 0.22, bh = H * 0.09, bx = W * 0.05, by = H * 0.4;
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 10); ctx.fill();
       ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.max(12, H * 0.04)}px ${MONO}`; ctx.textAlign = 'center';
       ctx.fillText(ok ? T('Correct', 'Benar') : T('Try again', 'Coba lagi'), bx + bw / 2, by + bh * 0.68);
@@ -360,7 +366,9 @@ export function mount(rootEl) {
     }
     if (st.showAnswer) {
       ctx.fillStyle = '#fbbf24'; ctx.font = `bold ${Math.max(12, H * 0.04)}px ${MONO}`; ctx.textAlign = 'left';
-      ctx.fillText(`${correctString()} ± ${spec.unc} ${spec.unit}`, W * 0.05, H * 0.56);
+      // caliper: below the vernier plate, because the zoom inset fills the space right of the stamp
+      if (st.instr === 'caliper') ctx.fillText(`${correctString()} ± ${spec.unc} ${spec.unit}`, W * 0.05, H * 0.87);
+      else ctx.fillText(`${correctString()} ± ${spec.unc} ${spec.unit}`, bx + bw + 12, by + bh * 0.68);
     }
     ctx.textAlign = 'left';
   }

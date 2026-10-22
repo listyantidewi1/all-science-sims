@@ -15,13 +15,13 @@ export default {
   tryThis: {
     en: [
       'Keep the eyeball at 24 mm and slide the object from 10 m to 25 cm with Auto-focus off. Where does the image move? Now turn Auto-focus on.',
-      'Press Myopia (26 mm) and look far away. Slide the glasses power until the blur reads 0.00 mm. Is the lens convex or concave?',
+      'Press Myopia (26 mm) and look far away. Slide the glasses power until the readout says the image is sharp. Is the lens convex or concave?',
       'Press Hyperopia (22 mm). Which sign of glasses fixes it? Then turn on Auto-focus: can the eye fix itself without glasses?',
       'Try 27 mm: how many dioptres do you need? Check that 1000/27 − 1000/24 gives nearly the same number.',
     ],
     id: [
       'Pertahankan bola mata 24 mm dan geser benda dari 10 m ke 25 cm dengan Fokus otomatis mati. Ke mana bayangan bergeser? Sekarang nyalakan Fokus otomatis.',
-      'Tekan Miopi (26 mm) dan lihat benda jauh. Geser kekuatan kacamata sampai kekaburan terbaca 0,00 mm. Lensanya cembung atau cekung?',
+      'Tekan Miopi (26 mm) dan lihat benda jauh. Geser kekuatan kacamata sampai tampilan menyatakan bayangan tajam. Lensanya cembung atau cekung?',
       'Tekan Hipermetropi (22 mm). Tanda kacamata mana yang memperbaikinya? Lalu nyalakan Fokus otomatis: bisakah mata memperbaiki sendiri tanpa kacamata?',
       'Coba 27 mm: berapa dioptri yang dibutuhkan? Periksa bahwa 1000/27 − 1000/24 memberi angka yang hampir sama.',
     ],
@@ -32,13 +32,13 @@ export default {
       en: [
         'The eye is a camera made of living tissue. Light from an object enters through the cornea, passes the pupil, and is bent by the lens so that it converges to a point on the retina at the back of the eyeball. Light-sensitive cells on the retina turn that image into nerve signals. A sharp image needs the converging point to land exactly on the retina: if the rays meet in front of it or would only meet behind it, each point of the object spreads into a small disc on the retina, and we see blur.',
         'In this simulation the whole eye is modelled as one thin converging lens in air with a relaxed power of about 41.7 dioptres, which is exactly right to focus a very distant object onto a retina 24 mm behind it (1000 ÷ 24 ≈ 41.7). A real eye has a power of roughly 60 D because the inside is filled with watery jelly, not air, but the logic is identical. The power of a lens in dioptres is 1 ÷ (focal length in metres), so a +2 D lens has a focal length of 0.5 m and a −4 D lens a focal length of −0.25 m. Powers of thin lenses placed close together simply add.',
-        'Myopia (short-sightedness, rabun jauh) usually happens because the eyeball has grown too long: a 26 mm eye focuses distant light 2 mm in front of the retina. A concave (negative) lens spreads the rays a little before they enter the eye, pushing the focus back onto the retina. Hyperopia (long-sightedness, rabun dekat) is the opposite: a 22 mm eye is too short, the rays would only meet behind the retina, and a convex (positive) lens is needed. In the model, every millimetre of extra length needs roughly −3 D of correction; real eyes need about −2.7 D per millimetre.',
+        'Myopia (short-sightedness, rabun jauh) usually happens because the eyeball has grown too long: a 26 mm eye focuses distant light 2 mm in front of the retina. A concave (negative) lens spreads the rays a little before they enter the eye, pushing the focus back onto the retina. Hyperopia (long-sightedness, rabun dekat) is the opposite: a 22 mm eye is too short, the rays would only meet behind the retina, and a convex (positive) lens is needed. In the model, every millimetre of extra length needs roughly −1.6 D of correction (25 mm needs about −1.6 D, 26 mm about −3.2 D); real eyes, whose optics are stronger, need about −2.7 D per millimetre.',
         'The eye can also change its own power: tiny muscles squeeze the lens so it bulges and gains up to about 8 D in a young person. This is called accommodation and it is how a normal eye focuses on a book 25 cm away (1000 ÷ 250 = 4 D extra). The Auto-focus toggle switches accommodation on. Notice that it can only add power, never remove it, which is why a young hyperope can often compensate but a myope cannot.',
       ],
       id: [
         'Mata adalah kamera yang terbuat dari jaringan hidup. Cahaya dari benda masuk melalui kornea, melewati pupil, dan dibiaskan oleh lensa sehingga berkumpul di satu titik pada retina di bagian belakang bola mata. Sel peka cahaya di retina mengubah bayangan itu menjadi sinyal saraf. Bayangan tajam terbentuk jika titik kumpul jatuh tepat di retina: jika sinar bertemu di depannya atau baru akan bertemu di belakangnya, setiap titik benda menyebar menjadi cakram kecil di retina, dan kita melihat kabur.',
         'Dalam simulasi ini seluruh mata dimodelkan sebagai satu lensa cembung tipis di udara dengan kekuatan rileks sekitar 41,7 dioptri, tepat untuk memfokuskan benda yang sangat jauh ke retina yang berjarak 24 mm di belakangnya (1000 ÷ 24 ≈ 41,7). Mata sungguhan berkekuatan sekitar 60 D karena bagian dalamnya berisi cairan kental, bukan udara, tetapi logikanya sama. Kekuatan lensa dalam dioptri adalah 1 ÷ (jarak fokus dalam meter), jadi lensa +2 D berjarak fokus 0,5 m dan lensa −4 D berjarak fokus −0,25 m. Kekuatan lensa tipis yang berdekatan tinggal dijumlahkan.',
-        'Miopi (rabun jauh) biasanya terjadi karena bola mata tumbuh terlalu panjang: mata 26 mm memfokuskan cahaya dari benda jauh 2 mm di depan retina. Lensa cekung (negatif) menyebarkan sinar sedikit sebelum masuk mata, sehingga titik fokus terdorong ke belakang tepat di retina. Hipermetropi (rabun dekat) adalah kebalikannya: mata 22 mm terlalu pendek, sinar baru akan bertemu di belakang retina, dan dibutuhkan lensa cembung (positif). Dalam model ini, setiap milimeter kelebihan panjang membutuhkan koreksi sekitar −3 D; mata sungguhan butuh sekitar −2,7 D per milimeter.',
+        'Miopi (rabun jauh) biasanya terjadi karena bola mata tumbuh terlalu panjang: mata 26 mm memfokuskan cahaya dari benda jauh 2 mm di depan retina. Lensa cekung (negatif) menyebarkan sinar sedikit sebelum masuk mata, sehingga titik fokus terdorong ke belakang tepat di retina. Hipermetropi (rabun dekat) adalah kebalikannya: mata 22 mm terlalu pendek, sinar baru akan bertemu di belakang retina, dan dibutuhkan lensa cembung (positif). Dalam model ini, setiap milimeter kelebihan panjang membutuhkan koreksi sekitar −1,6 D (mata 25 mm butuh sekitar −1,6 D, 26 mm sekitar −3,2 D); mata sungguhan, yang optiknya lebih kuat, butuh sekitar −2,7 D per milimeter.',
         'Mata juga dapat mengubah kekuatannya sendiri: otot-otot kecil menekan lensa sehingga menggembung dan bertambah sampai sekitar 8 D pada orang muda. Ini disebut akomodasi, dan dengan inilah mata normal memfokus buku berjarak 25 cm (1000 ÷ 250 = 4 D tambahan). Tombol Fokus otomatis menyalakan akomodasi. Perhatikan bahwa akomodasi hanya bisa menambah kekuatan, tidak mengurangi, sehingga penderita hipermetropi muda sering bisa mengimbangi sendiri sedangkan penderita miopi tidak.',
       ],
     },
@@ -86,7 +86,7 @@ export default {
         'Lens power in dioptres is 1 ÷ focal length in metres, and the powers of touching thin lenses add.',
         'Myopia: eyeball too long, focus in front of the retina, corrected with a concave (negative) lens.',
         'Hyperopia: eyeball too short, focus behind the retina, corrected with a convex (positive) lens.',
-        'In the model each extra millimetre of eyeball length needs about −3 D; real eyes need about −2.7 D per mm.',
+        'In the model each extra millimetre of eyeball length needs about −1.6 D; real eyes need about −2.7 D per mm.',
         'Accommodation lets the eye add up to about 8 D of power for near objects, but it can never subtract power.',
       ],
       id: [
@@ -94,7 +94,7 @@ export default {
         'Kekuatan lensa dalam dioptri adalah 1 ÷ jarak fokus dalam meter, dan kekuatan lensa tipis yang berimpit dijumlahkan.',
         'Miopi: bola mata terlalu panjang, fokus di depan retina, dikoreksi dengan lensa cekung (negatif).',
         'Hipermetropi: bola mata terlalu pendek, fokus di belakang retina, dikoreksi dengan lensa cembung (positif).',
-        'Dalam model ini setiap milimeter kelebihan panjang bola mata membutuhkan sekitar −3 D; mata sungguhan sekitar −2,7 D per mm.',
+        'Dalam model ini setiap milimeter kelebihan panjang bola mata membutuhkan sekitar −1,6 D; mata sungguhan sekitar −2,7 D per mm.',
         'Akomodasi memungkinkan mata menambah kekuatan sampai sekitar 8 D untuk benda dekat, tetapi tidak pernah bisa menguranginya.',
       ],
     },
