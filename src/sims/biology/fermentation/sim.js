@@ -258,10 +258,10 @@ export function mount(rootEl) {
     ctx.stroke();
     const fx = x0 + (params.temp / 60) * (x1 - x0), fy = yb - tempFactor(p, params.temp) * (yb - yt);
     ctx.fillStyle = tempColor(params.temp); ctx.beginPath(); ctx.arc(fx, fy, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#cbd5e1'; ctx.font = font(gw * 0.05); ctx.textAlign = 'left';
+    ctx.fillStyle = '#cbd5e1'; ctx.font = font(gw * 0.042); ctx.textAlign = 'left';
     ctx.fillText(T('rate vs temperature', 'laju vs suhu'), gx + 8, gy + gw * 0.06);
     ctx.textAlign = 'right';
-    ctx.fillText(T(`${Math.round(tempFactor(p, params.temp) * 100)}% of max · optimum ${p.topt} °C`, `${Math.round(tempFactor(p, params.temp) * 100)}% dari maks · optimum ${p.topt} °C`), gx + gw - 8, gy + gw * 0.06);
+    ctx.fillText(`${Math.round(tempFactor(p, params.temp) * 100)}% · optimum ${p.topt} °C`, gx + gw - 8, gy + gw * 0.06);
     ctx.font = font(gw * 0.042); ctx.textAlign = 'center';
     ctx.fillText('0', x0, yb + gw * 0.05); ctx.fillText('30', (x0 + x1) / 2, yb + gw * 0.05); ctx.fillText('60 °C', x1, yb + gw * 0.05);
   }
@@ -301,7 +301,8 @@ export function mount(rootEl) {
     ctx.fillText(vMin.toString(), x0 - 3, yb);
     ctx.textAlign = 'center';
     ctx.fillText(fmtTime(tMax), x1, yb + gw * 0.05);
-    ctx.fillStyle = '#fca5a5'; ctx.fillText(T('checkpoint', 'titik catat'), cxp, yt - 2);
+    ctx.fillStyle = '#fca5a5'; ctx.textAlign = cxp > x0 + (x1 - x0) * 0.8 ? 'right' : 'center';
+    ctx.fillText(T('checkpoint', 'titik catat'), cxp > x0 + (x1 - x0) * 0.8 ? cxp + 4 : cxp, yt - 2);
   }
 
   function draw() {

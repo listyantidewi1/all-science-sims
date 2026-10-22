@@ -150,7 +150,7 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.moveTo(nx - vesselW * 0.6, ny - H * 0.05); ctx.quadraticCurveTo(nx - vesselW * 0.05, ny, nx - vesselW * 0.6, ny + H * 0.05); ctx.closePath(); ctx.fill();
       ctx.beginPath(); ctx.moveTo(nx + vesselW * 0.6, ny - H * 0.05); ctx.quadraticCurveTo(nx + vesselW * 0.05, ny, nx + vesselW * 0.6, ny + H * 0.05); ctx.closePath(); ctx.fill();
       ctx.fillStyle = '#fbbf24'; ctx.font = font(fs * 0.85, true); ctx.textAlign = 'left';
-      ctx.fillText(T('narrowed artery', 'pembuluh menyempit'), nx + vesselW, ny + fs * 0.4);
+      ctx.fillText(T('narrowed artery', 'pembuluh menyempit'), nx + vesselW, ny + fs * 0.9);
     }
 
     // heart outline
@@ -194,8 +194,10 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(W * 0.60, H * 0.505); ctx.quadraticCurveTo(W * 0.63, H * 0.58, W * 0.60, H * 0.70); ctx.stroke();
     if (params.blocked) {
       ctx.fillStyle = '#facc15'; ctx.beginPath(); ctx.arc(W * 0.625, H * 0.575, Math.max(4, W * 0.009), 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fde68a'; ctx.font = font(fs * 0.8, true); ctx.textAlign = 'left';
-      ctx.fillText(T('blocked coronary: muscle below gets no O₂', 'koroner tersumbat: otot di bawahnya tak dapat O₂'), W * 0.66, H * 0.70);
+      // two lines in the free strip under the readout panel (a one-line label ran under the panel and the aorta)
+      ctx.fillStyle = '#fde68a'; ctx.font = font(fs * 0.75, true); ctx.textAlign = 'left';
+      ctx.fillText(T('blocked coronary:', 'koroner tersumbat:'), W * 0.805, H * 0.692);
+      ctx.fillText(T('muscle below gets no O₂', 'otot di bawahnya tak dapat O₂'), W * 0.805, H * 0.692 + fs * 0.9);
     }
 
     // particles
@@ -216,7 +218,7 @@ export function mount(rootEl) {
     ctx.fillText('vena cava', W * 0.23, H * 0.62);
     ctx.textAlign = 'left'; ctx.fillStyle = '#fca5a5';
     ctx.fillText(T('pulmonary vein', 'vena pulmonalis'), W * 0.69, H * 0.36);
-    ctx.fillText('aorta', W * 0.77, H * 0.66);
+    ctx.textAlign = 'right'; ctx.fillText('aorta', W * 0.75 - vesselW * 0.6 - 2, H * 0.66);   // left of the aorta so the readout panel does not cover it
     ctx.fillStyle = '#cbd5e1'; ctx.font = font(fs * 0.8, true); ctx.textAlign = 'center';
     ctx.fillText(T('pulmonary loop', 'peredaran kecil'), W * 0.5, H * 0.29);
     ctx.fillText(T('systemic loop', 'peredaran besar'), W * 0.5, H * 0.80);
@@ -228,7 +230,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0'; ctx.fillText(T('oxygen-poor', 'miskin oksigen'), W * 0.03 + fs * 0.8, H * 0.06 + fs * 1.85);
 
     // readouts panel (right)
-    const rx = W * 0.80, ry = H * 0.30, rw = W * 0.19, rh = H * 0.42;
+    const rx = W * 0.80, ry = H * 0.26, rw = W * 0.19, rh = H * 0.42;
     ctx.fillStyle = '#111a2e'; ctx.beginPath(); ctx.roundRect(rx, ry, rw, rh, 10); ctx.fill();
     ctx.textAlign = 'left'; ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.8);
     const lines = [

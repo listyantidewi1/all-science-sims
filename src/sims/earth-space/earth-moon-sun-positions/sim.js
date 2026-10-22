@@ -60,9 +60,10 @@ export function mount(rootEl) {
     if (dNew < 8 * D2R && nodeDeg < 17) eclipse = 'solar';
     else if (dFull < 8 * D2R && nodeDeg < 12) eclipse = 'lunar';
     const decl = -TILT * Math.cos(st.thetaE);               // latitude where the Sun is overhead
-    const rising = Math.sin(st.thetaE) > 0;                 // declination increasing
-    let seasonN;
-    if (decl > TILT / 2) seasonN = 'summer'; else if (decl < -TILT / 2) seasonN = 'winter'; else seasonN = rising ? 'spring' : 'autumn';
+    // Astronomical seasons, as in school textbooks: each northern season begins at a solstice or equinox
+    // (winter 21 Dec → 20 Mar, spring → 21 Jun, summer → 22 Sep, autumn → 21 Dec).
+    const quarter = Math.floor(norm(st.thetaE) / (Math.PI / 2)) % 4;
+    const seasonN = ['winter', 'spring', 'summer', 'autumn'][quarter];
     const flip = { summer: 'winter', winter: 'summer', spring: 'autumn', autumn: 'spring' };
     const season = st.hemi === 'north' ? seasonN : flip[seasonN];
     // Combined tidal bulge: moon weight 1, sun weight 0.46; quadrupole addition.
@@ -185,9 +186,9 @@ export function mount(rootEl) {
     const hemiTxt = st.hemi === 'north' ? T('northern hemisphere', 'belahan Bumi utara') : T('southern hemisphere', 'belahan Bumi selatan');
     line(`${T('Season', 'Musim')} (${hemiTxt})`, `${SEASON[d.season][getLocale() === 'id' ? 1 : 0]} · ${T('Sun overhead at', 'Matahari tepat di atas')} ${Math.abs(d.decl).toFixed(1)}° ${d.decl >= 0 ? T('N', 'LU') : T('S', 'LS')}`, '#4ade80');
     // Earth tilt side view
-    const tx = px + pw * 0.72, ty = H * 0.80, tr = H * 0.075;
+    const tx = px + pw * 0.72, ty = H * 0.80, tr = H * 0.07;
     ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.75); ctx.textAlign = 'center';
-    ctx.fillText(T('side view: axis tilt 23.4°', 'tampak samping: sumbu miring 23,4°'), tx, ty - tr - fs * 0.9);
+    ctx.fillText(T('side view: axis tilt 23.4°', 'tampak samping: sumbu miring 23,4°'), tx, ty - tr * 1.8 - fs * 0.4);   // clear of the 'N' at the axis tip
     ctx.fillStyle = 'rgba(251,191,36,0.6)'; ctx.font = font(fs * 0.7); ctx.textAlign = 'left';
     ctx.fillText(T('sunlight →', 'cahaya →'), px + 10, ty);
     const lean = -d.decl * D2R;                      // positive = North Pole leans left (towards the Sun)

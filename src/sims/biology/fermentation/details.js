@@ -150,12 +150,12 @@ export default {
     questions: {
       en: [
         { q: 'At 35 °C the balloon reaches 400 mL after 2 minutes. Estimate the volume you would expect at 25 °C and at 55 °C, and explain.', a: 'At 25 °C roughly half or less (about 150 to 200 mL): the rate roughly halves for every 10 °C drop. At 55 °C only a few millilitres, because the yeast enzymes are denatured; the bell curve falls steeply above 45 °C.' },
-        { q: 'A flask with 2 g of sugar stops bubbling after about 8 minutes while one with 20 g keeps going. Why, and what is the largest volume of CO₂ 2 g of sugar can ever give?', a: 'The sugar runs out; fermentation needs food. 2 g of glucose gives at most about 0.98 g of CO₂, roughly 540 mL of gas, however long you wait.' },
+        { q: 'A flask with 2 g of sugar stops bubbling after about 15 minutes while one with 20 g keeps going. Why, and what is the largest volume of CO₂ 2 g of sugar can ever give?', a: 'The sugar runs out; fermentation needs food. 2 g of glucose gives at most about 0.98 g of CO₂, roughly 540 mL of gas, however long you wait.' },
         { q: 'Yoghurt bacteria prefer about 42 °C but tempe mould prefers about 30 °C. What would happen if you incubated tempe at 42 °C?', a: 'The Rhizopus mould grows poorly above about 37 °C and is damaged near 42 °C, so the mycelium would not cover the beans and the tempe would fail or spoil. Each microbe has its own optimum.' },
       ],
       id: [
         { q: 'Pada 35 °C balon mencapai 400 mL setelah 2 menit. Perkirakan volume yang kamu harapkan pada 25 °C dan 55 °C, dan jelaskan.', a: 'Pada 25 °C kira-kira setengah atau kurang (sekitar 150 sampai 200 mL): laju kira-kira menjadi setengah setiap turun 10 °C. Pada 55 °C hanya beberapa mililiter, karena enzim ragi terdenaturasi; kurva lonceng turun tajam di atas 45 °C.' },
-        { q: 'Labu dengan 2 g gula berhenti bergelembung setelah sekitar 8 menit sedangkan labu dengan 20 g terus berjalan. Mengapa, dan berapa volume CO₂ terbesar yang bisa dihasilkan 2 g gula?', a: 'Gulanya habis; fermentasi butuh makanan. 2 g glukosa memberi paling banyak sekitar 0,98 g CO₂, kira-kira 540 mL gas, berapa lama pun kamu menunggu.' },
+        { q: 'Labu dengan 2 g gula berhenti bergelembung setelah sekitar 15 menit sedangkan labu dengan 20 g terus berjalan. Mengapa, dan berapa volume CO₂ terbesar yang bisa dihasilkan 2 g gula?', a: 'Gulanya habis; fermentasi butuh makanan. 2 g glukosa memberi paling banyak sekitar 0,98 g CO₂, kira-kira 540 mL gas, berapa lama pun kamu menunggu.' },
         { q: 'Bakteri yoghurt menyukai sekitar 42 °C tetapi jamur tempe menyukai sekitar 30 °C. Apa yang terjadi jika tempe diinkubasi pada 42 °C?', a: 'Jamur Rhizopus tumbuh buruk di atas sekitar 37 °C dan rusak di dekat 42 °C, sehingga miselium tidak menutupi kedelai dan tempe gagal atau busuk. Setiap mikroba punya optimum sendiri.' },
       ],
     },

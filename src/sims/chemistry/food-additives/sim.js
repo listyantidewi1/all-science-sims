@@ -60,6 +60,7 @@ const PRODUCTS = [
 ];
 const CUBE_G = 4;
 const DAILY_LIMIT_G = 25;
+const fmtCubes = (c) => String(Number(c.toFixed(2)));   // 8.75, 7.5, 0.25, 5 (no false rounding of quarter cubes)
 const FN_COLOR = { sweetener: '#f472b6', colouring: '#fbbf24', preservative: '#38bdf8', flavour: '#fb923c', other: '#a3a3a3' };
 
 export function mount(rootEl) {
@@ -191,8 +192,10 @@ export function mount(rootEl) {
     const ly = yBase - limitCubes * cubeH;
     ctx.strokeStyle = '#4ade80'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]);
     ctx.beginPath(); ctx.moveTo(x - w * 0.5, ly); ctx.lineTo(x + w * 0.5, ly); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = '#4ade80'; ctx.font = font(w * 0.12); ctx.textAlign = 'left';
-    ctx.fillText(T(`child's daily limit ≈ ${DAILY_LIMIT_G} g`, `batas harian anak ≈ ${DAILY_LIMIT_G} g`), x - w * 0.5, ly - 4);
+    // limit label: amount to the right of the stack, name to the left (left part dropped on narrow canvases)
+    ctx.fillStyle = '#4ade80'; ctx.font = font(w * 0.10); ctx.textAlign = 'left';
+    ctx.fillText(`≈ ${DAILY_LIMIT_G} g`, x + cubeW / 2 + 4, ly - 3);
+    if (cv.width >= 640) { ctx.textAlign = 'right'; ctx.font = font(w * 0.085); ctx.fillText(T("child's daily limit", 'batas harian anak'), x - cubeW / 2 - 4, ly - 3); }
     for (let i = 0; i < Math.ceil(shown); i++) {
       const hFrac = clamp(shown - i, 0, 1) * (i === nFull ? frac : 1);
       if (hFrac <= 0) continue;
@@ -203,7 +206,7 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(w * 0.14, true); ctx.textAlign = 'center';
     ctx.fillText(`${p.sugar} g`, x, yBase + w * 0.2);
     ctx.fillStyle = '#94a3b8'; ctx.font = font(w * 0.11);
-    ctx.fillText(T(`= ${cubes.toFixed(cubes % 1 ? 1 : 0)} cubes of ${CUBE_G} g`, `= ${cubes.toFixed(cubes % 1 ? 1 : 0)} batu @ ${CUBE_G} g`), x, yBase + w * 0.34);
+    ctx.fillText(T(`= ${fmtCubes(cubes)} cubes of ${CUBE_G} g`, `= ${fmtCubes(cubes)} batu @ ${CUBE_G} g`), x, yBase + w * 0.34);
     if (p.sugar > DAILY_LIMIT_G) {
       ctx.fillStyle = '#f87171';
       ctx.fillText(T(`${(p.sugar / DAILY_LIMIT_G).toFixed(1)}× the daily limit`, `${(p.sugar / DAILY_LIMIT_G).toFixed(1)}× batas harian`), x, yBase + w * 0.47);
@@ -213,8 +216,8 @@ export function mount(rootEl) {
     }
   }
 
-  function drawCard(ctx, x, y, w, h) {
-    ctx.fillStyle = '#111c33'; ctx.beginPath(); ctx.roundRect(x, y, w, h, 10); ctx.fill();
+  // Draws the card contents and returns the y just below the last line (so the caller can shrink to fit).
+  function cardBody(ctx, x, y, w, h) {
     const pad = w * 0.04, lh = Math.max(13, w * 0.036);
     const fs = Math.max(10, w * 0.03);
     ctx.textAlign = 'left';
@@ -234,9 +237,9 @@ export function mount(rootEl) {
       yy = wrapText(ctx, T('Strongly addictive within weeks. Raises blood pressure and heart rate, harms the developing brain and lungs; tobacco smoke causes cancer. Not a food additive: it is never allowed in food.', 'Sangat adiktif dalam hitungan minggu. Menaikkan tekanan darah dan denyut jantung, merusak otak dan paru-paru yang berkembang; asap tembakau menyebabkan kanker. Bukan aditif makanan: tidak pernah diizinkan dalam makanan.'), x + pad, yy, w - 2 * pad, lh);
       if (state.product.caffeine > 0) {
         ctx.fillStyle = '#fcd34d';
-        wrapText(ctx, T(`This product: about ${state.product.caffeine} mg caffeine. A 40 kg student reaches 120 mg after ${(120 / state.product.caffeine).toFixed(1)} servings.`, `Produk ini: sekitar ${state.product.caffeine} mg kafein. Siswa 40 kg mencapai 120 mg setelah ${(120 / state.product.caffeine).toFixed(1)} porsi.`), x + pad, yy + lh * 0.3, w - 2 * pad, lh);
+        yy = wrapText(ctx, T(`This product: about ${state.product.caffeine} mg caffeine. A 40 kg student reaches 120 mg after ${(120 / state.product.caffeine).toFixed(1)} servings.`, `Produk ini: sekitar ${state.product.caffeine} mg kafein. Siswa 40 kg mencapai 120 mg setelah ${(120 / state.product.caffeine).toFixed(1)} porsi.`), x + pad, yy + lh * 0.3, w - 2 * pad, lh);
       }
-      return;
+      return yy;
     }
     const k = state.selected;
     if (!k) {
@@ -247,16 +250,14 @@ export function mount(rootEl) {
       yy = wrapText(ctx, T('Tap an ingredient below the picture, then decide: basic ingredient, natural additive or synthetic additive. The card will reveal what it does and its safe daily intake (ADI).', 'Ketuk sebuah bahan di bawah gambar, lalu putuskan: bahan dasar, aditif alami atau aditif sintetis. Kartu akan mengungkap fungsinya dan asupan harian yang aman (ADI).'), x + pad, yy, w - 2 * pad, lh);
       const c = counts();
       ctx.fillStyle = '#94a3b8';
-      wrapText(ctx, T(`This product lists ${state.product.items.length} ingredients, ${c.total} of them additives.`, `Produk ini mencantumkan ${state.product.items.length} bahan, ${c.total} di antaranya aditif.`), x + pad, yy + lh * 0.4, w - 2 * pad, lh);
-      return;
+      return wrapText(ctx, T(`This product lists ${state.product.items.length} ingredients, ${c.total} of them additives.`, `Produk ini mencantumkan ${state.product.items.length} bahan, ${c.total} di antaranya aditif.`), x + pad, yy + lh * 0.4, w - 2 * pad, lh);
     }
     const a = A[k];
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 1.2, true);
     let yy = wrapText(ctx, a.name[lang()], x + pad, y + pad + fs, w - 2 * pad, lh * 1.2);
     if (!state.revealed[k]) {
       ctx.fillStyle = '#cbd5e1'; ctx.font = font(fs);
-      wrapText(ctx, T('Is this a basic ingredient, a natural additive or a synthetic additive? Choose below.', 'Apakah ini bahan dasar, aditif alami atau aditif sintetis? Pilih di bawah.'), x + pad, yy + lh * 0.3, w - 2 * pad, lh);
-      return;
+      return wrapText(ctx, T('Is this a basic ingredient, a natural additive or a synthetic additive? Choose below.', 'Apakah ini bahan dasar, aditif alami atau aditif sintetis? Pilih di bawah.'), x + pad, yy + lh * 0.3, w - 2 * pad, lh);
     }
     const ok = state.answers[k] === 'correct';
     ctx.fillStyle = ok ? '#4ade80' : '#f87171'; ctx.font = font(fs, true);
@@ -279,8 +280,25 @@ export function mount(rootEl) {
     yy = wrapText(ctx, (a.kind === 'basic' ? '' : T('Safe intake: ', 'Asupan aman: ')) + a.note[lang()], x + pad, yy + lh * 0.3, w - 2 * pad, lh);
     if (a.adi != null && a.kind !== 'basic') {
       ctx.fillStyle = '#94a3b8';
-      wrapText(ctx, T(`For a 40 kg student: ${a.adi} × 40 = ${(a.adi * 40).toLocaleString('en')} mg per day.`, `Untuk siswa 40 kg: ${a.adi} × 40 = ${(a.adi * 40).toLocaleString('id')} mg per hari.`), x + pad, yy + lh * 0.2, w - 2 * pad, lh);
+      yy = wrapText(ctx, T(`For a 40 kg student: ${a.adi} × 40 = ${(a.adi * 40).toLocaleString('en')} mg per day.`, `Untuk siswa 40 kg: ${a.adi} × 40 = ${(a.adi * 40).toLocaleString('id')} mg per hari.`), x + pad, yy + lh * 0.2, w - 2 * pad, lh);
     }
+    return yy;
+  }
+
+  // Card background + contents, clipped to the card. On small canvases the text can be taller than the
+  // card, so it is measured once and redrawn scaled down (uniformly, so wrapping is unchanged) to fit.
+  function drawCard(ctx, x, y, w, h) {
+    const paint = (k) => {
+      ctx.save();
+      ctx.beginPath(); ctx.roundRect(x, y, w, h, 10); ctx.clip();
+      ctx.fillStyle = '#111c33'; ctx.fillRect(x, y, w, h);
+      ctx.translate(x, y); ctx.scale(k, k); ctx.translate(-x, -y);
+      const end = cardBody(ctx, x, y, w, h);
+      ctx.restore();
+      return end;
+    };
+    const need = paint(1) - y + w * 0.02;
+    if (need > h) paint(Math.max(0.5, h / need));
   }
 
   function draw() {
@@ -295,7 +313,7 @@ export function mount(rootEl) {
     // package
     drawPackage(ctx, w * 0.13, h * 0.42, w * 0.18, h * 0.5);
     // sugar cubes
-    drawSugar(ctx, w * 0.34, h * 0.66, w * 0.16, h * 0.5);
+    drawSugar(ctx, w * 0.345, h * 0.66, w * 0.16, h * 0.5);
     // card
     drawCard(ctx, w * 0.46, h * 0.13, w * 0.51, h * 0.66);
     // summary strip
@@ -304,11 +322,13 @@ export function mount(rootEl) {
     ctx.fillStyle = '#111c33'; ctx.beginPath(); ctx.roundRect(w * 0.03, sy, w * 0.94, h * 0.11, 8); ctx.fill();
     ctx.font = font(fs); ctx.textAlign = 'left';
     const answered = Object.keys(state.revealed).length, correct = Object.values(state.answers).filter((v) => v === 'correct').length;
-    ctx.fillStyle = '#4ade80'; ctx.fillText(`${T('natural additives', 'aditif alami')}: ${c.nat}`, w * 0.05, sy + h * 0.07);
-    ctx.fillStyle = '#c084fc'; ctx.fillText(`${T('synthetic', 'sintetis')}: ${c.syn}`, w * 0.30, sy + h * 0.07);
-    ctx.fillStyle = '#fbbf24'; ctx.fillText(`${T('caffeine', 'kafein')}: ${state.product.caffeine} mg`, w * 0.48, sy + h * 0.07);
+    // on narrow canvases the four readouts do not fit on one line: use two rows
+    const narrow = w < 640, y1 = narrow ? sy + h * 0.045 : sy + h * 0.07, y2 = narrow ? sy + h * 0.095 : sy + h * 0.07;
+    ctx.fillStyle = '#4ade80'; ctx.fillText(`${T('natural additives', 'aditif alami')}: ${c.nat}`, w * 0.05, y1);
+    ctx.fillStyle = '#c084fc'; ctx.fillText(`${T('synthetic', 'sintetis')}: ${c.syn}`, narrow ? w * 0.55 : w * 0.30, y1);
+    ctx.fillStyle = '#fbbf24'; ctx.fillText(`${T('caffeine', 'kafein')}: ${state.product.caffeine} mg`, narrow ? w * 0.05 : w * 0.48, y2);
     ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'right';
-    ctx.fillText(`${T('classified', 'terklasifikasi')}: ${correct}/${answered} ✓ ${T('of', 'dari')} ${state.product.items.length}`, w * 0.95, sy + h * 0.07);
+    ctx.fillText(`${T('classified', 'terklasifikasi')}: ${correct}/${answered} ✓ ${T('of', 'dari')} ${state.product.items.length}`, w * 0.95, y2);
     ctx.textAlign = 'left';
   }
 
@@ -342,7 +362,7 @@ export function mount(rootEl) {
     columns: [
       { key: 'product', label: 'Product' },
       { key: 'sugar', label: 'Sugar (g)' },
-      { key: 'cubes', label: 'Sugar cubes (4 g)', format: (v) => v.toFixed(1) },
+      { key: 'cubes', label: 'Sugar cubes (4 g)', format: fmtCubes },
       { key: 'additives', label: 'Additives' },
       { key: 'natural', label: 'Natural' },
       { key: 'synthetic', label: 'Synthetic' },

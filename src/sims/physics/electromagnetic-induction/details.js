@@ -32,20 +32,20 @@ export default {
       en: [
         'In 1831 Michael Faraday discovered that moving a magnet near a coil of wire makes a current flow, with no battery anywhere. The key quantity is the magnetic flux Φ, which you can picture as the number of field lines passing through the coil: Φ = B·A for a field B perpendicular to a loop of area A, measured in webers (1 Wb = 1 T·m²). The flux is large when the magnet sits inside the coil and small when it is far away. The flux graph in the simulation is this bell-shaped curve traced out as the magnet moves.',
         'Faraday\'s law says the induced voltage, called the electromotive force or EMF, equals the rate of change of flux times the number of turns: EMF = −N·ΔΦ/Δt. A coil with 200 turns gives twice the EMF of a 100-turn coil for the same motion, because each turn is a little generator in series. Moving faster changes the flux in less time, so the EMF pulse becomes taller but narrower. A stronger magnet means more flux to change. When the magnet is stationary the flux is constant, ΔΦ = 0, and the EMF is zero no matter how strong the magnet is.',
-        'The minus sign is Lenz\'s law: the induced current flows in the direction that opposes the change producing it. When the north pole approaches, the coil\'s own field makes its near face a north pole to push the magnet away; when the magnet leaves, the near face becomes a south pole to pull it back. That is why the needle kicks one way on entry and the opposite way on exit, and why the EMF graph has a positive lobe followed by a negative lobe (or the reverse when the magnet is flipped). Lenz\'s law is really energy conservation: the work you do against this opposing force is what becomes electrical energy.',
+        'The minus sign is Lenz\'s law: the induced current flows in the direction that opposes the change producing it. When the north pole approaches, the coil\'s own field makes its near face a north pole to push the magnet away; when the magnet leaves, the near face becomes a south pole to pull it back. That is why the needle kicks one way on entry and the opposite way on exit, and why the EMF graph has a negative lobe followed by a positive lobe (or the reverse when the magnet is flipped). Lenz\'s law is really energy conservation: the work you do against this opposing force is what becomes electrical energy.',
         'In the model the coil has an area of about 20 cm² (radius 2.5 cm) and the flux through one turn falls off with distance x from the coil centre as Φ₁ = B·A / (1 + (x/6 cm)²)^1.5, which is the shape of a bar magnet\'s field along its axis. The simulation calculates the EMF directly from this rule and the magnet\'s speed. For a 100-turn coil, a 0.2 T magnet and 0.5 m/s the peak EMF is about 0.3 V; a real school galvanometer would show this clearly.',
       ],
       id: [
         'Pada tahun 1831 Michael Faraday menemukan bahwa menggerakkan magnet di dekat kumparan kawat membuat arus mengalir, tanpa baterai sama sekali. Besaran kuncinya adalah fluks magnet Φ, yang dapat dibayangkan sebagai jumlah garis medan yang menembus kumparan: Φ = B·A untuk medan B yang tegak lurus pada lilitan berluas A, dalam satuan weber (1 Wb = 1 T·m²). Fluksnya besar ketika magnet berada di dalam kumparan dan kecil ketika jauh. Grafik fluks dalam simulasi adalah kurva berbentuk lonceng yang tergambar saat magnet bergerak.',
         'Hukum Faraday menyatakan tegangan induksi, disebut gaya gerak listrik atau GGL, sama dengan laju perubahan fluks dikalikan jumlah lilitan: GGL = −N·ΔΦ/Δt. Kumparan 200 lilitan memberi GGL dua kali kumparan 100 lilitan untuk gerakan yang sama, karena setiap lilitan adalah generator kecil yang tersusun seri. Bergerak lebih cepat mengubah fluks dalam waktu lebih singkat, sehingga pulsa GGL menjadi lebih tinggi tetapi lebih sempit. Magnet yang lebih kuat berarti lebih banyak fluks yang berubah. Ketika magnet diam, fluksnya tetap, ΔΦ = 0, dan GGL nol sekuat apa pun magnetnya.',
-        'Tanda minus adalah hukum Lenz: arus induksi mengalir dalam arah yang melawan perubahan penyebabnya. Ketika kutub utara mendekat, medan kumparan sendiri membuat sisi dekatnya menjadi kutub utara untuk mendorong magnet menjauh; ketika magnet pergi, sisi dekat menjadi kutub selatan untuk menariknya kembali. Itulah sebabnya jarum menyimpang ke satu arah saat masuk dan ke arah berlawanan saat keluar, dan grafik GGL memiliki puncak positif lalu puncak negatif (atau sebaliknya jika magnet dibalik). Hukum Lenz sebenarnya adalah kekekalan energi: usaha yang kamu lakukan melawan gaya penolak inilah yang menjadi energi listrik.',
+        'Tanda minus adalah hukum Lenz: arus induksi mengalir dalam arah yang melawan perubahan penyebabnya. Ketika kutub utara mendekat, medan kumparan sendiri membuat sisi dekatnya menjadi kutub utara untuk mendorong magnet menjauh; ketika magnet pergi, sisi dekat menjadi kutub selatan untuk menariknya kembali. Itulah sebabnya jarum menyimpang ke satu arah saat masuk dan ke arah berlawanan saat keluar, dan grafik GGL memiliki puncak negatif lalu puncak positif (atau sebaliknya jika magnet dibalik). Hukum Lenz sebenarnya adalah kekekalan energi: usaha yang kamu lakukan melawan gaya penolak inilah yang menjadi energi listrik.',
         'Dalam model ini kumparan berluas sekitar 20 cm² (jari-jari 2,5 cm) dan fluks yang menembus satu lilitan berkurang terhadap jarak x dari pusat kumparan sebagai Φ₁ = B·A / (1 + (x/6 cm)²)^1,5, yaitu bentuk medan magnet batang di sepanjang sumbunya. Simulasi menghitung GGL langsung dari aturan ini dan kecepatan magnet. Untuk kumparan 100 lilitan, magnet 0,2 T dan kecepatan 0,5 m/s, GGL puncaknya sekitar 0,3 V; galvanometer sekolah sungguhan akan menunjukkannya dengan jelas.',
       ],
     },
     figure: {
       caption: {
-        en: 'Top: flux through the coil as the magnet passes, a bell curve peaking when the magnet is centred. Bottom: the induced EMF is minus the slope of the flux curve, so it is positive while flux rises, zero at the peak, and negative while flux falls. Faster motion gives a taller, narrower pulse.',
-        id: 'Atas: fluks yang menembus kumparan saat magnet lewat, kurva lonceng yang memuncak ketika magnet di tengah. Bawah: GGL induksi adalah negatif dari kemiringan kurva fluks, sehingga positif saat fluks naik, nol di puncak, dan negatif saat fluks turun. Gerakan lebih cepat memberi pulsa lebih tinggi dan lebih sempit.',
+        en: 'Top: flux through the coil as the magnet passes, a bell curve peaking when the magnet is centred. Bottom: the induced EMF is minus the slope of the flux curve, so it is negative while flux rises (magnet entering), zero at the peak, and positive while flux falls (magnet leaving). Faster motion gives a taller, narrower pulse.',
+        id: 'Atas: fluks yang menembus kumparan saat magnet lewat, kurva lonceng yang memuncak ketika magnet di tengah. Bawah: GGL induksi adalah negatif dari kemiringan kurva fluks, sehingga negatif saat fluks naik (magnet masuk), nol di puncak, dan positif saat fluks turun (magnet keluar). Gerakan lebih cepat memberi pulsa lebih tinggi dan lebih sempit.',
       },
       svg: (lang) => {
         const L = (en, id) => (lang === 'id' ? id : en);
@@ -58,7 +58,7 @@ export default {
           const e = 3 * u * Math.pow(1 + u * u, -2.5);
           const x = 40 + (i / 60) * 280;
           pts.push(`${x.toFixed(1)},${(100 - g * 70).toFixed(1)}`);
-          emf.push(`${x.toFixed(1)},${(185 - e * 60 / 0.86).toFixed(1)}`);
+          emf.push(`${x.toFixed(1)},${(182 - e * 50 / 0.86).toFixed(1)}`);
         }
         return `
 <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${L('Flux and induced EMF versus magnet position', 'Fluks dan GGL induksi terhadap posisi magnet')}">
@@ -68,11 +68,11 @@ export default {
   <text x="44" y="38" fill="#38bdf8">Φ ${L('(flux)', '(fluks)')}</text>
   <text x="180" y="112" text-anchor="middle">${L('magnet centred', 'magnet di tengah')}</text>
   <text x="300" y="112" text-anchor="end">x →</text>
-  <path d="M40 185 L320 185 M40 125 L40 240" class="ax"/>
+  <path d="M40 182 L320 182 M40 125 L40 236" class="ax"/>
   <polyline points="${emf.join(' ')}" fill="none" stroke="#fbbf24" stroke-width="2"/>
   <text x="44" y="135" fill="#fbbf24">${L('EMF = −N·ΔΦ/Δt', 'GGL = −N·ΔΦ/Δt')}</text>
-  <text x="120" y="150" fill="#fbbf24">${L('entering: +', 'masuk: +')}</text>
-  <text x="200" y="232" fill="#fbbf24">${L('leaving: −', 'keluar: −')}</text>
+  <text x="60" y="226" fill="#fbbf24">${L('entering: −', 'masuk: −')}</text>
+  <text x="236" y="150" fill="#fbbf24">${L('leaving: +', 'keluar: +')}</text>
   <line x1="180" y1="30" x2="180" y2="240" stroke="currentColor" stroke-dasharray="3 3" opacity=".4"/>
   <rect x="150" y="60" width="60" height="14" rx="3" fill="#ef4444" opacity=".8"/>
   <rect x="180" y="60" width="30" height="14" rx="3" fill="#3b82f6" opacity=".8"/>

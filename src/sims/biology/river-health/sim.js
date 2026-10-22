@@ -227,8 +227,9 @@ export function mount(rootEl) {
     });
 
     // ---- chart ----
-    const gx0 = W * 0.07, gx1 = W * 0.97, gy0 = H * 0.68, gy1 = H * 0.95;
-    ctx.fillStyle = '#0f172a'; ctx.fillRect(W * 0.03, gy0 - H * 0.025, W * 0.94, gy1 - gy0 + H * 0.05);
+    // header band above the plot holds two rows: legend (top) and the three input markers' names (bottom)
+    const gx0 = W * 0.07, gx1 = W * 0.97, gy0 = H * 0.70, gy1 = H * 0.95;
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(W * 0.03, gy0 - H * 0.045, W * 0.94, gy1 - gy0 + H * 0.07);
     ctx.strokeStyle = '#334155'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(gx0, gy0); ctx.lineTo(gx0, gy1); ctx.lineTo(gx1, gy1); ctx.stroke();
     const yOf = (v, max) => gy1 - clamp(v / max, 0, 1) * (gy1 - gy0);
@@ -250,13 +251,14 @@ export function mount(rootEl) {
     [[VILLAGE_KM, '#a16207', T('sewage', 'limbah')], [(FARM_KM[0] + FARM_KM[1]) / 2, '#4ade80', T('fertiliser', 'pupuk')], [FACTORY_KM, '#a855f7', T('factory', 'pabrik')]].forEach(([km, c, l]) => {
       const x = gx0 + (km / LEN) * (gx1 - gx0);
       ctx.strokeStyle = c; ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(x, gy0); ctx.lineTo(x, gy1); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = c; ctx.fillText(l, x, gy0 - 4);
+      ctx.fillStyle = c; ctx.fillText(l, x, gy0 - 3);
     });
     // legend + readouts
     ctx.textAlign = 'left'; ctx.font = font(fs * 0.85, true);
     const lg = [['#38bdf8', T('oxygen (mg/L)', 'oksigen (mg/L)')], ['#4ade80', T('algae (0-10)', 'alga (0-10)')], ['#fb923c', T('fish (0-1)', 'ikan (0-1)')]];
     let lx = gx0 + W * 0.30;
-    for (const [c, l] of lg) { ctx.fillStyle = c; ctx.fillRect(lx, gy0 - fs * 1.1, fs * 0.9, fs * 0.5); ctx.fillStyle = '#cbd5e1'; ctx.fillText(l, lx + fs * 1.1, gy0 - fs * 0.6); lx += ctx.measureText(l).width + fs * 2.4; }
+    const legY = gy0 - fs * 1.0;   // baseline of the legend row, above the marker names
+    for (const [c, l] of lg) { ctx.fillStyle = c; ctx.fillRect(lx, legY - fs * 0.5, fs * 0.9, fs * 0.5); ctx.fillStyle = '#cbd5e1'; ctx.fillText(l, lx + fs * 1.1, legY); lx += ctx.measureText(l).width + fs * 2.4; }
     ctx.textAlign = 'right'; ctx.fillStyle = '#f8fafc'; ctx.font = font(fs, true);
     ctx.fillText(`${T('Lowest oxygen', 'Oksigen terendah')}: ${out.minDO.toFixed(1)} mg/L ${T('at', 'di')} ${out.minKm.toFixed(1)} km`, W * 0.97, H * 0.05);
     ctx.fillText(`${T('Fish', 'Ikan')}: ${out.fishAll} / ${FISH.length}   ${T('downstream (7-10 km)', 'hilir (7-10 km)')}: ${out.fishDown}`, W * 0.97, H * 0.05 + fs * 1.4);

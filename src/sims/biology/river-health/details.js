@@ -115,13 +115,13 @@ export default {
     },
     misconceptions: {
       en: [
-        ['Pollution is worst right at the outlet.', 'For organic waste, oxygen is lowest some distance downstream, because bacteria take time to consume the waste while the water keeps flowing. The sim\'s minimum is 2 to 3 km below the village.'],
+        ['Pollution is worst right at the outlet.', 'For organic waste, oxygen is lowest some distance downstream, because bacteria take time to consume the waste while the water keeps flowing. The sim\'s minimum is about 3 km below the village.'],
         ['If the oxygen reading is fine, the river is healthy.', 'Toxic waste kills fish without using oxygen. Set factory waste to 100%: oxygen stays near 8.5 mg/L while the fish and stoneflies disappear.'],
         ['More algae means a healthier river because algae make oxygen.', 'Algae do photosynthesise by day, but a dense bloom shades the water, respires at night and, when it dies, is decomposed by bacteria that drain oxygen. Blooms are a warning sign, not a good sign.'],
         ['A treatment plant solves every pollution problem.', 'It treats what flows through its pipes: sewage and factory effluent. Rain washing fertiliser off fields bypasses the plant completely.'],
       ],
       id: [
-        ['Pencemaran paling parah tepat di saluran pembuangan.', 'Untuk limbah organik, oksigen paling rendah beberapa jarak di hilir, karena bakteri butuh waktu menguraikan limbah sementara air terus mengalir. Titik terendah dalam simulasi berada 2 sampai 3 km di hilir desa.'],
+        ['Pencemaran paling parah tepat di saluran pembuangan.', 'Untuk limbah organik, oksigen paling rendah beberapa jarak di hilir, karena bakteri butuh waktu menguraikan limbah sementara air terus mengalir. Titik terendah dalam simulasi berada sekitar 3 km di hilir desa.'],
         ['Jika angka oksigen baik, sungai pasti sehat.', 'Limbah beracun membunuh ikan tanpa memakai oksigen. Atur limbah pabrik ke 100%: oksigen tetap sekitar 8,5 mg/L sementara ikan dan lalat batu menghilang.'],
         ['Lebih banyak alga berarti sungai lebih sehat karena alga menghasilkan oksigen.', 'Alga memang berfotosintesis di siang hari, tetapi ledakan alga yang pekat menaungi air, bernapas di malam hari, dan ketika mati diuraikan bakteri yang menguras oksigen. Ledakan alga adalah tanda peringatan, bukan tanda baik.'],
         ['Instalasi pengolahan limbah menyelesaikan semua masalah pencemaran.', 'Instalasi hanya mengolah yang mengalir lewat pipanya: limbah rumah tangga dan pabrik. Hujan yang menyapu pupuk dari sawah melewati instalasi sepenuhnya.'],

@@ -250,7 +250,7 @@ export function mount(rootEl) {
       ctx.restore();
     });
     ctx.fillStyle = '#cbd5e1'; ctx.font = font(W() * 0.019); ctx.textAlign = 'center';
-    ctx.fillText(T('paper bits', 'potongan kertas'), tr.x, tr.y + W() * 0.022);
+    ctx.fillText(T('paper bits', W() < 600 ? 'kertas' : 'potongan kertas'), tr.x, tr.y + W() * 0.022);
   }
 
   function drawPith(ctx) {

@@ -160,12 +160,12 @@ export default {
       en: [
         { q: 'A can of diet cola contains about 180 mg of aspartame. The ADI is 40 mg/kg per day. How many cans would a 40 kg student need to drink to reach the ADI?', a: '40 kg × 40 mg/kg = 1600 mg per day. 1600 ÷ 180 ≈ 9 cans. The ADI is for every day of a lifetime, so an occasional can is far below the limit.' },
         { q: 'The orange drink lists water, sugar, citric acid, tartrazine, sodium benzoate and orange flavour. Sort them into basic ingredients, natural additives and synthetic additives.', a: 'Basic: water, sugar. Natural: citric acid (found in citrus fruit, made by fermentation). Synthetic: tartrazine (colouring), sodium benzoate (preservative), orange flavour (artificial flavour).' },
-        { q: 'A 250 mL bottle of sweet tea has 30 g of sugar. How many 4 g cubes is that, and how does it compare with a child\'s 25 g daily limit?', a: '30 ÷ 4 = 7.5 cubes, about 8. One bottle already exceeds the 25 g (six-cube) daily limit by 5 g, before any other food that day.' },
+        { q: 'A 350 mL bottle of sweet tea has 30 g of sugar. How many 4 g cubes is that, and how does it compare with a child\'s 25 g daily limit?', a: '30 ÷ 4 = 7.5 cubes, about 8. One bottle already exceeds the 25 g (six-cube) daily limit by 5 g, before any other food that day.' },
       ],
       id: [
         { q: 'Sekaleng kola diet berisi sekitar 180 mg aspartam. ADI-nya 40 mg/kg per hari. Berapa kaleng yang harus diminum siswa 40 kg untuk mencapai ADI?', a: '40 kg × 40 mg/kg = 1600 mg per hari. 1600 ÷ 180 ≈ 9 kaleng. ADI berlaku untuk setiap hari seumur hidup, jadi sekaleng sesekali jauh di bawah batas.' },
         { q: 'Minuman jeruk mencantumkan air, gula, asam sitrat, tartrazin, natrium benzoat dan perasa jeruk. Kelompokkan menjadi bahan dasar, aditif alami dan aditif sintetis.', a: 'Dasar: air, gula. Alami: asam sitrat (terdapat dalam buah jeruk, dibuat dengan fermentasi). Sintetis: tartrazin (pewarna), natrium benzoat (pengawet), perasa jeruk (perasa buatan).' },
-        { q: 'Sebotol teh manis 250 mL berisi 30 g gula. Berapa gula batu 4 g itu, dan bagaimana dibandingkan batas harian anak 25 g?', a: '30 ÷ 4 = 7,5 batu, sekitar 8. Satu botol saja sudah melebihi batas harian 25 g (enam batu) sebanyak 5 g, sebelum makanan lain hari itu.' },
+        { q: 'Sebotol teh manis 350 mL berisi 30 g gula. Berapa gula batu 4 g itu, dan bagaimana dibandingkan batas harian anak 25 g?', a: '30 ÷ 4 = 7,5 batu, sekitar 8. Satu botol saja sudah melebihi batas harian 25 g (enam batu) sebanyak 5 g, sebelum makanan lain hari itu.' },
       ],
     },
   },

@@ -279,7 +279,7 @@ export function mount(rootEl) {
     const W = cv.width, H = cv.height;
     const lv = leaves(st.tree), n = lv.length, d = Math.max(1, depth(st.tree));
     const x0 = W * 0.03, x1 = W * 0.97, colW = (x1 - x0) / n;
-    const y0 = H * 0.09, y1 = H * 0.80;
+    const y0 = H * 0.09, y1 = H * 0.72;   // leaves end ~0.88H so their names clear the message row at 0.96H
     let col = 0;
     const nodes = [];
     (function place(node, lvl) {
@@ -413,7 +413,10 @@ export function mount(rootEl) {
     ctx.textAlign = 'left'; ctx.fillStyle = '#94a3b8'; ctx.font = sysFont(fs, true);
     const done = lv.every((l) => l.ids.length === 1);
     ctx.fillText(`${T('Questions used', 'Pertanyaan dipakai')}: ${countQ(st.tree)}   ${T('Longest path', 'Jalur terpanjang')}: ${depth(st.tree)}   ${done ? T('Complete', 'Selesai') : T('Groups left to split', 'Kelompok belum terpisah') + ': ' + lv.filter((l) => l.ids.length > 1).length}`, W * 0.03, H * 0.05);
-    if (st.selected) {
+    const showMsg = st.message && now - st.messageAt < 4;
+    if (showMsg) {
+      // the hint shares the bottom row with the message; skip it while a message is showing
+    } else if (st.selected) {
       ctx.fillStyle = '#fbbf24'; ctx.font = sysFont(fs * 0.9);
       ctx.textAlign = 'right';
       ctx.fillText(T('Selected group: choose a question below, then press Split', 'Kelompok terpilih: pilih pertanyaan di bawah, lalu tekan Bagi'), W * 0.97, H * 0.96);
@@ -421,7 +424,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#fbbf24'; ctx.font = sysFont(fs * 0.9); ctx.textAlign = 'right';
       ctx.fillText(T('Click a group to select it', 'Klik sebuah kelompok untuk memilihnya'), W * 0.97, H * 0.96);
     }
-    if (st.message && now - st.messageAt < 4) {
+    if (showMsg) {
       ctx.textAlign = 'left'; ctx.fillStyle = st.message.startsWith(T('Split', 'Terbagi')) || done ? '#4ade80' : '#fca5a5'; ctx.font = sysFont(fs, true);
       ctx.fillText(st.message, W * 0.03, H * 0.96);
     }

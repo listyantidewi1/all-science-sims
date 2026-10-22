@@ -12,7 +12,7 @@ const AREA = Math.PI * COIL_R * COIL_R;   // m² (~1.96e-3)
 const L0 = 0.06;                          // m, fall-off length
 const X_MAX = 0.30;                       // m, travel each side of the coil
 const MAG_LEN = 0.08;                     // m
-const FS = 2.0;                           // V, galvanometer soft full scale
+const FS = 1.0;                           // V, galvanometer soft full scale (default sweep ≈ 0.17 V gives a clear kick)
 const HISTORY = 6;                        // s of graph
 const CAP = 480;                          // samples kept
 
@@ -235,7 +235,8 @@ export function mount(rootEl) {
     ctx.fillText(lenz, w * 0.02, h * 0.545);
     ctx.fillStyle = '#94a3b8'; ctx.font = font(w * 0.016);
     ctx.textAlign = 'right';
-    ctx.fillText(T(`peak |v| ${state.peakV.toFixed(2)} m/s · peak |EMF| ${fmtV(state.peakE)}`, `|v| puncak ${state.peakV.toFixed(2)} m/s · |GGL| puncak ${fmtV(state.peakE)}`), w * 0.98, h * 0.545);
+    // on narrow canvases the peak readout would collide with the Lenz line, so lift it above the status rows
+    ctx.fillText(T(`peak |v| ${state.peakV.toFixed(2)} m/s · peak |EMF| ${fmtV(state.peakE)}`, `|v| puncak ${state.peakV.toFixed(2)} m/s · |GGL| puncak ${fmtV(state.peakE)}`), w * 0.98, w < 640 ? h * 0.455 : h * 0.545);
     ctx.textAlign = 'left';
     // graphs
     const gx = w * 0.03, gw = w * 0.94;
