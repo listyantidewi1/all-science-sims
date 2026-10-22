@@ -9,7 +9,7 @@ const PRESETS = [
   { id: 'p1', L: { x: 3, c: 2 }, R: { x: 0, c: 11 }, rel: '=' },   // x = 3
   { id: 'p2', L: { x: 2, c: 5 }, R: { x: 1, c: 9 }, rel: '=' },    // x = 4
   { id: 'p3', L: { x: 5, c: 0 }, R: { x: 0, c: 10 }, rel: '=' },   // x = 2
-  { id: 'p4', L: { x: 4, c: 3 }, R: { x: 2, c: 11 }, rel: '=' },   // x = 4
+  { id: 'p4', L: { x: 4, c: 2 }, R: { x: 2, c: 10 }, rel: '=' },   // x = 4 (every count even, so ÷ 2 works at once)
   { id: 'p5', L: { x: 1, c: 8 }, R: { x: 3, c: 2 }, rel: '=' },    // x = 3 (bags on the right)
   { id: 'p6', L: { x: 2, c: 3 }, R: { x: 0, c: 11 }, rel: '<' },   // x < 4
 ];

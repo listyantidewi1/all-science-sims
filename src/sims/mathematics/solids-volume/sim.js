@@ -432,29 +432,22 @@ export function mount(rootEl) {
 
   // ---- controls -------------------------------------------------------------
   const solidSel = select({
-    label: 'Solid', key: 'solid', value: state.solid,
-    options: [
-      { value: 'box', label: 'Rectangular prism (box)' },
-      { value: 'tprism', label: 'Triangular prism' },
-      { value: 'cylinder', label: 'Cylinder' },
-      { value: 'sphere', label: 'Sphere' },
-      { value: 'pyramid', label: 'Square pyramid' },
-      { value: 'cone', label: 'Cone' },
-    ],
+    label: T('Solid', 'Bangun ruang'), key: 'solid', value: state.solid,
+    options: Object.keys(NAMES).map((k) => ({ value: k, label: T(NAMES[k][0], NAMES[k][1]) })),
     onChange: (v) => { state.solid = v; showSliders(); },
   });
   const viewSel = select({
-    label: 'View', key: 'view', value: '3d',
-    options: [{ value: '3d', label: '3-D wireframe (drag to rotate)' }, { value: 'net', label: 'Net (unfolded faces)' }],
+    label: T('View', 'Tampilan'), key: 'view', value: '3d',
+    options: [{ value: '3d', label: T('3-D wireframe (drag to rotate)', 'Rangka 3-D (seret untuk memutar)') }, { value: 'net', label: T('Net (unfolded faces)', 'Jaring-jaring (sisi dibuka)') }],
     onChange: (v) => { state.view = v; },
   });
   const sliders = {};
   const mk = (k, label) => { sliders[k] = slider({ label, key: k, min: 1, max: 12, step: 0.5, value: state.p[k], format: (v) => f2(v), onInput: (v) => { state.p[k] = v; } }); return sliders[k].el; };
   const sliderBox = document.createElement('div');
-  sliderBox.append(mk('l', 'Length l / L (cm)'), mk('w', 'Width w (cm)'), mk('h', 'Height h (cm)'), mk('r', 'Radius r (cm)'), mk('s', 'Base side s (cm)'), mk('b', 'Triangle base b (cm)'), mk('t', 'Triangle height t (cm)'));
+  sliderBox.append(mk('l', T('Length l / L (cm)', 'Panjang l / L (cm)')), mk('w', T('Width w (cm)', 'Lebar w (cm)')), mk('h', T('Height h (cm)', 'Tinggi h (cm)')), mk('r', T('Radius r (cm)', 'Jari-jari r (cm)')), mk('s', T('Base side s (cm)', 'Sisi alas s (cm)')), mk('b', T('Triangle base b (cm)', 'Alas segitiga b (cm)')), mk('t', T('Triangle height t (cm)', 'Tinggi segitiga t (cm)')));
   function showSliders() { const on = DIMS[state.solid]; for (const k of Object.keys(sliders)) sliders[k].el.style.display = on.includes(k) ? '' : 'none'; }
   showSliders();
-  const resetB = button({ label: 'Reset view', onClick: () => { state.yaw = -0.6; state.pitch = 0.45; } });
+  const resetB = button({ label: T('Reset view', 'Atur ulang tampilan'), onClick: () => { state.yaw = -0.6; state.pitch = 0.45; } });
   ctrlPanel.append(solidSel.el, viewSel.el, sliderBox, row(resetB));
 
   const lab = labPanel({

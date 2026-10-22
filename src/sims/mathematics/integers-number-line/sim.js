@@ -59,7 +59,8 @@ export function mount(rootEl) {
       trail[0] = 0;
       if (o.b < 0) phases.push({ type: 'turn' });
       const dir = Math.sign(o.a) * (o.b < 0 ? -1 : 1);
-      for (let k = 0; k < Math.abs(o.b); k++) phases.push({ type: 'jump', d: dir * Math.abs(o.a) });
+      // a < 0: each jump goes against the way the walker faces, i.e. backwards (pink)
+      for (let k = 0; k < Math.abs(o.b); k++) phases.push({ type: 'jump', d: dir * Math.abs(o.a), backward: o.a < 0 });
     } else {
       if (o.op === 'sub') phases.push({ type: 'turn' });
       const backward = o.b < 0;
@@ -82,7 +83,7 @@ export function mount(rootEl) {
     const p = anim.phases[anim.i];
     anim.from = walker.pos;
     anim.dur = p.type === 'turn' ? 0.6 : p.type === 'jump' ? 0.7 : 0.4;
-    walker.backward = p.type === 'move' && p.backward;
+    walker.backward = !!p.backward;
   }
   function reset() {
     anim.phases = []; anim.i = -1; anim.running = false; anim.done = false;
@@ -239,7 +240,7 @@ export function mount(rootEl) {
     // vertical tube: MIN at bottom, MAX at top
     const tubeW = Math.max(14, W * 0.08);
     const cx = X + W * 0.5;
-    const top = Y + H * 0.08, bottom = Y + H * 0.9;
+    const top = Y + H * 0.08, bottom = Y + H * 0.72;
     const toY = (v) => bottom - (v - MIN) / (MAX - MIN) * (bottom - top);
     ctx.fillStyle = '#1e293b';
     ctx.beginPath(); ctx.roundRect(cx - tubeW / 2, top - tubeW / 2, tubeW, bottom - top + tubeW, tubeW / 2); ctx.fill();
@@ -264,7 +265,7 @@ export function mount(rootEl) {
     ctx.font = font(H * 0.12, true); ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     ctx.fillText(fmtInt(Math.round(v)) + ' °C', cx - tubeW * 1.2, yv);
     ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.065); ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-    ctx.fillText(v < 0 ? T('below freezing', 'di bawah titik beku') : v > 0 ? T('above freezing', 'di atas titik beku') : T('freezing point', 'titik beku'), cx, Y + H * 0.93);
+    ctx.fillText(v < 0 ? T('below freezing', 'di bawah titik beku') : v > 0 ? T('above freezing', 'di atas titik beku') : T('freezing point', 'titik beku'), cx, Y + H * 0.9);
   }
 
   function drawBank(ctx, X, Y, W, H) {
@@ -274,12 +275,12 @@ export function mount(rootEl) {
     const cols = 10;
     const startX = X + W * 0.5 - (cols - 1) * r * 1.1;
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-    ctx.fillStyle = '#e2e8f0'; ctx.font = font(H * 0.11, true);
-    ctx.fillText(T('Balance', 'Saldo') + ': ' + fmtInt(v) + ' ' + T('coins', 'koin'), X + W / 2, Y + H * 0.06);
-    ctx.font = font(H * 0.075); ctx.fillStyle = v < 0 ? '#fca5a5' : '#86efac';
-    ctx.fillText(v < 0 ? T(`You owe ${n} coins (debt).`, `Kamu berutang ${n} koin.`) : v > 0 ? T(`You have ${n} coins.`, `Kamu punya ${n} koin.`) : T('Nothing owned, nothing owed.', 'Tidak punya, tidak berutang.'), X + W / 2, Y + H * 0.2);
-    // ledger line
-    const yMid = Y + H * 0.42;
+    ctx.fillStyle = '#e2e8f0'; ctx.font = font(Math.min(H * 0.085, W * 0.09), true);
+    ctx.fillText(T('Balance', 'Saldo') + ': ' + fmtInt(v) + ' ' + T('coins', 'koin'), X + W / 2, Y + H * 0.04);
+    ctx.font = font(Math.min(H * 0.06, W * 0.065)); ctx.fillStyle = v < 0 ? '#fca5a5' : '#86efac';
+    ctx.fillText(v < 0 ? T(`You owe ${n} coins (debt).`, `Kamu berutang ${n} koin.`) : v > 0 ? T(`You have ${n} coins.`, `Kamu punya ${n} koin.`) : T('Nothing owned, nothing owed.', 'Tidak punya, tidak berutang.'), X + W / 2, Y + H * 0.15);
+    // ledger line: owned coins stack above it, debt notes below it
+    const yMid = Y + H * 0.58;
     ctx.strokeStyle = '#64748b'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(X + W * 0.1, yMid); ctx.lineTo(X + W * 0.9, yMid); ctx.stroke();
     ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.06); ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
@@ -289,7 +290,7 @@ export function mount(rootEl) {
     for (let i = 0; i < n; i++) {
       const col = i % cols, rowI = Math.floor(i / cols);
       const cx = startX + col * r * 2.2;
-      const cy = v > 0 ? yMid - r * 1.6 - rowI * r * 2.3 - H * 0.08 : yMid + r * 1.6 + rowI * r * 2.3 + H * 0.08;
+      const cy = v > 0 ? yMid - r * 1.3 - rowI * r * 2.3 - H * 0.08 : yMid + r * 1.3 + rowI * r * 2.3 + H * 0.08;
       if (v > 0) {
         ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, r * 0.65, 0, Math.PI * 2); ctx.stroke();
@@ -369,7 +370,9 @@ export function mount(rootEl) {
     drawNumberLine(ctx);
     // legend
     ctx.fillStyle = '#64748b'; ctx.font = font(H * 0.035); ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-    ctx.fillText(T('Negative numbers are to the left of 0; the arrow shows which way the walker faces. Pink = walking backwards.', 'Bilangan negatif ada di kiri 0; panah menunjukkan arah hadap si pejalan. Merah muda = berjalan mundur.'), W * 0.03, H * 0.985);
+    const legend = [T('Negative numbers are to the left of 0; the arrow shows which way the walker faces.', 'Bilangan negatif ada di kiri 0; panah menunjukkan arah hadap si pejalan.'), T('Pink = walking backwards.', 'Merah muda = berjalan mundur.')];
+    if (ctx.measureText(legend.join(' ')).width <= W * 0.94) ctx.fillText(legend.join(' '), W * 0.03, H * 0.985);
+    else { ctx.fillText(legend[0], W * 0.03, H * 0.945); ctx.fillText(legend[1], W * 0.03, H * 0.985); }
   }
 
   // ---- controls ------------------------------------------------------------

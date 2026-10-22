@@ -118,23 +118,27 @@ export function mount(rootEl) {
     const r = rects.A;
     return [[r.x0, r.y1], [r.x1, r.y1], [r.x1, r.y0], [r.x0, r.y1]];
   }
-  // One long polyline (grid units) that the runner follows.
+  // The polylines (grid units) that the runner follows, one per boundary loop.
+  // Two separated rectangles give two loops; the runner finishes one, then
+  // jumps to the next without the gap counting as distance.
   function walkPath(m) {
-    if (state.mode === 'tri') return trianglePts();
-    const pts = [];
-    for (const loop of traceLoops(m.g)) pts.push(...loop);
-    return pts;
+    if (state.mode === 'tri') return [trianglePts()];
+    return traceLoops(m.g);
   }
-  function pointAt(path, d) {
+  function pointAt(loops, d) {
     let left = d;
-    for (let i = 0; i < path.length - 1; i++) {
-      const [ax, ay] = path[i], [bx, by] = path[i + 1];
-      const len = Math.hypot(bx - ax, by - ay);
-      if (len <= 0) continue;
-      if (left <= len) { const f = left / len; return [ax + (bx - ax) * f, ay + (by - ay) * f]; }
-      left -= len;
+    let last = [0, 0];
+    for (const path of loops) {
+      for (let i = 0; i < path.length - 1; i++) {
+        const [ax, ay] = path[i], [bx, by] = path[i + 1];
+        const len = Math.hypot(bx - ax, by - ay);
+        if (len <= 0) continue;
+        if (left <= len) { const f = left / len; return [ax + (bx - ax) * f, ay + (by - ay) * f]; }
+        left -= len;
+      }
+      if (path.length) last = path[path.length - 1];
     }
-    return path.length ? path[path.length - 1] : [0, 0];
+    return last;
   }
   function shapeKey() {
     return state.mode + '|' + activeIds().map((id) => { const r = rects[id]; return `${r.x0},${r.y0},${r.x1},${r.y1}`; }).join('|');
@@ -227,12 +231,8 @@ export function mount(rootEl) {
     ctx.lineWidth = Math.max(3, cell * 0.11);
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     if (state.walk.on) { ctx.setLineDash([cell * 0.5, cell * 0.3]); ctx.lineDashOffset = -state.now * cell * 2; }
-    if (state.mode === 'tri') {
-      ctx.beginPath(); path.forEach((p, i) => { const q = toPx(p); if (i === 0) ctx.moveTo(...q); else ctx.lineTo(...q); }); ctx.stroke();
-    } else {
-      for (const loop of traceLoops(m.g)) {
-        ctx.beginPath(); loop.forEach((p, i) => { const q = toPx(p); if (i === 0) ctx.moveTo(...q); else ctx.lineTo(...q); }); ctx.stroke();
-      }
+    for (const loop of path) {
+      ctx.beginPath(); loop.forEach((p, i) => { const q = toPx(p); if (i === 0) ctx.moveTo(...q); else ctx.lineTo(...q); }); ctx.stroke();
     }
     ctx.setLineDash([]); ctx.lineDashOffset = 0;
 
@@ -375,24 +375,33 @@ export function mount(rootEl) {
       return null;
     },
     onStart(id, x, y) {
-      const [rid] = id.split('-');
+      const [rid, part] = id.split('-');
       const r = rects[rid];
-      grab = { x, y, x0: r.x0, y0: r.y0, x1: r.x1, y1: r.y1 };
+      // A keyboard nudge starts exactly on the handle (see handles()); a pointer
+      // never lands on that exact float. Nudges then move one whole cell per
+      // press, however small keyStep is compared with the cell size.
+      const { cell, ox, oy } = layout();
+      const hx = part === 'mv' ? (r.x0 + r.x1) / 2 : part[1] === 'l' ? r.x0 : r.x1;
+      const hy = part === 'mv' ? (r.y0 + r.y1) / 2 : part[0] === 't' ? r.y0 : r.y1;
+      const exact = x === ox + hx * cell && y === oy + hy * cell;
+      grab = { x, y, x0: r.x0, y0: r.y0, x1: r.x1, y1: r.y1, exact };
     },
     onDrag(id, x, y) {
       const { cell, ox, oy } = layout();
       const [rid, part] = id.split('-');
       const r = rects[rid];
       if (!grab) return;
+      const cells = (d) => (grab.exact ? Math.sign(d) * Math.max(1, Math.round(Math.abs(d) / cell)) : Math.round(d / cell));
       if (part === 'mv') {
         const w = grab.x1 - grab.x0, h = grab.y1 - grab.y0;
-        const dx = Math.round((x - grab.x) / cell), dy = Math.round((y - grab.y) / cell);
+        const dx = cells(x - grab.x), dy = cells(y - grab.y);
         r.x0 = clamp(grab.x0 + dx, 0, COLS - w); r.x1 = r.x0 + w;
         r.y0 = clamp(grab.y0 + dy, 0, ROWS - h); r.y1 = r.y0 + h;
         return;
       }
-      const gx = clamp(Math.round((x - ox) / cell), 0, COLS);
-      const gy = clamp(Math.round((y - oy) / cell), 0, ROWS);
+      const cx0 = part[1] === 'l' ? grab.x0 : grab.x1, cy0 = part[0] === 't' ? grab.y0 : grab.y1;
+      const gx = clamp(grab.exact ? cx0 + cells(x - grab.x) : Math.round((x - ox) / cell), 0, COLS);
+      const gy = clamp(grab.exact ? cy0 + cells(y - grab.y) : Math.round((y - oy) / cell), 0, ROWS);
       if (part[1] === 'l') r.x0 = Math.min(gx, r.x1 - 1); else r.x1 = Math.max(gx, r.x0 + 1);
       if (part[0] === 't') r.y0 = Math.min(gy, r.y1 - 1); else r.y1 = Math.max(gy, r.y0 + 1);
     },

@@ -26,7 +26,8 @@ export function mount(rootEl) {
   const piLabel = () => (params.pi === '3.14' ? '3.14' : params.pi === '22/7' ? '22/7' : 'π');
   const num = (v, d = 2) => {
     if (!Number.isFinite(v)) return '–';
-    const s = v.toFixed(d).replace(/\.?0+$/, '');
+    // Trim trailing zeros only after a decimal point (so 90 stays "90", not "9").
+    const s = v.toFixed(d).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
     return getLocale() === 'id' ? s.replace('.', ',') : s;
   };
   const values = () => {
@@ -40,7 +41,9 @@ export function mount(rootEl) {
   function circleGeom() {
     const W = cv.width, H = cv.height;
     const Rmax = Math.min(H * 0.3, W * 0.14);
-    const Rpx = Rmax * (0.18 + 0.82 * (params.r - R_MIN) / (R_MAX - R_MIN));
+    let Rpx = Rmax * (0.18 + 0.82 * (params.r - R_MIN) / (R_MAX - R_MIN));
+    // While unrolling, the circle plus one full circumference (2πR) must fit on the ground line.
+    if (unroll.on) Rpx = Math.min(Rpx, W * 0.1);
     const cx = unroll.on ? W * 0.08 + Rpx + unroll.u * 2 * Math.PI * Rpx : W * 0.28;
     const cy = unroll.on ? H * 0.5 - Rpx : H * 0.46;
     return { cx, cy, Rpx };
@@ -162,22 +165,28 @@ export function mount(rootEl) {
     const lineH = fs * 1.45;
     let y = H * 0.08;
     const p = piLabel();
+    const pf = p === 'π' ? 'π' : `(${p})`;   // 2(3.14)r rather than 23.14r
     const rows = [
-      ['#60a5fa', T('Circumference', 'Keliling'), `C = 2${p}r = 2 × ${p} × ${num(v.r)} = ${num(v.C)} ${u}`],
-      ['#60a5fa', T('Area', 'Luas'), `A = ${p}r² = ${p} × ${num(v.r)}² = ${num(v.A)} ${u2}`],
+      ['#60a5fa', T('Circumference', 'Keliling'), `C = 2${pf}r = 2 × ${p} × ${num(v.r)} = ${num(v.C)} ${u}`],
+      ['#60a5fa', T('Area', 'Luas'), `A = ${pf}r² = ${p} × ${num(v.r)}² = ${num(v.A)} ${u2}`],
       ['#f59e0b', T('Arc length', 'Panjang busur'), `${T('arc', 'busur')} = θ/360 × C = ${num(v.th, 0)}/360 × ${num(v.C)} = ${num(v.arc)} ${u}`],
       ['#f59e0b', T('Sector area', 'Luas juring'), `${T('sector', 'juring')} = θ/360 × A = ${num(v.th, 0)}/360 × ${num(v.A)} = ${num(v.sector)} ${u2}`],
     ];
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    // Shrink the text if the longest formula would run past the right edge.
+    ctx.font = font(fs * 0.92);
+    const widest = Math.max(...rows.map((r) => ctx.measureText(r[2]).width));
+    const k = widest > w ? w / widest : 1;
+    const fsR = fs * k, lineR = lineH * k;
     for (const [col, title, formula] of rows) {
-      ctx.fillStyle = col; ctx.font = font(fs, true);
+      ctx.fillStyle = col; ctx.font = font(fsR, true);
       ctx.fillText(title, x, y);
-      y += lineH;
-      ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.92);
+      y += lineR;
+      ctx.fillStyle = '#e2e8f0'; ctx.font = font(fsR * 0.92);
       ctx.fillText(formula, x, y);
-      y += lineH * 1.35;
+      y += lineR * 1.35;
     }
-    ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.85);
+    ctx.fillStyle = '#94a3b8'; ctx.font = font(fsR * 0.85);
     ctx.fillText(T(`d = 2r = ${num(v.d)} ${u};  C ÷ d = ${num(v.C / v.d, 4)}`, `d = 2r = ${num(v.d)} ${u};  K ÷ d = ${num(v.C / v.d, 4)}`), x, y);
     y += lineH;
     ctx.fillText(T(`fraction of the circle: ${num(v.th, 0)}/360 = ${num(v.th / 360, 3)}`, `bagian lingkaran: ${num(v.th, 0)}/360 = ${num(v.th / 360, 3)}`), x, y);

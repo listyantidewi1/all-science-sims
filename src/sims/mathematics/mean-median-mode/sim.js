@@ -274,13 +274,13 @@ export function mount(rootEl) {
 
   // ---- controls -------------------------------------------------------
   const dataSel = select({
-    label: 'Data set', key: 'data', value: 'quiz',
+    label: T('Data set', 'Kumpulan data'), key: 'data', value: 'quiz',
     options: [
-      { value: 'quiz', label: 'Quiz scores (out of 30)' },
-      { value: 'symmetric', label: 'Symmetric data' },
-      { value: 'skewed', label: 'Skewed data with a tail' },
-      { value: 'twoClasses', label: 'Two classes, same mean' },
-      { value: 'empty', label: 'Empty (build your own)' },
+      { value: 'quiz', label: T('Quiz scores (out of 30)', 'Nilai kuis (dari 30)') },
+      { value: 'symmetric', label: T('Symmetric data', 'Data simetris') },
+      { value: 'skewed', label: T('Skewed data with a tail', 'Data miring berekor') },
+      { value: 'twoClasses', label: T('Two classes, same mean', 'Dua kelas, rerata sama') },
+      { value: 'empty', label: T('Empty (build your own)', 'Kosong (susun sendiri)') },
     ],
     onChange: (v) => {
       const p = PRESETS[v] || PRESETS.empty;
@@ -290,32 +290,32 @@ export function mount(rootEl) {
     },
   });
   const target = () => (state.compare && state.labGroup === 'B' ? 'B' : 'A');
-  const addB = button({ label: '+ Add point', onClick: () => {
+  const addB = button({ label: T('+ Add point', '+ Tambah titik'), onClick: () => {
     const g = target(), vals = state.data[g];
     if (vals.length >= MAX_N) return;
     snapshot(g);
     const st = stats(vals);
     vals.push(st.n ? Math.round(st.median) : 15);
   } });
-  const outlierB = button({ label: '+ Add outlier', primary: true, onClick: () => {
+  const outlierB = button({ label: T('+ Add outlier', '+ Tambah pencilan'), primary: true, onClick: () => {
     const g = target(), vals = state.data[g];
     if (vals.length >= MAX_N) return;
     snapshot(g);
     const st = stats(vals);
     vals.push(st.n && st.mean > (VMIN + VMAX) / 2 ? VMIN : VMAX);
   } });
-  const removeB = button({ label: 'Remove last', onClick: () => { const g = target(); if (state.data[g].length) { snapshot(g); state.data[g].pop(); } } });
-  const clearB = button({ label: 'Clear group', onClick: () => { const g = target(); state.data[g] = []; state.prev[g] = null; } });
-  const compareT = toggle({ label: 'Compare two groups', key: 'compare', value: false, onChange: (v) => { state.compare = v; } });
+  const removeB = button({ label: T('Remove last', 'Hapus terakhir'), onClick: () => { const g = target(); if (state.data[g].length) { snapshot(g); state.data[g].pop(); } } });
+  const clearB = button({ label: T('Clear group', 'Kosongkan kelompok'), onClick: () => { const g = target(); state.data[g] = []; state.prev[g] = null; } });
+  const compareT = toggle({ label: T('Compare two groups', 'Bandingkan dua kelompok'), key: 'compare', value: false, onChange: (v) => { state.compare = v; } });
   const groupSel = select({
-    label: 'Buttons and lab act on', key: 'group', value: 'A',
-    options: [{ value: 'A', label: 'Group A' }, { value: 'B', label: 'Group B (when comparing)' }],
+    label: T('Buttons and lab act on', 'Tombol dan lab berlaku untuk'), key: 'group', value: 'A',
+    options: [{ value: 'A', label: T('Group A', 'Kelompok A') }, { value: 'B', label: T('Group B (when comparing)', 'Kelompok B (saat membandingkan)') }],
     onChange: (v) => { state.labGroup = v; },
   });
-  const meanT = toggle({ label: 'Show mean ▲', key: 'mean', value: true, onChange: (v) => { state.showMean = v; } });
-  const medianT = toggle({ label: 'Show median', key: 'median', value: true, onChange: (v) => { state.showMedian = v; } });
-  const modeT = toggle({ label: 'Highlight mode', key: 'mode', value: true, onChange: (v) => { state.showMode = v; } });
-  const rangeT = toggle({ label: 'Show range', key: 'range', value: true, onChange: (v) => { state.showRange = v; } });
+  const meanT = toggle({ label: T('Show mean ▲', 'Tampilkan rerata ▲'), key: 'mean', value: true, onChange: (v) => { state.showMean = v; } });
+  const medianT = toggle({ label: T('Show median', 'Tampilkan median'), key: 'median', value: true, onChange: (v) => { state.showMedian = v; } });
+  const modeT = toggle({ label: T('Highlight mode', 'Soroti modus'), key: 'mode', value: true, onChange: (v) => { state.showMode = v; } });
+  const rangeT = toggle({ label: T('Show range', 'Tampilkan jangkauan'), key: 'range', value: true, onChange: (v) => { state.showRange = v; } });
   ctrlPanel.append(dataSel.el, row(addB, outlierB, removeB, clearB), row(compareT), groupSel.el, row(meanT, medianT, modeT, rangeT));
 
   const lab = labPanel({

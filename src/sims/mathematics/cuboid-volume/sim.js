@@ -83,6 +83,7 @@ export function mount(rootEl) {
     const E = (p, q) => { ctx.moveTo(...P(...p)); ctx.lineTo(...P(...q)); };
     E([0, 0, 0], [0, 0, h]); E([l, 0, 0], [l, 0, h]); E([0, w, 0], [0, w, h]);
     E([0, 0, h], [l, 0, h]); E([0, 0, h], [0, w, h]);
+    E([l, 0, 0], [0, 0, 0]); E([0, 0, 0], [0, w, 0]);   // back floor edges, hidden once cubes arrive
     ctx.stroke();
     ctx.setLineDash([]);
 
@@ -110,22 +111,26 @@ export function mount(rootEl) {
     ctx.beginPath();
     E([l, 0, 0], [l, w, 0]); E([0, w, 0], [l, w, 0]); E([l, w, 0], [l, w, h]);
     E([l, 0, h], [l, w, h]); E([0, w, h], [l, w, h]); E([l, 0, 0], [l, 0, h]); E([0, w, 0], [0, w, h]);
-    E([l, 0, 0], [0, 0, 0]); E([0, 0, 0], [0, w, 0]);
     ctx.stroke();
 
     // dimension labels
-    ctx.font = font(Math.max(12, s * 0.55), true); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const fs = Math.max(12, Math.min(s * 0.5, L.H * 0.04));
+    ctx.font = font(fs, true); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const lab = (txt, p, color) => {
       const wd = ctx.measureText(txt).width + 12;
-      const hh = Math.max(16, s * 0.7);
+      const hh = fs * 1.4;
       ctx.fillStyle = 'rgba(11,18,32,0.8)';
       ctx.beginPath(); ctx.roundRect(p[0] - wd / 2, p[1] - hh / 2, wd, hh, 6); ctx.fill();
       ctx.fillStyle = color; ctx.fillText(txt, p[0], p[1]);
     };
-    const mL = P(l / 2, w, 0), mW = P(l, w / 2, 0), mH = P(l, w, h / 2);
-    lab(`${T('length', 'panjang')} ${l}`, [mL[0] - s * 0.6, mL[1] + s * 0.55], '#fde68a');
-    lab(`${T('width', 'lebar')} ${w}`, [mW[0] + s * 0.6, mW[1] + s * 0.55], '#fde68a');
-    lab(`${T('height', 'tinggi')} ${h}`, [mH[0] + s * 1.3, mH[1]], '#fde68a');
+    // length along the front-left floor edge, width along the front-right one,
+    // height beside the right-hand vertical edge (x = l, y = 0) so it never
+    // sits on top of the cubes.
+    const mL = P(l / 2, w, 0), mW = P(l, w / 2, 0), mH = P(l, 0, h / 2);
+    lab(`${T('length', 'panjang')} ${l}`, [mL[0] - fs * 0.8, mL[1] + fs * 1.0], '#fde68a');
+    lab(`${T('width', 'lebar')} ${w}`, [mW[0] + fs * 0.8, mW[1] + fs * 1.0], '#fde68a');
+    const hTxt = `${T('height', 'tinggi')} ${h}`;
+    lab(hTxt, [Math.min(mH[0] + fs * 0.6 + ctx.measureText(hTxt).width / 2 + 6, L.dx + L.dw - ctx.measureText(hTxt).width / 2 - 6), mH[1]], '#fde68a');
   }
 
   // ---- flat views ----------------------------------------------------------------

@@ -233,6 +233,18 @@ export function mount(rootEl) {
     const fs = Math.min(H * 0.045, w * 0.075);
     let y = H * 0.05;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    // Word-wrap a line so long names/rules never run past the right edge.
+    const wrapText = (txt, size, bold, color) => {
+      ctx.fillStyle = color; ctx.font = font(size, bold);
+      const words = String(txt).split(' ');
+      let line = '';
+      for (const wd of words) {
+        const test = line ? line + ' ' + wd : wd;
+        if (line && ctx.measureText(test).width > w) { ctx.fillText(line, x, y); y += size * 1.2; line = wd; }
+        else line = test;
+      }
+      if (line) { ctx.fillText(line, x, y); y += size * 1.2; }
+    };
     ctx.fillStyle = '#f8fafc'; ctx.font = font(fs, true);
     if (challenge.on) {
       ctx.fillStyle = '#fbbf24';
@@ -243,10 +255,9 @@ export function mount(rootEl) {
       ctx.fillStyle = '#94a3b8';
       ctx.fillText(T('Set the controls, then press Check.', 'Atur kontrol, lalu tekan Periksa.'), x, y); y += fs * 1.5;
     } else {
-      ctx.fillText(tfName(t), x, y); y += fs * 1.4;
+      wrapText(tfName(t), fs, true, '#f8fafc'); y += fs * 0.2;
     }
-    ctx.fillStyle = '#f9a8d4'; ctx.font = font(fs * 0.9);
-    ctx.fillText(T('Your rule: ', 'Aturanmu: ') + ruleText(t), x, y); y += fs * 1.6;
+    wrapText(T('Your rule: ', 'Aturanmu: ') + ruleText(t), fs * 0.9, false, '#f9a8d4'); y += fs * 0.4;
     // Coordinates before → after
     ctx.font = font(fs * 0.9);
     const img = state.pts.map((p) => applyTf(t, p));
@@ -267,16 +278,15 @@ export function mount(rootEl) {
       target.forEach((q, i) => { ctx.fillStyle = '#86efac'; ctx.fillText(`${NAMES[i]}′${pt(q)}`, x, y); y += fs * 1.2; });
       if (challenge.result) {
         y += fs * 0.4;
-        ctx.fillStyle = challenge.result === 'ok' ? '#34d399' : '#fca5a5'; ctx.font = font(fs, true);
-        ctx.fillText(challenge.result === 'ok' ? T('Correct! Your image matches.', 'Benar! Bayanganmu cocok.') : T('Not yet — compare the coordinates.', 'Belum — bandingkan koordinatnya.'), x, y);
+        wrapText(challenge.result === 'ok' ? T('Correct! Your image matches.', 'Benar! Bayanganmu cocok.') : T('Not yet — compare the coordinates.', 'Belum — bandingkan koordinatnya.'), fs, true, challenge.result === 'ok' ? '#34d399' : '#fca5a5');
       }
     } else {
       y += fs * 0.5;
       ctx.fillStyle = '#64748b'; ctx.font = font(fs * 0.8);
       const notes = t.type === 'dilate' ? [T(`Lengths × ${fmt(Math.abs(t.k))}, area × ${fmt(t.k * t.k)}.`, `Panjang × ${fmt(Math.abs(t.k))}, luas × ${fmt(t.k * t.k)}.`), t.k < 0 ? T('Negative k: image on the other side of O.', 'k negatif: bayangan di seberang O.') : T('Shape stays similar, not congruent.', 'Bentuk tetap sebangun, tidak kongruen.')]
         : [T('Size and shape unchanged (congruent).', 'Ukuran dan bentuk tetap (kongruen).'), t.type === 'reflect' ? T('Orientation is flipped (A→B→C reverses).', 'Orientasi terbalik (A→B→C berbalik arah).') : T('Orientation is kept.', 'Orientasi tetap.')];
-      for (const n of notes) { ctx.fillText(n, x, y); y += fs * 1.1; }
-      ctx.fillText(T('Drag the blue corners to change the shape.', 'Geser titik sudut biru untuk mengubah bangun.'), x, y);
+      for (const n of notes) wrapText(n, fs * 0.8, false, '#64748b');
+      wrapText(T('Drag the blue corners to change the shape.', 'Geser titik sudut biru untuk mengubah bangun.'), fs * 0.8, false, '#64748b');
     }
   }
 

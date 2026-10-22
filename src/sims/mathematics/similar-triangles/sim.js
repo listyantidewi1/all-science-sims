@@ -36,7 +36,7 @@ export function mount(rootEl) {
     pts: {},                       // A..F → {x, y} in units
     shadow: { h: 1.5, s: 2, S: 8 }, // metres: stick height, stick shadow, tree shadow
   };
-  const GROUND = 11.6, STICK_X = 8, TREE_X = 21, MAX_H = 10;
+  const GROUND = 11.6, STICK_X = 8, TREE_X = 21, MAX_H = 9;   // 9 m keeps the crown below the readout panel
 
   function applyPreset(p) {
     for (const k of Object.keys(p)) state.pts[k] = { x: p[k][0], y: p[k][1] };
@@ -131,7 +131,8 @@ export function mount(rootEl) {
       let nx = mx - cx, ny = my - cy; const nl = Math.hypot(nx, ny) || 1; nx /= nl; ny /= nl;
       const off = fontPx(0.016) * 1.1;
       ctx.fillStyle = SIDE_COL[i];
-      ctx.fillText(sides[i].toFixed(2) + (unit ? ' ' + unit : ''), mx + nx * off, my + ny * off);
+      // sides[i] may be a ready-made label (shadow mode) or a length
+      ctx.fillText(typeof sides[i] === 'string' ? sides[i] : sides[i].toFixed(2) + (unit ? ' ' + unit : ''), mx + nx * off, my + ny * off);
     }
     // Angle arcs + vertex names.
     for (let i = 0; i < 3; i++) {
@@ -279,19 +280,11 @@ export function mount(rootEl) {
     const R = analyse();
     if (state.mode === 'shadow') {
       drawShadowScene(ctx, R);
-      drawTriangle(ctx, R.t1, ['A', 'B', 'C'], R.s1, R.a1, 'rgba(245,158,11,0.15)', 'm');
-      drawTriangle(ctx, R.t2, ['D', 'E', 'F'], R.s2, R.a2, 'rgba(34,197,94,0.12)', 'm');
-      // measurement labels
-      ctx.font = `bold ${fontPx(0.018)}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const s = u(), gy = GROUND * s;
-      ctx.fillStyle = '#f59e0b';
-      ctx.fillText(`h = ${state.shadow.h.toFixed(1)} m`, STICK_X * s + s * 1.4, gy - state.shadow.h * s / 2);
-      ctx.fillStyle = '#e2e8f0';
-      ctx.fillText(`s = ${state.shadow.s.toFixed(1)} m`, (STICK_X - state.shadow.s / 2) * s, gy + s * 0.7);
-      ctx.fillText(`S = ${state.shadow.S.toFixed(1)} m`, (TREE_X - state.shadow.S / 2) * s, gy + s * 0.7);
-      ctx.fillStyle = '#4ade80';
-      ctx.fillText(`H = ${R.H.toFixed(2)} m`, TREE_X * s + s * 1.3, gy - R.H * s / 2);
-      ctx.fillStyle = '#cbd5e1'; ctx.font = `${fontPx(0.014)}px ${FONT}`;
+      // Name the measured sides directly on the triangles (one label per side, no duplicates).
+      const sh = state.shadow;
+      drawTriangle(ctx, R.t1, ['A', 'B', 'C'], [`s = ${sh.s.toFixed(1)} m`, `h = ${sh.h.toFixed(1)} m`, `${R.s1[2].toFixed(2)} m`], R.a1, 'rgba(245,158,11,0.15)', 'm');
+      drawTriangle(ctx, R.t2, ['D', 'E', 'F'], [`S = ${sh.S.toFixed(1)} m`, `H = ${R.H.toFixed(2)} m`, `${R.s2[2].toFixed(2)} m`], R.a2, 'rgba(34,197,94,0.12)', 'm');
+      ctx.fillStyle = '#cbd5e1'; ctx.font = `${fontPx(0.014)}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(T('drag the stick top and the two shadow tips', 'geser ujung tongkat dan kedua ujung bayangan'), W / 2, H - fontPx(0.014));
     } else {
       drawGrid(ctx);
@@ -354,19 +347,19 @@ export function mount(rootEl) {
 
   // ---- controls -------------------------------------------------------
   const modeSel = select({
-    label: 'Mode', key: 'mode', value: 'free',
+    label: T('Mode', 'Mode'), key: 'mode', value: 'free',
     options: [
-      { value: 'free', label: 'Free triangles ABC and DEF' },
-      { value: 'shadow', label: 'Tree shadow (indirect measurement)' },
+      { value: 'free', label: T('Free triangles ABC and DEF', 'Segitiga bebas ABC dan DEF') },
+      { value: 'shadow', label: T('Tree shadow (indirect measurement)', 'Bayangan pohon (pengukuran tak langsung)') },
     ],
     onChange: (v) => { state.mode = v; },
   });
   const presetBtn = (label, p) => button({ label, onClick: () => { state.mode = 'free'; modeSel.value = 'free'; applyPreset(p); } });
-  const b1 = presetBtn('Congruent', PRESETS.congruent);
-  const b2 = presetBtn('Similar ×2', PRESETS.similar);
-  const b3 = presetBtn('Not similar', PRESETS.notSimilar);
-  const b4 = button({ label: 'Tree shadow', onClick: () => { state.mode = 'shadow'; modeSel.value = 'shadow'; state.shadow = { h: 1.5, s: 2, S: 8 }; } });
-  const snapT = toggle({ label: 'Snap corners to half-unit grid', key: 'snap', value: true, onChange: (v) => { state.snap = v; } });
+  const b1 = presetBtn(T('Congruent', 'Kongruen'), PRESETS.congruent);
+  const b2 = presetBtn(T('Similar ×2', 'Sebangun ×2'), PRESETS.similar);
+  const b3 = presetBtn(T('Not similar', 'Tidak sebangun'), PRESETS.notSimilar);
+  const b4 = button({ label: T('Tree shadow', 'Bayangan pohon'), onClick: () => { state.mode = 'shadow'; modeSel.value = 'shadow'; state.shadow = { h: 1.5, s: 2, S: 8 }; } });
+  const snapT = toggle({ label: T('Snap corners to half-unit grid', 'Kaitkan titik sudut ke kisi setengah satuan'), key: 'snap', value: true, onChange: (v) => { state.snap = v; } });
   ctrlPanel.append(modeSel.el, row(b1, b2, b3, b4), row(snapT));
 
   const lab = labPanel({

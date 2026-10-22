@@ -16,13 +16,13 @@ export default {
     en: [
       'Load 3x + 2 = 11. Press "− 1 both sides" twice, then "÷ 3". Read the value of x from the scale and check it: 3 × 3 + 2 = 11.',
       'Load 2x + 5 = x + 9. Which move should come first, taking an x off both sides or taking a 1 off both sides? Try both orders — do you reach the same answer?',
-      'Load 4x + 3 = 2x + 11 and press "÷ 2" straight away. Why is that allowed here, but not for 3x + 2 = 11?',
+      'Load 4x + 2 = 2x + 10 and press "÷ 2" straight away. Why is that allowed here, but not for 3x + 2 = 11?',
       'Load 2x + 3 < 11 and solve it. Which way does the scale tilt at the start, and does the tilt ever change while you solve?',
     ],
     id: [
       'Muat 3x + 2 = 11. Tekan "− 1 kedua sisi" dua kali, lalu "÷ 3". Baca nilai x dari timbangan dan periksa: 3 × 3 + 2 = 11.',
       'Muat 2x + 5 = x + 9. Langkah mana yang lebih dulu, mengambil x dari kedua sisi atau mengambil 1 dari kedua sisi? Coba kedua urutan — apakah hasilnya sama?',
-      'Muat 4x + 3 = 2x + 11 dan langsung tekan "÷ 2". Mengapa itu boleh di sini, tetapi tidak untuk 3x + 2 = 11?',
+      'Muat 4x + 2 = 2x + 10 dan langsung tekan "÷ 2". Mengapa itu boleh di sini, tetapi tidak untuk 3x + 2 = 11?',
       'Muat 2x + 3 < 11 dan selesaikan. Ke arah mana timbangan miring pada awalnya, dan apakah kemiringannya pernah berubah saat kamu menyelesaikannya?',
     ],
   },

@@ -45,7 +45,7 @@ export function mount(rootEl) {
 
   const state = {
     mode: 'parallel',           // parallel | intersect | triangle | quiz
-    phi: 62,                    // transversal angle with the parallel lines (deg, 15..165)
+    phi: 62,                    // transversal angle with the parallel lines (deg, 20..160)
     rel: 'corresponding', pairIdx: 0,
     l1: 0, l2: 58,              // intersecting lines directions (deg)
     tri: { A: { x: 0.28, y: 0.72 }, B: { x: 0.78, y: 0.72 }, C: { x: 0.45, y: 0.3 } },  // fractions of the canvas
@@ -93,9 +93,12 @@ export function mount(rootEl) {
     // transversal through C: points on each line
     const tA = (yA - C.y) / d.y, tB = (yB - C.y) / d.y;
     const P = [{ x: C.x + d.x * tA, y: yA }, { x: C.x + d.x * tB, y: yB }];
-    const handleT = (H * 0.2 - C.y) / d.y;             // handle above the upper line
-    const handle = { x: C.x + d.x * handleT, y: H * 0.2 };
-    return { yA, yB, C, P, handle };
+    // handle above the upper line, but never beyond the canvas edge for shallow angles
+    const handleT = Math.min((H * 0.2 - C.y) / d.y, (W * 0.46) / Math.max(Math.abs(d.x), 1e-9));
+    const handle = { x: C.x + d.x * handleT, y: C.y + d.y * handleT };
+    // the transversal must reach past both parallel lines whatever its angle
+    const len = Math.min(W * 0.48, (H * 0.3) / Math.max(Math.abs(d.y), 0.05));
+    return { yA, yB, C, P, handle, len };
   }
   // region start angle and sweep for angle number n at its crossing
   function regionOf(n) {
@@ -115,7 +118,7 @@ export function mount(rootEl) {
       drawLine(ctx, { x: W / 2, y }, 0, W * 0.46);
       ctx.fillStyle = LINE; ctx.beginPath(); ctx.moveTo(W * 0.9, y); ctx.lineTo(W * 0.9 - 10, y - 5); ctx.lineTo(W * 0.9 - 10, y + 5); ctx.closePath(); ctx.fill();
     }
-    drawLine(ctx, G.C, state.phi, H * 0.6, '#fbbf24', 2);
+    drawLine(ctx, G.C, state.phi, G.len, '#fbbf24', 2);
     // the eight angles
     for (let n = 1; n <= 8; n++) {
       const p = G.P[n <= 4 ? 0 : 1];
@@ -378,7 +381,7 @@ export function mount(rootEl) {
         const C = parallelGeom().C;
         let a = norm360(Math.atan2(-(y - C.y), x - C.x) / D2R);
         if (a > 180) a -= 180;                       // the handle sits on the upper half
-        state.phi = Math.round(clamp(a, 15, 165));
+        state.phi = Math.round(clamp(a, 20, 160));   // keeps the far crossing and its labels on the canvas
       } else if (id === 'l1' || id === 'l2') {
         const C = intersectGeom().C;
         const a = Math.round(Math.atan2(-(y - C.y), x - C.x) / D2R);
@@ -400,37 +403,37 @@ export function mount(rootEl) {
 
   // ---- controls ---------------------------------------------------------------------------
   const modeSel = select({
-    label: 'Mode', key: 'mode', value: 'parallel',
+    label: T('Mode', 'Mode'), key: 'mode', value: 'parallel',
     options: [
-      { value: 'parallel', label: 'Parallel lines and a transversal' },
-      { value: 'intersect', label: 'Two crossing lines' },
-      { value: 'triangle', label: 'Triangle: angles add to 180°' },
-      { value: 'quiz', label: 'Quiz: find the unknown angle' },
+      { value: 'parallel', label: T('Parallel lines and a transversal', 'Garis sejajar dan transversal') },
+      { value: 'intersect', label: T('Two crossing lines', 'Dua garis berpotongan') },
+      { value: 'triangle', label: T('Triangle: angles add to 180°', 'Segitiga: jumlah sudut 180°') },
+      { value: 'quiz', label: T('Quiz: find the unknown angle', 'Kuis: cari sudut yang belum diketahui') },
     ],
     onChange: (v) => { state.mode = v; if (v === 'quiz') newQuiz(); if (v !== 'quiz') { state.tearTarget = 0; } syncVisibility(); },
   });
   const relSel = select({
-    label: 'Highlight pair', key: 'pair', value: 'corresponding',
+    label: T('Highlight pair', 'Soroti pasangan'), key: 'pair', value: 'corresponding',
     options: [
-      { value: 'corresponding', label: 'Corresponding (equal)' },
-      { value: 'altInt', label: 'Alternate interior (equal)' },
-      { value: 'altExt', label: 'Alternate exterior (equal)' },
-      { value: 'coInt', label: 'Co-interior (add to 180°)' },
-      { value: 'vertical', label: 'Vertical (equal)' },
-      { value: 'linear', label: 'Straight line (add to 180°)' },
+      { value: 'corresponding', label: T('Corresponding (equal)', 'Sehadap (sama besar)') },
+      { value: 'altInt', label: T('Alternate interior (equal)', 'Dalam berseberangan (sama besar)') },
+      { value: 'altExt', label: T('Alternate exterior (equal)', 'Luar berseberangan (sama besar)') },
+      { value: 'coInt', label: T('Co-interior (add to 180°)', 'Dalam sepihak (berjumlah 180°)') },
+      { value: 'vertical', label: T('Vertical (equal)', 'Bertolak belakang (sama besar)') },
+      { value: 'linear', label: T('Straight line (add to 180°)', 'Berpelurus (berjumlah 180°)') },
     ],
     onChange: (v) => { state.rel = v; state.pairIdx = 0; },
   });
-  const nextPair = button({ label: 'Other pair', onClick: () => { state.pairIdx = (state.pairIdx + 1) % PAIRS[state.rel].pairs.length; } });
-  const tearBtn = button({ label: 'Tear off corners / put back', primary: true, onClick: () => { state.tearTarget = state.tearTarget ? 0 : 1; } });
-  const resetTri = button({ label: 'Reset triangle', onClick: () => { state.tri = { A: { x: 0.28, y: 0.72 }, B: { x: 0.78, y: 0.72 }, C: { x: 0.45, y: 0.3 } }; state.tearTarget = 0; } });
+  const nextPair = button({ label: T('Other pair', 'Pasangan lain'), onClick: () => { state.pairIdx = (state.pairIdx + 1) % PAIRS[state.rel].pairs.length; } });
+  const tearBtn = button({ label: T('Tear off corners / put back', 'Sobek sudut / pasang kembali'), primary: true, onClick: () => { state.tearTarget = state.tearTarget ? 0 : 1; } });
+  const resetTri = button({ label: T('Reset triangle', 'Atur ulang segitiga'), onClick: () => { state.tri = { A: { x: 0.28, y: 0.72 }, B: { x: 0.78, y: 0.72 }, C: { x: 0.45, y: 0.3 } }; state.tearTarget = 0; } });
   const answerInput = document.createElement('input');
   answerInput.type = 'number'; answerInput.min = '0'; answerInput.max = '180'; answerInput.step = '1';
-  answerInput.placeholder = 'degrees'; answerInput.setAttribute('aria-label', 'Your answer in degrees');
+  answerInput.placeholder = T('degrees', 'derajat'); answerInput.setAttribute('aria-label', T('Your answer in degrees', 'Jawabanmu dalam derajat'));
   answerInput.className = 'btn'; answerInput.style.width = '7em';
   answerInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkQuiz(); });
-  const checkBtn = button({ label: 'Check', primary: true, onClick: checkQuiz });
-  const newBtn = button({ label: 'New question', onClick: newQuiz });
+  const checkBtn = button({ label: T('Check', 'Periksa'), primary: true, onClick: checkQuiz });
+  const newBtn = button({ label: T('New question', 'Soal baru'), onClick: newQuiz });
 
   const rowParallel = row(relSel, nextPair);
   const rowTri = row(tearBtn, resetTri);
