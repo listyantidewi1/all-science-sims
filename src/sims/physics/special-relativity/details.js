@@ -14,13 +14,13 @@ export default {
   },
   tryThis: {
     en: [
-      'Set v = 0.60c. γ should read exactly 1.25: the ship clock ticks 12.5 ns while the ground clock ticks 10 ns, and the 10 m rod shrinks to 8.0 m.',
+      'Set v = 0.60c. γ should read exactly 1.25: one tick of the ship clock (10 ns of ship time) takes 12.5 ns of ground time, and the 10 m rod shrinks to 8.0 m.',
       'Slide v from 0 to 0.5c and watch how little γ changes (1.00 to 1.15). Then slide from 0.9c to 0.99c and watch it leap from 2.3 to 7.1.',
       'In the muon scenario at v = 0.99c, compare the two survival bars: about 11% of muons arrive with relativity, essentially none without.',
       'Find the speed at which the rod is contracted to half its proper length. It should be v = 0.866c, where γ = 2.',
     ],
     id: [
-      'Atur v = 0,60c. γ seharusnya tepat 1,25: jam pesawat berdetak 12,5 ns sementara jam tanah berdetak 10 ns, dan batang 10 m menyusut menjadi 8,0 m.',
+      'Atur v = 0,60c. γ seharusnya tepat 1,25: satu detak jam pesawat (10 ns waktu pesawat) memakan 12,5 ns waktu tanah, dan batang 10 m menyusut menjadi 8,0 m.',
       'Geser v dari 0 ke 0,5c dan perhatikan betapa sedikit γ berubah (1,00 ke 1,15). Lalu geser dari 0,9c ke 0,99c dan lihat lonjakannya dari 2,3 ke 7,1.',
       'Pada skenario muon di v = 0,99c, bandingkan dua batang kelangsungan hidup: sekitar 11% muon sampai dengan relativitas, hampir tidak ada tanpa relativitas.',
       'Cari kecepatan saat batang terkontraksi menjadi setengah panjang sejatinya. Seharusnya v = 0,866c, ketika γ = 2.',

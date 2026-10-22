@@ -14,6 +14,11 @@ function fmtHz(v) {
   if (!Number.isFinite(v)) return '—';
   return v >= 1000 ? `${(v / 1000).toPrecision(v >= 10000 ? 3 : 3)} kHz` : `${Math.round(v)} Hz`;
 }
+/** millivolts, 3 significant figures, never in exponent form (1 bit → Δ = 2000 mV). */
+function fmtmV(v) {
+  if (!Number.isFinite(v)) return '—';
+  return Math.abs(v) >= 1000 ? v.toFixed(0) : v.toPrecision(3);
+}
 function fmtBits(v) {
   if (v >= 1e6) return `${(v / 1e6).toPrecision(3)} Mbit/s`;
   if (v >= 1e3) return `${(v / 1e3).toPrecision(3)} kbit/s`;
@@ -71,8 +76,9 @@ export function mount(rootEl) {
   function aliasInfo() {
     const nyq = 2 * fMax();
     const aliased = fs() <= nyq;
-    const m = Math.round(params.f / fs());
-    const fa = Math.abs(params.f - m * fs());
+    const m = Math.round(params.f / fs());                 // for the fundamental (dashed alias curve, sine only)
+    const mMax = Math.round(fMax() / fs());
+    const fa = Math.abs(fMax() - mMax * fs());               // alias of the highest harmonic present
     return { nyq, aliased, fa, sign: Math.sign(params.f - m * fs()) || 1, m };
   }
 
@@ -95,12 +101,18 @@ export function mount(rootEl) {
     // ---- header readouts --------------------------------------------------
     ctx.font = `${fsz}px system-ui, sans-serif`; ctx.textAlign = 'left';
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`f = ${fmtHz(params.f)}  (f_max = ${fmtHz(fMax())})   fs = ${fmtHz(fs())}   n = ${params.bits} bit → ${levels()} ${T('levels', 'tingkat')}, Δ = ${(stepV() * 1000).toPrecision(3)} mV`, 8, lh);
+    const narrow = W < 560;
+    if (narrow) ctx.fillText(`f = ${fmtHz(params.f)} (f_max ${fmtHz(fMax())})  fs = ${fmtHz(fs())}  n = ${params.bits} bit`, 8, lh);
+    else ctx.fillText(`f = ${fmtHz(params.f)}  (f_max = ${fmtHz(fMax())})   fs = ${fmtHz(fs())}   n = ${params.bits} bit → ${levels()} ${T('levels', 'tingkat')}, Δ = ${fmtmV(stepV() * 1000)} mV`, 8, lh);
     ctx.fillStyle = '#fbbf24';
-    ctx.fillText(`${T('bit rate', 'laju bit')} = fs × n = ${fs()} × ${params.bits} = ${fmtBits(fs() * params.bits)}   ${T('max error', 'galat maks')} = ${(maxErr * 1000).toPrecision(3)} mV (Δ/2 = ${(stepV() * 500).toPrecision(3)} mV)`, 8, lh * 2);
+    if (narrow) ctx.fillText(`Δ = ${fmtmV(stepV() * 1000)} mV  ${T('max error', 'galat maks')} ${fmtmV(maxErr * 1000)} mV  ${fmtBits(fs() * params.bits)}`, 8, lh * 2);
+    else ctx.fillText(`${T('bit rate', 'laju bit')} = fs × n = ${fs()} × ${params.bits} = ${fmtBits(fs() * params.bits)}   ${T('max error', 'galat maks')} = ${fmtmV(maxErr * 1000)} mV (Δ/2 = ${fmtmV(stepV() * 500)} mV)`, 8, lh * 2);
     ctx.fillStyle = al.aliased ? '#ef4444' : '#22c55e';
+    const sineSig = params.signal === 'sine';
     ctx.fillText(al.aliased
-      ? T(`ALIASING: fs ≤ 2·f_max = ${fmtHz(al.nyq)} → appears as ${fmtHz(al.fa)}`, `ALIASING: fs ≤ 2·f_maks = ${fmtHz(al.nyq)} → tampak sebagai ${fmtHz(al.fa)}`)
+      ? (sineSig
+        ? T(`ALIASING: fs ≤ 2·f_max = ${fmtHz(al.nyq)} → appears as ${fmtHz(al.fa)}`, `ALIASING: fs ≤ 2·f_maks = ${fmtHz(al.nyq)} → tampak sebagai ${fmtHz(al.fa)}`)
+        : T(`ALIASING: fs ≤ 2·f_max = ${fmtHz(al.nyq)} → the ${fmtHz(fMax())} harmonic appears as ${fmtHz(al.fa)}`, `ALIASING: fs ≤ 2·f_maks = ${fmtHz(al.nyq)} → harmonik ${fmtHz(fMax())} tampak sebagai ${fmtHz(al.fa)}`))
       : T(`Nyquist OK: fs > 2·f_max = ${fmtHz(al.nyq)}`, `Nyquist OK: fs > 2·f_maks = ${fmtHz(al.nyq)}`), 8, lh * 3);
 
     // ---- main plot --------------------------------------------------------
@@ -154,10 +166,13 @@ export function mount(rootEl) {
     // legend
     ctx.textAlign = 'left'; ctx.font = `${fsz * 0.85}px system-ui, sans-serif`;
     let lx = px0 + 6; const ly = py0 + fsz;
+    const legItems = [['#38bdf8', T('analog', 'analog')], ['#fbbf24', T('samples', 'cuplikan')]];
+    if (params.showRecon) legItems.push(['#f97316', T('reconstructed (hold)', 'rekonstruksi (tahan)')]);
+    if (al.aliased && params.signal === 'sine') legItems.push(['#ef4444', T(`alias ${fmtHz(al.fa)}`, `alias ${fmtHz(al.fa)}`)]);
+    const legW = legItems.reduce((w, [, txt]) => w + ctx.measureText(txt).width + 30, 0);
+    ctx.fillStyle = 'rgba(11,18,32,0.8)'; ctx.fillRect(lx - 4, ly - fsz * 0.95, legW, fsz * 1.35);
     const leg = (color, txt) => { ctx.fillStyle = color; ctx.fillRect(lx, ly - fsz * 0.55, 10, 3); ctx.fillText(txt, lx + 14, ly); lx += ctx.measureText(txt).width + 30; };
-    leg('#38bdf8', T('analog', 'analog')); leg('#fbbf24', T('samples', 'cuplikan'));
-    if (params.showRecon) leg('#f97316', T('reconstructed (hold)', 'rekonstruksi (tahan)'));
-    if (al.aliased && params.signal === 'sine') leg('#ef4444', T(`alias ${fmtHz(al.fa)}`, `alias ${fmtHz(al.fa)}`));
+    for (const [c, txt] of legItems) leg(c, txt);
 
     // ---- error strip ------------------------------------------------------
     const ey0 = H * 0.65, ey1 = H * 0.76, emid = (ey0 + ey1) / 2;
@@ -176,7 +191,7 @@ export function mount(rootEl) {
     ctx.font = `${fsz * 0.85}px system-ui, sans-serif`; ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'left';
     ctx.fillText(T(`binary codes of the first samples (${params.bits} bit each):`, `kode biner cuplikan pertama (masing-masing ${params.bits} bit):`), px0, cy - fsz * 0.4);
     ctx.font = `${fsz * 1.05}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-    const cellW = ctx.measureText('0'.repeat(params.bits)).width + fsz * 1.1;
+    const cellW = Math.max(ctx.measureText('0'.repeat(params.bits)).width, fsz * 2.4) + fsz * 1.1;
     const nShow = Math.max(1, Math.min(S.length, Math.floor((px1 - px0) / cellW)));
     for (let i = 0; i < nShow; i++) {
       const s = S[i], x = px0 + i * cellW;
@@ -213,8 +228,8 @@ export function mount(rootEl) {
       { key: 'fmax', label: 'f_max (Hz)', format: (v) => v.toFixed(0) },
       { key: 'fs', label: 'fs (Hz)', format: (v) => v.toFixed(0) },
       { key: 'bits', label: 'bits', format: (v) => v.toFixed(0) },
-      { key: 'step', label: 'Δ (mV)', format: (v) => v.toPrecision(3) },
-      { key: 'maxErr', label: 'max error (mV)', format: (v) => v.toPrecision(3) },
+      { key: 'step', label: 'Δ (mV)', format: fmtmV },
+      { key: 'maxErr', label: 'max error (mV)', format: fmtmV },
       { key: 'bitrate', label: 'bit rate (bit/s)', format: (v) => v.toFixed(0) },
       { key: 'aliased', label: 'aliased?' },
     ],

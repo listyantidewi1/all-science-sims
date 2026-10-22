@@ -76,6 +76,7 @@ export function mount(rootEl) {
   }
   function recompute() {
     if (p.system === 'open-closed' && !isOdd(p.n)) p.n = Math.max(1, p.n - 1);
+    if (p.system !== 'open-closed' && p.n > 5) p.n = 5;      // open–closed offers n up to 9; the others stop at 5
     const d = findExtrema(disp);
     nodes = d.zeros; antinodes = d.peaks;
     if (p.system !== 'string') { const q = findExtrema(press); pNodes = q.zeros; pAntinodes = q.peaks; }
@@ -283,7 +284,8 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fbbf24'; ctx.font = font(fs * 0.85, true); ctx.textAlign = 'right';
     ctx.fillText(`L = ${Lair.toFixed(3)} m`, bx - 8, (top + waterY) / 2 + fs * 0.35);
     // loudness meter
-    const mx = W * 0.66, my0 = H * 0.25, mh = H * 0.55, mw = W * 0.08;
+    const narrow = W < 560;
+    const mx = narrow ? W * 0.55 : W * 0.66, my0 = H * 0.25, mh = H * 0.55, mw = W * 0.08;
     ctx.fillStyle = '#1e293b'; ctx.fillRect(mx, my0, mw, mh);
     const g = ctx.createLinearGradient(0, my0 + mh, 0, my0);
     g.addColorStop(0, '#22c55e'); g.addColorStop(0.6, '#fbbf24'); g.addColorStop(1, '#ef4444');
@@ -294,7 +296,7 @@ export function mount(rootEl) {
     ctx.fillText(`${Math.round(response * 100)} %`, mx + mw / 2, my0 + mh + fs * 1.2);
     ctx.textAlign = 'left';
     ctx.font = font(fs * 0.85);
-    const ix = W * 0.78;
+    const ix = narrow ? W * 0.67 : W * 0.78;
     if (response > 0.6) {
       ctx.fillStyle = '#4ade80'; ctx.font = font(fs, true);
       ctx.fillText(T('Resonance!', 'Resonansi!'), ix, H * 0.3);
@@ -324,11 +326,7 @@ export function mount(rootEl) {
   // ---- controls ------------------------------------------------------
   const sysSel = select({
     label: 'System', key: 'system', value: p.system,
-    options: [
-      { value: 'open-open', label: 'Open–open pipe' },
-      { value: 'open-closed', label: 'Open–closed pipe' },
-      { value: 'string', label: 'String (fixed ends)' },
-    ],
+    options: Object.keys(SYSTEMS).map((k) => ({ value: k, label: SYSTEMS[k][getLocale() === 'id' ? 'id' : 'en'] })),
     onChange: (v) => { p.system = v; recompute(); updateVisibility(); },
   });
   const lenS = slider({ label: 'Length L (m)', key: 'L', min: 0.2, max: 2.0, step: 0.01, value: p.L, format: (v) => v.toFixed(2), onInput: (v) => { p.L = v; recompute(); } });

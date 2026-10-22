@@ -120,7 +120,8 @@ export function mount(rootEl) {
       }
     }
     // normal vector and angle label
-    const nTip = project(cx, cy, 0, half * 0.9 * c, -half * 0.9 * s);
+    // normal n̂ makes angle θ with B (which points down on screen): θ = 0 → n̂ ∥ B, Φ = +NBA
+    const nTip = project(cx, cy, 0, -half * 0.9 * c, half * 0.9 * s);
     drawArrow(ctx, cx, cy, nTip.x, nTip.y, 'rgba(56,189,248,0.9)', 1.5);
     ctx.fillStyle = '#38bdf8'; ctx.font = `${fs * 0.85}px system-ui, sans-serif`; ctx.textAlign = 'left';
     ctx.fillText(`θ = ${((th * 180 / Math.PI) % 360).toFixed(0)}°`, nTip.x + 6, nTip.y);
@@ -140,8 +141,10 @@ export function mount(rootEl) {
       ctx.beginPath(); ctx.ellipse(rx, cy, ringR * 0.45, ringR, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       // split: a gap rotating with the coil
       ctx.strokeStyle = '#0b1220'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.ellipse(rx, cy, ringR * 0.45, ringR, 0, th - 0.15, th + 0.15); ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(rx, cy, ringR * 0.45, ringR, 0, th + Math.PI - 0.15, th + Math.PI + 0.15); ctx.stroke();
+      // gaps sit under the top/bottom brushes at θ = 0 and θ = π, exactly when ε changes sign
+      const gapA = th + Math.PI / 2;
+      ctx.beginPath(); ctx.ellipse(rx, cy, ringR * 0.45, ringR, 0, gapA - 0.15, gapA + 0.15); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(rx, cy, ringR * 0.45, ringR, 0, gapA + Math.PI - 0.15, gapA + Math.PI + 0.15); ctx.stroke();
       ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'center'; ctx.font = `${fs * 0.8}px system-ui, sans-serif`;
       ctx.fillText(T('commutator', 'komutator'), rx, cy - ringR - fs * 0.6);
     }
@@ -223,17 +226,25 @@ export function mount(rootEl) {
     drawGenerator(ctx, W, H, fs);
 
     const gx = W * 0.6, gw = W * 0.37;
-    const gy1 = H * 0.08, gh = H * 0.27;
+    const narrow = gw < 260;
+    const gy1 = H * 0.08, gh = narrow ? H * 0.22 : H * 0.27;
     drawGraph(ctx, gx, gy1, gw, gh, flux, fluxMax(), '#38bdf8', 'Φ = NBA cos ωt', 'Wb', fs, false);
-    const gy2 = H * 0.47;
+    const gy2 = narrow ? H * 0.4 : H * 0.47;
     drawGraph(ctx, gx, gy2, gw, gh, emfOut, emfPeak(), '#fbbf24', params.dc ? 'ε = |NBAω sin ωt|' : 'ε = NBAω sin ωt', 'V', fs, params.dc);
 
     // readouts
     ctx.textAlign = 'left'; ctx.font = `${fs}px system-ui, sans-serif`;
-    let ty = H * 0.47 + gh + fs * 2.4;
+    let ty = gy2 + gh + fs * 2.4;
     const line = (txt, color = '#e2e8f0') => { ctx.fillStyle = color; ctx.fillText(txt, gx, ty); ty += lh; };
-    line(`ω = 2πf = ${fmt(omega(), 3)} rad/s   Φ_max = NBA = ${fmtSI(fluxMax(), 'Wb')}`, '#94a3b8');
-    line(`ε_peak = NBAω = ${fmt(emfPeak(), 3)} V   ε_rms = ${fmt(emfPeak() / Math.SQRT2, 3)} V`, '#fbbf24');
+    if (narrow) {
+      line(`ω = 2πf = ${fmt(omega(), 3)} rad/s`, '#94a3b8');
+      line(`Φ_max = NBA = ${fmtSI(fluxMax(), 'Wb')}`, '#94a3b8');
+      line(`ε_peak = NBAω = ${fmt(emfPeak(), 3)} V`, '#fbbf24');
+      line(`ε_rms = ${fmt(emfPeak() / Math.SQRT2, 3)} V`, '#fbbf24');
+    } else {
+      line(`ω = 2πf = ${fmt(omega(), 3)} rad/s   Φ_max = NBA = ${fmtSI(fluxMax(), 'Wb')}`, '#94a3b8');
+      line(`ε_peak = NBAω = ${fmt(emfPeak(), 3)} V   ε_rms = ${fmt(emfPeak() / Math.SQRT2, 3)} V`, '#fbbf24');
+    }
     const sm = slowmo();
     if (ty < H - 4) line(sm < 0.999 ? T(`slow motion ×${(1 / sm).toFixed(0)}`, `gerak lambat ×${(1 / sm).toFixed(0)}`) : T('real time', 'waktu nyata'), '#64748b');
     ctx.textAlign = 'left';

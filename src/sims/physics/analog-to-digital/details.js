@@ -16,7 +16,7 @@ export default {
     en: [
       'Sine, f = 1000 Hz, fs = 8000 Hz, 3 bits. Count the levels on the staircase (8) and read the binary codes of the first samples. Raise the bits to 8: the staircase hugs the curve and the max error drops to 3.9 mV.',
       'Keep f = 1000 Hz and slide fs down past 2000 Hz. Below the Nyquist rate a dashed "alias" sine appears that passes through every sample. At fs = 1100 Hz it is a 100 Hz wave.',
-      'Set fs = 44 100 Hz and 16 bits is CD quality; our sliders stop at 8 bits and 32 kHz, so try fs = 8000 Hz and 8 bits, the classic telephone standard: bit rate 64 kbit/s.',
+      'CD quality is fs = 44 100 Hz with 16 bits; our sliders stop at 8 bits and 32 kHz, so try fs = 8000 Hz and 8 bits, the classic telephone standard: bit rate 64 kbit/s.',
       'Switch to the voice-like signal (harmonics up to 3f). The Nyquist rate is now 6f, not 2f: find the fs at which the staircase stops following the fast wiggles.',
     ],
     id: [

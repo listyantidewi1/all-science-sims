@@ -90,8 +90,7 @@ export function mount(rootEl) {
       const travel = w * 0.9;
       cx = x + w * 0.1 + ((vVis * st.t) % Math.max(1, travel));
       // zigzag path for the current tick (from the last tick start)
-      const tickStartT = st.t - (tau % TICK_VIS) * g;
-      const xs = x + w * 0.1 + ((vVis * tickStartT) % Math.max(1, travel));
+      const xs = cx - vVis * (tau % TICK_VIS) * g;         // where this tick started
       const xMid = xs + (vVis * TICK_VIS * g) / 2, xEnd = xs + vVis * TICK_VIS * g;
       ctx.strokeStyle = 'rgba(251,191,36,0.35)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
       ctx.beginPath(); ctx.moveTo(xs, bot); ctx.lineTo(xMid, top); ctx.lineTo(xEnd, bot); ctx.stroke(); ctx.setLineDash([]);
@@ -128,16 +127,21 @@ export function mount(rootEl) {
     ctx.restore();
     // readouts
     const ticks = Math.floor(tau / TICK_VIS);
+    const narrow = w < 260;
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.85); ctx.textAlign = 'left';
     const lx = x + fs * 0.6;
     if (ground) {
       ctx.fillText(T(`ground time: ${(st.t / TICK_VIS * T0_NS).toFixed(1)} ns`, `waktu tanah: ${(st.t / TICK_VIS * T0_NS).toFixed(1)} ns`), lx, y + h * 0.96);
       ctx.fillStyle = '#fbbf24';
-      ctx.fillText(T(`ship clock: ${ticks} ticks, Δt = γ·Δt₀ = ${(g * T0_NS).toFixed(2)} ns`, `jam pesawat: ${ticks} detak, Δt = γ·Δt₀ = ${(g * T0_NS).toFixed(2)} ns`), lx, y + h * 0.96 - fs * 1.1);
+      ctx.fillText(narrow
+        ? T(`${ticks} ticks, Δt = γΔt₀ = ${(g * T0_NS).toFixed(2)} ns`, `${ticks} detak, Δt = γΔt₀ = ${(g * T0_NS).toFixed(2)} ns`)
+        : T(`ship clock: ${ticks} ticks, Δt = γ·Δt₀ = ${(g * T0_NS).toFixed(2)} ns`, `jam pesawat: ${ticks} detak, Δt = γ·Δt₀ = ${(g * T0_NS).toFixed(2)} ns`), lx, y + h * 0.96 - fs * 1.1);
     } else {
       ctx.fillText(T(`ship time: ${(tau / TICK_VIS * T0_NS).toFixed(1)} ns`, `waktu pesawat: ${(tau / TICK_VIS * T0_NS).toFixed(1)} ns`), lx, y + h * 0.96);
       ctx.fillStyle = '#fbbf24';
-      ctx.fillText(T(`${ticks} ticks, Δt₀ = 2h/c = ${T0_NS.toFixed(2)} ns`, `${ticks} detak, Δt₀ = 2h/c = ${T0_NS.toFixed(2)} ns`), lx, y + h * 0.96 - fs * 1.1);
+      ctx.fillText(narrow
+        ? T(`${ticks} ticks, Δt₀ = ${T0_NS.toFixed(2)} ns`, `${ticks} detak, Δt₀ = ${T0_NS.toFixed(2)} ns`)
+        : T(`${ticks} ticks, Δt₀ = 2h/c = ${T0_NS.toFixed(2)} ns`, `${ticks} detak, Δt₀ = 2h/c = ${T0_NS.toFixed(2)} ns`), lx, y + h * 0.96 - fs * 1.1);
     }
   }
 
@@ -146,7 +150,9 @@ export function mount(rootEl) {
     drawClockPanel(ctx, W * 0.03, py, pw, ph, false);
     drawClockPanel(ctx, W * 0.53, py, pw, ph, true);
     ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.03); ctx.textAlign = 'left';
-    ctx.fillText(T('Same light pulse, same speed c, longer path → the moving clock ticks slower: Δt = γΔt₀', 'Pulsa cahaya yang sama, laju c yang sama, lintasan lebih panjang → jam yang bergerak berdetak lebih lambat: Δt = γΔt₀'), W * 0.03, H * 0.80);
+    ctx.fillText(W < 560
+      ? T('Same c, longer path → moving clock ticks slower: Δt = γΔt₀', 'c sama, lintasan lebih panjang → jam bergerak lebih lambat: Δt = γΔt₀')
+      : T('Same light pulse, same speed c, longer path → the moving clock ticks slower: Δt = γΔt₀', 'Pulsa cahaya yang sama, laju c yang sama, lintasan lebih panjang → jam yang bergerak berdetak lebih lambat: Δt = γΔt₀'), W * 0.03, H * 0.79);
   }
 
   // ---- scene 2: length contraction -------------------------------------
@@ -223,23 +229,25 @@ export function mount(rootEl) {
     ctx.fillStyle = '#f472b6'; ctx.font = font(fs * 0.8, true);
     ctx.fillText('μ⁻', cx + W * 0.012, my - 6);
     // text column
-    const tx = W * 0.34, lh = fs * 1.5;
+    const narrow = W < 560;
+    const tx = narrow ? W * 0.3 : W * 0.34, lh = fs * 1.5;
+    const rangeRel = (beta * C * g * MUON_TAU * 1e-6 / 1e3).toFixed(2), rangeNon = (beta * C * MUON_TAU * 1e-6 / 1e3).toFixed(2);
     let y = H * 0.21;
     ctx.textAlign = 'left';
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.9, true);
     ctx.fillText(T('Ground frame', 'Kerangka tanah'), tx, y); y += lh;
     ctx.font = font(fs * 0.85); ctx.fillStyle = '#cbd5e1';
-    ctx.fillText(T(`time elapsed t = ${t.toFixed(1)} μs of ${tFall.toFixed(1)} μs to fall 10 km`, `waktu berlalu t = ${t.toFixed(1)} μs dari ${tFall.toFixed(1)} μs untuk turun 10 km`), tx, y); y += lh;
+    ctx.fillText(narrow ? `t = ${t.toFixed(1)} μs / ${tFall.toFixed(1)} μs (10 km)` : T(`time elapsed t = ${t.toFixed(1)} μs of ${tFall.toFixed(1)} μs to fall 10 km`, `waktu berlalu t = ${t.toFixed(1)} μs dari ${tFall.toFixed(1)} μs untuk turun 10 km`), tx, y); y += lh;
     ctx.fillStyle = '#fbbf24';
-    ctx.fillText(T(`dilated lifetime γτ₀ = ${(g * MUON_TAU).toFixed(1)} μs → mean range vγτ₀ = ${(beta * C * g * MUON_TAU * 1e-6 / 1e3).toFixed(2)} km`, `umur terdilatasi γτ₀ = ${(g * MUON_TAU).toFixed(1)} μs → jangkauan rata-rata vγτ₀ = ${(beta * C * g * MUON_TAU * 1e-6 / 1e3).toFixed(2)} km`), tx, y); y += lh;
+    ctx.fillText(narrow ? `γτ₀ = ${(g * MUON_TAU).toFixed(1)} μs → vγτ₀ = ${rangeRel} km` : T(`dilated lifetime γτ₀ = ${(g * MUON_TAU).toFixed(1)} μs → mean range vγτ₀ = ${rangeRel} km`, `umur terdilatasi γτ₀ = ${(g * MUON_TAU).toFixed(1)} μs → jangkauan rata-rata vγτ₀ = ${rangeRel} km`), tx, y); y += lh;
     ctx.fillStyle = '#94a3b8';
-    ctx.fillText(T(`without relativity: τ₀ = 2.2 μs → range vτ₀ = ${(beta * C * MUON_TAU * 1e-6 / 1e3).toFixed(2)} km`, `tanpa relativitas: τ₀ = 2,2 μs → jangkauan vτ₀ = ${(beta * C * MUON_TAU * 1e-6 / 1e3).toFixed(2)} km`), tx, y); y += lh * 1.2;
+    ctx.fillText(narrow ? `τ₀ = 2.2 μs → vτ₀ = ${rangeNon} km` : T(`without relativity: τ₀ = 2.2 μs → range vτ₀ = ${rangeNon} km`, `tanpa relativitas: τ₀ = 2,2 μs → jangkauan vτ₀ = ${rangeNon} km`), tx, y); y += lh * 1.2;
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.9, true);
     ctx.fillText(T('Muon frame', 'Kerangka muon'), tx, y); y += lh;
     ctx.font = font(fs * 0.85); ctx.fillStyle = '#cbd5e1';
-    ctx.fillText(T(`atmosphere contracted to 10 km/γ = ${(MUON_ALT / g).toFixed(2)} km; proper time to pass it: ${(tFall / g).toFixed(1)} μs`, `atmosfer terkontraksi menjadi 10 km/γ = ${(MUON_ALT / g).toFixed(2)} km; waktu sejati melewatinya: ${(tFall / g).toFixed(1)} μs`), tx, y); y += lh * 1.3;
+    ctx.fillText(narrow ? `10 km/γ = ${(MUON_ALT / g).toFixed(2)} km, τ = ${(tFall / g).toFixed(1)} μs` : T(`atmosphere contracted to 10 km/γ = ${(MUON_ALT / g).toFixed(2)} km; proper time to pass it: ${(tFall / g).toFixed(1)} μs`, `atmosfer terkontraksi menjadi 10 km/γ = ${(MUON_ALT / g).toFixed(2)} km; waktu sejati melewatinya: ${(tFall / g).toFixed(1)} μs`), tx, y); y += lh * 1.3;
     // survival bars
-    const bx = tx, bw = W * 0.55, bh = fs * 0.9;
+    const bx = tx, bw = narrow ? W * 0.97 - tx : W * 0.55, bh = fs * 0.9;
     const bar = (label, frac, color) => {
       ctx.fillStyle = '#1e293b'; ctx.fillRect(bx, y, bw, bh);
       ctx.fillStyle = color; ctx.fillRect(bx, y, bw * clamp(frac, 0, 1), bh);
@@ -250,11 +258,13 @@ export function mount(rootEl) {
     };
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.9, true);
     ctx.fillText(T('Surviving muons so far', 'Muon yang bertahan sejauh ini'), tx, y); y += lh * 0.9;
-    bar(T('with relativity, exp(−t/γτ₀)', 'dengan relativitas, exp(−t/γτ₀)'), survRel, '#22c55e');
-    bar(T('without relativity, exp(−t/τ₀)', 'tanpa relativitas, exp(−t/τ₀)'), survNon, '#ef4444');
+    bar(narrow ? 'exp(−t/γτ₀)' : T('with relativity, exp(−t/γτ₀)', 'dengan relativitas, exp(−t/γτ₀)'), survRel, '#22c55e');
+    bar(narrow ? 'exp(−t/τ₀)' : T('without relativity, exp(−t/τ₀)', 'tanpa relativitas, exp(−t/τ₀)'), survNon, '#ef4444');
     if (st.muonT >= tFall) {
       ctx.fillStyle = '#4ade80'; ctx.font = font(fs * 0.9, true);
-      ctx.fillText(T(`Reached the ground: ${(survRel * 100).toFixed(1)} % arrive (relativity) vs ${survNon.toExponential(1)} (classical)`, `Mencapai tanah: ${(survRel * 100).toFixed(1)} % tiba (relativitas) vs ${survNon.toExponential(1)} (klasik)`), tx, y + fs * 0.4);
+      ctx.fillText(narrow
+        ? T(`Ground: ${(survRel * 100).toFixed(1)} % vs ${survNon.toExponential(1)}`, `Tanah: ${(survRel * 100).toFixed(1)} % vs ${survNon.toExponential(1)}`)
+        : T(`Reached the ground: ${(survRel * 100).toFixed(1)} % arrive (relativity) vs ${survNon.toExponential(1)} (classical)`, `Mencapai tanah: ${(survRel * 100).toFixed(1)} % tiba (relativitas) vs ${survNon.toExponential(1)} (klasik)`), tx, y + fs * 0.4);
     }
   }
 
@@ -267,8 +277,8 @@ export function mount(rootEl) {
     else if (p.scene === 'rod') drawRodScene(ctx, W, H);
     else drawMuonScene(ctx, W, H);
     const gw = W * 0.22, gh = H * 0.3;
-    if (p.scene === 'clock') drawGammaGraph(ctx, W * 0.03, H * 0.84 - gh * 0.45, gw * 1.0, gh * 0.5);
-    else drawGammaGraph(ctx, W * 0.75, H * 0.2, gw, gh * 1.2);
+    if (p.scene === 'rod') drawGammaGraph(ctx, W * 0.75, H * 0.2, gw, gh * 1.2);
+    else drawGammaGraph(ctx, W * 0.76, H * 0.745, W * 0.21, H * 0.175);
     // formulas strip
     ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.028); ctx.textAlign = 'right';
     ctx.fillText(`Δt = γΔt₀ = ${fmt(gamma() * T0_NS, 2)} ns      L = L₀/γ = ${fmt(p.L0 / gamma(), 2)} m`, W * 0.97, H * 0.96);

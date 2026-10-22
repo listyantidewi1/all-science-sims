@@ -16,13 +16,13 @@ export default {
     en: [
       'Set A = 100 cm², d = 1.0 mm and air. Check that C ≈ 88.5 pF. Halve the gap: does C double?',
       'Keep A and d fixed and switch the dielectric from air to water (κ ≈ 80). C and Q jump 80 times, but the field lines do not change. Why?',
-      'With 200 V across a 0.1 mm air gap, E = 2 × 10⁶ V/m. Push d down a little further: the sim warns when E passes the 3 × 10⁶ V/m breakdown field of air.',
+      'With 200 V across a 0.1 mm air gap, E = 2 × 10⁶ V/m. Raise the voltage past 300 V: the sim warns when E passes the 3 × 10⁶ V/m breakdown field of air.',
       'Switch on RC mode with R = 1 MΩ and C ≈ 88.5 pF. Read τ from the graph (where V reaches 63% of V₀) and compare it with R × C = 88.5 μs.',
     ],
     id: [
       'Atur A = 100 cm², d = 1,0 mm, dan udara. Periksa bahwa C ≈ 88,5 pF. Perkecil celah menjadi setengah: apakah C menjadi dua kali lipat?',
       'Pertahankan A dan d, lalu ganti dielektrik dari udara ke air (κ ≈ 80). C dan Q melonjak 80 kali, tetapi garis medannya tidak berubah. Mengapa?',
-      'Dengan 200 V pada celah udara 0,1 mm, E = 2 × 10⁶ V/m. Perkecil d sedikit lagi: simulasi memberi peringatan saat E melewati medan tembus udara 3 × 10⁶ V/m.',
+      'Dengan 200 V pada celah udara 0,1 mm, E = 2 × 10⁶ V/m. Naikkan tegangan melewati 300 V: simulasi memberi peringatan saat E melewati medan tembus udara 3 × 10⁶ V/m.',
       'Nyalakan mode RC dengan R = 1 MΩ dan C ≈ 88,5 pF. Baca τ dari grafik (saat V mencapai 63% dari V₀) dan bandingkan dengan R × C = 88,5 μs.',
     ],
   },

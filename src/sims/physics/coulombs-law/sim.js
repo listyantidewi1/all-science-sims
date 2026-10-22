@@ -54,6 +54,7 @@ export function mount(rootEl) {
   function fmtF(F) {
     const a = Math.abs(F);
     if (!Number.isFinite(a)) return '—';
+    if (a === 0) return '0 N';
     if (a >= 1000) return (F / 1000).toPrecision(3) + ' kN';
     if (a >= 1) return F.toPrecision(3) + ' N';
     if (a >= 1e-3) return (F * 1e3).toPrecision(3) + ' mN';
@@ -70,7 +71,7 @@ export function mount(rootEl) {
     const toX = (xm) => pad + xm * pxm;
     const toY = (ym) => lineY - ym * pxm;
     const rad = clamp(W * 0.022, 8, 18);
-    return { W, H, stageH, pad, pxm, lineY, toX, toY, rad, plot: { x: W * 0.08, y: stageH + H * 0.06, w: W * 0.88, h: H * 0.44 - H * 0.12 } };
+    return { W, H, stageH, pad, pxm, lineY, toX, toY, rad, plot: { x: Math.max(W * 0.08, 56), y: stageH + H * 0.06, w: W - Math.max(W * 0.08, 56) - W * 0.04, h: H * 0.44 - H * 0.12 } };
   }
 
   // ---- drawing -----------------------------------------------------------
@@ -242,7 +243,7 @@ export function mount(rootEl) {
     }
     // live marker
     const lx = X(c.r), ly = Y(c.F);
-    if (ly > p.y - 4) { ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(lx, ly, 6, 0, Math.PI * 2); ctx.stroke(); }
+    if (c.F !== 0 && ly > p.y - 4) { ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(lx, ly, 6, 0, Math.PI * 2); ctx.stroke(); }
     if (rows.length === 0) {
       ctx.fillStyle = '#64748b'; ctx.textAlign = 'center'; ctx.font = `${fs * 0.9}px system-ui, sans-serif`;
       ctx.fillText(T('Record measurements in the lab panel to plot points here', 'Catat pengukuran di panel lab untuk menggambar titik di sini'), p.x + p.w / 2, p.y + p.h * 0.5);

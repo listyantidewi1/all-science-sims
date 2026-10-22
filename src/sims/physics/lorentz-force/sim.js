@@ -8,10 +8,11 @@ const U_KG = 1.6605e-27;       // kg per atomic mass unit
 const M_E = 9.109e-31;
 const COLORS = ['#fbbf24', '#38bdf8', '#a78bfa', '#f472b6', '#4ade80'];
 const PRESETS = [
-  { id: 'electron', label: { en: 'Electron e⁻', id: 'Elektron e⁻' }, parts: [{ name: 'e⁻', q: -1, m: M_E }], v: 1e7, B: 1e-3 },
-  { id: 'proton', label: { en: 'Proton p⁺', id: 'Proton p⁺' }, parts: [{ name: 'p⁺', q: 1, m: 1.673e-27 }], v: 1e5, B: 0.1 },
-  { id: 'alpha', label: { en: 'Alpha particle α (2e, 4u)', id: 'Partikel alfa α (2e, 4u)' }, parts: [{ name: 'α', q: 2, m: 6.645e-27 }], v: 1e5, B: 0.1 },
-  { id: 'custom', label: { en: 'Custom q and m', id: 'q dan m buatan sendiri' }, parts: null, v: 1e5, B: 0.1 },
+  // Single-particle presets change only the particle; v and B stay as set (so radii can be compared at equal v, B).
+  { id: 'electron', label: { en: 'Electron e⁻', id: 'Elektron e⁻' }, parts: [{ name: 'e⁻', q: -1, m: M_E }] },
+  { id: 'proton', label: { en: 'Proton p⁺', id: 'Proton p⁺' }, parts: [{ name: 'p⁺', q: 1, m: 1.673e-27 }] },
+  { id: 'alpha', label: { en: 'Alpha particle α (2e, 4u)', id: 'Partikel alfa α (2e, 4u)' }, parts: [{ name: 'α', q: 2, m: 6.645e-27 }] },
+  { id: 'custom', label: { en: 'Custom q and m', id: 'q dan m buatan sendiri' }, parts: null },
   { id: 'ms-ne', label: { en: 'Mass spectrometer: Ne-20, Ne-21, Ne-22', id: 'Spektrometer massa: Ne-20, Ne-21, Ne-22' }, parts: [{ name: '²⁰Ne⁺', q: 1, m: 19.992 * U_KG }, { name: '²¹Ne⁺', q: 1, m: 20.994 * U_KG }, { name: '²²Ne⁺', q: 1, m: 21.991 * U_KG }], v: 1e5, B: 0.5, selector: true },
   { id: 'ms-u', label: { en: 'Mass spectrometer: U-235, U-238', id: 'Spektrometer massa: U-235, U-238' }, parts: [{ name: '²³⁵U⁺', q: 1, m: 235.04 * U_KG }, { name: '²³⁸U⁺', q: 1, m: 238.05 * U_KG }], v: 1e5, B: 0.5, selector: true },
 ];
@@ -21,7 +22,11 @@ function fmtSI(v, unit, digits = 3) {
   const a = Math.abs(v);
   if (a === 0) return `0 ${unit}`;
   const table = [[1e9, 'G'], [1e6, 'M'], [1e3, 'k'], [1, ''], [1e-3, 'm'], [1e-6, 'μ'], [1e-9, 'n'], [1e-12, 'p'], [1e-15, 'f']];
-  for (const [f, p] of table) if (a >= f * 0.9995) return `${(v / f).toPrecision(digits)} ${p}${unit}`;
+  for (const [f, p] of table) if (a >= f * 0.9995) {
+    const n = v / f;
+    // toPrecision would print 100 with 2 digits as "1.0e+2"; never show an exponent here
+    return `${Math.abs(n) >= 10 ** digits ? n.toFixed(0) : n.toPrecision(digits)} ${p}${unit}`;
+  }
   return `${v.toExponential(2)} ${unit}`;
 }
 const sci = (v, d = 2) => (Number.isFinite(v) ? v.toExponential(d).replace('e+', '×10^').replace('e-', '×10^-') : '—');
@@ -228,9 +233,14 @@ export function mount(rootEl) {
       }
       if (p.land) {
         ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(g.bX0 - 2, p.land.py, 4, 0, Math.PI * 2); ctx.fill();
-        ctx.textAlign = 'right'; ctx.font = `${fs * 0.85}px system-ui, sans-serif`;
+        ctx.textAlign = 'left'; ctx.font = `${fs * 0.85}px system-ui, sans-serif`;
         const d = Math.abs(p.land.py - g.y0) / state.scale;
-        ctx.fillText(`${p.name}  2r = ${fmtSI(d, 'm')}`, g.bX0 - 10, p.land.py + fs * 0.35);
+        // label just outside the semicircle: above a landing at the top, below one at the bottom
+        const ly = p.land.py < g.y0 ? p.land.py - 7 : p.land.py + fs * 0.85 + 7;
+        const txt = `${p.name}  2r = ${fmtSI(d, 'm')}`;
+        const tw = ctx.measureText(txt).width;
+        ctx.fillStyle = 'rgba(11,18,32,0.8)'; ctx.fillRect(g.bX0 + 6, ly - fs * 0.85, tw + 8, fs * 1.1);
+        ctx.fillStyle = p.color; ctx.fillText(txt, g.bX0 + 10, ly);
       }
     }
 
@@ -249,9 +259,12 @@ export function mount(rootEl) {
     if (p0) {
       const r = p0.q === 0 ? Infinity : p0.m * v() / (Math.abs(p0.q) * B());
       const period = p0.q === 0 ? Infinity : 2 * Math.PI * p0.m / (Math.abs(p0.q) * B());
-      line(`${p0.name}: q = ${sci(p0.q, 3)} C, m = ${sci(p0.m, 3)} kg`, '#cbd5e1');
+      const narrow = W < 560;
+      if (narrow) { line(`${p0.name}: q = ${sci(p0.q, 3)} C`, '#cbd5e1'); line(`m = ${sci(p0.m, 3)} kg`, '#cbd5e1'); }
+      else line(`${p0.name}: q = ${sci(p0.q, 3)} C, m = ${sci(p0.m, 3)} kg`, '#cbd5e1');
       line(`r = mv/(qB) = ${Number.isFinite(r) ? fmtSI(r, 'm') : T('∞ (no force)', '∞ (tanpa gaya)')}`, '#fbbf24');
-      line(`F = qvB = ${fmtSI(Math.abs(p0.q) * v() * B(), 'N')}   T = 2πm/(qB) = ${fmtSI(period, 's')}`, '#94a3b8');
+      if (narrow) { line(`F = qvB = ${fmtSI(Math.abs(p0.q) * v() * B(), 'N')}`, '#94a3b8'); line(`T = 2πm/(qB) = ${fmtSI(period, 's')}`, '#94a3b8'); }
+      else line(`F = qvB = ${fmtSI(Math.abs(p0.q) * v() * B(), 'N')}   T = 2πm/(qB) = ${fmtSI(period, 's')}`, '#94a3b8');
       if (state.particles.length > 1) {
         for (let i = 1; i < state.particles.length; i++) {
           const p = state.particles[i];
@@ -270,8 +283,8 @@ export function mount(rootEl) {
     onChange: (id) => {
       params.preset = id;
       const p = PRESETS.find((x) => x.id === id);
-      params.logV = Math.log10(p.v); vS.value = params.logV;
-      params.logB = Math.log10(p.B); bS.value = params.logB;
+      if (p.v) { params.logV = Math.log10(p.v); vS.value = params.logV; }
+      if (p.B) { params.logB = Math.log10(p.B); bS.value = params.logB; }
       const custom = id === 'custom';
       qS.el.style.display = custom ? '' : 'none'; mS.el.style.display = custom ? '' : 'none';
       if (p.selector) { params.selector = true; selT.value = true; params.logE = Math.log10(p.v * p.B); eS.value = params.logE; eRow.style.display = ''; }
@@ -311,7 +324,7 @@ export function mount(rootEl) {
       'Keep v = 1×10⁵ m/s. Record r at B = 0.05, 0.10, 0.20, 0.40 T. Is r ∝ 1/B?',
       'At the same v and B, record the proton and the alpha particle. Explain the ratio of radii using q and m.',
       'Record the electron at the same v and B. Compare its radius with the proton: what ratio do you expect?',
-      'Load a mass-spectrometer preset and record each isotope; check that the landing distance on the detector is 2r.',
+      'Load a mass-spectrometer preset and press Record (the table logs the first isotope; the other radii are listed on the canvas). Check that each landing distance on the detector is 2r.',
     ],
     predict: 'If you double the speed of the proton, what happens to the radius? And to the time for one full circle?',
     source: () => {

@@ -43,7 +43,7 @@ export function mount(rootEl) {
     span: 20,      // mm of screen shown
     fringes: 1,    // fringes between the markers
   };
-  const markers = { A: -1.1, B: 1.1 }; // mm
+  const markers = { A: 0, B: 1.1 }; // mm: central and first bright fringe at the default settings
   let dirty = true;
   let cache = { W: 0, canvas: null, I: null };
 
@@ -127,14 +127,16 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs, true);
     ctx.fillText(T("Young's double slit", 'Celah ganda Young'), W * 0.03, H * 0.065);
     ctx.font = font(fs * 0.9); ctx.fillStyle = '#94a3b8';
-    const lamTxt = p.white ? T('white light 400–700 nm', 'cahaya putih 400–700 nm') : `λ = ${p.lambda} nm`;
-    ctx.fillText(`d = ${p.d.toFixed(2)} mm    ${lamTxt}    L = ${p.L.toFixed(2)} m    a = ${p.a} μm`, W * 0.03, H * 0.115);
+    const narrow = W < 560;
+    const lamTxt = p.white ? (narrow ? T('white', 'putih') : T('white light 400–700 nm', 'cahaya putih 400–700 nm')) : `λ = ${p.lambda} nm`;
+    const sep = narrow ? '  ' : '    ';
+    ctx.fillText(`d = ${p.d.toFixed(2)} mm${sep}${lamTxt}${sep}L = ${p.L.toFixed(2)} m` + (narrow ? '' : `${sep}a = ${p.a} μm`), W * 0.03, H * 0.115);
     ctx.textAlign = 'right';
     ctx.fillStyle = '#fbbf24'; ctx.font = font(fs * 0.95, true);
     ctx.fillText(`Δy = λL/d = ${spacingMM().toFixed(3)} mm`, W * 0.97, H * 0.065);
     ctx.fillStyle = '#60a5fa'; ctx.font = font(fs * 0.9);
     const meas = measuredMM();
-    ctx.fillText(T(`markers: |B − A| / ${p.fringes} = ${meas.toFixed(3)} mm`, `penanda: |B − A| / ${p.fringes} = ${meas.toFixed(3)} mm`), W * 0.97, H * 0.115);
+    ctx.fillText(narrow ? `|B − A|/${p.fringes} = ${meas.toFixed(3)} mm` : T(`markers: |B − A| / ${p.fringes} = ${meas.toFixed(3)} mm`, `penanda: |B − A| / ${p.fringes} = ${meas.toFixed(3)} mm`), W * 0.97, H * 0.115);
     ctx.textAlign = 'left';
 
     // screen strip
@@ -213,7 +215,9 @@ export function mount(rootEl) {
       ctx.fillStyle = '#0b1220'; ctx.font = font(fs * 0.7, true); ctx.textAlign = 'center';
       ctx.fillText(id, x, ry + mr * 1.3);
       ctx.fillStyle = colr; ctx.font = font(fs * 0.7);
-      ctx.fillText(`${markers[id].toFixed(2)} mm`, x, ry + mr * 1.6 + fs * 0.9);
+      const isLeft = markers[id] < markers[id === 'A' ? 'B' : 'A'] || (markers.A === markers.B && id === 'A');
+      ctx.textAlign = isLeft ? 'right' : 'left';
+      ctx.fillText(`${markers[id].toFixed(2)} mm`, x + (isLeft ? mr : -mr), ry + mr * 1.6 + fs * 0.9);
     }
     ctx.textAlign = 'left';
   }
@@ -232,7 +236,7 @@ export function mount(rootEl) {
       return best;
     },
     onDrag(id, x) { markers[id] = clamp(xToMm(x), -p.span / 2, p.span / 2); },
-    handles: () => ['A', 'B'].map((id) => ({ id, x: mmToX(markers[id]), y: geo().rulerY, label: `Marker ${id} at ${markers[id].toFixed(2)} mm (drag along the screen)` })),
+    handles: () => ['A', 'B'].map((id) => ({ id, x: mmToX(markers[id]), y: geo().rulerY, label: T(`Marker ${id} at ${markers[id].toFixed(2)} mm (drag along the screen)`, `Penanda ${id} di ${markers[id].toFixed(2)} mm (seret sepanjang layar)`) })),
     cursor: 'default',
     hoverCursor: 'ew-resize',
   });

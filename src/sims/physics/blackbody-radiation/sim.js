@@ -93,7 +93,8 @@ export function mount(rootEl) {
     const Mpeak = exitance(lm, T);
 
     // plot area
-    const gx0 = W * 0.1, gx1 = W * 0.72, gy0 = H * 0.84, gy1 = H * 0.2;
+    const narrow = W < 560;
+    const gx0 = narrow ? W * 0.13 : W * 0.1, gx1 = narrow ? W * 0.58 : W * 0.72, gy0 = H * 0.84, gy1 = H * 0.2;
     // axis mapping
     let lamLo, lamHi, X, Y, yMin, yMax;
     if (p.log) {
@@ -126,7 +127,7 @@ export function mount(rootEl) {
       for (const lam of [0.1e-6, 0.3e-6, 1e-6, 3e-6, 10e-6, 30e-6, 100e-6]) {
         const x = X(lam);
         ctx.beginPath(); ctx.moveTo(x, gy0); ctx.lineTo(x, gy0 + 5); ctx.stroke();
-        ctx.fillText((lam * 1e6).toString(), x, gy0 + fs * 1.1);
+        ctx.fillText(Number((lam * 1e6).toPrecision(3)).toString(), x, gy0 + fs * 1.1);
       }
       ctx.textAlign = 'right';
       for (let e = Math.ceil(yMin); e <= Math.floor(yMax); e++) {
@@ -142,11 +143,13 @@ export function mount(rootEl) {
         ctx.fillText((lam * 1e6).toFixed(lamHi > 20e-6 ? 0 : lamHi > 2e-6 ? 1 : 2), x, gy0 + fs * 1.1);
       }
       ctx.textAlign = 'right';
+      const yExp = Math.floor(Math.log10(Math.max(1e-30, yMax * 1e-6)));
       for (let i = 0; i <= 4; i++) {
         const M = (i / 4) * yMax, y = Y(M);
         ctx.beginPath(); ctx.moveTo(gx0 - 5, y); ctx.lineTo(gx0, y); ctx.stroke();
-        ctx.fillText(i === 0 ? '0' : sci(M * 1e-6, 1), gx0 - 7, y + fs * 0.3);
+        ctx.fillText(i === 0 ? '0' : (M * 1e-6 / Math.pow(10, yExp)).toFixed(1), gx0 - 7, y + fs * 0.3);
       }
+      ctx.textAlign = 'left'; ctx.fillText(`×10^${yExp}`, gx0 + 4, gy1 - fs * 0.4);
     }
     ctx.textAlign = 'center'; ctx.fillStyle = '#cbd5e1'; ctx.font = font(fs * 0.8);
     ctx.fillText('λ (μm)', (gx0 + gx1) / 2, gy0 + fs * 2.3);
@@ -166,10 +169,17 @@ export function mount(rootEl) {
     if (p.compare) {
       ctx.setLineDash([5, 4]); ctx.strokeStyle = 'rgba(148,163,184,0.7)'; ctx.lineWidth = 1.5;
       ctx.beginPath();
-      for (let i = 0; i <= N; i++) { const lam = Math.max(1e-9, lamAt(i)); const y = Y(exitance(lam, 5778)); i ? ctx.lineTo(X(lam), y) : ctx.moveTo(X(lam), y); }
+      let pen = false;
+      for (let i = 0; i <= N; i++) {
+        const lam = Math.max(1e-9, lamAt(i)), Ms = exitance(lam, 5778);
+        const off = p.log ? Math.log10(Math.max(Ms, 1e-300) * 1e-6) > yMax : Ms > yMax;
+        if (off) { pen = false; continue; }
+        const y = Y(Ms);
+        pen ? ctx.lineTo(X(lam), y) : ctx.moveTo(X(lam), y); pen = true;
+      }
       ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.7); ctx.textAlign = 'left';
-      ctx.fillText(T_('dashed: Sun 5778 K', 'putus-putus: Matahari 5778 K'), gx0 + 6, gy1 + fs * 1.2);
+      ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.7); ctx.textAlign = 'right';
+      ctx.fillText(T_('dashed: Sun 5778 K', 'putus-putus: Matahari 5778 K'), gx1 - 6, gy1 + fs * 1.2);
     }
     ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = Math.max(2, W * 0.004);
     ctx.beginPath();
@@ -193,7 +203,7 @@ export function mount(rootEl) {
     ctx.fillText('B(λ,T) = (2hc²/λ⁵) · 1/(e^(hc/λkT) − 1)', W * 0.03, H * 0.125);
 
     // side panel
-    const sx = W * 0.76, sw = W * 0.21;
+    const sx = narrow ? W * 0.62 : W * 0.76, sw = narrow ? W * 0.35 : W * 0.21;
     let sy = H * 0.2;
     const line = (txt, color = '#e2e8f0', bold = false, size = 0.8) => { ctx.fillStyle = color; ctx.font = font(fs * size, bold); ctx.fillText(txt, sx, sy); sy += fs * 1.35; };
     // colour swatch
@@ -210,21 +220,22 @@ export function mount(rootEl) {
     sy = cys + r + fs * 1.6;
     line(T_('Wien peak', 'Puncak Wien'), '#f87171', true, 0.85);
     line(`λ_max = ${(lm * 1e6).toFixed(3)} μm`);
-    line(`b = 2.898 × 10⁻³ m·K`, '#94a3b8', false, 0.7);
+    if (!narrow) line(`b = 2.898 × 10⁻³ m·K`, '#94a3b8', false, 0.7);
     sy += fs * 0.3;
     line(T_('Stefan–Boltzmann', 'Stefan–Boltzmann'), '#fbbf24', true, 0.85);
-    line(`P/A = σT⁴ = ${sci(power(T))} W/m²`);
-    line(`σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴`, '#94a3b8', false, 0.7);
+    line(narrow ? `σT⁴ = ${sci(power(T))} W/m²` : `P/A = σT⁴ = ${sci(power(T))} W/m²`);
+    if (!narrow) line(`σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴`, '#94a3b8', false, 0.7);
     sy += fs * 0.3;
-    line(T_('Fraction in visible band', 'Bagian di pita tampak'), '#a78bfa', true, 0.85);
+    line(narrow ? T_('Visible fraction', 'Bagian tampak') : T_('Fraction in visible band', 'Bagian di pita tampak'), '#a78bfa', true, 0.85);
     const vf = visibleFraction(T);
     line(vf >= 0.0005 ? `${(vf * 100).toFixed(1)} %` : vf > 0 ? `${(vf * 100).toExponential(1)} %` : '0 %');
     ctx.textAlign = 'left';
   }
 
   // ---- controls ---------------------------------------------------------
-  const tS = slider({ label: 'Temperature T (K)', key: 'T', min: 300, max: 10000, step: 10, value: p.T, format: (v) => v.toFixed(0), onInput: (v) => { p.T = v; } });
-  const presetBtns = PRESETS.map((pr) => button({ label: `${pr.en} ${pr.T} K`, onClick: () => { tS.apply(pr.T); } }));
+  const tS = slider({ label: 'Temperature T (K)', key: 'T', min: 200, max: 10000, step: 1, value: p.T, format: (v) => v.toFixed(0), onInput: (v) => { p.T = v; } });
+  const lang = getLocale() === 'id' ? 'id' : 'en';
+  const presetBtns = PRESETS.map((pr) => button({ label: `${pr[lang]} ${pr.T} K`, onClick: () => { tS.apply(pr.T); } }));
   const logT = toggle({ label: 'Log scale (λ 0.1–100 μm)', key: 'log', value: false, onChange: (v) => { p.log = v; } });
   const visT = toggle({ label: 'Show visible band', key: 'visible', value: true, onChange: (v) => { p.visible = v; } });
   const areaT = toggle({ label: 'Shade area = σT⁴', key: 'area', value: true, onChange: (v) => { p.area = v; } });

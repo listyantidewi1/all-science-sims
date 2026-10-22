@@ -17,8 +17,22 @@ function fmtSI(v, unit, digits = 3) {
   const a = Math.abs(v);
   if (a === 0) return `0 ${unit}`;
   const table = [[1e9, 'G'], [1e6, 'M'], [1e3, 'k'], [1, ''], [1e-3, 'm'], [1e-6, 'μ'], [1e-9, 'n'], [1e-12, 'p'], [1e-15, 'f']];
-  for (const [f, p] of table) if (a >= f * 0.9995) return `${(v / f).toPrecision(digits)} ${p}${unit}`;
+  for (const [f, p] of table) if (a >= f * 0.9995) {
+    const n = v / f;
+    // toPrecision would print 100 with 2 digits as "1.0e+2"; never show an exponent here
+    return `${Math.abs(n) >= 10 ** digits ? n.toFixed(0) : n.toPrecision(digits)} ${p}${unit}`;
+  }
   return `${v.toExponential(2)} ${unit}`;
+}
+
+/** 4 significant figures without scientific notation (lab table). */
+function fmtNum(v) {
+  if (!Number.isFinite(v)) return '—';
+  if (v === 0) return '0';
+  const a = Math.abs(v);
+  if (a >= 1e4) return v.toFixed(0);
+  if (a < 1e-3) return v.toExponential(3);
+  return Number(v.toPrecision(4)).toString();
 }
 
 export function mount(rootEl) {
@@ -145,19 +159,21 @@ export function mount(rootEl) {
 
     // circuit wires: battery (and resistor) to the left of the plates
     const wx = leftW * 0.08;
+    // battery half-height: never taller than the wire gap, so the symbol stays between the two wires
+    const bh = Math.min(H * 0.08, (botY - topY) / 2 - 2);
     ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(x0, topY + plateT / 2); ctx.lineTo(wx, topY + plateT / 2); ctx.lineTo(wx, midY - H * 0.08);
-    ctx.moveTo(x0, botY + plateT / 2); ctx.lineTo(wx, botY + plateT / 2); ctx.lineTo(wx, midY + H * 0.08);
+    ctx.moveTo(x0, topY + plateT / 2); ctx.lineTo(wx, topY + plateT / 2); ctx.lineTo(wx, midY - bh);
+    ctx.moveTo(x0, botY + plateT / 2); ctx.lineTo(wx, botY + plateT / 2); ctx.lineTo(wx, midY + bh);
     ctx.stroke();
     // battery symbol
     const bl = H * 0.028;
     ctx.beginPath();
-    ctx.moveTo(wx - bl, midY - H * 0.08); ctx.lineTo(wx + bl, midY - H * 0.08);
-    ctx.moveTo(wx - bl * 0.5, midY - H * 0.08 + 6); ctx.lineTo(wx + bl * 0.5, midY - H * 0.08 + 6);
+    ctx.moveTo(wx - bl, midY - bh); ctx.lineTo(wx + bl, midY - bh);
+    ctx.moveTo(wx - bl * 0.5, midY - bh + 6); ctx.lineTo(wx + bl * 0.5, midY - bh + 6);
     ctx.stroke();
     ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'left'; ctx.font = `${fs * 0.9}px system-ui, sans-serif`;
-    ctx.fillText(`${params.rc ? 'V₀' : 'V'} = ${params.V} V`, wx + bl + 4, midY - H * 0.08 + 4);
+    ctx.fillText(`${params.rc ? 'V₀' : 'V'} = ${params.V} V`, wx + bl + 4, midY + fs * 0.35);
     if (params.rc) {
       // resistor zigzag on the top wire
       const rx0 = wx + (x0 - wx) * 0.35, rx1 = wx + (x0 - wx) * 0.65, ry = topY + plateT / 2;
@@ -172,9 +188,9 @@ export function mount(rootEl) {
       if (rc.running && Math.abs(c.I) > 1e-15) {
         const dir = c.I > 0 ? 1 : -1;
         const ax = wx + (x0 - wx) * 0.85;
-        drawArrow(ctx, ax - dir * 12, ry - 12, ax + dir * 12, ry - 12, '#22c55e', 2);
-        ctx.fillStyle = '#22c55e'; ctx.textAlign = 'left';
-        ctx.fillText(`I = ${fmtSI(c.I, 'A')}`, x0 - (x0 - wx) * 0.15 - 2, ry - 20);
+        drawArrow(ctx, ax - dir * 12, ry + 12, ax + dir * 12, ry + 12, '#22c55e', 2);
+        ctx.fillStyle = '#22c55e'; ctx.textAlign = 'right';
+        ctx.fillText(`I = ${fmtSI(c.I, 'A')}`, x0 - 6, ry + 12 + fs);
       }
     } else {
       // gap between battery and the lower wire (the "connected" state is implied)
@@ -188,12 +204,15 @@ export function mount(rootEl) {
     let ty = lh;
     const line = (txt, color = '#e2e8f0') => { ctx.fillStyle = color; ctx.fillText(txt, rx, ty); ty += lh; };
     line(`C = κε₀A/d = ${fmtSI(c.C, 'F')}`, '#fbbf24');
-    line(`ε₀ = 8.85×10⁻¹² F/m, A = ${c.A.toExponential(2)} m², d = ${c.d.toExponential(1)} m`, '#94a3b8');
+    const narrow = rw < 330;
+    if (narrow) { line(`ε₀ = 8.85×10⁻¹² F/m`, '#94a3b8'); line(`A = ${c.A.toExponential(2)} m², d = ${c.d.toExponential(1)} m`, '#94a3b8'); }
+    else line(`ε₀ = 8.85×10⁻¹² F/m, A = ${c.A.toExponential(2)} m², d = ${c.d.toExponential(1)} m`, '#94a3b8');
     line(`Q = CV = ${fmtSI(c.Q, 'C')}`);
     line(`E = V/d = ${fmtSI(c.E, 'V/m')}` + (c.E > E_BREAK_AIR && params.diel === 'air' ? '  ' + T('⚠ air breaks down!', '⚠ udara tembus!') : ''), c.E > E_BREAK_AIR && params.diel === 'air' ? '#ef4444' : '#e2e8f0');
     line(`U = ½CV² = ${fmtSI(c.U, 'J')}`);
     if (params.rc) {
-      line(`τ = RC = ${fmtSI(c.tau, 's')}   V_C = ${c.Vc.toFixed(2)} V   t = ${fmtSI(rc.t, 's')}`, '#38bdf8');
+      if (narrow) { line(`τ = RC = ${fmtSI(c.tau, 's')}`, '#38bdf8'); line(`V_C = ${c.Vc.toFixed(2)} V   t = ${fmtSI(rc.t, 's')}`, '#38bdf8'); }
+      else line(`τ = RC = ${fmtSI(c.tau, 's')}   V_C = ${c.Vc.toFixed(2)} V   t = ${fmtSI(rc.t, 's')}`, '#38bdf8');
       // graph
       const gx = rx, gy = ty + fs * 0.6, gw = rw, gh = H - gy - fs * 2.6;
       if (gh > 30) drawGraph(ctx, c, gx, gy, gw, gh, fs);
@@ -267,7 +286,7 @@ export function mount(rootEl) {
     options: DIELECTRICS.map((d) => ({ value: d.id, label: d.label[getLocale() === 'id' ? 'id' : 'en'] })),
     onChange: (v) => { params.diel = v; },
   });
-  const vS = slider({ label: 'Battery V (V)', key: 'volts', min: 0, max: 200, step: 1, value: params.V, onInput: (v) => { params.V = v; if (params.rc && rc.running && rc.target > 0) { rc.Vstart = rcVoltage(); rc.target = v; rc.t = 0; } } });
+  const vS = slider({ label: 'Battery V (V)', key: 'volts', min: 0, max: 400, step: 1, value: params.V, onInput: (v) => { params.V = v; if (params.rc && rc.running && rc.target > 0) startRC(v); } });
   const rcT = toggle({ label: 'RC charging mode', key: 'rc', value: false, onChange: (v) => { params.rc = v; rcRow.style.display = v ? '' : 'none'; rS.el.style.display = v ? '' : 'none'; resetRC(); } });
   const rS = slider({ label: 'Resistor R', key: 'log-r', min: 3, max: 8, step: 0.1, value: params.logR, format: (v) => fmtSI(10 ** v, 'Ω', 2), onInput: (v) => { params.logR = v; } });
   const chargeB = button({ label: 'Charge', primary: true, onClick: () => { if (params.rc) startRC(params.V); } });
@@ -285,10 +304,10 @@ export function mount(rootEl) {
       { key: 'd', label: 'd (mm)', format: (v) => v.toFixed(1) },
       { key: 'k', label: 'κ', format: (v) => v.toFixed(1) },
       { key: 'V', label: 'V (V)', format: (v) => v.toFixed(0) },
-      { key: 'C', label: 'C (pF)', format: (v) => v.toPrecision(4) },
-      { key: 'Q', label: 'Q (nC)', format: (v) => v.toPrecision(4) },
-      { key: 'U', label: 'U (μJ)', format: (v) => v.toPrecision(4) },
-      { key: 'tau', label: 'τ = RC (μs)', format: (v) => v.toPrecision(4) },
+      { key: 'C', label: 'C (pF)', format: fmtNum },
+      { key: 'Q', label: 'Q (nC)', format: fmtNum },
+      { key: 'U', label: 'U (μJ)', format: fmtNum },
+      { key: 'tau', label: 'τ = RC (μs)', format: fmtNum },
     ],
     procedure: [
       'Air, d = 1.0 mm, V = 100 V. Record C at A = 100, 200, 400 and 800 cm². Is C ∝ A?',

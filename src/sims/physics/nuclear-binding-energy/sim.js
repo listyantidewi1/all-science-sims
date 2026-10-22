@@ -56,9 +56,10 @@ export function mount(rootEl) {
   let anim = 0;   // seconds within the current reaction animation
 
   // ---- curve ------------------------------------------------------------
+  const narrowW = () => cv.width < 560;
   const curveGeo = () => {
     const W = cv.width, H = cv.height;
-    return { W, H, x0: W * 0.09, x1: W * 0.64, y0: H * 0.86, y1: H * 0.16 };
+    return { W, H, x0: narrowW() ? W * 0.12 : W * 0.09, x1: narrowW() ? W * 0.5 : W * 0.64, y0: H * 0.86, y1: H * 0.16 };
   };
   const XA = (A) => { const g = curveGeo(); return g.x0 + (A / 245) * (g.x1 - g.x0); };
   const YB = (be) => { const g = curveGeo(); return g.y0 - (clamp(be, 0, 9.5) / 9.5) * (g.y0 - g.y1); };
@@ -98,7 +99,8 @@ export function mount(rootEl) {
     }
     // selected info panel
     const n = p.selected, BE = bindingMeV(n), dm = BE / U_MEV, N = n.A - n.Z;
-    const sx = W * 0.68, sw = W * 0.29;
+    const narrow = narrowW();
+    const sx = narrow ? W * 0.54 : W * 0.68, sw = narrow ? W * 0.44 : W * 0.29;
     ctx.fillStyle = 'rgba(15,23,42,0.85)'; ctx.fillRect(sx, H * 0.16, sw, H * 0.7);
     ctx.strokeStyle = '#334155'; ctx.strokeRect(sx, H * 0.16, sw, H * 0.7);
     let sy = H * 0.16 + fs * 1.6;
@@ -107,7 +109,7 @@ export function mount(rootEl) {
     line(`${label(n)}${n.name ? ` (${n.name})` : ''}`, '#fbbf24', true, 1.1);
     line(`Z = ${n.Z}   N = ${N}   A = ${n.A}`);
     line(`M_atom = ${n.m.toFixed(6)} u`, '#cbd5e1');
-    line(`Z·m(¹H) + N·m_n = ${(n.Z * M_H + N * M_N).toFixed(6)} u`, '#cbd5e1');
+    line(narrow ? `Σ nucleons = ${(n.Z * M_H + N * M_N).toFixed(6)} u` : `Z·m(¹H) + N·m_n = ${(n.Z * M_H + N * M_N).toFixed(6)} u`, '#cbd5e1');
     line(`Δm = ${dm.toFixed(6)} u`, '#f87171', true);
     line(`BE = Δm·c² = ${BE.toFixed(2)} MeV`, '#fbbf24', true);
     line(`BE/A = ${(BE / n.A).toFixed(3)} MeV`, '#fbbf24', true);
@@ -134,7 +136,8 @@ export function mount(rootEl) {
     const r = REACTIONS[p.reaction], num = reactionNumbers(r), fs = H * 0.032;
     const isFission = r.kind === 'fission';
     const cycle = 5.0, t = anim % cycle;
-    const ax0 = W * 0.03, ax1 = W * 0.55, ay = H * 0.5;
+    const narrow = narrowW();
+    const ax0 = W * 0.03, ax1 = narrow ? W * 0.4 : W * 0.55, ay = H * 0.5;
     const R = H * 0.11, nr = Math.max(3, H * 0.012);
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs, true); ctx.textAlign = 'left';
     ctx.fillText(isFission ? T('Nuclear fission', 'Fisi nuklir') : T('Nuclear fusion', 'Fusi nuklir'), ax0, H * 0.07);
@@ -204,7 +207,7 @@ export function mount(rootEl) {
       }
     }
     // numbers panel
-    const sx = W * 0.6, sw = W * 0.37;
+    const sx = narrow ? W * 0.43 : W * 0.6, sw = narrow ? W * 0.55 : W * 0.37;
     ctx.fillStyle = 'rgba(15,23,42,0.85)'; ctx.fillRect(sx, H * 0.16, sw, H * 0.76);
     ctx.strokeStyle = '#334155'; ctx.strokeRect(sx, H * 0.16, sw, H * 0.76);
     let sy = H * 0.16 + fs * 1.5;
@@ -218,8 +221,8 @@ export function mount(rootEl) {
     line(`total = ${num.mp.toFixed(6)} u`, '#e2e8f0', true);
     sy += fs * 0.3;
     line(`Δm = ${num.dm.toFixed(6)} u`, '#f87171', true, 0.85);
-    line(`E = Δm × 931.494 MeV/u = ${num.E.toFixed(2)} MeV`, '#fbbf24', true, 0.85);
-    line(`E/A = ${num.perA.toFixed(3)} MeV ${T('per nucleon', 'per nukleon')} (A = ${num.A})`, '#fbbf24', false, 0.78);
+    line(narrow ? `E = Δm·c² = ${num.E.toFixed(2)} MeV` : `E = Δm × 931.494 MeV/u = ${num.E.toFixed(2)} MeV`, '#fbbf24', true, 0.85);
+    line(narrow ? `E/A = ${num.perA.toFixed(3)} MeV (A = ${num.A})` : `E/A = ${num.perA.toFixed(3)} MeV ${T('per nucleon', 'per nukleon')} (A = ${num.A})`, '#fbbf24', false, 0.78);
     if (isFission) {
       const perKg = (1000 / 235) * 6.022e23 * num.E * 1e6 * 1.602e-19;
       line(T(`1 kg U-235 → ${perKg.toExponential(2)} J`, `1 kg U-235 → ${perKg.toExponential(2)} J`), '#94a3b8', false, 0.72);
@@ -231,7 +234,7 @@ export function mount(rootEl) {
 
   // ---- chain reaction ---------------------------------------------------
   const chain = { nuclei: [], neutrons: [], frags: [], gen: new Map(), fissions: 0, kHist: [], inited: false, W: 0, H: 0 };
-  const box = () => { const W = cv.width, H = cv.height; return { x: W * 0.05, y: H * 0.17, w: W * 0.6, h: H * 0.74 }; };
+  const box = () => { const W = cv.width, H = cv.height; return { x: W * 0.05, y: H * 0.17, w: narrowW() ? W * 0.5 : W * 0.6, h: H * 0.74 }; };
   const RODS = 5;
   function chainInit() {
     const b = box();
@@ -335,18 +338,19 @@ export function mount(rootEl) {
     const nr = Math.max(2.5, H * 0.007);
     for (const n of chain.neutrons) { ctx.fillStyle = '#e2e8f0'; ctx.beginPath(); ctx.arc(n.x, n.y, nr, 0, Math.PI * 2); ctx.fill(); }
     // side panel
-    const sx = W * 0.68, sw = W * 0.29;
+    const narrow = narrowW();
+    const sx = narrow ? W * 0.58 : W * 0.68, sw = narrow ? W * 0.4 : W * 0.29;
     let sy = H * 0.2;
     const line = (txt, color = '#e2e8f0', bold = false, size = 0.8) => { ctx.fillStyle = color; ctx.font = font(fs * size, bold); ctx.textAlign = 'left'; ctx.fillText(txt, sx, sy); sy += fs * 1.4; };
     const alive = chain.nuclei.filter((n) => n.alive).length;
-    line(T(`control rods inserted: ${Math.round(p.rods * 100)} %`, `batang kendali masuk: ${Math.round(p.rods * 100)} %`), '#cbd5e1');
-    line(T(`free neutrons: ${chain.neutrons.length}`, `neutron bebas: ${chain.neutrons.length}`), '#cbd5e1');
-    line(T(`fissions so far: ${chain.fissions}   fuel left: ${alive}/${chain.nuclei.length}`, `fisi sejauh ini: ${chain.fissions}   bahan bakar tersisa: ${alive}/${chain.nuclei.length}`), '#cbd5e1');
+    line(narrow ? T(`rods: ${Math.round(p.rods * 100)} %`, `batang: ${Math.round(p.rods * 100)} %`) : T(`control rods inserted: ${Math.round(p.rods * 100)} %`, `batang kendali masuk: ${Math.round(p.rods * 100)} %`), '#cbd5e1');
+    line(narrow ? `n: ${chain.neutrons.length}` : T(`free neutrons: ${chain.neutrons.length}`, `neutron bebas: ${chain.neutrons.length}`), '#cbd5e1');
+    line(narrow ? T(`fissions ${chain.fissions}, fuel ${alive}/${chain.nuclei.length}`, `fisi ${chain.fissions}, bahan bakar ${alive}/${chain.nuclei.length}`) : T(`fissions so far: ${chain.fissions}   fuel left: ${alive}/${chain.nuclei.length}`, `fisi sejauh ini: ${chain.fissions}   bahan bakar tersisa: ${alive}/${chain.nuclei.length}`), '#cbd5e1');
     sy += fs * 0.3;
     const k = kFactor();
     const gens = [...chain.gen.keys()].sort((a, b) => a - b);
     line(T('Multiplication factor', 'Faktor multiplikasi'), '#94a3b8', true);
-    line('k = fissions(gen n+1) / fissions(gen n)', '#94a3b8', false, 0.7);
+    line(narrow ? 'k = gen(n+1) / gen(n)' : 'k = fissions(gen n+1) / fissions(gen n)', '#94a3b8', false, 0.7);
     if (k == null) line(T('k = — (fire a neutron)', 'k = — (tembakkan neutron)'), '#fbbf24', true, 1.0);
     else {
       const col = k > 1.1 ? '#f87171' : k < 0.9 ? '#60a5fa' : '#4ade80';
@@ -355,7 +359,7 @@ export function mount(rootEl) {
     }
     sy += fs * 0.3;
     line(T('fissions per generation:', 'fisi per generasi:'), '#94a3b8', false, 0.7);
-    const shown = gens.slice(-8).map((g) => `${g}:${chain.gen.get(g)}`).join('  ');
+    const shown = gens.slice(narrow ? -5 : -8).map((g) => `${g}:${chain.gen.get(g)}`).join('  ');
     line(shown || '—', '#cbd5e1', false, 0.7);
     if (alive === 0) line(T('Fuel exhausted — press Reset fuel.', 'Bahan bakar habis — tekan Reset fuel.'), '#fbbf24', false, 0.75);
   }
