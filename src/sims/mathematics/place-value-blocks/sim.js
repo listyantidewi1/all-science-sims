@@ -63,6 +63,9 @@ export function mount(rootEl) {
         n.digits[p] += 10 + k;
         state.msg = T(`One ${PLACES[q].en.slice(0, -1)} was broken into smaller blocks.`, `Satu ${PLACES[q].id} dipecah menjadi balok yang lebih kecil.`);
         state.msgAt = now;
+      } else {
+        state.msg = T('There is nothing to take away.', 'Tidak ada yang bisa diambil.');
+        state.msgAt = now;
       }
       return;
     }
@@ -175,10 +178,11 @@ export function mount(rootEl) {
       ctx.textAlign = 'center';
       ctx.fillStyle = PLACES[p].color;
       ctx.font = font(Math.max(9, Math.min(g.colW * 0.16, H * 0.045)));
-      ctx.fillText(T(PLACES[p].en, PLACES[p].id), cx, g.top - H * 0.085);
+      // headers sit just above the column box, below the expanded-form line at 0.19 H
+      ctx.fillText(T(PLACES[p].en, PLACES[p].id), cx, g.top - H * 0.062);
       ctx.fillStyle = '#94a3b8';
       ctx.font = font(Math.max(9, Math.min(g.colW * 0.14, H * 0.04)), false);
-      ctx.fillText(fmt(PLACES[p].value), cx, g.top - H * 0.04);
+      ctx.fillText(fmt(PLACES[p].value), cx, g.top - H * 0.025);
 
       // tap targets: + above the blocks, − below
       const tr = tapRects(band, g, p);
@@ -214,7 +218,7 @@ export function mount(rootEl) {
         ctx.fillStyle = '#facc15';
         ctx.font = font(Math.max(10, Math.min(W * 0.022, H * 0.045)));
         ctx.textAlign = 'center';
-        ctx.fillText(T(`10 ${PLACES[p].en} = 1 ${PLACES[p - 1].en.slice(0, -1)}`, `10 ${PLACES[p].id} = 1 ${PLACES[p - 1].id}`), band.x + band.w / 2, g.top - H * 0.13);
+        ctx.fillText(T(`10 ${PLACES[p].en} = 1 ${PLACES[p - 1].en.slice(0, -1)}`, `10 ${PLACES[p].id} = 1 ${PLACES[p - 1].id}`), band.x + band.w / 2, H * 0.19);
       }
 
       // digit below
@@ -230,16 +234,17 @@ export function mount(rootEl) {
     ctx.fillStyle = '#fff';
     ctx.font = font(Math.max(18, Math.min(band.w * 0.12, H * 0.13)));
     ctx.fillText(fmt(v), band.x + band.w / 2, H * 0.14);
-    if (!small) {
+    // expanded form; hidden while a trade label or a message uses the same line
+    if (!small && !n.trade && now - state.msgAt >= 2) {
       const parts = n.digits.map((d, p) => ({ d, p })).filter((o) => o.d > 0);
-      const fs = Math.max(11, Math.min(W * 0.03, H * 0.055));
+      const fs = Math.max(11, Math.min(W * 0.03, H * 0.05));
       ctx.font = font(fs, false);
       let text = parts.length ? parts.map((o) => fmt(o.d * PLACES[o.p].value)).join(' + ') : '0';
       const full = `${fmt(v)} = ${text}`;
       ctx.fillStyle = '#cbd5e1';
-      if (parts.length > 1) ctx.fillText(full, W / 2, H * 0.215);
-      else if (v > 0) ctx.fillText(T(`${fmt(v)} is ${parts[0].d} ${PLACES[parts[0].p].en}`, `${fmt(v)} adalah ${parts[0].d} ${PLACES[parts[0].p].id}`), W / 2, H * 0.215);
-      else ctx.fillText(T('Tap + to add a block', 'Ketuk + untuk menambah balok'), W / 2, H * 0.215);
+      if (parts.length > 1) ctx.fillText(full, W / 2, H * 0.19);
+      else if (v > 0) ctx.fillText(T(`${fmt(v)} is ${parts[0].d} ${PLACES[parts[0].p].en}`, `${fmt(v)} adalah ${parts[0].d} ${PLACES[parts[0].p].id}`), W / 2, H * 0.19);
+      else ctx.fillText(T('Tap + to add a block', 'Ketuk + untuk menambah balok'), W / 2, H * 0.19);
     }
   }
 
@@ -295,7 +300,7 @@ export function mount(rootEl) {
       ctx.fillStyle = '#f97316';
       ctx.font = font(Math.max(11, H * 0.045));
       ctx.textAlign = 'center';
-      ctx.fillText(state.msg, W / 2, H * 0.27);
+      ctx.fillText(state.msg, W / 2, H * 0.19);
     }
     ctx.textAlign = 'left';
   }
@@ -319,7 +324,7 @@ export function mount(rootEl) {
       const g = geom(band);
       const pl = Math.floor((p.x - band.x) / g.colW);
       if (pl < 0 || pl > 3) return;
-      if (state.compare) state.cur = ni;
+      if (state.compare) { state.cur = ni; which.value = String(ni); }
       const tr = tapRects(band, g, pl);
       const hitR = tr.r * 1.6;
       if (Math.hypot(p.x - tr.minus.x, p.y - tr.minus.y) < hitR) add(ni, pl, -1);

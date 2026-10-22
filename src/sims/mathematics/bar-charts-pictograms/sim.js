@@ -110,7 +110,11 @@ export function mount(rootEl) {
       // strokes in groups of five
       const n = state.votes[i];
       const sx = x, sy = cy + rowH * 0.02;
-      const sh = Math.min(rowH * 0.42, fs * 1.6);
+      let sh = Math.min(rowH * 0.42, fs * 1.6);
+      // shrink the strokes so a long tally (up to 20) always fits on one line
+      const need = (sh2) => Math.floor(n / 5) * sh2 * 1.75 + (n % 5) * sh2 * 0.3 + sh2 * 0.4;
+      const avail = w - fs * 1.6;
+      if (need(sh) > avail) sh *= avail / need(sh);
       const gapS = sh * 0.3, gapG = sh * 0.55;
       let px = sx;
       ctx.strokeStyle = it.color; ctx.lineWidth = Math.max(1.5, sh * 0.12); ctx.lineCap = 'round';
@@ -123,9 +127,6 @@ export function mount(rootEl) {
         } else {
           ctx.moveTo(px, sy); ctx.lineTo(px, sy + sh);
           px += gapS;
-        }
-        if (px > x + w - fs * 1.5) { // wrap very long tallies into a second line
-          px = sx; ctx.stroke(); ctx.beginPath();
         }
       }
       ctx.stroke();
@@ -141,7 +142,9 @@ export function mount(rootEl) {
     const its = items();
     const rowH = h / 4;
     const fs = Math.max(9, Math.min(w * 0.08, rowH * 0.28));
-    const icon = Math.min(rowH * 0.5, w / 11);
+    // pictures shrink when a row needs more than 10 of them, so every picture stays visible on one line
+    const maxIcons = Math.max(1, ...state.votes.map((v) => Math.ceil(v / state.perIcon)));
+    const icon = Math.min(rowH * 0.5, w / 11, w / (maxIcons * 1.1 + 0.2));
     const gap = icon * 1.1;
     ctx.textAlign = 'left';
     for (let i = 0; i < 4; i++) {
@@ -160,7 +163,6 @@ export function mount(rootEl) {
         ctx.font = emojiFont(icon * s);
         ctx.fillText(it.icon, px, iy);
         px += gap;
-        if (px > x + w - gap) { px = x; }
       }
       if (half) {
         ctx.save();
@@ -215,8 +217,13 @@ export function mount(rootEl) {
       const bh = (state.shown[i] / maxV) * plotH;
       ctx.fillStyle = it.color;
       ctx.beginPath(); ctx.roundRect(bx, baseY - bh, bw, bh, [4, 4, 0, 0]); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.font = font(fs);
-      if (state.votes[i] > 0) ctx.fillText(String(state.votes[i]), bx + bw / 2, baseY - bh - fs * 0.3);
+      ctx.font = font(fs);
+      if (state.votes[i] > 0) {
+        // a bar that reaches the top of the axis carries its number inside, so it never covers the panel title
+        const inside = bh > plotH - fs * 1.2;
+        ctx.fillStyle = inside ? '#0b1220' : '#fff';
+        ctx.fillText(String(state.votes[i]), bx + bw / 2, inside ? baseY - bh + fs * 1.1 : baseY - bh - fs * 0.3);
+      }
       ctx.fillStyle = '#e2e8f0'; ctx.font = font(fs * 0.85, false);
       const label = name(it);
       ctx.fillText(label.length > 7 && slot < 70 ? label.slice(0, 6) + '.' : label, bx + bw / 2, baseY + fs * 1.1);

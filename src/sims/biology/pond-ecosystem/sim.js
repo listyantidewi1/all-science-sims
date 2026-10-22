@@ -42,17 +42,23 @@ export function mount(rootEl) {
   const seeds = Array.from({ length: 60 }, (_, i) => ({ x: ((i * 0.618) % 1), y: ((i * 0.377 + 0.1) % 1), ph: i * 1.7, dir: i % 2 ? 1 : -1 }));
 
   // --- model (per day) ---------------------------------------------------
+  // Coefficients are tuned so the clean sunny pond settles to a food pyramid of
+  // about 80 algae, 29 water fleas, 12 small fish and 4 big fish, and so that
+  // pollution removes the big fish first (3.9 -> 3.1 -> 2.1 -> 1.1 at 0/10/20/30 %),
+  // a fertiliser spill raises algae while the fish fall, and the big fish return
+  // about 40 days after a dirty pond is cleaned.
   function deriv(sun, temp, pol) {
     const { A, F, S, B } = P;
     const tf = Math.exp(-(((temp - 26) / 10) ** 2));                       // algae like about 26 °C
     const oxy = Math.max(0.05, 1 - 0.5 * pol) * (temp > 30 ? Math.max(0.3, 1 - (temp - 30) / 12) : 1);   // warm or dirty water: less oxygen
+    const oxyF = Math.sqrt(oxy);                                            // tiny water fleas cope better with low oxygen than fish
     const heat = temp > 32 ? (temp - 32) * 0.05 : 0;
     const K = 100 * (1 + 0.6 * pol);                                        // fertiliser feeds algae
     return {
-      dA: A * (0.9 * sun * tf + 0.03) * (1 - A / K) - 0.012 * F * A,
-      dF: F * (0.012 * A * oxy - 0.28 - 0.1 * pol) - 0.015 * S * F,
-      dS: S * (0.012 * F * oxy - 0.22 - 0.1 * pol - heat) - 0.02 * B * S,
-      dB: B * (0.016 * S * oxy - 0.18 - 0.2 * pol - heat),
+      dA: A * (0.9 * sun * tf + 0.03) * (1 - A / K) - 0.0046 * F * A,
+      dF: F * (0.0103 * A * oxyF - 0.48 - 0.1 * pol) - 0.022 * S * F - 0.0028 * F * F,
+      dS: S * (0.0107 * F * oxy - 0.19 - 0.15 * pol - heat) - 0.011 * B * S - 0.0066 * S * S,
+      dB: B * (0.02 * S * oxy - 0.12 - 0.1 * pol - heat) - 0.03 * B * B,
     };
   }
   function step(dt) {
@@ -103,7 +109,7 @@ export function mount(rootEl) {
     // bank
     ctx.fillStyle = '#65a30d'; ctx.fillRect(x, y + h * 0.27, w, h * 0.05);
     // water: blue tinted green by algae and brown by pollution
-    const algae = clamp(P.A / 120, 0, 1);
+    const algae = clamp(P.A / 150, 0, 1);
     const r = Math.round(30 + 70 * pol + 10 * algae), g = Math.round(90 + 90 * algae - 30 * pol), b = Math.round(170 - 110 * algae - 90 * pol);
     const wg = ctx.createLinearGradient(0, y + h * 0.3, 0, y + h);
     wg.addColorStop(0, `rgb(${r},${g},${b})`); wg.addColorStop(1, `rgb(${Math.round(r * 0.5)},${Math.round(g * 0.5)},${Math.round(b * 0.5)})`);
@@ -116,11 +122,11 @@ export function mount(rootEl) {
     }
     ctx.save(); ctx.beginPath(); ctx.rect(x, y + h * 0.3, w, h * 0.7); ctx.clip();
     // algae blobs
-    const nA = Math.round(clamp(P.A / 160, 0, 1) * 40);
+    const nA = Math.round(clamp(P.A / 120, 0, 1) * 40);
     ctx.fillStyle = 'rgba(34,197,94,0.75)';
     for (let i = 0; i < nA; i++) { const s = seeds[i]; ctx.beginPath(); ctx.arc(x + w * s.x, y + h * (0.33 + s.y * 0.62), h * 0.012 + h * 0.01 * Math.sin(now + s.ph), 0, Math.PI * 2); ctx.fill(); }
     // water fleas
-    const nF = Math.round(clamp(P.F / 50, 0, 1) * 25);
+    const nF = Math.round(clamp(P.F / 40, 0, 1) * 25);
     ctx.fillStyle = '#fb923c';
     for (let i = 0; i < nF; i++) { const s = seeds[(i + 20) % 60]; const jx = Math.sin(now * 3 + s.ph) * w * 0.01, jy = Math.cos(now * 2.3 + s.ph) * h * 0.01; ctx.beginPath(); ctx.ellipse(x + w * s.x + jx, y + h * (0.35 + s.y * 0.6) + jy, h * 0.012, h * 0.008, 0, 0, Math.PI * 2); ctx.fill(); }
     // small fish
@@ -135,10 +141,11 @@ export function mount(rootEl) {
   }
   function drawBars(ctx, x, y, w, h) {
     const rows = [
-      { label: T('algae', 'alga'), v: P.A, max: 160, color: '#22c55e', unit: '' },
+      // bar scales shrink down the chain so the bars themselves show the food pyramid
+      { label: T('algae', 'alga'), v: P.A, max: 100, color: '#22c55e', unit: '' },
       { label: T('water fleas', 'kutu air'), v: P.F, max: 60, color: '#fb923c', unit: '' },
       { label: T('small fish', 'ikan kecil'), v: P.S, max: 30, color: '#38bdf8', unit: '' },
-      { label: T('big fish', 'ikan besar'), v: P.B, max: 20, color: '#f43f5e', unit: '' },
+      { label: T('big fish', 'ikan besar'), v: P.B, max: 15, color: '#f43f5e', unit: '' },
     ];
     const rh = h / rows.length;
     rows.forEach((r, i) => {

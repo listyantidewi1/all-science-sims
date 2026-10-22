@@ -115,7 +115,9 @@ export function mount(rootEl) {
   function drawMoney(ctx, list, x, y, maxW, h) {
     // notes as rectangles, coins as circles; overlapping stack if many
     let cx = x;
-    const nw = h * 1.9, step = list.length > 6 ? Math.max(h * 0.5, (maxW - nw) / Math.max(1, list.length - 1)) : nw + 6;
+    const nw = h * 1.9;
+    // spread the notes out, but never wider than maxW (they overlap when there are many)
+    const step = list.length > 1 ? Math.min(nw + 6, Math.max(h * 0.5, (maxW - nw) / (list.length - 1))) : 0;
     for (const m of list) {
       if (m.kind === 'note') {
         ctx.fillStyle = m.c; ctx.beginPath(); ctx.roundRect(cx, y, nw, h, 4); ctx.fill();
@@ -154,16 +156,22 @@ export function mount(rootEl) {
       ctx.fillText(tx(c.it), c.x + c.w / 2, c.y + c.h * 0.7);
       ctx.fillStyle = '#fde68a'; ctx.font = font(c.h * 0.12);
       ctx.fillText(fmt(c.it.price), c.x + c.w / 2, c.y + c.h * 0.83);
-      // need / want tag
+      // need / want tag (pill sized to the word, so KEBUTUHAN fits)
+      ctx.font = font(c.h * 0.09, true);
+      const tagH = c.h * 0.14, tagY = c.y + 6;
+      const needTxt = c.it.need ? T('NEED', 'PERLU') : T('WANT', 'INGIN');   // short words so the pill fits on a small card
+      const needW = Math.min(c.w * 0.6, ctx.measureText(needTxt).width + 10);
       ctx.fillStyle = c.it.need ? '#f97316' : '#a855f7';
-      ctx.beginPath(); ctx.roundRect(c.x + 6, c.y + 6, c.w * 0.42, c.h * 0.14, 6); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.font = font(c.h * 0.09, true); ctx.textAlign = 'center';
-      ctx.fillText(c.it.need ? T('NEED', 'KEBUTUHAN') : T('WANT', 'KEINGINAN'), c.x + 6 + c.w * 0.21, c.y + 6 + c.h * 0.105);
-      // status tag
+      ctx.beginPath(); ctx.roundRect(c.x + 6, tagY, needW, tagH, 6); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+      ctx.fillText(needTxt, c.x + 6 + needW / 2, tagY + tagH * 0.75);
+      // status tag, right-aligned
       if (st !== 'skip') {
+        const stTxt = st === 'buy' ? T('BUY NOW', 'BELI') : T('LATER', 'NANTI');
+        const stW = Math.min(c.w - needW - 18, ctx.measureText(stTxt).width + 10);
         ctx.fillStyle = st === 'buy' ? '#4ade80' : '#60a5fa';
-        ctx.beginPath(); ctx.roundRect(c.x + c.w * 0.54, c.y + 6, c.w * 0.42, c.h * 0.14, 6); ctx.fill();
-        ctx.fillStyle = '#0b1220'; ctx.fillText(st === 'buy' ? T('BUY NOW', 'BELI') : T('LATER', 'NANTI'), c.x + c.w * 0.75, c.y + 6 + c.h * 0.105);
+        ctx.beginPath(); ctx.roundRect(c.x + c.w - 6 - stW, tagY, stW, tagH, 6); ctx.fill();
+        ctx.fillStyle = '#0b1220'; ctx.fillText(stTxt, c.x + c.w - 6 - stW / 2, tagY + tagH * 0.75);
       }
     }
     // totals strip
@@ -179,7 +187,8 @@ export function mount(rootEl) {
     if (spent() > 0 && !over) {
       ctx.fillStyle = '#e2e8f0'; ctx.font = font(H * 0.032);
       ctx.fillText(`${T('pay with', 'bayar dengan')} ${fmt(payNote())} → ${T('change', 'kembalian')} ${fmt(change())}:`, sx + 12, sy + sh * 0.75);
-      drawMoney(ctx, breakdown(change()), sx + sw * 0.55, sy + sh * 0.6, sw * 0.43, sh * 0.3);
+      // the change is laid out in the top-right of the strip, beside the two short total lines
+      drawMoney(ctx, breakdown(change()), sx + sw * 0.52, sy + sh * 0.12, sw * 0.46, sh * 0.3);
     } else if (!over) {
       ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.032);
       ctx.fillText(T('nothing to pay this week', 'tidak ada yang dibayar minggu ini'), sx + 12, sy + sh * 0.75);

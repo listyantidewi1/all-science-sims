@@ -302,17 +302,22 @@ export function mount(rootEl) {
   }
 
   // ---- drawing: explore diagrams --------------------------------------
+  let labelBox = null;   // the explore box; label text is kept inside it so the clip never cuts words
   function label(ctx, text, x, y, tx2, ty, color = '#e2e8f0') {
     ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(tx2, ty); ctx.stroke();
     ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
-    ctx.textAlign = tx2 < x ? 'right' : 'left';
-    ctx.fillText(text, tx2 + (tx2 < x ? -4 : 4), ty + 4);
+    const tw = ctx.measureText(text).width;
+    let sx = tx2 < x ? tx2 - 4 - tw : tx2 + 4;
+    if (labelBox) sx = Math.max(labelBox.x + 6, Math.min(labelBox.x + labelBox.w - 6 - tw, sx));
+    ctx.textAlign = 'left';
+    ctx.fillText(text, sx, ty + 4);
   }
   function drawExplore(ctx, x, y, w, h) {
     const cx = x + w / 2, cy = y + h / 2, u = Math.min(w, h), o = state.organ;
+    labelBox = { x, w };
     ctx.save(); ctx.beginPath(); ctx.roundRect(x, y, w, h, 18); ctx.clip();
     ctx.fillStyle = '#1e293b'; ctx.fillRect(x, y, w, h);
-    ctx.font = font(u * 0.055);
+    ctx.font = font(u * 0.05);
     if (o === 'eye') {
       ctx.fillStyle = '#f8fafc'; ctx.beginPath(); ctx.arc(cx, cy, u * 0.28, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#fb923c'; ctx.beginPath(); ctx.arc(cx, cy, u * 0.26, Math.PI * 0.6, Math.PI * 1.4, true); ctx.arc(cx, cy, u * 0.23, Math.PI * 1.4, Math.PI * 0.6); ctx.fill();   // retina at the back
@@ -325,7 +330,7 @@ export function mount(rootEl) {
       label(ctx, T('lens', 'lensa'), cx - u * 0.14, cy - u * 0.1, cx - u * 0.05, y + u * 0.16);
       label(ctx, T('iris (colour part)', 'iris (bagian berwarna)'), cx - u * 0.19, cy + u * 0.16, cx - u * 0.3, y + h - u * 0.1);
       label(ctx, T('retina (makes nerve messages)', 'retina (membuat pesan saraf)'), cx + u * 0.24, cy + u * 0.1, cx + u * 0.05, y + h - u * 0.18);
-      label(ctx, T('nerve to brain', 'saraf ke otak'), cx + u * 0.4, cy, cx + u * 0.3, y + u * 0.2);
+      label(ctx, T('nerve to brain', 'saraf ke otak'), cx + u * 0.4, cy - u * 0.03, cx + u * 0.3, y + u * 0.08);
     } else if (o === 'ear') {
       ctx.fillStyle = '#fcd9b6'; ctx.beginPath(); ctx.ellipse(x + u * 0.22, cy, u * 0.14, u * 0.26, 0, 0, Math.PI * 2); ctx.fill();   // outer ear
       ctx.fillStyle = '#f4b183'; ctx.fillRect(x + u * 0.3, cy - u * 0.05, u * 0.3, u * 0.1);   // canal
@@ -380,11 +385,13 @@ export function mount(rootEl) {
       ctx.fillStyle = '#e2e8f0';
       label(ctx, T('top layer (epidermis)', 'lapisan luar (epidermis)'), x + w * 0.1, y + h * 0.36, x + w * 0.08, y + h * 0.1);
       label(ctx, T('hair', 'rambut'), x + w * 0.29, y + h * 0.16, x + w * 0.36, y + h * 0.06);
-      label(ctx, T('nerve endings feel touch, heat, cold', 'ujung saraf merasakan sentuhan, panas, dingin'), x + w * 0.42, y + h * 0.5, x + w * 0.1, y + h * 0.95);
-      label(ctx, T('sweat gland', 'kelenjar keringat'), x + w * 0.6, y + h * 0.7, x + w * 0.7, y + h * 0.95);
+      // these two labels sit on the pale yellow fat layer, so draw them dark for contrast
+      label(ctx, T('nerve endings: touch, heat, cold', 'ujung saraf: sentuhan, panas, dingin'), x + w * 0.42, y + h * 0.5, x + w * 0.1, y + h * 0.95, '#0f172a');
+      label(ctx, T('sweat gland', 'kelenjar keringat'), x + w * 0.6, y + h * 0.7, x + w * 0.7, y + h * 0.95, '#0f172a');
       label(ctx, T('fat keeps you warm', 'lemak menjaga hangat'), x + w * 0.9, y + h * 0.85, x + w * 0.75, y + h * 0.2);
     }
     ctx.restore();
+    labelBox = null;
     ctx.strokeStyle = '#475569'; ctx.lineWidth = 2; ctx.beginPath(); ctx.roundRect(x, y, w, h, 18); ctx.stroke();
   }
 
@@ -414,7 +421,7 @@ export function mount(rootEl) {
       if (state.phase === 'right' && now - state.msgAt > 1.8) next();
     } else {
       ctx.fillText(`${tx(ORGAN_NAME[state.organ])}: ${tx(ORGAN_JOB[state.organ])}`, bx, H * 0.09);
-      drawExplore(ctx, bx, by, W * 0.5, bh);
+      drawExplore(ctx, bx, by, W * 0.44, bh);   // narrower than 0.5 W so the hand never covers the diagram
       ctx.fillStyle = '#cbd5e1'; ctx.font = font(H * 0.04); ctx.textAlign = 'left';
       ctx.fillText(T('Tap another body part to look inside it.', 'Ketuk bagian tubuh lain untuk melihat bagian dalamnya.'), bx, H * 0.93);
       drawFace(ctx, state.organ);

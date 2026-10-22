@@ -83,8 +83,9 @@ export function mount(rootEl) {
   function clocks() {
     const W = cv.width, H = cv.height;
     if (state.mode === 'elapsed') {
-      const r = Math.min(H * 0.30, W * 0.19);
-      return [{ cx: W * 0.25, cy: H * 0.44, r }, { cx: W * 0.75, cy: H * 0.44, r }];
+      // smaller clocks leave room for the question and answer above and the timeline below
+      const r = Math.min(H * 0.26, W * 0.17);
+      return [{ cx: W * 0.25, cy: H * 0.47, r }, { cx: W * 0.75, cy: H * 0.47, r }];
     }
     const r = Math.min(H * 0.42, W * 0.27);
     return [{ cx: W * 0.30, cy: H * 0.5, r }];
@@ -160,7 +161,7 @@ export function mount(rootEl) {
   function drawTimeline(W, H) {
     const t0 = state.times[0], t1 = state.times[1];
     const el = wrap(t1 - t0);
-    const y = H * 0.86, xa = W * 0.12, xb = W * 0.88;
+    const y = H * 0.90, xa = W * 0.12, xb = W * 0.88;
     const span = Math.max(el, 60);
     const xOf = (m) => xa + (xb - xa) * (m / span);
     ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 3;
@@ -171,7 +172,7 @@ export function mount(rootEl) {
     const hours = Math.floor(el / 60), mins = el % 60;
     const arc = (a, b, col, text) => {
       const x1 = xOf(a), x2 = xOf(b);
-      const h = H * 0.07;
+      const h = H * 0.05;
       ctx.strokeStyle = col; ctx.lineWidth = 2.5;
       ctx.beginPath(); ctx.moveTo(x1, y); ctx.quadraticCurveTo((x1 + x2) / 2, y - 2 * h, x2, y); ctx.stroke();
       ctx.fillStyle = col;
@@ -184,13 +185,13 @@ export function mount(rootEl) {
       const x = xOf(i * 60);
       ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x, y + 6); ctx.stroke();
-      if (hours <= 6 || i % 2 === 0) ctx.fillText(digital(wrap(t0 + i * 60)), x, y + H * 0.06);
+      if (hours <= 6 || i % 2 === 0) ctx.fillText(digital(wrap(t0 + i * 60)), x, y + H * 0.055);
     }
     if (mins) {
       const x = xOf(el);
       ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x, y + 6); ctx.stroke();
       ctx.fillStyle = '#22c55e';
-      ctx.fillText(digital(t1), x, y + H * 0.06);
+      ctx.fillText(digital(t1), x, y + H * 0.055);
     }
   }
 
@@ -207,13 +208,13 @@ export function mount(rootEl) {
       drawClock(cs[1], state.times[1], T('End', 'Selesai'), state.cur === 1);
       const fs = Math.max(12, Math.min(W * 0.03, H * 0.06));
       ctx.fillStyle = '#fff'; ctx.font = font(fs);
-      ctx.fillText(digital(state.times[0]), cs[0].cx, cs[0].cy + cs[0].r + fs * 1.3);
-      ctx.fillText(digital(state.times[1]), cs[1].cx, cs[1].cy + cs[1].r + fs * 1.3);
+      ctx.fillText(digital(state.times[0]), cs[0].cx, cs[0].cy + cs[0].r + fs * 1.1);
+      ctx.fillText(digital(state.times[1]), cs[1].cx, cs[1].cy + cs[1].r + fs * 1.1);
       const el = wrap(state.times[1] - state.times[0]);
       ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.8, false);
-      ctx.fillText(T('How long from start to end?', 'Berapa lama dari mulai sampai selesai?'), W / 2, H * 0.12);
+      ctx.fillText(T('How long from start to end?', 'Berapa lama dari mulai sampai selesai?'), W / 2, H * 0.07);
       ctx.fillStyle = '#facc15'; ctx.font = font(fs * 1.25);
-      ctx.fillText(duration(el), W / 2, H * 0.22);
+      ctx.fillText(duration(el), W / 2, H * 0.155);
       ctx.fillStyle = '#94a3b8'; ctx.font = font(fs * 0.7, false);
       ctx.fillText('→', W / 2, H * 0.47);
       drawTimeline(W, H);
@@ -232,8 +233,10 @@ export function mount(rootEl) {
     ctx.font = `bold ${Math.round(fsBig)}px ui-monospace, Menlo, Consolas, monospace`;
     ctx.fillText(digital(state.times[0]), px + pw / 2, H * 0.16 + fsBig * 1.1);
     ctx.fillStyle = '#e2e8f0';
-    ctx.font = font(Math.max(12, Math.min(pw * 0.11, H * 0.06)));
-    ctx.fillText(words(state.times[0]), px + pw / 2, H * 0.16 + fsBig * 1.5 + H * 0.09);
+    let wf = Math.max(12, Math.min(pw * 0.11, H * 0.06));
+    ctx.font = font(wf);
+    while (wf > 11 && ctx.measureText(words(state.times[0])).width > pw) { wf -= 1; ctx.font = font(wf); }   // e.g. 'pukul 12 kurang seperempat'
+    ctx.fillText(words(state.times[0]), px + pw / 2, H * 0.16 + fsBig * 1.5 + H * 0.08);
     // legend
     const ls = Math.max(10, Math.min(pw * 0.08, H * 0.045));
     ctx.font = font(ls, false);
@@ -247,7 +250,7 @@ export function mount(rootEl) {
       const solved = state.times[0] === state.target;
       if (solved && state.solvedAt < 0) { state.solvedAt = now; state.streak += 1; }
       if (solved && now - state.solvedAt > 2.2) newTarget();
-      const bx = px, by = H * 0.52, bw = pw, bh = H * 0.2;
+      const bx = px, by = H * 0.57, bw = pw, bh = H * 0.19;   // below the words line, above the legend
       ctx.fillStyle = solved ? 'rgba(34,197,94,0.9)' : 'rgba(250,204,21,0.15)';
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 12); ctx.fill();
       ctx.strokeStyle = solved ? '#22c55e' : '#facc15'; ctx.lineWidth = 2; ctx.stroke();
@@ -297,7 +300,7 @@ export function mount(rootEl) {
       const c = clocks()[ci];
       if (!c) return;
       const a = angleOf(c, x, y) / (Math.PI * 2);   // 0..1 of a turn
-      const snap = state.easy ? 5 : 1;
+      const snap = state.easy || state.mode === 'set' ? 5 : 1;   // targets are 5-minute times, so snap to them in the challenge
       const old = state.times[ci];
       if (hand === 'm') {
         let m = Math.round((a * 60) / snap) * snap;

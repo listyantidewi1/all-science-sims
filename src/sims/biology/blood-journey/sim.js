@@ -157,11 +157,13 @@ export function mount(rootEl) {
     ctx.beginPath(); ctx.moveTo(x + w * 0.08, y + h * 0.18); ctx.lineTo(x + w * 0.12 + swing, y + h * 0.5); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(x - w * 0.18, y - h * 0.15); ctx.lineTo(x - w * 0.3, y + swing * 0.5); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(x + w * 0.18, y - h * 0.15); ctx.lineTo(x + w * 0.3, y - swing * 0.5); ctx.stroke();
+    // labels sit to the right of the blue vessel (which runs at 0.60-0.67 W) so text never crosses it
+    const lx = x + w * 0.95;
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(h * 0.16, true); ctx.textAlign = 'left';
-    ctx.fillText(T('body', 'tubuh'), x + w * 0.4, y - h * 0.1);
+    ctx.fillText(T('body', 'tubuh'), lx, y - h * 0.1);
     ctx.font = font(h * 0.13);
-    ctx.fillText(T('muscles, brain, organs', 'otot, otak, organ'), x + w * 0.4, y + h * 0.1);
-    ctx.fillText(T('O₂ out, CO₂ in', 'O₂ keluar, CO₂ masuk'), x + w * 0.4, y + h * 0.3);
+    ctx.fillText(T('muscles, brain, organs', 'otot, otak, organ'), lx, y + h * 0.1);
+    ctx.fillText(T('O₂ out, CO₂ in', 'O₂ keluar, CO₂ masuk'), lx, y + h * 0.3);
   }
   function drawVessels(ctx) {
     const lw = Math.max(8, Math.min(cv.width, cv.height) * 0.04);
@@ -207,7 +209,7 @@ export function mount(rootEl) {
     ctx.fillText(`${tx(act)}: ${state.bpm} bpm`, W * 0.02, H * 0.08);
     ctx.fillStyle = '#cbd5e1'; ctx.font = font(H * 0.036);
     ctx.fillText(T('laps per minute (sim)', 'putaran per menit (simulasi)') + `: ${(lapsPerSec() * 60).toFixed(1)}`, W * 0.02, H * 0.14);
-    ctx.fillText(T('real body: one trip ≈', 'tubuh sungguhan: satu perjalanan ≈') + ` ${Math.round(realTripSeconds())} s`, W * 0.02, H * 0.19);
+    ctx.fillText(T('real body: one trip ≈', 'tubuh nyata: 1 perjalanan ≈') + ` ${Math.round(realTripSeconds())} s`, W * 0.02, H * 0.19);
     ctx.fillText(T('laps so far', 'putaran sejauh ini') + `: ${state.laps}`, W * 0.02, H * 0.24);
     // pulse trace
     const px = W * 0.02, py = H * 0.34, pw = W * 0.22, ph = H * 0.08;
@@ -226,8 +228,9 @@ export function mount(rootEl) {
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(H * 0.034); ctx.textAlign = 'left';
     ctx.fillText(T('full of oxygen', 'penuh oksigen'), W * 0.8, H * 0.092);
     ctx.fillText(T('low on oxygen', 'sedikit oksigen'), W * 0.8, H * 0.152);
-    ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.03);
-    ctx.fillText(T('tap heart, lungs, body or a tube', 'ketuk jantung, paru-paru, tubuh, atau pipa'), W * 0.76, H * 0.21);
+    ctx.fillStyle = '#94a3b8'; ctx.font = font(H * 0.03); ctx.textAlign = 'right';
+    ctx.fillText(T('tap heart, lungs, body or a tube', 'ketuk jantung, paru-paru, tubuh, atau pipa'), W * 0.98, H * 0.21);
+    ctx.textAlign = 'left';
     // fact bubble
     if (state.fact && now - state.factAt < 6) {
       const text = tx(FACTS[state.fact]);

@@ -40,6 +40,8 @@ export function mount(rootEl) {
   let now = 0;
   const font = (px, bold) => `${bold ? 'bold ' : ''}${Math.max(9, Math.round(px))}px system-ui, -apple-system, Roboto, sans-serif`;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  // decimals use a comma in Indonesian (11,9 kWh), a point in English (11.9 kWh)
+  const dec = (v, d = 1) => { const str = v.toFixed(d); return getLocale() === 'id' ? str.replace('.', ',') : str; };
 
   const kwhOf = (a) => ((state.led && a.ledWatts != null ? a.ledWatts : a.watts) * a.hours) / 1000;
   const useKwh = () => APPLIANCES.reduce((s, a) => s + (on[a.key] ? kwhOf(a) : 0), 0);
@@ -110,8 +112,8 @@ export function mount(rootEl) {
       // bulb
       ctx.fillStyle = on.lights ? (state.led ? '#fefce8' : '#fde047') : '#64748b';
       ctx.beginPath(); ctx.arc(r.x + r.w * 0.25, r.y + r.h * 0.12, r.h * 0.05, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#334155'; ctx.font = font(r.h * 0.07); ctx.textAlign = 'left';
-      ctx.fillText(name === 'bed' ? T('bedroom', 'kamar tidur') : name === 'kitchen' ? T('kitchen', 'dapur') : T('living room', 'ruang tamu'), r.x + 6, r.y + r.h - 6);
+      ctx.fillStyle = '#334155'; ctx.font = font(r.h * 0.065); ctx.textAlign = 'right';
+      ctx.fillText(name === 'bed' ? T('bedroom', 'kamar tidur') : name === 'kitchen' ? T('kitchen', 'dapur') : T('living room', 'ruang tamu'), r.x + r.w - 6, r.y + r.h * 0.065 + 4);
     }
     const hits = applianceHits();
     for (const hit of hits) {
@@ -153,8 +155,11 @@ export function mount(rootEl) {
       // label with watts, and a dim overlay when off
       ctx.fillStyle = isOn ? '#166534' : '#64748b'; ctx.font = font(s * 0.4, true); ctx.textAlign = 'center';
       const watts = state.led && a.ledWatts != null ? a.ledWatts : a.watts;
-      ctx.fillText(`${tx(a)} · ${watts} W`, hit.x, hit.y + s * 1.75);
-      ctx.fillText(isOn ? T('ON', 'NYALA') : T('OFF', 'MATI'), hit.x, hit.y + s * 2.2);
+      const labelText = `${tx(a)} · ${watts} W`;
+      const half = ctx.measureText(labelText).width / 2;
+      const labelX = clamp(hit.x, x + half + 4, x + w - half - 4);   // e.g. the water heater label would otherwise run off the house
+      ctx.fillText(labelText, labelX, hit.y + s * 1.75);
+      ctx.fillText(isOn ? T('ON', 'NYALA') : T('OFF', 'MATI'), labelX, hit.y + s * 2.2);
       if (state.flash === hit.key && now - state.flashAt < 0.5) {
         ctx.strokeStyle = `rgba(250,204,21,${1 - (now - state.flashAt) / 0.5})`; ctx.lineWidth = 4;
         ctx.beginPath(); ctx.arc(hit.x, hit.y, s * (1.3 + (now - state.flashAt)), 0, Math.PI * 2); ctx.stroke();
@@ -179,7 +184,7 @@ export function mount(rootEl) {
     ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 2; const ta = Math.PI * 1.5;
     ctx.beginPath(); ctx.moveTo(cx + Math.cos(ta) * r * 0.85, cy + Math.sin(ta) * r * 0.85); ctx.lineTo(cx + Math.cos(ta) * r * 1.15, cy + Math.sin(ta) * r * 1.15); ctx.stroke();
     ctx.fillStyle = '#f8fafc'; ctx.font = font(r * 0.45, true); ctx.textAlign = 'center';
-    ctx.fillText(`${net.toFixed(1)} kWh`, cx, cy - r * 0.05);
+    ctx.fillText(`${dec(net, 2)} kWh`, cx, cy - r * 0.05);
     ctx.fillStyle = '#cbd5e1'; ctx.font = font(r * 0.25);
     ctx.fillText(T('per day from the grid', 'per hari dari jaringan'), cx, cy + r * 0.25);
     // spinning disc
@@ -188,32 +193,34 @@ export function mount(rootEl) {
     ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.arc(dx, dy, dr, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.moveTo(dx, dy); ctx.arc(dx, dy, dr, state.wheel, state.wheel + 0.5); ctx.closePath(); ctx.fill();
     // numbers
-    ctx.textAlign = 'left'; const lx = mx + mw * 0.08; let ly = my + mh * 0.52; const lh = mh * 0.055;
+    ctx.textAlign = 'left'; const lx = mx + mw * 0.08; let ly = my + mh * 0.5; const lh = mh * 0.05;
+    const day = T('day', 'hari');
     ctx.fillStyle = '#e2e8f0'; ctx.font = font(lh * 0.6);
-    ctx.fillText(`${T('appliances use', 'peralatan memakai')}: ${use.toFixed(1)} kWh/${T('day', 'hari')}`, lx, ly); ly += lh;
-    if (state.solar) { ctx.fillStyle = '#fde047'; ctx.fillText(`${T('solar makes', 'surya menghasilkan')}: −${solarKwh().toFixed(1)} kWh/${T('day', 'hari')}`, lx, ly); ly += lh; }
+    ctx.fillText(`${T('appliances use', 'peralatan memakai')}: ${dec(use)} kWh/${day}`, lx, ly); ly += lh;
+    if (state.solar) { ctx.fillStyle = '#fde047'; ctx.fillText(`${T('solar makes', 'surya menghasilkan')}: −${dec(solarKwh())} kWh/${day}`, lx, ly); ly += lh; }
     ctx.fillStyle = '#e2e8f0'; ctx.fillText(`${T('per month', 'per bulan')}: ${(net * 30).toFixed(0)} kWh`, lx, ly); ly += lh;
+    ctx.fillText(`${T('price', 'harga')}: ${rp(TARIFF)}/kWh`, lx, ly); ly += lh;
     ctx.fillStyle = '#fbbf24'; ctx.font = font(lh * 0.8, true);
-    ctx.fillText(`${T('bill', 'tagihan')}: ${rp(monthly(net))}`, lx, ly + lh * 0.2); ly += lh * 1.6;
+    ctx.fillText(`${T('bill', 'tagihan')}: ${rp(monthly(net))}`, lx, ly + lh * 0.2); ly += lh * 1.5;
     // challenge
     ctx.fillStyle = '#94a3b8'; ctx.font = font(lh * 0.55);
     ctx.fillText(T('Challenge: cut the bill by half', 'Tantangan: potong tagihan setengahnya'), lx, ly); ly += lh * 0.8;
-    ctx.fillText(`${T('target', 'target')} ≤ ${rp(monthly(TARGET))} (${TARGET.toFixed(1)} kWh/${T('day', 'hari')})`, lx, ly); ly += lh * 0.7;
+    ctx.fillText(`${T('target', 'target')} ≤ ${rp(monthly(TARGET))} (${dec(TARGET, 2)} kWh/${day})`, lx, ly); ly += lh * 0.6;
     const bw = mw * 0.84, bh = lh * 0.6;
     ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.roundRect(lx, ly, bw, bh, 6); ctx.fill();
     ctx.fillStyle = challengeOk() ? '#22c55e' : '#ef4444'; ctx.beginPath(); ctx.roundRect(lx, ly, bw * clamp(net / BASELINE, 0.02, 1), bh, 6); ctx.fill();
     ctx.strokeStyle = '#f8fafc'; ctx.beginPath(); ctx.moveTo(lx + bw * 0.5, ly - 3); ctx.lineTo(lx + bw * 0.5, ly + bh + 3); ctx.stroke();
     ly += bh + lh * 0.9;
-    ctx.font = font(lh * 0.7, true);
+    // status message: two short lines so it fits inside the meter box in both languages
+    ctx.font = font(lh * 0.65, true);
+    let lines;
+    if (challengeOk()) { ctx.fillStyle = '#4ade80'; lines = [T('You did it!', 'Berhasil!'), T('Bill cut in half.', 'Tagihan terpotong setengah.')]; }
+    else if (!on.fridge) { ctx.fillStyle = '#f87171'; lines = [T('Keep the fridge on:', 'Kulkas harus menyala:'), T('food would spoil!', 'makanan bisa basi!')]; }
+    else { ctx.fillStyle = '#fca5a5'; lines = [`${T('still', 'masih')} ${dec(net - TARGET, 2)} kWh/${day}`, T('too much', 'terlalu banyak')]; }
+    lines.forEach((ln, i) => ctx.fillText(ln, lx, ly + i * lh * 0.8));
     if (challengeOk()) {
-      ctx.fillStyle = '#4ade80';
-      ctx.fillText(T('You did it! Bill cut in half.', 'Berhasil! Tagihan terpotong setengah.'), lx, ly);
-      // stars
-      for (let i = 0; i < 3; i++) { const sx = lx + i * lh * 1.1 + lh * 0.4, sy = ly + lh * 1.0, sr = lh * 0.35 * (1 + 0.1 * Math.sin(now * 4 + i)); star(ctx, sx, sy, sr, '#facc15'); }
-    } else if (!on.fridge) {
-      ctx.fillStyle = '#f87171'; ctx.fillText(T('Keep the fridge on: food would spoil!', 'Kulkas harus menyala: makanan bisa basi!'), lx, ly);
-    } else {
-      ctx.fillStyle = '#fca5a5'; ctx.fillText(`${T('still', 'masih')} ${(net - TARGET).toFixed(1)} kWh/${T('day', 'hari')} ${T('too much', 'terlalu banyak')}`, lx, ly);
+      const sx0 = lx + ctx.measureText(lines[0]).width + lh * 0.6;
+      for (let i = 0; i < 3; i++) { const sx = sx0 + i * lh * 0.8, sy = ly - lh * 0.25, sr = lh * 0.3 * (1 + 0.1 * Math.sin(now * 4 + i)); star(ctx, sx, sy, sr, '#facc15'); }
     }
   }
   function star(ctx, x, y, r, color) {

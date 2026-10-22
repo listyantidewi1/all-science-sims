@@ -30,10 +30,14 @@ export function mount(rootEl) {
   let now = 0;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const font = (px, bold) => `${bold ? 'bold ' : ''}${Math.max(9, Math.round(px))}px system-ui, -apple-system, Roboto, sans-serif`;
+  // decimals use a comma in Indonesian (2,7 m), a point in English (2.7 m)
+  const dec = (v, d = 1) => { const str = v.toFixed(d); return getLocale() === 'id' ? str.replace('.', ',') : str; };
 
   // --- model ---
   const cover = () => params.forest / 100;
-  const runoff = () => params.rain * (0.2 + 0.7 * (1 - cover()));            // 0..90, share of rain that runs off
+  const runoffShare = () => 20 + 70 * (1 - cover());                           // % of the rain that runs off: 20 % under full forest, 90 % on bare ground
+  const soakShare = () => 100 - runoffShare();                                 // % of the rain that soaks into the ground
+  const runoff = () => params.rain * runoffShare() / 100;                      // 0..90, amount of runoff (drives river level and soil loss)
   const soaked = () => Math.max(0, params.rain - runoff());
   const soilLoss = () => runoff() * Math.pow(1 - cover(), 1.5) * 0.5;          // 0..45 "truckloads a day"
   const levelTarget = () => 0.5 + 0.04 * runoff();                              // m, 0.5..4.1
@@ -166,13 +170,13 @@ export function mount(rootEl) {
     ctx.fillStyle = 'rgba(11,18,32,0.75)'; ctx.beginPath(); ctx.roundRect(px - 8, py - lh * 0.75, W * 0.36, lh * 4.3, 10); ctx.fill();
     ctx.font = font(lh * 0.6, true); ctx.textAlign = 'left';
     ctx.fillStyle = '#e2e8f0';
-    ctx.fillText(`${T('rain soaking in', 'hujan meresap')}: ${Math.round(soaked())}%`, px, py); py += lh;
+    ctx.fillText(`${T('rain soaking in', 'hujan meresap')}: ${Math.round(soakShare())}% ${T('of the rain', 'dari hujan')}`, px, py); py += lh;
     ctx.fillStyle = '#93c5fd';
-    ctx.fillText(`${T('runoff', 'air larian')}: ${Math.round(runoff())}%`, px, py); py += lh;
+    ctx.fillText(`${T('runoff', 'air larian')}: ${Math.round(runoffShare())}% ${T('of the rain', 'dari hujan')}`, px, py); py += lh;
     ctx.fillStyle = '#fdba74';
     ctx.fillText(`${T('soil lost', 'tanah hilang')}: ${soilLoss().toFixed(0)} ${T('truckloads/day', 'truk/hari')}`, px, py); py += lh;
     ctx.fillStyle = state.flooding ? '#f87171' : '#e2e8f0';
-    ctx.fillText(`${T('river level', 'tinggi sungai')}: ${state.level.toFixed(1)} m (${T('bank', 'tepian')} ${BANK.toFixed(1)} m)`, px, py);
+    ctx.fillText(`${T('river level', 'tinggi sungai')}: ${dec(state.level)} m (${T('bank', 'tepian')} ${dec(BANK)} m)`, px, py);
     // flood warning
     if (state.flooding) {
       const blink = Math.sin(now * 6) > 0;
@@ -215,7 +219,7 @@ export function mount(rootEl) {
     columns: [
       { key: 'forest', label: 'Forest (%)' },
       { key: 'rain', label: 'Rain (%)' },
-      { key: 'runoff', label: 'Runoff (%)', format: (v) => v.toFixed(0) },
+      { key: 'runoff', label: 'Runoff (% of rain)', format: (v) => v.toFixed(0) },
       { key: 'soil', label: 'Soil lost (truckloads/day)', format: (v) => v.toFixed(0) },
       { key: 'level', label: 'River level (m)', format: (v) => v.toFixed(1) },
       { key: 'flood', label: 'Flood?' },
@@ -227,7 +231,7 @@ export function mount(rootEl) {
       'Look at your table. How much forest keeps the village dry in a storm?',
     ],
     predict: 'With the same heavy rain, will the river be higher with more trees or with fewer trees?',
-    source: () => ({ forest: params.forest, rain: params.rain, runoff: runoff(), soil: soilLoss(), level: state.level, flood: state.flooding ? 'yes' : 'no' }),
+    source: () => ({ forest: params.forest, rain: params.rain, runoff: runoffShare(), soil: soilLoss(), level: state.level, flood: state.flooding ? 'yes' : 'no' }),
   });
   ctrlPanel.appendChild(lab.el);
 

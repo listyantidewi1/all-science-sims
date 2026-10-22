@@ -62,7 +62,7 @@ export function mount(rootEl) {
     state.pos = landed;
     state.from = landed; state.to = next; state.hopT = 0;
     state.jumps.push(d);
-    if (state.jumps.length > 60) state.jumps.shift();
+    if (state.jumps.length > 60) state.start += state.jumps.shift();   // keep the drawn arcs anchored to the right place
   }
 
   function step(dt) {
@@ -207,7 +207,7 @@ export function mount(rootEl) {
     drawFlag(xOf(state.target), ly, H * 0.13);
     ctx.fillStyle = '#ef4444';
     ctx.font = font(Math.max(11, H * 0.045));
-    ctx.fillText(String(state.target), xOf(state.target) + H * 0.09, ly - H * 0.14);
+    ctx.fillText(String(state.target), Math.min(W - H * 0.05, xOf(state.target) + H * 0.09), ly - H * 0.14);   // keep '100' on screen
 
     // Frog
     const f = frogPos();
@@ -255,8 +255,11 @@ export function mount(rootEl) {
       const bw = Math.min(W * 0.7, 420) * pulse, bh = H * 0.13;
       ctx.beginPath(); ctx.roundRect(W / 2 - bw / 2, H * 0.27 - bh / 2, bw, bh, 14); ctx.fill();
       ctx.fillStyle = '#052e16';
-      ctx.font = font(Math.max(13, bh * 0.45));
-      ctx.fillText(T(`Hooray! You landed on ${state.target} in ${state.jumps.length} jumps.`, `Hore! Kamu mendarat di ${state.target} dengan ${state.jumps.length} lompatan.`), W / 2, H * 0.27 + bh * 0.17);
+      const msg = T(`Hooray! You landed on ${state.target} in ${state.jumps.length} jumps.`, `Hore! Kamu mendarat di ${state.target} dengan ${state.jumps.length} lompatan.`);
+      let fs = Math.max(13, bh * 0.45);
+      ctx.font = font(fs);
+      while (fs > 11 && ctx.measureText(msg).width > bw - 24) { fs -= 1; ctx.font = font(fs); }   // shrink to fit the banner
+      ctx.fillText(msg, W / 2, H * 0.27 + bh * 0.17);
       // little stars
       for (let i = 0; i < 8; i++) {
         const a = age * 2 + i * Math.PI / 4;

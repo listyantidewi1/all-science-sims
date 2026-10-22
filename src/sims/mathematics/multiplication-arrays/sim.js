@@ -123,8 +123,8 @@ export function mount(rootEl) {
       ctx.fillText(`${rows} × ${cols} = ${N}`, W * 0.25, H * 0.09);
       ctx.fillText(`${cols} × ${rows} = ${N}`, W * 0.75, H * 0.09);
       ctx.fillStyle = '#94a3b8'; ctx.font = font(small, false);
-      ctx.fillText(T(`${rows} rows of ${cols}`, `${rows} baris berisi ${cols}`), W * 0.25, H * 0.88);
-      ctx.fillText(T(`${cols} rows of ${rows}`, `${cols} baris berisi ${rows}`), W * 0.75, H * 0.88);
+      ctx.fillText(T(`${rows} rows of ${cols}`, `${rows} baris berisi ${cols}`), W * 0.25, H * 0.83);   // above the green badge
+      ctx.fillText(T(`${cols} rows of ${rows}`, `${cols} baris berisi ${rows}`), W * 0.75, H * 0.83);
       // turn arrow in the middle
       ctx.fillStyle = '#facc15'; ctx.font = font(fs * 1.4);
       ctx.fillText('↻', W * 0.5, H * 0.5);
