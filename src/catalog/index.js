@@ -410,6 +410,18 @@ import menstrualCycle from '../sims/biology/menstrual-cycle/manifest.js';
 import mutations from '../sims/biology/mutations/manifest.js';
 import gelElectrophoresis from '../sims/biology/gel-electrophoresis/manifest.js';
 
+import pythonTracer from '../sims/computer-science/python-tracer/manifest.js';
+import problemToProgram from '../sims/computer-science/problem-to-program/manifest.js';
+import bugHunt from '../sims/computer-science/bug-hunt/manifest.js';
+import variablesTypes from '../sims/computer-science/variables-types/manifest.js';
+import parsonsPuzzle from '../sims/computer-science/parsons-puzzle/manifest.js';
+import listOperations from '../sims/computer-science/list-operations/manifest.js';
+import dictionaryLookup from '../sims/computer-science/dictionary-lookup/manifest.js';
+import functionCallStack from '../sims/computer-science/function-call-stack/manifest.js';
+import turtleGraphics from '../sims/computer-science/turtle-graphics/manifest.js';
+import linearBinarySearch from '../sims/computer-science/linear-binary-search/manifest.js';
+import classDataCharts from '../sims/computer-science/class-data-charts/manifest.js';
+
 export const SIMS = [
   projectileMotion, pendulum, wavesOnString, electricField, newtonsCradle, lenses, springsShm,
   doublePendulum, doppler, diffraction, buoyancy, orbitalMech, rlcResonance,
@@ -505,7 +517,7 @@ export const SIMS = [
   factorsMultiples, waveAnatomy, transformations,
   bloodJourney, dichotomousKey, fiveSenses, pondEcosystem, riverHealth, dissolving, forestAndFlood, saveEnergyHome, earthRotationRevolution, pocketMoney, angles, areaPerimeter, barChartsPictograms, circleGeometry, clockTime, cuboidVolume, integersNumberLine, linearEquationBalance, meanMedianMode, multiplicationArrays, numberLine, placeValueBlocks, similarTriangles, solidsVolume, bentStrawRefraction, electromagneticInduction, energyChain, eyeAndGlasses, forcesShapeMotion, hotSpoonConduction, hydraulicLift, leverClasses, liquidPressureDepth, measurementUnits, mirrorReflection, motionGraphs, newtonsSecondLaw, pressureSolids, seesawLever, staticElectricity, thermalExpansion,
 
-  // 1.21.0 — Kurikulum Merdeka CP 2025, high school and informatics
+  // 1.20.0 — Kurikulum Merdeka CP 2025, high school and informatics
   immuneResponse, menstrualCycle, mutations, gelElectrophoresis,
   plantTropisms,
   electrolyteConductivity,
@@ -516,6 +528,9 @@ export const SIMS = [
   knnClassifier, perceptron, textClassifier,
   circleTheorems, probabilityTrees,
   virusReplication, molarityDilution, teachableClassifier, functionTransformations, sequencesSeries, coulombsLaw, standingWavesPipes,
+
+  // 1.21.0 — algorithms and Python programming
+  pythonTracer, problemToProgram, bugHunt, variablesTypes, parsonsPuzzle, listOperations, dictionaryLookup, functionCallStack, turtleGraphics, linearBinarySearch, classDataCharts,
 ];
 
 export const SIMS_BY_ID = Object.fromEntries(SIMS.map((s) => [`${s.subject}/${s.id}`, s]));
