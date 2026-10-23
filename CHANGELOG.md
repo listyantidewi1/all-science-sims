@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.21.0] — Python programming and algorithms: 11 new sims and an in-browser Python interpreter
+
+### Added — 11 programming sims (Informatika Fase D–F)
+
+Every program in these sims is real Python, run one statement at a time in the browser. Output, error messages and tracebacks were checked against CPython 3.13 (`python3 main.py`) for every preset in both languages. Each sim is bilingual, has a lab panel and a Learn section, and is mapped in docs/curriculum-map.md.
+
+- **Python Step by Step** — run a program line by line: memory boxes for every variable (lists as cells, shared lists with arrows, a frame per call), the console, a trace table that fills in, step back, input() from a box, and a predict-the-output mode.
+- **From Problem to Program** — problem → IPO table → descriptive steps → pseudocode → flowchart → Python → trace table, with the matching pseudocode line and flowchart symbol lit up as the Python runs; insert a common mistake and find the boundary test that catches it.
+- **Bug Hunt** — seven levels of short programs with hidden syntax, runtime and logic bugs: run the tests, classify each bug, read the traceback with a plain-words helper, fix and re-run.
+- **Variables, Data Types and Operators** — memory boxes that change as values are read and stored, any expression with its value and type() or exact error, operators evaluated one step at a time in precedence order, `/ // %`, f-string formats, and naming rules.
+- **Parsons Puzzle** — nine programs cut into shuffled lines with two distractors; order and indent them (drag, tap or keyboard) and real Python checks the result on test inputs, from if-else to match-case and try-except.
+- **Lists and Arrays** — index, slice, append, insert, remove, pop and sort on a row of cells, with the cells each operation reads and moves, and a chart of insert-at-front vs append as the list grows.
+- **Dictionaries: Keys and Values** — d[key] and KeyError, get(), in, del, pop, items() and Counter; every lookup races a list of pairs against the hash table, slot by slot.
+- **Functions and the Call Stack** — frames pushed and popped with arguments flowing into parameters and return values flowing back; local vs global, shared lists, recursion, a call table and a predict mode.
+- **Turtle Graphics** — run Python turtle programs in the browser (including ones that do not run in Google Colab); every turn drawn as an arc and the total turning added up, with positions, headings and errors as in real Python.
+- **Linear vs Binary Search** — two real programs race over the same cards with the Python and pseudocode lines lit up; count comparisons, watch binary search fail on unsorted cards, and chart n vs ⌊log₂ n⌋ + 1.
+- **Charts from Class Data** — lists, the statistics module and matplotlib.pyplot: line, bar and scatter charts, legends, axhline and a report-card calculator, drawn step by step with matplotlib's colours, limits and ticks.
+
+### Added — shared libraries
+
+- **`src/lib/minipy.js`** (+ `src/lib/minipy/`) — a dependency-free interpreter for the Python 3.13 taught in school: compile with CPython's syntax-error messages, step one statement at a time, snapshot frames and variables, wait for input(), stop runaway loops with a step limit that says it is the simulator's limit, not a Python error. Integers are arbitrary precision, float repr, formatting and round() are exact, math functions are ports of the C library code python3 uses, and `random` is a bit-exact Mersenne Twister, so seeded programs print what python3 prints. Modules: math, random, statistics, collections (Counter, deque, defaultdict), string, sys, time and datetime, plus host modules for `turtle` and `matplotlib.pyplot`. Not supported (a clear SyntaxError says so): class, with, generators, decorators, async, bytes and complex numbers. The Unicode name table for `\N{...}` escapes loads in the background so it does not delay the sims.
+- **`src/lib/codepanel.js`** — a code editor (Python and pseudocode highlighting, active line, error/visited marks, column underlines) and a console panel (input prompts, red tracebacks), both bilingual and keyboard friendly.
+
+### Tests
+
+- `npm run test:minipy` — 616 programs in `scripts/minipy-cases/` (course programs, error kinds, number formatting, random, fuzz regressions) compared with recorded CPython 3.13 output, plus 99 API checks. It runs in CI before the build.
+
+### Changed
+
+- README catalog, feature list and counts updated to 375 sims; docs/curriculum-map.md regenerated (63 primary, 145 middle, 276 high-school sims).
+- Service worker cache bumped to `ass-cache-v7`.
+
+### Licensing
+
+- New THIRD-PARTY-NOTICES.md and `licenses/`. They list the code the Python interpreter and the Turtle Graphics and Charts from Class Data sims adapt from CPython (PSF License), the GNU C Library's maths functions (LGPL-2.1-or-later), the Mersenne Twister (BSD), the Unicode Character Database (Unicode License V3), turtle.py (zlib-style) and matplotlib (Matplotlib License), with their notices. Every build ships them as `THIRD-PARTY-NOTICES.txt`, and the About page links to them.
+- COMMERCIAL-LICENSE.md now says these parts keep their own licenses. Everything else in the repository is still original work.
+
 ## [1.20.0] — 98 new sims mapped to Kurikulum Merdeka (Keputusan Kepala BSKAP No. 046/H/KR/2025)
 
 ### Added — high school and informatics (45 sims)

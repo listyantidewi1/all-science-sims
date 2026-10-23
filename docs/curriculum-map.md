@@ -7,8 +7,8 @@ Generated from the manifests; regenerate after adding sims.
 | Level | Sims |
 |---|---|
 | Primary (grades 1–6) | 63 |
-| Middle school (grades 7–9) | 142 |
-| High school (grades 10–12) | 265 |
+| Middle school (grades 7–9) | 145 |
+| High school (grades 10–12) | 276 |
 | University (beyond school) | 119 |
 
 ## Primary (grades 1–6)
@@ -251,6 +251,9 @@ Generated from the manifests; regenerate after adding sims.
 | [Tower of Hanoi](https://all-science-sims.vercel.app/#/computer-science/tower-of-hanoi) | Grades 5–9 | CSTA 1B/2 · KS2–KS3 Computing/Maths · Merdeka Fase C–D |
 | [Flowchart Runner](https://all-science-sims.vercel.app/#/computer-science/flowchart-runner) | Grades 7–10 | CSTA 2-AP-10 · KS3 Computing (algorithms) · Merdeka Informatika Fase D–E (berpikir komputasional) |
 | [Pixels and Colour](https://all-science-sims.vercel.app/#/computer-science/pixels-rgb) | Grades 7–9 | CSTA 2-DA-07 · KS3 Computing (data representation) · Merdeka Informatika Fase D (representasi data) |
+| [From Problem to Program](https://all-science-sims.vercel.app/#/computer-science/problem-to-program) | Grades 9–12 | CSTA 3A-AP-13 · GCSE Computer Science (decomposition) · Merdeka Informatika Fase D–F (berpikir komputasional → program) |
+| [Turtle Graphics](https://all-science-sims.vercel.app/#/computer-science/turtle-graphics) | Grades 8–12 | CSTA 2-AP-12 · KS3 Computing (text-based programming) · Merdeka Informatika Fase D–F (perulangan dan fungsi) |
+| [Linear vs Binary Search](https://all-science-sims.vercel.app/#/computer-science/linear-binary-search) | Grades 9–12 | CSTA 3A-AP-15 · GCSE Computer Science (searching) · Merdeka Informatika Fase E–F (algoritma pencarian) |
 
 ### Data Science
 
@@ -517,6 +520,17 @@ Generated from the manifests; regenerate after adding sims.
 | [Flowchart Runner](https://all-science-sims.vercel.app/#/computer-science/flowchart-runner) | Grades 7–10 | CSTA 2-AP-10 · KS3 Computing (algorithms) · Merdeka Informatika Fase D–E (berpikir komputasional) |
 | [How the Internet Routes](https://all-science-sims.vercel.app/#/computer-science/packet-routing) | Grades 11–12 | CSTA 3A-NI-04 · GCSE Computer Science (networks) · Merdeka Informatika Fase F (jaringan komputer) |
 | [Inside the Computer: Fetch–Decode–Execute](https://all-science-sims.vercel.app/#/computer-science/von-neumann-cpu) | Grades 10–11 | CSTA 3A-CS-02 · GCSE Computer Science (CPU) · Merdeka Informatika Fase E (model komputer Von Neumann) |
+| [Python Step by Step](https://all-science-sims.vercel.app/#/computer-science/python-tracer) | Grades 10–12 | CSTA 3A-AP-15 · GCSE Computer Science (tracing) · Merdeka Informatika Fase E–F (pemrograman berbasis teks) |
+| [From Problem to Program](https://all-science-sims.vercel.app/#/computer-science/problem-to-program) | Grades 9–12 | CSTA 3A-AP-13 · GCSE Computer Science (decomposition) · Merdeka Informatika Fase D–F (berpikir komputasional → program) |
+| [Bug Hunt](https://all-science-sims.vercel.app/#/computer-science/bug-hunt) | Grades 10–12 | CSTA 3A-AP-21 · GCSE Computer Science (debugging) · Merdeka Informatika Fase E–F (pemrograman berbasis teks) |
+| [Variables, Data Types and Operators](https://all-science-sims.vercel.app/#/computer-science/variables-types) | Grades 10–12 | CSTA 3A-AP-14 · GCSE Computer Science (data types) · Merdeka Informatika Fase E (variabel dan tipe data) |
+| [Parsons Puzzle](https://all-science-sims.vercel.app/#/computer-science/parsons-puzzle) | Grades 10–12 | CSTA 3A-AP-15 · GCSE Computer Science (control flow) · Merdeka Informatika Fase E–F (struktur kontrol) |
+| [Lists and Arrays](https://all-science-sims.vercel.app/#/computer-science/list-operations) | Grades 10–12 | CSTA 3A-AP-14 · GCSE Computer Science (lists) · Merdeka Informatika Fase E–F (struktur data list) |
+| [Dictionaries: Keys and Values](https://all-science-sims.vercel.app/#/computer-science/dictionary-lookup) | Grades 10–12 | CSTA 3B-AP-12 · A-level Computer Science (dictionaries, hashing) · Merdeka Informatika Fase F (struktur data) |
+| [Functions and the Call Stack](https://all-science-sims.vercel.app/#/computer-science/function-call-stack) | Grades 11–12 | CSTA 3B-AP-14 · A-level Computer Science (subroutines, recursion) · Merdeka Informatika Fase F (fungsi dan rekursi) |
+| [Turtle Graphics](https://all-science-sims.vercel.app/#/computer-science/turtle-graphics) | Grades 8–12 | CSTA 2-AP-12 · KS3 Computing (text-based programming) · Merdeka Informatika Fase D–F (perulangan dan fungsi) |
+| [Linear vs Binary Search](https://all-science-sims.vercel.app/#/computer-science/linear-binary-search) | Grades 9–12 | CSTA 3A-AP-15 · GCSE Computer Science (searching) · Merdeka Informatika Fase E–F (algoritma pencarian) |
+| [Charts from Class Data](https://all-science-sims.vercel.app/#/computer-science/class-data-charts) | Grades 10–12 | CSTA 3A-DA-12 · GCSE Computer Science (data processing) · Merdeka Informatika Fase E–F (analisis data dengan program) |
 
 ### Data Science
 

@@ -1,7 +1,7 @@
 # All-Science Sims
 
 > One stop for interactive science simulations and virtual labs.
-> 364 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
+> 375 hand-built sims across 14 subjects · runs entirely in your browser · bilingual (English / Bahasa Indonesia) · free for non-commercial use.
 
 A client-side hub of original interactive simulations covering **physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science**. No backend, no tracking, no install — just open the page and start clicking, dragging, and learning. Useful for students, teachers, self-learners, tutors, and anyone curious about science.
 
@@ -11,16 +11,17 @@ See [CHANGELOG.md](CHANGELOG.md) for what's new in each release.
 
 ## Features
 
-- **364 original simulations** across 14 subjects — see [Catalog](#catalog) below.
+- **375 original simulations** across 14 subjects — see [Catalog](#catalog) below.
 - **Direct manipulation everywhere** — drag charges, drag the pendulum bob, drag data points, draw walls in the maze, click switches in a logic circuit, and so on.
 - **Bilingual UI**: every sim has English and Bahasa Indonesia text. Toggle in the header; preference is saved to `localStorage`.
 - **Fully client-side** — no servers, no APIs, no analytics. Loads fast, works offline once cached, runs from `file://` if you want.
 - **Every sim labelled by school level** — a suggested grade range on each card and page, and Primary / Middle / High school / University filter chips on the home and subject pages. See [By school level](#by-school-level) and the [curriculum map](docs/curriculum-map.md).
 - **Learn more on every sim** — the science behind it in plain language, an explanatory diagram, key ideas, vocabulary, common misconceptions, real-world connections, and check-yourself questions, pitched to the sim's grade range, in both languages.
+- **Real Python in the browser** — the programming sims run the Python taught in school (variables, control flow, functions, lists, dictionaries; no classes) step by step in a built-in interpreter (`src/lib/minipy.js`), checked against CPython 3.13 for output, error messages and tracebacks, with `turtle` and `matplotlib.pyplot` drawn on the page. No install, no server, works offline.
 - **Virtual labs** — many sims carry a lab panel: follow a procedure, make a prediction, record measurements into a table, export CSV. Data auto-saves on the device.
 - **Deep links and embedding** — every control has a URL key, so `#/physics/pendulum?length-m=2` opens the sim preset. `#/embed/...` gives a stage-only view for an `<iframe>` in any LMS or blog. See [Sharing, deep links, and embedding](#sharing-deep-links-and-embedding).
 - **Touch and keyboard friendly** — pointer events everywhere, so dragging works on phones and tablets; every drag handle is reachable with Tab and nudged with the arrow keys.
-- **Lazy-loaded sims** — the home page ships the catalog and shared code (about 75 KB gzipped); each sim's code and long-form text download only when opened.
+- **Lazy-loaded sims** — the home page ships the catalog and shared code (about 140 KB gzipped); each sim's code and long-form text download only when opened.
 - **Hash-based routing** — the same `dist/` folder works on GitHub Pages, Netlify, Vercel, S3, your own server, or a USB stick.
 - **Responsive + dark-mode aware** — adapts to your OS theme via `prefers-color-scheme`.
 - **Reduced-motion respect** — non-essential animations slow down for `prefers-reduced-motion: reduce`.
@@ -63,8 +64,8 @@ Each manifest carries `grade: [...]` (school years 1–12, 13 = university), ass
 | Level | Typical frameworks | Sims |
 |---|---|---|
 | Primary (grades 1–6) | NGSS K-5 · KS1–KS2 · Merdeka Fase A–C (IPAS) | 63 |
-| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 142 |
-| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 265 |
+| Middle school (grades 7–9) | NGSS 6-8 · KS3 · Merdeka Fase D | 145 |
+| High school (grades 10–12) | NGSS 9-12 · KS4, A-level, IB · Merdeka Fase E–F | 276 |
 | University | Undergraduate courses | 119 |
 
 Counts overlap because many sims span two levels. Primary sims use big controls, plain words, and predict-then-test flows; see for example Float or Sink?, Magnets, Light the Bulb, Grow a Plant, and Day and Night.
@@ -305,6 +306,17 @@ Counts overlap because many sims span two levels. Primary sims use big controls,
 | How the Internet Routes | Send a message from a home or school PC to a web or video server across a small network of routers with link costs. |
 | Pixels and Colour | Paint on a tiny 8×8, 16×16 or 32×32 canvas and discover that every picture is just numbers. |
 | Inside the Computer: Fetch–Decode–Execute | Step through a toy Von Neumann computer with a 16-word memory, an accumulator, a program counter and an instruction register. |
+| Python Step by Step | Run real Python one line at a time: next line highlighted, variables as memory boxes, output, input(), and a predict-the-output mode. |
+| From Problem to Program | Translate a school problem through IPO table → steps → pseudocode → flowchart → Python, then test it on boundary cases. |
+| Bug Hunt | Seven short programs with hidden syntax, runtime and logic bugs: run the tests, read the traceback, classify and fix each bug. |
+| Variables, Data Types and Operators | Watch memory boxes change as Python reads, works out and stores values; type(), operator precedence step by step, f-string formats. |
+| Parsons Puzzle | Rebuild nine programs from shuffled lines (with indentation and distractor lines); real Python checks every attempt. |
+| Lists and Arrays | Index, slice, append, insert, remove, pop and sort on a row of cells, counting the cells each operation touches. |
+| Dictionaries: Keys and Values | d[key], get(), in, del, items() and Counter on real data; each lookup races a list of pairs against the hash table. |
+| Functions and the Call Stack | Step through programs with functions and watch frames push and pop: parameters, return values, local vs global, recursion. |
+| Turtle Graphics | Run Python turtle programs in the browser: polygons, stars, spirals and functions, with the turtle's total turning shown. |
+| Linear vs Binary Search | Two real Python programs race to find a card; count the comparisons and see why binary search needs sorted data. |
+| Charts from Class Data | Lists, statistics and matplotlib: turn class data into line, bar and scatter charts drawn the way matplotlib draws them. |
 
 ### Data Science
 
@@ -638,7 +650,9 @@ all-science-sims/
 │   ├── favicon.svg
 │   ├── manifest.webmanifest       # PWA manifest
 │   └── sw.js                      # offline cache (production only)
+├── THIRD-PARTY-NOTICES.md         # licenses of code adapted into the Python interpreter (texts in licenses/)
 ├── tests/                         # Playwright: every sim starts clean, pages render, keyboard, embed
+├── scripts/                       # Learn validator, minipy tests (test-minipy*.mjs, minipy-cases/)
 └── src/
     ├── main.js                    # bootstrap: header, router, footer
     ├── router.js                  # hash router → page renderers
@@ -656,6 +670,8 @@ all-science-sims/
     │   ├── params.js              # deep-link registry: apply ?key=value, serialize share links
     │   ├── handle.js              # dragHandle: pointer drags + keyboard-accessible handles
     │   ├── lab.js                 # labPanel: procedure, prediction, data table, CSV export
+    │   ├── minipy.js, minipy/     # Python 3.13 subset interpreter: compile, step, snapshot (programming sims)
+    │   ├── codepanel.js           # code editor + console panels with Python / pseudocode highlighting
     │   ├── chart.js, vec2.js, color.js, store.js, pwa.js
     ├── components/                # header, footer, sim-card, sim-shell
     ├── pages/                     # home, subject, sim, about
@@ -799,7 +815,7 @@ To add another language:
 - **HTML5 Canvas** for animated sims, **inline SVG** for diagram-style sims, **CSS Grid/Flex** for layout.
 - **CSS custom properties** for theming (colors, spacing, type scale, per-subject accents, dark mode).
 
-No framework, no build-time CSS preprocessor, no runtime dependencies. The home page is about 75 KB of JS gzipped (catalog with bilingual titles and descriptions, plus shared libs); each sim adds 2–10 KB on demand. Dev dependencies are Vite and Playwright only.
+No framework, no build-time CSS preprocessor, no runtime dependencies. The home page is about 140 KB of JS and CSS gzipped (catalog with bilingual titles and descriptions for every sim, plus shared libs); each sim adds 2–50 KB on demand, and the programming sims share a ~230 KB Python interpreter chunk that is cached after the first one. Dev dependencies are Vite and Playwright only.
 
 ---
 
@@ -836,6 +852,7 @@ npm test                          # builds, serves dist/, runs every test
 - `tests/pages.spec.js` — home grid, search, every subject page, language toggle, lazy details, not-found path.
 - `tests/keyboard.spec.js` — a drag handle moved with the arrow keys.
 - `tests/embed.spec.js` — embed route, `autostart`, deep-link presets, share link, `lang`.
+- `npm run test:minipy` — the Python interpreter: 616 programs in `scripts/minipy-cases/` compared with their recorded CPython 3.13 output and tracebacks, plus API checks for stepping, snapshots, input and host modules. Needs only Node; `node scripts/test-minipy.mjs --update` re-records the expected results with a local `python3` 3.13.
 
 The GitHub Actions workflow in `.github/workflows/ci.yml` runs the same suite on every push and pull request. To point the tests at an existing Chromium instead of downloading one, set `PW_CHROMIUM_PATH=/path/to/chrome`.
 
@@ -860,6 +877,8 @@ Open to PRs in any of these directions:
 **Free for non-commercial use.** The code, simulations, artwork, and translations are released under the [PolyForm Noncommercial License 1.0.0](LICENSE). Students, teachers, schools, universities, charities, public research bodies, and government institutions may use, copy, modify, translate, and share everything here at no cost, as long as the copyright notice and a copy of (or link to) the license travel with it.
 
 **Commercial use needs a separate license.** If you want to put any of these simulations into a paid product, a subscription platform, an ad-supported service, or any other commercial offering, see [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) for what is covered and how to request a license. Commercial licenses are non-exclusive and priced per request.
+
+**Third-party code.** The Python interpreter behind the programming sims (`src/lib/minipy*`) and the Turtle Graphics and Charts from Class Data sims include code adapted from CPython, the GNU C Library's maths functions, the Mersenne Twister, Unicode data, turtle.py and matplotlib. Those parts keep their own open-source licenses (PSF, LGPL-2.1-or-later, BSD, Unicode, zlib-style, Matplotlib); see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 **Contributions.** By submitting a pull request you agree that your contribution is licensed to the project under the same PolyForm Noncommercial License 1.0.0, and that the project maintainer may also include it in commercial licenses of the project. This keeps the whole collection licensable as one piece. All current content is by the maintainer alone.
 
