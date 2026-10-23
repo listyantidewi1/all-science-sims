@@ -8,6 +8,7 @@ export function renderAbout(main) {
   wrap.innerHTML = `
     <h1>${t('about.title')}</h1>
     <p>${t('about.body')}</p>
+    <p><small>${t('about.notices')}</small></p>
   `;
   main.appendChild(wrap);
 }

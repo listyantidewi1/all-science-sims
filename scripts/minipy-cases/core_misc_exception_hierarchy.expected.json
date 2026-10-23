@@ -1,0 +1,4 @@
+{
+  "stdout": "IndexError: list index out of range KeyError: 'b' a\nValueError tertangkap duluan\nTrue True True\nfinally tetap jalan\ndari try\nfinally g\nexcept\ni 0\nfinally 0\nfinally 1\ni 2\nfinally 2\n('a', 2) ('a', 2) ValueError('a', 2) \n",
+  "error": null
+}

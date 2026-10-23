@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "':' expected after dictionary key",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-UKppjK/main.py\", line 1\n    d = {\"a\": 1, \"b\" 2}\n                   ^\nSyntaxError: ':' expected after dictionary key\n"
+}

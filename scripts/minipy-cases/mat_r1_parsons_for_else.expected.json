@@ -1,0 +1,5 @@
+{
+  "stdout": "80 -> Tuntas\n75 -> Tuntas\n90 -> Tuntas\n85 -> Tuntas\n85 -> Belum Tuntas\nAda yang remedial: 65\ntotal sebelum break: 245\n",
+  "error": null,
+  "stderr": ""
+}

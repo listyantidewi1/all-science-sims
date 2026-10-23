@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid decimal literal",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-okWdmH/main.py\", line 1\n    2x = 10\n    ^\nSyntaxError: invalid decimal literal\n"
+}

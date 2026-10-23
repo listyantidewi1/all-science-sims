@@ -1,0 +1,4 @@
+{
+  "stdout": "[1, 2, 3, 4] [1, 2, 3, 4] True\n[1, 2, 3, 4] [1, 2, 3, 4, 5] False True\n['asli', 'diubah'] ['baru']\n6 5\n[[1, 0], [0, 0]]\n",
+  "error": null
+}

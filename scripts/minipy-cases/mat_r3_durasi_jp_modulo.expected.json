@@ -1,0 +1,5 @@
+{
+  "stdout": " 90 menit = 2 JP + sisa 0:00:00 (0 menit) (2, datetime.timedelta(0))\n100 menit = 2 JP + sisa 0:10:00 (10 menit) (2, datetime.timedelta(seconds=600))\n 44 menit = 0 JP + sisa 0:44:00 (44 menit) (0, datetime.timedelta(seconds=2640))\n 45 menit = 1 JP + sisa 0:00:00 (0 menit) (1, datetime.timedelta(0))\n  0 menit = 0 JP + sisa 0:00:00 (0 menit) (0, datetime.timedelta(0))\n135 menit = 3 JP + sisa 0:00:00 (0 menit) (3, datetime.timedelta(0))\n",
+  "error": null,
+  "stderr": ""
+}

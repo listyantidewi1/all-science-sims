@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ValueError",
+    "message": "list modified during sort",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-5U8C1Y/main.py\", line 5, in <module>\n    data.sort(key=kunci)\n    ~~~~~~~~~^^^^^^^^^^^\nValueError: list modified during sort\n"
+}

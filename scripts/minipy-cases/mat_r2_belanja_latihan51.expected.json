@@ -1,0 +1,9 @@
+{
+  "stdout": "1. Buku\n2. Pulpen\n3. Penghapus\n4. Penggaris\nBarang baru: Posisi (mulai 1): ['Spidol', 'Buku', 'Pulpen', 'Penghapus', 'Penggaris']\nBarang baru: Posisi (mulai 1): ['Spidol', 'Buku', 'Pulpen', 'Penghapus', 'Penggaris', 'Tipe-X']\nBarang baru: Posisi (mulai 1): ['Spidol', 'Buku', 'Pulpen', 'Penghapus', 'Penggaris', 'Map', 'Tipe-X']\nHapus barang: ",
+  "error": {
+    "type": "ValueError",
+    "message": "list.remove(x): x not in list",
+    "line": 14
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-dgSaj6/main.py\", line 14, in <module>\n    belanja.remove(hapus)\n    ~~~~~~~~~~~~~~^^^^^^^\nValueError: list.remove(x): x not in list\n"
+}

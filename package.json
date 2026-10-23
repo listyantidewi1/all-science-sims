@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "pretest": "vite build",
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:minipy": "node scripts/test-minipy.mjs && node scripts/test-minipy-api.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",

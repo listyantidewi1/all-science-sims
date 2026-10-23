@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-Asg2qu/main.py\", line 2\n    y = x +* 2\n           ^\nSyntaxError: invalid syntax\n"
+}

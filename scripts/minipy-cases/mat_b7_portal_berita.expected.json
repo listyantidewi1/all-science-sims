@@ -1,0 +1,4 @@
+{
+  "stdout": "Membaca   : Juara OSN\nMembaca   : Pentas Seni\nMembaca   : Juara OSN\nDisimpan  : Kantin Sehat | antrean: ['Kantin Sehat']\nDisimpan  : Beasiswa 2026 | antrean: ['Kantin Sehat', 'Beasiswa 2026']\nMembaca   : Kantin Sehat\nRekomendasi: Pentas Seni\nRiwayat akhir: ['Juara OSN', 'Kantin Sehat']\nMembaca   : Beasiswa 2026\nAntrean 'Baca Nanti' kosong.\n",
+  "error": null
+}

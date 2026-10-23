@@ -1,0 +1,5 @@
+{
+  "stdout": "Suhu (Celsius): 0.0°C = 32.0°F = 0.0°R\nSuhu (Celsius): -40.0°C = -40.0°F = -32.0°R\nSuhu (Celsius): 100.0°C = 212.0°F = 80.0°R\nSuhu (Celsius): 37.5°C = 99.5°F = 30.0°R\nTitik beku: 0°C • selesai\n",
+  "error": null,
+  "stderr": ""
+}

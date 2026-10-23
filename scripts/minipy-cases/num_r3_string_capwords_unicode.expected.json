@@ -1,0 +1,5 @@
+{
+  "stdout": "'Sstraße Jalan' 'Sstraße Jalan' 'Sstraße jalan'\n'ǅemal ǅ' 'ǅemal ǅ' 'ǅemal ǆ'\n'Fish Flow' 'Fish Flow' 'Fish ﬂow'\n'A B' 'A\\x1cb' 'A\\x1cb'\n'\\ufeffx Y' '\\ufeffx Y' '\\ufeffx y'\n'Halo Dunia' 'Halo\\xa0dunia' 'Halo\\xa0dunia'\n'ʼN Test' 'ʼN Test' 'ʼN test'\n'Sudah Besar' '  Sudah  Besar  ' '  sudah  besar  '\n\"O'neil Mc-donald\" \"O'neil Mc-donald\" \"O'neil mc-Donald\"\n'' '' ''\n",
+  "error": null,
+  "stderr": ""
+}

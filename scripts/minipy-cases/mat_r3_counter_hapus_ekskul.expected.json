@@ -1,0 +1,9 @@
+{
+  "stdout": "Counter({'Pramuka': 3, 'Futsal': 2, 'PMR': 1, 'Basket': 1}) | peminat Paskibra: 0\nDitutup Basket -> Counter({'Pramuka': 3, 'Futsal': 2, 'PMR': 1})\nDitutup Paskibra -> Counter({'Pramuka': 3, 'Futsal': 2, 'PMR': 1})\nDitutup Basket -> Counter({'Pramuka': 3, 'Futsal': 2, 'PMR': 1})\n[('Pramuka', 3)] 3 False\n",
+  "error": {
+    "type": "KeyError",
+    "message": "'Paskibra'",
+    "line": 12
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-Bi67Et/main.py\", line 12, in <module>\n    del biasa[\"Paskibra\"]\n        ~~~~~^^^^^^^^^^^^\nKeyError: 'Paskibra'\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "insert expected 2 arguments, got 1",
+    "line": 2
+  }
+}

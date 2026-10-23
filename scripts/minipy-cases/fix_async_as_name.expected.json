@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-CSwxlQ/main.py\", line 2\n    async = 1\n          ^\nSyntaxError: invalid syntax\n"
+}

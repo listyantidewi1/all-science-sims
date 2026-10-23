@@ -1,0 +1,9 @@
+{
+  "stdout": "['A', 'X', 'Y', 'Z', 'D']\n",
+  "error": {
+    "type": "TypeError",
+    "message": "must assign iterable to extended slice",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-i507ZY/main.py\", line 4, in <module>\n    kursi[0:1] = 5\n    ~~~~~^^^^^\nTypeError: must assign iterable to extended slice\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "OverflowError: Python int too large to convert to C ssize_t\nOverflowError: Python int too large to convert to C ssize_t\nOverflowError: Python int too large to convert to C ssize_t\n",
+  "error": {
+    "type": "OverflowError",
+    "message": "Python int too large to convert to C ssize_t",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-Mm5qQn/main.py\", line 7, in <module>\n    print(s.zfill(10 ** 400))\n          ~~~~~~~^^^^^^^^^^^\nOverflowError: Python int too large to convert to C ssize_t\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "Nilai: ",
+  "error": {
+    "type": "ValueError",
+    "message": "could not convert string to float: '74,9'",
+    "line": 1
+  }
+}

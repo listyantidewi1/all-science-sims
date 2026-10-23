@@ -1,0 +1,9 @@
+{
+  "stdout": "18000.0\n24000.0\n0.0\n15075.0\n61243.875\n28500.0\n0.0 -4500.0\n",
+  "error": {
+    "type": "TypeError",
+    "message": "hitung_total() missing 1 required positional argument: 'diskon_persen'",
+    "line": 14
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-aqYlTm/main.py\", line 14, in <module>\n    print(hitung_total(5000, 4))\n          ~~~~~~~~~~~~^^^^^^^^^\nTypeError: hitung_total() missing 1 required positional argument: 'diskon_persen'\n"
+}

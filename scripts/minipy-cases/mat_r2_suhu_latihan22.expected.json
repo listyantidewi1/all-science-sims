@@ -1,0 +1,9 @@
+{
+  "stdout": "Banyak data: Suhu (Celsius): 37.5 C = 99.5 F | 99.5 99.5\nSuhu (Celsius): -40.0 C = -40.0 F | -40.0 -40.0\nSuhu (Celsius): 0.0 C = 32.0 F | 32.0 32.0\nSuhu (Celsius): -17.7777 C = 0.0 F | 0.00013999999999825263 0.0\nSuhu (Celsius): 100.0 C = 212.0 F | 212.0 212.0\nSuhu (Celsius): 36.65 C = 98.0 F | 97.97 98.0\nSuhu (Celsius): -0.0 C = 32.0 F | 32.0 32.0\nSuhu (Celsius): 1000.0 C = 1832.0 F | 1832.0 1832.0\nSuhu (Celsius): ",
+  "error": {
+    "type": "ValueError",
+    "message": "could not convert string to float: '36,6'",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-UJ4wm9/main.py\", line 4, in <module>\n    celsius = float(input(\"Suhu (Celsius): \"))\nValueError: could not convert string to float: '36,6'\n"
+}

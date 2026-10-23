@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "multiple exception types must be parenthesized",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-OxpZGz/main.py\", line 3\n    except ValueError, TypeError:\n           ^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: multiple exception types must be parenthesized\n"
+}

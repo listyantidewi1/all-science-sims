@@ -1,0 +1,5 @@
+{
+  "stdout": "Nama      | Nilai\nAndi      |    80\nBudi      |  75.5\nCici      |    90\nRata-rata: 81.83\nRata-rata: 81.83 (dari 3 siswa)\n",
+  "error": null,
+  "stderr": ""
+}

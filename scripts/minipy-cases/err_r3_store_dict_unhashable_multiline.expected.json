@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "unhashable type: 'list'",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-fgd6bi/main.py\", line 2, in <module>\n    jadwal[[\"Senin\"]] = [\n    ~~~~~~^^^^^^^^^^^\nTypeError: unhashable type: 'list'\n"
+}

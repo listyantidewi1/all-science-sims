@@ -1,0 +1,4 @@
+{
+  "stdout": "<class 'str'>\n<class 'int'>\n<class 'float'>\n<class 'bool'>\n<class 'NoneType'> <class 'list'> <class 'tuple'> <class 'dict'> <class 'set'> <class 'range'>\n<class 'builtin_function_or_method'> <class 'type'>\nfunction int\nTrue True\n",
+  "error": null
+}

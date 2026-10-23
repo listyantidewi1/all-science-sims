@@ -1,0 +1,4 @@
+{
+  "stdout": "berhasil\nselesai bagi 6 3\n2.0\nTidak bisa dibagi nol\nselesai bagi 1 0\nNone\nMasukkan angka: Error: invalid literal for int() with base 10: 'abc'\nTypeError - unsupported operand type(s) for +: 'int' and 'str'\nException: list index out of range\nbare except\nname 'undefined_var' is not defined\nNilai tidak boleh negatif ('Nilai tidak boleh negatif',)\nfinally dalam\nditangkap luar\n",
+  "error": null
+}

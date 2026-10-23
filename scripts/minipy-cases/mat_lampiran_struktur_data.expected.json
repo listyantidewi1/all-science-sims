@@ -1,0 +1,4 @@
+{
+  "stdout": "1. Buku\n2. Pulpen\n3. Penghapus\n4. Penggaris\nDiambil: Informatika\nDiambil: Fisika\nDiambil: Matematika\nAwal           : ['Ani', 'Bayu', 'Citra', 'Dede', 'Eka']\nSetelah 2 dilayani: ['Citra', 'Dede', 'Eka']\nSetelah Fani datang: ['Citra', 'Dede', 'Eka', 'Fani']\n",
+  "error": null
+}

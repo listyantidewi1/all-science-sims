@@ -1,0 +1,9 @@
+{
+  "stdout": "[95, 80, 70]\n",
+  "error": {
+    "type": "TypeError",
+    "message": "sort() got an unexpected keyword argument 'reversed'. Did you mean 'reverse'?",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-qFAE4J/main.py\", line 3, in <module>\n    print(sorted(nilai, reversed=True))\n          ~~~~~~^^^^^^^^^^^^^^^^^^^^^^\nTypeError: sort() got an unexpected keyword argument 'reversed'. Did you mean 'reverse'?\n"
+}

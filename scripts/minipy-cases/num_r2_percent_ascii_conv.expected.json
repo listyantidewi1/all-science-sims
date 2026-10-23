@@ -1,0 +1,5 @@
+{
+  "stdout": "'André'|'Andr\\xe9'|André\n'\\xe9'      |'\\U0001f600'| ['\\xf1', 1] 'plain'\n'\\xc7' '\\xe\n",
+  "error": null,
+  "stderr": ""
+}

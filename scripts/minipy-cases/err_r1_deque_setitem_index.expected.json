@@ -1,0 +1,9 @@
+{
+  "stdout": "deque(['Ani', 'Bayu'])\ndel: deque index out of range\n",
+  "error": {
+    "type": "IndexError",
+    "message": "deque index out of range",
+    "line": 9
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-9gSwzs/main.py\", line 9, in <module>\n    antrean[2] = \"Citra\"\n    ~~~~~~~^^^\nIndexError: deque index out of range\n"
+}

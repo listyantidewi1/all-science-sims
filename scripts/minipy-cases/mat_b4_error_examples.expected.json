@@ -1,0 +1,4 @@
+{
+  "stdout": "NameError: name 'nilal' is not defined\nTypeError: can only concatenate str (not \"int\") to str\nValueError: invalid literal for int() with base 10: 'abc'\nIndexError: list index out of range\nZeroDivisionError: division by zero\nKeyError: 'Hujan'\n",
+  "error": null
+}

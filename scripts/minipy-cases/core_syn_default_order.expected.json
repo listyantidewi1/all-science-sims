@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "parameter without a default follows parameter with a default",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-wL9H6h/main.py\", line 1\n    def f(a=1, b):\n               ^\nSyntaxError: parameter without a default follows parameter with a default\n"
+}

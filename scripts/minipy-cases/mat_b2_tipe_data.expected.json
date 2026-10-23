@@ -1,0 +1,4 @@
+{
+  "stdout": "Nama: Andi | tipe: <class 'str'>\nUmur: 17 | tipe: <class 'int'>\nTinggi: 165.5 | tipe: <class 'float'>\nLulus: True | tipe: <class 'bool'>\nStok Spidol Papan Tulis saat ini: 5\nStok setelah pembelian: 8\nStok setelah satu habis: 7\nSMA 1 3 - 1 SMA 2\nApakah tuan rumah menang? True\n",
+  "error": null
+}

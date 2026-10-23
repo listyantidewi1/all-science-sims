@@ -1,0 +1,8 @@
+{
+  "stdout": "gagal: invalid literal for int() with base 10: 'x'\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: 'x'",
+    "line": 3
+  }
+}

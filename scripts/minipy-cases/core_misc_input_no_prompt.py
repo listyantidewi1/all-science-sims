@@ -1,0 +1,6 @@
+a = input()
+b = input()
+print(int(a) + int(b))
+c = input("Prompt tanpa newline: ")
+print("didapat:", c)
+print(input("lagi? "))

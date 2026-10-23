@@ -1,0 +1,9 @@
+{
+  "stdout": "Nama: Halo, Andi\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'str' object is not callable",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-83slQK/main.py\", line 4, in <module>\n    kelas = input(\"Kelas: \")\nTypeError: 'str' object is not callable\n"
+}

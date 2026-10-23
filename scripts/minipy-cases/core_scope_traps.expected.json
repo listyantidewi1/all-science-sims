@@ -1,0 +1,4 @@
+{
+  "stdout": "[1, 2, 3]\nUnboundLocalError: cannot access local variable 'daftar' where it is not associated with a value\n[0, 1, 4] __main__\n6 Menghitung luas persegi panjang.\n11\n",
+  "error": null
+}

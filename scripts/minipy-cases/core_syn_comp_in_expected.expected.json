@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'in' expected after for-loop variables",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-inMFtw/main.py\", line 2\n    kuadrat = [x * x for x data]\n                           ^^^^\nSyntaxError: 'in' expected after for-loop variables\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "ValueError(\"invalid literal for int() with base 10: 'x'\")\nZeroDivisionError('division by zero')\n",
+  "error": {
+    "type": "TypeError",
+    "message": "bukan angka",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-7ZoP8W/main.py\", line 15, in <module>\n    1 / 0\n    ~~^~~\nZeroDivisionError: division by zero\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-7ZoP8W/main.py\", line 3, in konversi\n    return int(s)\nValueError: invalid literal for int() with base 10: 'y'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-7ZoP8W/main.py\", line 17, in <module>\n    konversi(\"y\")\n    ~~~~~~~~^^^^^\n  File \"/tmp/minipy-7ZoP8W/main.py\", line 5, in konversi\n    raise TypeError(\"bukan angka\")\nTypeError: bukan angka\n"
+}

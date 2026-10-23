@@ -1,0 +1,4 @@
+{
+  "stdout": "Halo\tDunia\n\"kutip\" dan 'apostrof' \\ selesai\n'Halo\\tDunia\\n\"kutip\" dan \\'apostrof\\' \\\\ selesai'\n\"it's\" 'say \"hi\"' 'both \\' and \"'\n6 Python ababab ---\nbaris1\nbaris2\n'tab\\there' '\\x00\\x07é' ñandú\ntiga\nbaris\nteks\na c bcd ace fedcba\n",
+  "error": null
+}

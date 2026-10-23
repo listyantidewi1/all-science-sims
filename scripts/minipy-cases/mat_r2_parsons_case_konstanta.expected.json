@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "name capture 'KODE_NASI' makes remaining patterns unreachable",
+    "line": 6
+  },
+  "stderr": "  File \"/tmp/minipy-MBZm5U/main.py\", line 6\n    case KODE_NASI:\n         ^^^^^^^^^\nSyntaxError: name capture 'KODE_NASI' makes remaining patterns unreachable\n"
+}

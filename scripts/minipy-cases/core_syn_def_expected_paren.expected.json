@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected '('",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-yYdBiy/main.py\", line 1\n    def sapa:\n            ^\nSyntaxError: expected '('\n"
+}

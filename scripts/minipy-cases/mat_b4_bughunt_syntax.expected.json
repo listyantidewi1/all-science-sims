@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected ':'",
+    "line": 6
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "['biru', 'biru', 'merah', 'merah']\n['B', 'C', 'B', 'A', 'C'] [1, 1]\nValueError The number of counts does not match the population\nValueError Sample larger than population or is negative\nValueError Sample larger than population or is negative\nValueError Sample larger than population or is negative\nTypeError Counts must be integers\n",
+  "error": null,
+  "stderr": ""
+}

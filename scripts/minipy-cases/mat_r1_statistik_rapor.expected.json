@@ -1,0 +1,9 @@
+{
+  "stdout": "Matematika [80, 75, 90, 65, 85, 75]\n  mean  : 78.33333333333333 | manual: 78.33333333333333\n  median: 77.5\n  modus : 75\n  stdev : 8.755950357709132 8.76\nFisika [78, 85, 92, 85, 70, 88]\n  mean  : 83 | manual: 83.0\n  median: 85.0\n  modus : 85\n  stdev : 7.848566748139433 7.85\nKimia [77.5, 82.5, 90.0]\n  mean  : 83.33333333333333 | manual: 83.33333333333333\n  median: 82.5\n  modus : 77.5\n  stdev : 6.2915286960589585 6.29\nBiologi [0.1, 0.2, 0.3, 0.4]\n  mean  : 0.25 | manual: 0.25\n  median: 0.25\n  modus : 0.1\n  stdev : 0.12909944487358058 0.13\nSeni [88, 92, 88, 92, 70]\n  mean  : 86 | manual: 86.0\n  median: 88\n  modus : 88\n  stdev : 9.16515138991168 9.17\nOlahraga [100, 100]\n  mean  : 100 | manual: 100.0\n  median: 100.0\n  modus : 100\n  stdev : 0.0 0.0\nBahasa [75]\n  mean  : 75 | manual: 75.0\n  median: 75\n  modus : 75\n",
+  "error": {
+    "type": "StatisticsError",
+    "message": "stdev requires at least two data points",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-0ZI3Lo/main.py\", line 15, in <module>\n    ringkas(\"Bahasa\", [75])\n    ~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/tmp/minipy-0ZI3Lo/main.py\", line 8, in ringkas\n    print(\"  stdev :\", statistics.stdev(nilai), round(statistics.stdev(nilai), 2))\n                       ~~~~~~~~~~~~~~~~^^^^^^^\n  File \"/usr/lib/python3.13/statistics.py\", line 1207, in stdev\n    raise StatisticsError('stdev requires at least two data points')\nstatistics.StatisticsError: stdev requires at least two data points\n"
+}

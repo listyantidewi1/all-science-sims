@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid character '≥' (U+2265)",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-WbknkE/main.py\", line 3\n    if nilai ≥ 75:\n             ^\nSyntaxError: invalid character '≥' (U+2265)\n"
+}

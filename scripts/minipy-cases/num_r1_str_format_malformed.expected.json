@@ -1,0 +1,5 @@
+{
+  "stdout": "'Nilai: {:>5' ValueError unmatched '{' in format spec\n'Halo {nama' ValueError expected '}' before end of string\n'{0' ValueError expected '}' before end of string\n'{:{}' ValueError unmatched '{' in format spec\n'{!r' ValueError unmatched '{' in format spec\n'{0[}' ValueError expected '}' before end of string\n'{0!}' ValueError unmatched '{' in format spec\n'{0.}' ValueError Empty attribute in format string\n'skor {0:{1:{2}}}' ValueError Max string recursion exceeded\n'{' ValueError Single '{' encountered in format string\n'}' ValueError Single '}' encountered in format string\n'a}b' ValueError Single '}' encountered in format string\n",
+  "error": null,
+  "stderr": ""
+}

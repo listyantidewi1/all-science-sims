@@ -1,0 +1,7 @@
+r = range(10)
+print(r[2:8], r[::2], r[::-1], r[-3:], r[1:-1:3], r[8:2:-2], r[-1:3], r[None:-1:2], r[3:-1:-1])
+s = range(20, 0, -3)
+print(s, list(s), s[1:4], s[::-1], list(s[::-1]), s[0:1:3], s[1:-10:2], s[10:-3])
+print(len(r[2:8]), list(r[2:8]), r[2:8][1], 5 in r[2:8], r.index(7), r.count(3))
+print(range(0, 10, 3)[-1], range(5)[-5], list(range(5, -5, -2)[1:3]))
+print(range(3)[5])

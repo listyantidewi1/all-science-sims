@@ -1,0 +1,5 @@
+{
+  "stdout": "nan nan nan\nnan nan nan\nValueError: math domain error\n",
+  "error": null,
+  "stderr": ""
+}

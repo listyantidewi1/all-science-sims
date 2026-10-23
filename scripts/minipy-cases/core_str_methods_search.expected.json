@@ -1,0 +1,4 @@
+{
+  "stdout": "0 11 -1 11 5\n2 4 23 2\nTrue True True True\npir jeruk pir mangga pir jeruk apel mangga -a-b-c-\n['a', 'b', 'c'] ['a', 'b', 'c'] ['', '', 'x', 'y', ''] ['a', 'b,c'] ['a b', 'c']\n['1', '2', '3'] [] [''] ['baris1', 'baris2']\na-b-c halo 1, 2, 3\n('nama', ': ', 'Andi') ('a.b', '.', 'c') test_file ini\nValueError: substring not found\n",
+  "error": null
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax. Perhaps you forgot a comma?",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-eo2up6/main.py\", line 1\n    data = [10, 20 30, 40]\n                ^^^^^\nSyntaxError: invalid syntax. Perhaps you forgot a comma?\n"
+}

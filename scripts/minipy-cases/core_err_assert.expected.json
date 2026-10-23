@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "AssertionError",
+    "message": "nilai harus 0-100",
+    "line": 2
+  }
+}

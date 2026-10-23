@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "NameError",
+    "message": "cannot access free variable 'x' where it is not associated with a value in enclosing scope",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-JYCOPV/main.py\", line 8, in <module>\n    f(5)\n    ~^^^\n  File \"/tmp/minipy-JYCOPV/main.py\", line 7, in f\n    g()\n    ~^^\n  File \"/tmp/minipy-JYCOPV/main.py\", line 6, in g\n    print(x)\n          ^\nNameError: cannot access free variable 'x' where it is not associated with a value in enclosing scope\n"
+}

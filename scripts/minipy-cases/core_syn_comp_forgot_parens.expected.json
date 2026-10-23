@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "did you forget parentheses around the comprehension target?",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-7pOjLY/main.py\", line 1\n    pasangan = [x, x * 2 for x in range(3)]\n                ^^^^^^^^\nSyntaxError: did you forget parentheses around the comprehension target?\n"
+}

@@ -1,0 +1,4 @@
+{
+  "stdout": "True False True True True True\nTrue True True True\nTrue False True True\nTrue False False True True\nTrue True True True\nFalse False True\nc 1 True False\n",
+  "error": null
+}

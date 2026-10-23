@@ -1,0 +1,9 @@
+{
+  "stdout": "12\ngagal: invalid literal for int() with base 10: 'x'\n",
+  "error": {
+    "type": "UnboundLocalError",
+    "message": "cannot access local variable 'e' where it is not associated with a value",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-YkucEg/main.py\", line 10, in <module>\n    print(konversi(\"x\"))\n          ~~~~~~~~^^^^^\n  File \"/tmp/minipy-YkucEg/main.py\", line 8, in konversi\n    return e\n           ^\nUnboundLocalError: cannot access local variable 'e' where it is not associated with a value\n"
+}

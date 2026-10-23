@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "cannot assign to function call here. Maybe you meant '==' instead of '='?",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-xx2eXv/main.py\", line 1\n    len(x) = 3\n    ^^^^^^\nSyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?\n"
+}

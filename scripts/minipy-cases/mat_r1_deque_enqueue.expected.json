@@ -1,0 +1,9 @@
+{
+  "stdout": "Antrean saat ini: ['Tugas Bu Sari']\n",
+  "error": {
+    "type": "AttributeError",
+    "message": "'collections.deque' object has no attribute 'enqueue'",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-eGXfVP/main.py\", line 6, in <module>\n    antrean.enqueue(\"Soal Pak Budi\")\n    ^^^^^^^^^^^^^^^\nAttributeError: 'collections.deque' object has no attribute 'enqueue'\n"
+}

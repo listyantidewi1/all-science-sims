@@ -1,0 +1,9 @@
+{
+  "stdout": "==============================\nSURAT IZIN TIDAK MASUK SEKOLAH\nNama       : Ayu Lestari\nKeterangan : Sakit demam\n==============================\nx berisi: None <class 'NoneType'>\nTrue True False\n",
+  "error": {
+    "type": "AttributeError",
+    "message": "'NoneType' object has no attribute 'upper'",
+    "line": 12
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-G9fvdB/main.py\", line 12, in <module>\n    print(\"Arsip:\", x.upper())\n                    ^^^^^^^\nAttributeError: 'NoneType' object has no attribute 'upper'\n"
+}

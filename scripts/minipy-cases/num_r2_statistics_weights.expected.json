@@ -1,0 +1,5 @@
+{
+  "stdout": "1.6666666666666667 3.0 82.5\n1.1428571428571428 53.33333333333333\nStatisticsError: data and weights must be the same length\nStatisticsError: sum of weights must be non-zero\nStatisticsError: Weighted sum must be positive\nStatisticsError: harmonic mean does not support negative values\nStatisticsError: Number of weights does not match data size\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "unmatched ')'",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-BEqzFe/main.py\", line 1\n    print((1 + 2) * 3))\n                      ^\nSyntaxError: unmatched ')'\n"
+}

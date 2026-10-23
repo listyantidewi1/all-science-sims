@@ -1,0 +1,8 @@
+{
+  "stdout": "1 // 0 -> integer division or modulo by zero\n1 % 0 -> integer modulo by zero\n1.0 / 0 -> float division by zero\n2.5 // 0 -> float floor division by zero\n5 % 0.0 -> float modulo by zero\n0 ** -1 -> 0.0 cannot be raised to a negative power\ndivmod(3, 0) -> integer division or modulo by zero\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "integer modulo by zero",
+    "line": 9
+  }
+}

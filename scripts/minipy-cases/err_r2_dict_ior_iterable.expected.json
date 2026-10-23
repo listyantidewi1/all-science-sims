@@ -1,0 +1,9 @@
+{
+  "stdout": "{'a': 1, 'b': 2}\nTypeError: unsupported operand type(s) for |: 'dict' and 'list'\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'int' object is not iterable",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-UOffsQ/main.py\", line 8, in <module>\n    d |= 5\nTypeError: 'int' object is not iterable\n"
+}

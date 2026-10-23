@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "unhashable type: 'list'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-NoH4If/main.py\", line 3, in <module>\n    [x, y]: x + y\nTypeError: unhashable type: 'list'\n"
+}

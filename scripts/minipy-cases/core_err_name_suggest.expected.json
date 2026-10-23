@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "NameError",
+    "message": "name 'totl' is not defined. Did you mean: 'total'?",
+    "line": 4
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax. Perhaps you forgot a comma?",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-JKKvKE/main.py\", line 2\n    print(f\"Siswa: {nama siswa}\")\n                    ^^^^^^^^^^\nSyntaxError: invalid syntax. Perhaps you forgot a comma?\n"
+}

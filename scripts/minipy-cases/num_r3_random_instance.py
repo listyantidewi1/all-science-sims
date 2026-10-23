@@ -1,0 +1,18 @@
+# random.Random(seed) is an independent generator with the same Mersenne Twister as the module functions
+import random
+rng = random.Random(42)
+random.seed(42)
+print(rng.random() == random.random(), rng.randint(1, 100), random.randint(1, 100))
+dadu_a = random.Random(7)
+dadu_b = random.Random(7)
+print([dadu_a.randint(1, 6) for _ in range(8)], [dadu_b.randint(1, 6) for _ in range(8)])
+r = random.Random("kelas XI")
+kartu = list(range(1, 11))
+r.shuffle(kartu)
+print(kartu, r.choice("ABCDE"), r.sample(range(100), 4), r.uniform(1, 2), r.randrange(0, 50, 5))
+r.seed(2024)
+print(r.random(), r.gauss(0, 1), r.choices("xyz", k=4), r.getrandbits(20))
+state = r.getstate()
+a = r.random()
+r.setstate(state)
+print(a == r.random(), random.Random().random() >= 0)

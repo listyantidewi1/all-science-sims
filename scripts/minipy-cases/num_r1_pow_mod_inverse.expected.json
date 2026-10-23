@@ -1,0 +1,5 @@
+{
+  "stdout": "5 23 4 2 -2 0 14285714285714285720\n4 1 -4 226732710 0 1\nValueError base is not invertible for the given modulus\nValueError pow() 3rd argument cannot be 0\nTypeError pow() 3rd argument not allowed unless all arguments are integers\nValueError base is not invertible for the given modulus\n",
+  "error": null,
+  "stderr": ""
+}

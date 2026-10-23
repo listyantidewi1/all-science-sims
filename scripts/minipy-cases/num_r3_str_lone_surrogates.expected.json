@@ -1,0 +1,5 @@
+{
+  "stdout": "2 '\\ud83d\\ude00' False ['0xd83d', '0xde00'] '\\ud83d\\ude00' False 3\n'\\ude00\\ud83d' '\\ud83d' '\\ude00' 1 1 False 'x\\ude00' '\\ud83d\\ude00'\nTrue True True\n[1, 1, 1, 0] \"\\ud83d\\ude00|'\\\\ud83d\\\\ude00'|  \\ud83d\\ude00|\" '\\ud83d\\ude00' '**\\ud83d\\ude00*'\n",
+  "error": null,
+  "stderr": ""
+}

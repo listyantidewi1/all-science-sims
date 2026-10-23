@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "NameError",
+    "message": "name 'lenn' is not defined. Did you mean: 'len'?",
+    "line": 2
+  }
+}

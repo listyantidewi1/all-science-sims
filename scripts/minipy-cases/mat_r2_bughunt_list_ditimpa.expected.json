@@ -1,0 +1,9 @@
+{
+  "stdout": "Nilai: [80, 75, 90] 3\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'list' object is not callable",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-99Beq1/main.py\", line 4, in <module>\n    huruf = list(\"Python\")\nTypeError: 'list' object is not callable\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Ani sudah terdaftar.\nPeserta: ['Ani', 'Bayu', 'Citra', 'Dede', 'Eka', 'Fani', 'Gilang', 'Hana']\nPemenang: ['Bayu', 'Citra', 'Eka']\nHadiah utama: Bayu | nomor undian: 29\nUrutan tampil: ['Ani', 'Bayu', 'Citra', 'Hana', 'Fani', 'Gilang', 'Eka', 'Dede']\nKelompok 1: ['Ani', 'Bayu', 'Citra', 'Hana'] Kelompok 2: ['Fani', 'Gilang', 'Eka', 'Dede']\nPeserta kurang!\n[]\nAngka acak: 0.751 6.28 35\n",
+  "error": null,
+  "stderr": ""
+}

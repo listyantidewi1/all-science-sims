@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "sapa() takes 1 positional argument but 2 were given",
+    "line": 3
+  }
+}

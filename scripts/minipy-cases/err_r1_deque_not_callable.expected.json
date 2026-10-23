@@ -1,0 +1,9 @@
+{
+  "stdout": "unsupported operand type(s) for -: 'collections.deque' and 'collections.deque'\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'collections.deque' object is not callable",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-nJ1z5z/main.py\", line 7, in <module>\n    tumpukan(0)\n    ~~~~~~~~^^^\nTypeError: 'collections.deque' object is not callable\n"
+}

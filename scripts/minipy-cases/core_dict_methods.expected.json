@@ -1,0 +1,4 @@
+{
+  "stdout": "{'Andi': 85, 'Budi': 75, 'Citra': 90} 3\n75 None 0\n['Andi', 'Budi', 'Citra'] [85, 75, 90] [('Andi', 85), ('Budi', 75), ('Citra', 90)]\ndict_keys(['Andi', 'Budi', 'Citra']) dict_values([85, 75, 90])\ndict_items([('Andi', 85), ('Budi', 75), ('Citra', 90)])\n75 tidak ada {'Andi': 85, 'Citra': 90}\n{'Andi': 88, 'Citra': 90, 'Eka': 70, 'Fajar': 65}\n50 88\n5 {}\n('Gita', 50) {'a': 0, 'b': 0}\nCitra 90\nAndi 88\nEka 70\nFajar 65\n{'Andi': 3, 'Budi': 1, 'Citra': 1}\n",
+  "error": null
+}

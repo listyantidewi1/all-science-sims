@@ -1,0 +1,5 @@
+{
+  "stdout": "nilai1     identifier=True  keyword=False boleh=True\n1nilai     identifier=False keyword=False boleh=False\nrata rata  identifier=False keyword=False boleh=False\nrata_rata  identifier=True  keyword=False boleh=True\nNilai      identifier=True  keyword=False boleh=True\nif         identifier=True  keyword=True  boleh=False\nprint      identifier=True  keyword=False boleh=True\nlist       identifier=True  keyword=False boleh=True\nkelas-X    identifier=False keyword=False boleh=False\nfor        identifier=True  keyword=True  boleh=False\nmatch      identifier=True  keyword=False boleh=True\nBanyak kata kunci Python: 35\n",
+  "error": null,
+  "stderr": ""
+}

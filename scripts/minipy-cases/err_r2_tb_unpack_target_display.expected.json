@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ValueError",
+    "message": "too many values to unpack (expected 2)",
+    "line": 1
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-veyECe/main.py\", line 1, in <module>\n    nama, nilai = (\n    ^^^^^^^^^^^\nValueError: too many values to unpack (expected 2)\n"
+}

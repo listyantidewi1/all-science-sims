@@ -85,7 +85,17 @@ agreement is negotiated per licensee.
 ## Authorship and third-party materials
 
 All simulations, artwork, interface text, translations, and model data
-in this repository are original work by the copyright holder. There are
-no contributor-owned portions and no third-party assets that require
-separate clearance. The only dependency is the Vite build tool, which
-is MIT-licensed and is not shipped in the built site.
+in this repository are original work by the copyright holder, and there
+are no contributor-owned portions. There is one exception. The Python
+interpreter used by the programming sims (`src/lib/minipy.js` and
+`src/lib/minipy/`) and two of those sims (Turtle Graphics, Charts from
+Class Data) contain code adapted from CPython, the GNU C Library,
+the Mersenne Twister, the Unicode Character Database, turtle.py and
+matplotlib. Those parts stay under their own open-source licenses
+(PSF, LGPL-2.1-or-later, BSD, Unicode, zlib-style, Matplotlib). All of
+these licenses allow commercial use, but their notices must be kept, and
+the LGPL-licensed maths files must stay modifiable and replaceable. A
+commercial license covers the copyright holder's own work and cannot
+change those terms. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)
+for the files and texts. The only build dependency is the Vite build
+tool, which is MIT-licensed and is not shipped in the built site.

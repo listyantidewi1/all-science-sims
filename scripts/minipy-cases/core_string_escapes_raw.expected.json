@@ -1,0 +1,4 @@
+{
+  "stdout": "AB é A • tab\tend\nC:\\folder\\new\\table \\d+\\s* 2 1\nBaris \"satu\"\nBaris 'dua' \\ selesai\nkutip 'tunggal' dan \"ganda\" ab\n'\\\\' \"'\" '\\r\\n' True\nMengapa pakai   tab? ['Mengapa', 'pakai', 'tab?']\n",
+  "error": null
+}

@@ -1,0 +1,5 @@
+# Bug Hunt: variabel bernama input menimpa fungsi bawaan input()
+input = input("Nama: ")
+print("Halo,", input)
+kelas = input("Kelas: ")
+print(kelas)

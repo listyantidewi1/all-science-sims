@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "closing parenthesis ')' does not match opening parenthesis '{'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-0M1ZzR/main.py\", line 2\n    print(f\"Nilai: {x:.2f\")\n                          ^\nSyntaxError: closing parenthesis ')' does not match opening parenthesis '{'\n"
+}

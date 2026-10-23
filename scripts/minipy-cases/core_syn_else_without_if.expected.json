@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-pEgUaY/main.py\", line 2\n    else:\n    ^^^^\nSyntaxError: invalid syntax\n"
+}

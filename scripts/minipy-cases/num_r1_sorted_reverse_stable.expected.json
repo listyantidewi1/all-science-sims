@@ -1,0 +1,5 @@
+{
+  "stdout": "['bb', 'aa', 'dd', 'c', 'e'] ['c', 'e', 'bb', 'aa', 'dd']\n[('Budi', 90), ('Dewi', 90), ('Andi', 80), ('Citra', 80), ('Eka', 70)]\n['bb', 'aa', 'dd', 'c', 'e']\n('Budi', 90) ('Eka', 70) 1 0\n[False, -0.0, 0, True, 1.5, 2] ['c', 'b', 'A', 'a']\n",
+  "error": null,
+  "stderr": ""
+}

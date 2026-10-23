@@ -1,0 +1,5 @@
+{
+  "stdout": "0.3729522352509821 4.412197658969114 0.5488070449994349 0.02651091648926932\n0.17361982740729515 1.2406630586853584 1.0126706768037252 1.1687869790385956 3.287244494072791\n[2, 3, 6, 4, 1] 63 22 5 0\nValueError: gammavariate: alpha and beta must be > 0.0\nValueError: n must be non-negative\nValueError: p must be in the range 0.0 <= p <= 1.0\n",
+  "error": null,
+  "stderr": ""
+}

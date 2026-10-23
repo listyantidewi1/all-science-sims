@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "Expected one or more names after 'import'",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-tUhTo9/main.py\", line 1\n    from math import\n                    ^\nSyntaxError: Expected one or more names after 'import'\n"
+}

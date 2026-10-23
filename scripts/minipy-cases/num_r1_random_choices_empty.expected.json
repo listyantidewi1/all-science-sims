@@ -1,0 +1,9 @@
+{
+  "stdout": "[] ['x', 'x', 'x']\nIndexError: list index out of range\n",
+  "error": {
+    "type": "IndexError",
+    "message": "list index out of range",
+    "line": 10
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-RZA3fV/main.py\", line 10, in <module>\n    print(random.choices([], k=1))\n          ~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/usr/lib/python3.13/random.py\", line 471, in choices\n    return [population[floor(random() * n)] for i in _repeat(None, k)]\n            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nIndexError: list index out of range\n"
+}

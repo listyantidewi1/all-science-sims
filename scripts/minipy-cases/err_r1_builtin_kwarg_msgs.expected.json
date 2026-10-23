@@ -1,0 +1,5 @@
+{
+  "stdout": "TypeError: sort() got an unexpected keyword argument 'keys'. Did you mean 'key'?\nTypeError: max() got an unexpected keyword argument 'keys'. Did you mean 'key'?\nTypeError: round() got an unexpected keyword argument 'digits'. Did you mean 'ndigits'?\nTypeError: int() got an unexpected keyword argument 'bas'. Did you mean 'base'?\nTypeError: split() got an unexpected keyword argument 'sepp'. Did you mean 'sep'?\nTypeError: replace() got an unexpected keyword argument 'counts'. Did you mean 'count'?\nTypeError: sum() got an unexpected keyword argument 'strt'. Did you mean 'start'?\nTypeError: dict.get() takes no keyword arguments\nTypeError: dict.pop() takes no keyword arguments\nTypeError: list.pop() takes no keyword arguments\nTypeError: list.index() takes no keyword arguments\nTypeError: 'begin' is an invalid keyword argument for enumerate()\nTypeError: min() takes at most 2 keyword arguments (3 given)\nTypeError: zip() takes at most 1 keyword argument (2 given)\n",
+  "error": null,
+  "stderr": ""
+}

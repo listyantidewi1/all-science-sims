@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'return' outside function",
+    "line": 7
+  },
+  "stderr": "  File \"/tmp/minipy-ppIzqq/main.py\", line 7\n    return status\n    ^^^^^^^^^^^^^\nSyntaxError: 'return' outside function\n"
+}

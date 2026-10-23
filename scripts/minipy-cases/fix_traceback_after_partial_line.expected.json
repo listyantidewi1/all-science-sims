@@ -1,0 +1,9 @@
+{
+  "stdout": "x",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-WzJGgo/main.py\", line 2, in <module>\n    y = 1 / 0\n        ~~^~~\nZeroDivisionError: division by zero\n"
+}

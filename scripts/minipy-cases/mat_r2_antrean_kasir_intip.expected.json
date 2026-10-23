@@ -1,0 +1,9 @@
+{
+  "stdout": "Awal : ['Ani', 'Bayu', 'Citra', 'Dede', 'Eka']\nSetelah 2 dilayani: ['Citra', 'Dede', 'Eka']\nSetelah Fani datang: ['Citra', 'Dede', 'Eka', 'Fani'] deque(['Citra', 'Dede', 'Eka', 'Fani'])\nTerdepan: Citra | paling belakang: Fani | posisi Eka: 3\nAntrean: deque([]) 0\n",
+  "error": {
+    "type": "IndexError",
+    "message": "deque index out of range",
+    "line": 13
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-dVY8rD/main.py\", line 13, in <module>\n    print(\"Terdepan:\", antrean[0])\n                       ~~~~~~~^^^\nIndexError: deque index out of range\n"
+}

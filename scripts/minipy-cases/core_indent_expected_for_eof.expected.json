@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "IndentationError",
+    "message": "expected an indented block after 'for' statement on line 1",
+    "line": 1
+  }
+}

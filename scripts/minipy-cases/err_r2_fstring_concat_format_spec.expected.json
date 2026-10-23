@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ValueError",
+    "message": "Unknown format code 'd' for object of type 'str'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-NB2b68/main.py\", line 3, in <module>\n    f\"{nilai:5d}\")\n      ^^^^^^^^^^\nValueError: Unknown format code 'd' for object of type 'str'\n"
+}

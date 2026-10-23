@@ -1,0 +1,5 @@
+{
+  "stdout": "OverflowError cannot fit 'int' into an index-sized integer\nOverflowError cannot fit 'int' into an index-sized integer\nIndexError cannot fit 'int' into an index-sized integer\nIndexError cannot fit 'int' into an index-sized integer\nOverflowError Python int too large to convert to C ssize_t\nIndexError range object index out of range\n''\n(1, 2)\n",
+  "error": null,
+  "stderr": ""
+}

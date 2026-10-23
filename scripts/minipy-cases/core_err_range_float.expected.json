@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'float' object cannot be interpreted as an integer",
+    "line": 2
+  }
+}

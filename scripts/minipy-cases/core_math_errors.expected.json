@@ -1,0 +1,8 @@
+{
+  "stdout": "ValueError: math domain error\nValueError: math domain error\nValueError: math domain error\nValueError: math domain error\nValueError: factorial() not defined for negative values\nTypeError: 'float' object cannot be interpreted as an integer\nOverflowError: math range error\n",
+  "error": {
+    "type": "ValueError",
+    "message": "math domain error",
+    "line": 15
+  }
+}

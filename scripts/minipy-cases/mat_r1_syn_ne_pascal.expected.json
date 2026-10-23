@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax.  Maybe you meant '!=' instead of '<>'?",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-sKl3Gy/main.py\", line 3\n    while tebakan <> \"merdeka123\":\n                  ^^\nSyntaxError: invalid syntax.  Maybe you meant '!=' instead of '<>'?\n"
+}

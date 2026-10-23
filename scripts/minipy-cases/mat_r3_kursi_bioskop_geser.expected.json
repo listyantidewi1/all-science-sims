@@ -1,0 +1,5 @@
+{
+  "stdout": "A1: Rio  A2: Dea  A3: Nia  A4: Dodo  \nSiapa di A3? Nia | paling kanan: Dodo\nEka masuk ke posisi 2 (indeks 1) -> geser 3: ['Rio', 'Eka', 'Dea', 'Nia', 'Dodo']\nFani masuk ke posisi 1 (indeks 0) -> geser 5: ['Fani', 'Rio', 'Eka', 'Dea', 'Nia', 'Dodo']\nGita masuk ke posisi 10 (indeks 9) -> geser 0: ['Fani', 'Rio', 'Eka', 'Dea', 'Nia', 'Dodo', 'Gita']\nHadi masuk ke posisi -1 (indeks -2) -> geser 2: ['Fani', 'Rio', 'Eka', 'Dea', 'Nia', 'Hadi', 'Dodo', 'Gita']\nIan masuk ke posisi 0 (indeks -1) -> geser 1: ['Fani', 'Rio', 'Eka', 'Dea', 'Nia', 'Hadi', 'Dodo', 'Ian', 'Gita']\nJumlah penonton: 9 | keluar paling kanan: Gita | keluar A1: Fani\n['Rio', 'Eka', 'Dea', 'Nia', 'Hadi', 'Dodo', 'Ian'] 2\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,7 @@
+print("=== Form Pendaftaran Perpustakaan ===")
+nama = input("Masukkan Nama Lengkap: ")
+kelas = input("Masukkan Kelas: ")
+print("Selamat! Siswa bernama", nama, "dari kelas", kelas, "resmi terdaftar.")
+print("Sistem Presensi Kelas X-A")
+hadir = input("Apakah kamu hadir hari ini? (Ya/Tidak): ")
+print("Status kehadiran kamu hari ini:", hadir, "- Terima kasih sudah mengabari!")

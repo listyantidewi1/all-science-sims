@@ -1,0 +1,9 @@
+{
+  "stdout": "[[...]]\n",
+  "error": {
+    "type": "RecursionError",
+    "message": "maximum recursion depth exceeded in comparison",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-VCVvOX/main.py\", line 6, in <module>\n    print(a == b)\n          ^^^^^^\nRecursionError: maximum recursion depth exceeded in comparison\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "positional argument follows keyword argument",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-iyeNwM/main.py\", line 1\n    print(sep=\"-\", \"a\")\n                      ^\nSyntaxError: positional argument follows keyword argument\n"
+}

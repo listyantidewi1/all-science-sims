@@ -1,0 +1,5 @@
+{
+  "stdout": "tertangkap\ntertangkap\nTypeError: catching classes that do not inherit from BaseException is not allowed\nTypeError: catching classes that do not inherit from BaseException is not allowed\n",
+  "error": null,
+  "stderr": ""
+}

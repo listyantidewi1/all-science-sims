@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-rIgKKS/main.py\", line 1\n    class = \"X-A\"\n          ^\nSyntaxError: invalid syntax\n"
+}

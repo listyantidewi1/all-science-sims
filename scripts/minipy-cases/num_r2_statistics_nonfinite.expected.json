@@ -1,0 +1,5 @@
+{
+  "stdout": "inf inf inf nan\nnan nan nan\nValueError: inf or nan encountered in data\nValueError: inf or nan encountered in data\nValueError: inf or nan encountered in data\nValueError: inf or nan encountered in data\n",
+  "error": null,
+  "stderr": ""
+}

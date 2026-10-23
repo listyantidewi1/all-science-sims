@@ -1,0 +1,5 @@
+{
+  "stdout": "5002 18892 18892 [[[[[[[[ 2498), 2499) True True\nRecursionError: maximum recursion depth exceeded while getting the repr of an object\nRecursionError: maximum recursion depth exceeded in comparison\n",
+  "error": null,
+  "stderr": ""
+}

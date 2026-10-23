@@ -1,0 +1,5 @@
+{
+  "stdout": "Jumlah siswa yang didata: Uang saku siswa ke-1: Rp    Masukan harus angka, ulangi. invalid literal for int() with base 10: 'dua puluh ribu'\nUang saku siswa ke-1: Rp    Masukan harus angka, ulangi. invalid literal for int() with base 10: '15.000'\nUang saku siswa ke-1: Rp    Kategori: Hemat\nUang saku siswa ke-2: Rp    Masukan harus angka, ulangi. invalid literal for int() with base 10: ''\nUang saku siswa ke-2: Rp    Kategori: Boros\nUang saku siswa ke-3: Rp    Masukan harus angka, ulangi. invalid literal for int() with base 10: '15000.0'\nUang saku siswa ke-3: Rp    Kategori: Hemat\nUang saku siswa ke-4: Rp    Kategori: Hemat\nBanyak siswa hemat : 3 dari 4 siswa\nRata-rata uang saku: Rp 10000.25\n",
+  "error": null,
+  "stderr": ""
+}

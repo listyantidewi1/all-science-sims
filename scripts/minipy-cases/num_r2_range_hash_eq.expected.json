@@ -1,0 +1,5 @@
+{
+  "stdout": "True True True\n{range(1, 5, 2)} {range(0, 0)} True\na 1\n",
+  "error": null,
+  "stderr": ""
+}

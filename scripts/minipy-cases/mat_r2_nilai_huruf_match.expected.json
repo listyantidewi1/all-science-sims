@@ -1,0 +1,5 @@
+{
+  "stdout": "Nilai: 100 10 A\n99 9 A\n90 9 A\n89.9 8.0 B\n80 8 B\n79.5 7.0 C\n70 7 C\n69 6 D\n50 5 D\n49 4 E\n0 0 E\n-1 -1 E\n105 10 A\n110 11 E\n",
+  "error": null,
+  "stderr": ""
+}

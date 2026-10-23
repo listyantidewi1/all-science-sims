@@ -1,0 +1,5 @@
+{
+  "stdout": "0 'ab' 'abc' '' 'a' 'kata'\n1 'ab' 'abc' '-' 'a' 'kata'\n2 'ab' 'abc' '--' 'a ' 'kata'\n3 '*ab' 'abc' '---' ' a ' 'kata'\n4 '*ab*' 'abc*' '----' ' a  ' 'kata'\n5 '**ab*' '*abc*' '-----' '  a  ' '.kata'\n6 '**ab**' '*abc**' '------' '  a   ' '.kata.'\n7 '***ab**' '**abc**' '-------' '   a   ' '..kata.'\n8 '***ab***' '**abc***' '--------' '   a    ' '..kata..'\n9 '****ab***' '***abc***' '---------' '    a    ' '...kata..'\n[ ab  ][ abc  ][**ab***] [  ab ]  ab    abc  \n",
+  "error": null,
+  "stderr": ""
+}

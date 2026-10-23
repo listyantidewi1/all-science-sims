@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "f-string: expecting '}'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-rcTVBi/main.py\", line 2\n    print(f\"Halo {nama\")\n                      ^\nSyntaxError: f-string: expecting '}'\n"
+}

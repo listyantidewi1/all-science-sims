@@ -1,0 +1,4 @@
+{
+  "stdout": "None <class 'NoneType'> True True False\nFalse False False False False False False\nTrue True True True True\n5 kosong 0 []\nTrue False True True True\nTrue 1.5\n",
+  "error": null
+}

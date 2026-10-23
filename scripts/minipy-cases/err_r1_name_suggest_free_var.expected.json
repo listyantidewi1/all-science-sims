@@ -1,0 +1,9 @@
+{
+  "stdout": "Nilai: 85\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'nilai_akir' is not defined. Did you mean: 'nilai_akhir'?",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-iOZcDH/main.py\", line 7, in <module>\n    rapor()\n    ~~~~~^^\n  File \"/tmp/minipy-iOZcDH/main.py\", line 6, in rapor\n    cetak()\n    ~~~~~^^\n  File \"/tmp/minipy-iOZcDH/main.py\", line 5, in cetak\n    print(\"Lulus?\", nilai_akir >= 75)\n                    ^^^^^^^^^^\nNameError: name 'nilai_akir' is not defined. Did you mean: 'nilai_akhir'?\n"
+}

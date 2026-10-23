@@ -1,0 +1,5 @@
+{
+  "stdout": "Nomor urut petugas (1-4): Petugas piket: Andi\nNomor urut petugas (1-4): Petugas piket: Dina\nNomor urut petugas (1-4): Nomor urut di luar jangkauan daftar.\nNomor urut petugas (1-4): Petugas piket: Dina\nNomor urut petugas (1-4): Petugas piket: Andi\nNomor urut petugas (1-4): Nomor urut di luar jangkauan daftar.\nNomor urut petugas (1-4): Nomor urut harus angka.\nNomor urut petugas (1-4): Nomor 0 tidak valid\n",
+  "error": null,
+  "stderr": ""
+}

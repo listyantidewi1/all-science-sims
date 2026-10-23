@@ -1,0 +1,9 @@
+{
+  "stdout": "Uang yang dibayarkan: Rp Jumlah pulpen yang dibeli: Total belanja: Rp 41000\nKembalian belanja kamu adalah: Rp 9000\nUang yang dibayarkan: Rp Jumlah pulpen yang dibeli: Total belanja: Rp 41000\nKembalian belanja kamu adalah: Rp 0\nUang yang dibayarkan: Rp Jumlah pulpen yang dibeli: Total belanja: Rp 38000\nKembalian belanja kamu adalah: Rp -3000\nUang yang dibayarkan: Rp ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '50.000'",
+    "line": 11
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-OJcexj/main.py\", line 11, in <module>\n    uang_dibayar = int(input(\"Uang yang dibayarkan: Rp \"))\nValueError: invalid literal for int() with base 10: '50.000'\n"
+}

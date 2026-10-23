@@ -1,0 +1,5 @@
+{
+  "stdout": "Help on function luas_persegi_panjang in module __main__:\n\nluas_persegi_panjang(panjang, lebar=1)\n    Mengembalikan luas persegi panjang.\n\n40\n",
+  "error": null,
+  "stderr": ""
+}

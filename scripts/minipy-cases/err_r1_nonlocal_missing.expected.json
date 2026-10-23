@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "UnboundLocalError",
+    "message": "cannot access local variable 'jumlah' where it is not associated with a value",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-R2TMrv/main.py\", line 7, in <module>\n    print(penghitung())\n          ~~~~~~~~~~^^\n  File \"/tmp/minipy-R2TMrv/main.py\", line 6, in penghitung\n    return tambah()\n  File \"/tmp/minipy-R2TMrv/main.py\", line 4, in tambah\n    jumlah += 1\n    ^^^^^^\nUnboundLocalError: cannot access local variable 'jumlah' where it is not associated with a value\n"
+}

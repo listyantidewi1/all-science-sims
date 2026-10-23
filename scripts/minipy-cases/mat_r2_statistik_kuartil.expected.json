@@ -1,0 +1,5 @@
+{
+  "stdout": "Nilai ulangan: Data terurut: [64, 70, 73, 78, 85, 85, 88, 92, 95]\nQ1 = 71.5 | Q2 = 85.0 | Q3 = 90.0 | median = 85\nJangkauan antarkuartil: 18.5\nKuartil (inclusive): [73.0, 85.0, 88.0]\n",
+  "error": null,
+  "stderr": ""
+}

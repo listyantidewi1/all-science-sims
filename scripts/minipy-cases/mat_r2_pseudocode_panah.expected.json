@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid character '←' (U+2190)",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-Pr2CWZ/main.py\", line 3\n    luas ← sisi * sisi\n         ^\nSyntaxError: invalid character '←' (U+2190)\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "RuntimeError",
+    "message": "dictionary changed size during iteration",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-M9NpG1/main.py\", line 3, in <module>\n    stok\nRuntimeError: dictionary changed size during iteration\n"
+}

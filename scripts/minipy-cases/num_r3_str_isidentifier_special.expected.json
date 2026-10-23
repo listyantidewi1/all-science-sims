@@ -1,0 +1,5 @@
+{
+  "stdout": "'℘' True False True\n'℮' True False True\n'x℘' True False True\n'ͺ' False True True\n'aͺ' False True True\n'น้ำ' True False True\n'ำ' False True True\n'ຳ' False True True\n'ⸯ' False True True\n'aᢅ' True False True\n'ᢅ' True False True\n'nilai_1' True False True\n'1nilai' False False True\n'π' True True True\n'ℕ' True True True\n'_' True False True\n'x²' False False True\n'x₂' False False True\n",
+  "error": null,
+  "stderr": ""
+}

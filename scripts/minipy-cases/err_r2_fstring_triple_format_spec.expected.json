@@ -1,0 +1,9 @@
+{
+  "stdout": "Nama: Nilai: ",
+  "error": {
+    "type": "ValueError",
+    "message": "Unknown format code 'f' for object of type 'str'",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-PzkiKa/main.py\", line 5, in <module>\n    Nilai: {nilai:.1f}\n           ^^^^^^^^^^^\nValueError: Unknown format code 'f' for object of type 'str'\n"
+}

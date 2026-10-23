@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "RuntimeError",
+    "message": "dictionary keys changed during iteration",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-yvsFnm/main.py\", line 3, in <module>\n    for nama, skor in nilai.items():\n                      ~~~~~~~~~~~^^\nRuntimeError: dictionary keys changed during iteration\n"
+}

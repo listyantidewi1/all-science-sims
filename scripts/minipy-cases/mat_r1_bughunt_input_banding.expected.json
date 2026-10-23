@@ -1,0 +1,9 @@
+{
+  "stdout": "Nama: Nilai: Nilai Rani adalah 75\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'>=' not supported between instances of 'str' and 'int'",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-oklibH/main.py\", line 5, in <module>\n    if nilai >= 75:\n       ^^^^^^^^^^^\nTypeError: '>=' not supported between instances of 'str' and 'int'\n"
+}

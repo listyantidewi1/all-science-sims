@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "closing parenthesis ']' does not match opening parenthesis '('",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-hy5wPm/main.py\", line 1\n    nilai = (80 + 90]\n                    ^\nSyntaxError: closing parenthesis ']' does not match opening parenthesis '('\n"
+}

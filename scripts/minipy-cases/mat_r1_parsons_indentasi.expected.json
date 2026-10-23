@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "IndentationError",
+    "message": "unindent does not match any outer indentation level",
+    "line": 7
+  },
+  "stderr": "  File \"/tmp/minipy-yew6w4/main.py\", line 7\n    print(\"Jumlah tuntas:\", tuntas)\n                                   ^\nIndentationError: unindent does not match any outer indentation level\n"
+}

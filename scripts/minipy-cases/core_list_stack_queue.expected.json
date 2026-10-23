@@ -1,0 +1,4 @@
+{
+  "stdout": "push: piring 1 ['piring 1']\npush: piring 2 ['piring 1', 'piring 2']\npush: piring 3 ['piring 1', 'piring 2', 'piring 3']\npop: piring 3 sisa ['piring 1', 'piring 2']\npop: piring 2 sisa ['piring 1']\npop: piring 1 sisa []\ndeque(['Hai', 'Apa kabar?', 'Sampai jumpa']) 3\ndiproses: Hai\ndiproses: Apa kabar?\ndiproses: Sampai jumpa\ndeque([])\n",
+  "error": null
+}

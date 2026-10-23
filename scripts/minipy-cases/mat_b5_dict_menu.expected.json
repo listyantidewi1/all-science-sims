@@ -1,0 +1,8 @@
+{
+  "stdout": "Harga Mie Ayam: 10000\nSemua menu: ['Nasi Goreng', 'Mie Ayam', 'Es Teh', 'Bakso']\nSemua harga: [12000, 10000, 3500, 11000]\nAda Soto? False\nHarga Soto: tidak tersedia\n- Nasi Goreng: Rp 12000\n- Mie Ayam: Rp 10000\n- Es Teh: Rp 3500\n- Bakso: Rp 11000\n",
+  "error": {
+    "type": "KeyError",
+    "message": "'Soto'",
+    "line": 11
+  }
+}

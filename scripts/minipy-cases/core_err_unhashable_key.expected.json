@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "unhashable type: 'list'",
+    "line": 4
+  }
+}

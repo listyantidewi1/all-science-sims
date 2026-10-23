@@ -1,0 +1,6 @@
+print(len("halo"), len([1, 2, 3]), len({}), len({"a": 1}), len(range(10)), len((1,)), len(set([1, 1, 2])))
+print(len(range(0, 10, 3)), len(range(10, 0, -1)), len(range(5, 5)), len("émoji 😀"))
+print(abs(-5), abs(3.5), abs(-0.0), abs(True), abs(-2 ** 100))
+print(list(range(-3, 3)), list(range(10, 0, -2)), range(3)[1], range(10)[-1], range(0, 20, 5)[1:3])
+print(list(range(0)), list(range(1, 2)))
+print(range(5) == range(0, 5), 2 in range(1, 5, 2))

@@ -1,0 +1,5 @@
+{
+  "stdout": "Buka Beranda -> ['Beranda'] 1\nBuka Jadwal Pelajaran -> ['Beranda', 'Jadwal Pelajaran'] 2\nBuka Nilai Rapor -> ['Beranda', 'Jadwal Pelajaran', 'Nilai Rapor'] 3\nBuka Profil -> ['Jadwal Pelajaran', 'Nilai Rapor', 'Profil'] 3\nBuka Pengumuman -> ['Nilai Rapor', 'Profil', 'Pengumuman'] 3\ndeque(['Nilai Rapor', 'Profil', 'Pengumuman'], maxlen=3)\nKembali dari: Pengumuman | sisa: deque(['Nilai Rapor', 'Profil'], maxlen=3)\ndeque(['Login', 'Beranda', 'Nilai Rapor'], maxlen=3) 3\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "['a', 'b', 0, 1]\nTypeError: Value after * must be an iterable, not int\nTypeError: Value after * must be an iterable, not NoneType\nTypeError: Value after * must be an iterable, not float\nTypeError: 'int' object is not iterable\n",
+  "error": {
+    "type": "TypeError",
+    "message": "Value after * must be an iterable, not int",
+    "line": 12
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-Yp1Dxy/main.py\", line 12, in <module>\n    semua = [*data]\n            ^^^^^^^\nTypeError: Value after * must be an iterable, not int\n"
+}

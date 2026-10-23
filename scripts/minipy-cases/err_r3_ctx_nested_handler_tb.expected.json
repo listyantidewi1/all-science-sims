@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-58pp2D/main.py\", line 3, in <module>\n    pertama = data[0]\n              ~~~~^^^\nIndexError: list index out of range\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-58pp2D/main.py\", line 6, in <module>\n    nilai = {}[\"Budi\"]\n            ~~^^^^^^^^\nKeyError: 'Budi'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-58pp2D/main.py\", line 8, in <module>\n    rata = 10 / len(data)\n           ~~~^~~~~~~~~~~\nZeroDivisionError: division by zero\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-5zC8jd/main.py\", line 2\n    fro i in range(3):\n        ^\nSyntaxError: invalid syntax\n"
+}

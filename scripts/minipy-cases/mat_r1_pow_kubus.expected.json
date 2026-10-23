@@ -1,0 +1,5 @@
+{
+  "stdout": "Banyak kubus: Sisi kubus ke-1 (cm): Volume: 451.217663 | Luas permukaan: 352.97339999999997 | sisi^4: 3460.83947521\nSisi kubus ke-2 (cm): Volume: 12.326391000000001 | Luas permukaan: 32.0166 | sisi^4: 28.473963210000004\nSisi kubus ke-3 (cm): Volume: 98.61112800000001 | Luas permukaan: 128.0664 | sisi^4: 455.58341136000007\nSisi kubus ke-4 (cm): Volume: 5423945.0929999985 | Luas permukaan: 185222.93999999997 | sisi^4: 952987152.8400998\nBunga per tahun (desimal): Lama menabung (tahun): Faktor: 1.7796227006250003\nSaldo akhir: 1779622.7006250003\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "AttributeError: 'list' object attribute 'append' is read-only\nAttributeError: 'list' object attribute 'append' is read-only\nAttributeError: 'list' object has no attribute 'tidak_ada' and no __dict__ for setting new attributes\nAttributeError: attribute 'real' of 'int' objects is not writable\nAttributeError: 'int' object has no attribute 'nilai' and no __dict__ for setting new attributes\n",
+  "error": {
+    "type": "AttributeError",
+    "message": "'list' object attribute 'append' is read-only",
+    "line": 19
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-n7Y315/main.py\", line 19, in <module>\n    del data.append\n        ^^^^^^^^^^^\nAttributeError: 'list' object attribute 'append' is read-only\n"
+}

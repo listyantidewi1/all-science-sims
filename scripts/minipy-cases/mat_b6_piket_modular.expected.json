@@ -1,0 +1,4 @@
+{
+  "stdout": "Kondisi awal:\n  1. Andi\n  2. Budi\n  3. Cici\n  4. Dina\n-> Eko ditambahkan di akhir.\n  1. Andi\n  2. Budi\n  3. Cici\n  4. Dina\n  5. Eko\n-> Budi dihapus.\n  1. Andi\n  2. Cici\n  3. Dina\n  4. Eko\n-> Fajar disisipkan di posisi 2.\n  1. Andi\n  2. Fajar\n  3. Cici\n  4. Dina\n  5. Eko\n-> Zaki tidak ditemukan, tidak ada yang dihapus.\n  (daftar piket kosong)\n",
+  "error": null
+}

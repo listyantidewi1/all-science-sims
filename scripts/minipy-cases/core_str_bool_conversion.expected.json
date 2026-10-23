@@ -1,0 +1,4 @@
+{
+  "stdout": "42 3.0 True None [1, 'a'] x\n7% Nilai: 85.5\nTrue False True False True\n'0.3333333333333333' 31\n['a', 'b', 'c'] (1, 2) True {'a': 1, 'b': 2}\n[0, 1, 2] ['x', 'y'] [1, 2] []\n{'nama': 'Andi', 'umur': 17} {'a': 1, 'b': 2}\n[1, 2, 3] frozenset({1, 2})\n",
+  "error": null
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "imaginary number required in complex literal",
+    "line": 4
+  },
+  "stderr": "  File \"/tmp/minipy-fzAxvs/main.py\", line 4\n    case 5 + 5:\n             ^\nSyntaxError: imaginary number required in complex literal\n"
+}

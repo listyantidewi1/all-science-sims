@@ -1,0 +1,5 @@
+{
+  "stdout": "[('z', 5), ('y', 4), ('x', 3)] [('z', 5), ('y', 4)]\nCounter({'b': 2, 'a': 1}) ['b', 'b', 'a']\nCounter({'b': 1, 'c': 1, 'z': 0, 'a': -1}) Counter({'b': 1, 'c': 1}) Counter({'a': 1})\nCounter({'i': 4, 'p': 2, 'm': 1, 'q': -1, 's': -6}) 0\nCounter({'a': 1}) [('a', 5), ('b', 2), ('r', 2)] ['a', 'a', 'a', 'a', 'a', 'b', 'b', 'r', 'r', 'c', 'd']\nCounter({True: 3}) Counter({0: 2}) Counter({'c': 3, 'b': 2, 'a': 2}) [('z', 2), ('y', 1), ('x', 1)] Counter({'b': 2, 'a': 1.5})\n[] [] {'h': 1, 'e': 1, 'l': 2, 'o': 1} ('l', 2)\n",
+  "error": null,
+  "stderr": ""
+}

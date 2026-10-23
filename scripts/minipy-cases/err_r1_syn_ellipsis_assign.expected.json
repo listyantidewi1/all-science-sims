@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "cannot assign to ellipsis here. Maybe you meant '==' instead of '='?",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-tCR7Dw/main.py\", line 2\n    ... = x\n    ^^^\nSyntaxError: cannot assign to ellipsis here. Maybe you meant '==' instead of '='?\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "(1, 2, 3)\nTypeError: Value after * must be an iterable, not int\n",
+  "error": {
+    "type": "TypeError",
+    "message": "__main__.tampil() argument after * must be an iterable, not int",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-Q2Vt56/main.py\", line 8, in <module>\n    tampil(*5)\n    ~~~~~~^^^^\nTypeError: __main__.tampil() argument after * must be an iterable, not int\n"
+}

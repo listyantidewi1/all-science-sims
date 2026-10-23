@@ -1,0 +1,9 @@
+{
+  "stdout": "Nilai (pisahkan spasi): Nilai tertinggi: 92 | cek max(): 92\nNilai (pisahkan spasi): Nilai tertinggi: -3 | cek max(): -3\nNilai (pisahkan spasi): ",
+  "error": {
+    "type": "IndexError",
+    "message": "list index out of range",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-lO9uev/main.py\", line 4, in <module>\n    tertinggi = nilai[0]\n                ~~~~~^^^\nIndexError: list index out of range\n"
+}

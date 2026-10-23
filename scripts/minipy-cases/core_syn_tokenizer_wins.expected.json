@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "unterminated string literal (detected at line 2)",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-tlngLW/main.py\", line 2\n    y = \"tidak ditutup\n        ^\nSyntaxError: unterminated string literal (detected at line 2)\n"
+}

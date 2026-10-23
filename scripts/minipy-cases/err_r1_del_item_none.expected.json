@@ -1,0 +1,9 @@
+{
+  "stdout": "None\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'NoneType' object does not support item deletion",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-GPe07t/main.py\", line 6, in <module>\n    del hasil[0]\n        ~~~~~^^^\nTypeError: 'NoneType' object does not support item deletion\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "IndentationError",
+    "message": "expected an indented block after 'elif' statement on line 4",
+    "line": 5
+  }
+}

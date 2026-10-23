@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "(unicode error) 'unicodeescape' codec can't decode bytes in position 19-20: truncated \\UXXXXXXXX escape",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-p1pYeY/main.py\", line 3\n    print(\"Simpan berkas di C:\\Users\\Guru\\rekap.py\")\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 19-20: truncated \\UXXXXXXXX escape\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "5\nv\nab\nx, y\n2\n    5\n3.14      3.14159 'q'\nd['key']=5\n x = 3.14159\n   3.14159\ntotal: 8\n(7, 14)\n7\n",
+  "error": null,
+  "stderr": ""
+}

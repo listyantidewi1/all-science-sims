@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "name 'x' is nonlocal and global",
+    "line": 4
+  },
+  "stderr": "  File \"/tmp/minipy-ocNRrt/main.py\", line 4\n    global x\n    ^^^^^^^^\nSyntaxError: name 'x' is nonlocal and global\n"
+}

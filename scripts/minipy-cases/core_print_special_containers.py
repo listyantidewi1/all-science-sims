@@ -1,0 +1,6 @@
+inf = float("inf")
+print([inf, -inf, float("nan"), -0.0, 0.0, 1e-300 * 1e-300])
+print({"a": None, "b": True}, (None,), [[]], [{}], {()}, [()], ((),))
+print(str(()), str([]), repr(set()), repr(frozenset()), dict())
+print([1.0, 2.50, 3e3, 1e100], (0.1, 0.2 + 0.1))
+print(-0.0 == 0.0, str(-0.0), round(-0.4), round(-0.5), round(-1.5))

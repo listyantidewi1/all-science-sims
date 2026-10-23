@@ -1,0 +1,4 @@
+{
+  "stdout": "abcdefghijklmnopqrstuvwxyz 0123456789 ABCDE\n32 Halo Dunia Python\n[(1, 2)] deque(['a', 'b'])\n{'x': 1}\n[[1, 2], [3, 77]] [[1, 2, 99], [3]] [[1, 2], [3, 77]]\n1000 int\n",
+  "error": null
+}

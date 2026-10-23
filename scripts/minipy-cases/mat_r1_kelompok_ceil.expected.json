@@ -1,0 +1,9 @@
+{
+  "stdout": "5 per kelompok: 6 penuh, sisa 2, minimal 7 kelompok\n32 per kelompok: 1 penuh, sisa 0, minimal 1 kelompok\n33 per kelompok: 0 penuh, sisa 32, minimal 1 kelompok\n1 per kelompok: 32 penuh, sisa 0, minimal 32 kelompok\nTidak bisa: integer division or modulo by zero\n8 7 -7 -8 8 <class 'int'>\n-7 3 -7 6.0 2.0\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 14
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-PS9Hge/main.py\", line 14, in <module>\n    print(math.ceil(jumlah_siswa / 0))\n                    ~~~~~~~~~~~~~^~~\nZeroDivisionError: division by zero\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Kode: \\85 poin\n\\Andi: 85\n{nilai} -> 85\n\\85\\\n\\{nilai}\n",
+  "error": null,
+  "stderr": "/tmp/minipy-l6KWZZ/main.py:4: SyntaxWarning: invalid escape sequence '\\{'\n  print(f\"Kode: \\{nilai} poin\")\n/tmp/minipy-l6KWZZ/main.py:5: SyntaxWarning: invalid escape sequence '\\{'\n  print(f\"\\{nama}: {nilai}\")\n/tmp/minipy-l6KWZZ/main.py:8: SyntaxWarning: invalid escape sequence '\\{'\n  print(\"\\{nilai}\")\n"
+}

@@ -1,0 +1,4 @@
+{
+  "stdout": "Jumlah siswa yang didata: Uang saku siswa ke-1: Rp    Kategori: Hemat\nUang saku siswa ke-2: Rp    Masukan harus angka, ulangi.\nUang saku siswa ke-2: Rp    Kategori: Hemat\nUang saku siswa ke-3: Rp    Kategori: Boros\nBanyak siswa hemat : 2 dari 3 siswa\nRata-rata uang saku: Rp 17333.33\n",
+  "error": null
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'tuple' object does not support item assignment",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-LHqU7H/main.py\", line 2, in <module>\n    t[0] += (\n    ~^^^\nTypeError: 'tuple' object does not support item assignment\n"
+}

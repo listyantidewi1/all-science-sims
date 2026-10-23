@@ -1,0 +1,9 @@
+{
+  "stdout": "Harga buku (Rp): Jumlah: Total: Rp 30000.0 | Rp 30.000\nHarga buku (Rp): Jumlah: Total: Rp 30.0 | Rp 30\nHarga buku (Rp): Jumlah: Total: Rp 1.0 | Rp 1\nHarga buku (Rp): ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '10.000'",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-mGPscs/main.py\", line 6, in <module>\n    harga = int(input(\"Harga buku (Rp): \"))\nValueError: invalid literal for int() with base 10: '10.000'\n"
+}

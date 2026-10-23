@@ -1,0 +1,9 @@
+{
+  "stdout": "Nilai | Predikat\nNilai uji:   100 | A (Sangat Baik)\n   90 | A (Sangat Baik)\n   89 | B (Baik)\n   80 | B (Baik)\n   79 | C (Cukup)\n   70 | C (Cukup)\n   69 | D (Perlu Remedial)\n    0 | D (Perlu Remedial)\n   -1 | D (Perlu Remedial)\nMasukkan nilai: ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '85.5'",
+    "line": 16
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-vrrAsG/main.py\", line 16, in <module>\n    nilai = int(input(\"Masukkan nilai: \"))\nValueError: invalid literal for int() with base 10: '85.5'\n"
+}

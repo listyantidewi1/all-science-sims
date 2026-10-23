@@ -1,0 +1,8 @@
+{
+  "stdout": "range(2, 8) range(0, 10, 2) range(9, -1, -1) range(7, 10) range(1, 9, 3) range(8, 2, -2) range(9, 3) range(0, 9, 2) range(3, 9, -1)\nrange(20, 0, -3) [20, 17, 14, 11, 8, 5, 2] range(17, 8, -3) range(2, 23, 3) [2, 5, 8, 11, 14, 17, 20] range(20, 17, -9) range(17, 20, -6) range(-1, 8, -3)\n6 [2, 3, 4, 5, 6, 7] 3 True 7 1\n9 0 [3, 1]\n",
+  "error": {
+    "type": "IndexError",
+    "message": "range object index out of range",
+    "line": 7
+  }
+}

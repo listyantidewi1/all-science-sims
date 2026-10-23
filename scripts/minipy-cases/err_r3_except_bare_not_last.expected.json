@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "default 'except:' must be last",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-hBFiYa/main.py\", line 3\n    except:\n    ^^^^^^^\nSyntaxError: default 'except:' must be last\n"
+}

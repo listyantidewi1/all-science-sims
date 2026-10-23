@@ -1,0 +1,8 @@
+{
+  "stdout": "85.0\nAssertionError: daftar nilai kosong\n",
+  "error": {
+    "type": "AssertionError",
+    "message": "x terlalu kecil: 5",
+    "line": 11
+  }
+}

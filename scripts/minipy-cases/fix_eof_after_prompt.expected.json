@@ -1,0 +1,9 @@
+{
+  "stdout": "x? y? ",
+  "error": {
+    "type": "EOFError",
+    "message": "EOF when reading a line",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-6kV97E/main.py\", line 2, in <module>\n    b = input(\"y? \")\nEOFError: EOF when reading a line\n"
+}

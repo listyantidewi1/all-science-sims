@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "Missing parentheses in call to 'print'. Did you mean print(...)?",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-4BFjT5/main.py\", line 2\n    print \"Halo\", nama\n    ^^^^^^^^^^^^^^^^^^\nSyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?\n"
+}

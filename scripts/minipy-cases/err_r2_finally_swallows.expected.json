@@ -1,0 +1,9 @@
+{
+  "stdout": "-1\n10\nsetelah 1\nlanjut 1\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "integer division or modulo by zero",
+    "line": 20
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-eCmKLf/main.py\", line 20, in <module>\n    print(10 // 0)\n          ~~~^^~~\nZeroDivisionError: integer division or modulo by zero\n"
+}

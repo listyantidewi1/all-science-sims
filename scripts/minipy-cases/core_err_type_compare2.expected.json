@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'>=' not supported between instances of 'str' and 'int'",
+    "line": 2
+  }
+}

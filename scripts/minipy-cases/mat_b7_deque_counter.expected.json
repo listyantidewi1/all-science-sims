@@ -1,0 +1,4 @@
+{
+  "stdout": "Diputar berikutnya: Lagu A | sisa: ['Lagu B', 'Lagu C']\nPeminat tiap ekskul: {'Pramuka': 3, 'Futsal': 2, 'PMR': 1}\nPaling diminati   : [('Pramuka', 3)]\n",
+  "error": null
+}

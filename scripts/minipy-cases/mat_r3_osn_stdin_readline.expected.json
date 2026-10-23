@@ -1,0 +1,5 @@
+{
+  "stdout": "Banyak data: 5 | terbaca: 5\nJumlah: 410 | maks: 100 | min: 65\nNama mentah: 'Budi\\n' | dirapikan: 'Budi'\ntidak cocok: ada '\\n' di ujung\nSetelah data habis: '' True\n",
+  "error": null,
+  "stderr": ""
+}

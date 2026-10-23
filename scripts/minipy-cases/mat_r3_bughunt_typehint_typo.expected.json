@@ -1,0 +1,9 @@
+{
+  "stdout": "Program luas persegi panjang\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'flaot' is not defined. Did you mean: 'float'?",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-eWHnbx/main.py\", line 4, in <module>\n    def luas_persegi_panjang(panjang: float, lebar: flaot) -> float:\n                                                    ^^^^^\nNameError: name 'flaot' is not defined. Did you mean: 'float'?\n"
+}

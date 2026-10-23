@@ -1,0 +1,4 @@
+{
+  "stdout": "f dipanggil\nTrue\nf dipanggil\nFalse\ng 1\ng 2\ng 0\ng 0\nTrue\ng True\ng 3\n3\ng 0\ng 1\n",
+  "error": null
+}

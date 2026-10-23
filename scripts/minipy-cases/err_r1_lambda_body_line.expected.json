@@ -1,0 +1,9 @@
+{
+  "stdout": "2.0\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-M2G7bm/main.py\", line 5, in <module>\n    print(bagi(1, 0))\n          ~~~~^^^^^^\n  File \"/tmp/minipy-M2G7bm/main.py\", line 2, in <lambda>\n    a / b\n    ~~^~~\nZeroDivisionError: division by zero\n"
+}

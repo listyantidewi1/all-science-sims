@@ -1,0 +1,5 @@
+{
+  "stdout": "Bilangan (kosong = selesai): 27 Ganjil 1 13\nBilangan (kosong = selesai): 0 Genap 0 0\nBilangan (kosong = selesai): -3 Ganjil 1 -2\nBilangan (kosong = selesai): -4 Genap 0 -2\nBilangan (kosong = selesai): 100000000000000000001 Ganjil 1 50000000000000000000\nBilangan (kosong = selesai): 8 Genap 0 4\nBilangan (kosong = selesai): 0 Genap 0 0\nBilangan (kosong = selesai): ",
+  "error": null,
+  "stderr": ""
+}

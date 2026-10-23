@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "IndexError",
+    "message": "pop from empty list",
+    "line": 3
+  }
+}

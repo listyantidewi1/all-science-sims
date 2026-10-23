@@ -1,0 +1,9 @@
+{
+  "stdout": "mencatat error\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-7728Ah/main.py\", line 7, in <module>\n    catat()\n    ~~~~~^^\n  File \"/tmp/minipy-7728Ah/main.py\", line 5, in <module>\n    hasil = 1 / 0\n            ~~^~~\nZeroDivisionError: division by zero\n"
+}

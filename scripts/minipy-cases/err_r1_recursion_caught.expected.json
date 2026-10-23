@@ -1,0 +1,9 @@
+{
+  "stdout": "RecursionError: maximum recursion depth exceeded\n500\n",
+  "error": {
+    "type": "RecursionError",
+    "message": "maximum recursion depth exceeded",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-LZB52x/main.py\", line 12, in <module>\n    turun(3)\n    ~~~~~^^^\n  File \"/tmp/minipy-LZB52x/main.py\", line 2, in turun\n    return turun(n - 1)\n  File \"/tmp/minipy-LZB52x/main.py\", line 2, in turun\n    return turun(n - 1)\n  File \"/tmp/minipy-LZB52x/main.py\", line 2, in turun\n    return turun(n - 1)\n  [Previous line repeated 996 more times]\nRecursionError: maximum recursion depth exceeded\n"
+}

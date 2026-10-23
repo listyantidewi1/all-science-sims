@@ -1,0 +1,8 @@
+{
+  "stdout": "AndiX\n(1, 2, (), 3, 4, {}) (1, 2, (3, 4), 5, 4, {'e': 6})\ndaftar() takes 1 positional argument but 2 were given\nf() missing 1 required keyword-only argument: 'c'\nf() missing 1 required positional argument: 'a'\nf() got multiple values for argument 'a'\n",
+  "error": {
+    "type": "TypeError",
+    "message": "daftar() missing 1 required keyword-only argument: 'kelas'",
+    "line": 12
+  }
+}

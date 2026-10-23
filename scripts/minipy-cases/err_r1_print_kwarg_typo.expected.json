@@ -1,0 +1,9 @@
+{
+  "stdout": "Halo dunia\n",
+  "error": {
+    "type": "TypeError",
+    "message": "print() got an unexpected keyword argument 'ends'. Did you mean 'end'?",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-z96fRx/main.py\", line 3, in <module>\n    print(\"A\", \"B\", ends=\"\\n\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^\nTypeError: print() got an unexpected keyword argument 'ends'. Did you mean 'end'?\n"
+}

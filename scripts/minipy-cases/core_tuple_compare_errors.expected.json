@@ -1,0 +1,8 @@
+{
+  "stdout": "True True True\n[(1, 'z'), (2, 'a'), (2, 'b')]\n(95, 'Citra')\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'<' not supported between instances of 'str' and 'int'",
+    "line": 4
+  }
+}

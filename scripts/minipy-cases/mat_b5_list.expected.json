@@ -1,0 +1,4 @@
+{
+  "stdout": "Daftar lengkap: ['Andi', 'Budi', 'Cici', 'Dina']\nPembersih papan tulis (indeks 0): Andi\nPetugas terakhir (indeks -1): Dina\nJumlah petugas: 4\nSetelah append : [80, 85, 90, 75, 100]\nSetelah insert : [70, 80, 85, 90, 75, 100]\nNilai tertinggi: 100 | terendah: 70\nJumlah total   : 500 | rata-rata: 83.33333333333333\nSetelah diganti : ['Buku Tulis', 'Spidol', 'Tipe-X', 'Penggaris']\nSetelah dihapus : ['Buku Tulis', 'Spidol', 'Penggaris']\nDikeluarkan     : Penggaris | sisa: ['Buku Tulis', 'Spidol']\nPulpen tidak ada di keranjang, tidak perlu dihapus.\n1 . Laskar Pelangi\n2 . Hujan\n3 . Bintang di Surga\n4 . Tentang Rindu\n---\n1. Laskar Pelangi\n2. Hujan\n3. Bintang di Surga\n4. Tentang Rindu\n",
+  "error": null
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Andi (H/S/I/A): Budi (H/S/I/A): Cici (H/S/I/A): Dina (H/S/I/A): \nAndi  : Hadir\nBudi  : Alpa\nCici  : Sakit\nDina  : Alpa\nKehadiran: 1/4 = 25%\n",
+  "error": null,
+  "stderr": "Kode 'X' tidak dikenal untuk Budi, dicatat Alpa\nKode '' tidak dikenal untuk Dina, dicatat Alpa\n"
+}

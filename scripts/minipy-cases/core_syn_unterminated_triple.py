@@ -1,0 +1,2 @@
+teks = """awal
+masih

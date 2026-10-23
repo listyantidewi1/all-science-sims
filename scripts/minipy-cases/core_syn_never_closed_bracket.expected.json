@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'[' was never closed",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-e5arqs/main.py\", line 1\n    daftar = [1, 2, 3\n             ^\nSyntaxError: '[' was never closed\n"
+}

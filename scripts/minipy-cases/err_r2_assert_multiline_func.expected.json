@@ -1,0 +1,9 @@
+{
+  "stdout": "85\n",
+  "error": {
+    "type": "AssertionError",
+    "message": "nilai 120 di luar rentang",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-sx07wl/main.py\", line 7, in <module>\n    print(cek_nilai(120))\n          ~~~~~~~~~^^^^^\n  File \"/tmp/minipy-sx07wl/main.py\", line 3, in cek_nilai\n    0 <= n <= 100\nAssertionError: nilai 120 di luar rentang\n"
+}

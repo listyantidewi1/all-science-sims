@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid character '“' (U+201C)",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-CcHeyE/main.py\", line 1\n    print(“Halo”)\n          ^\nSyntaxError: invalid character '“' (U+201C)\n"
+}

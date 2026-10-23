@@ -1,0 +1,9 @@
+{
+  "stdout": "12\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: 'dua'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-C5gRAe/main.py\", line 7, in <module>\n    print(ubah(\"dua\"))\n          ~~~~^^^^^^^\n  File \"/tmp/minipy-C5gRAe/main.py\", line 5, in ubah\n    raise e from e\n  File \"/tmp/minipy-C5gRAe/main.py\", line 3, in ubah\n    return int(teks)\nValueError: invalid literal for int() with base 10: 'dua'\n"
+}

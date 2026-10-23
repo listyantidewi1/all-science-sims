@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'(' was never closed",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-UOHzqz/main.py\", line 1\n    nilai = int(input(\"Nilai: \")\n               ^\nSyntaxError: '(' was never closed\n"
+}

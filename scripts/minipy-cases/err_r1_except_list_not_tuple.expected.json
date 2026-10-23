@@ -1,0 +1,9 @@
+{
+  "stdout": "2.5\n",
+  "error": {
+    "type": "TypeError",
+    "message": "catching classes that do not inherit from BaseException is not allowed",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-ZlYwCj/main.py\", line 4, in <module>\n    print(10 / int(teks))\n          ~~~^~~~~~~~~~~\nZeroDivisionError: division by zero\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-ZlYwCj/main.py\", line 5, in <module>\n    except kesalahan:\n        print(\"input salah\")\nTypeError: catching classes that do not inherit from BaseException is not allowed\n"
+}

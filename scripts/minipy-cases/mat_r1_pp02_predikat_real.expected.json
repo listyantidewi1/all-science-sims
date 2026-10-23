@@ -1,0 +1,9 @@
+{
+  "stdout": "Nilai akhir: 80.0 -> LULUS\nNilai akhir: 75.0 -> LULUS\nNilai akhir: 74.9 -> TIDAK LULUS\nNilai akhir: 75.0 -> LULUS\nNilai akhir: ",
+  "error": {
+    "type": "ValueError",
+    "message": "could not convert string to float: '74,9'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-whqxGd/main.py\", line 3, in <module>\n    nilai = float(input(\"Nilai akhir: \"))\nValueError: could not convert string to float: '74,9'\n"
+}

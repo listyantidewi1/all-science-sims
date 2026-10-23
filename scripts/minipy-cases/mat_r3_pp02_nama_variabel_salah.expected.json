@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 5
+  },
+  "stderr": "  File \"/tmp/minipy-ImUH5y/main.py\", line 5\n    Var:+xy,458 = 10\n           ^\nSyntaxError: invalid syntax\n"
+}

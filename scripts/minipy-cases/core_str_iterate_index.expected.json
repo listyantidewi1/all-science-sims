@@ -1,0 +1,8 @@
+{
+  "stdout": "0 P n\n1 y o\n2 t h\n3 h t\n4 o y\n5 n P\nPy thon Pytho hon  nohtyP yh\nvokal: 8\naku kamu hahaha 3 😀 ab\nn\n",
+  "error": {
+    "type": "IndexError",
+    "message": "string index out of range",
+    "line": 12
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "stdout": "[(0, 'apel'), (1, 'jeruk'), (2, 'mangga')] [(1, 'apel'), (2, 'jeruk'), (3, 'mangga')]\n10 apel\n11 jeruk\n12 mangga\n[('Andi', 80), ('Budi', 90)] {'Andi': 80, 'Budi': 90}\n[] [('a', 1, True), ('b', 2, False)]\n(1, 2) ('a', 'b')\nok\n",
+  "error": null
+}

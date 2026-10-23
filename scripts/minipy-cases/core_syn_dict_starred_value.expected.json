@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "cannot use a starred expression in a dictionary value",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-S1qWDN/main.py\", line 2\n    d = {\"a\": *nilai}\n              ^^^^^^\nSyntaxError: cannot use a starred expression in a dictionary value\n"
+}

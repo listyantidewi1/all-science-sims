@@ -1,0 +1,9 @@
+{
+  "stdout": "Yang tersisa (seharusnya hanya >= 75): [70, 80, 90, 74]\nPerbaikan: [80, 90]\nPerbaikan dengan salinan: [80, 90]\n",
+  "error": {
+    "type": "RuntimeError",
+    "message": "dictionary changed size during iteration",
+    "line": 19
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-yTyW5H/main.py\", line 19, in <module>\n    for menu in harga:\n                ^^^^^\nRuntimeError: dictionary changed size during iteration\n"
+}

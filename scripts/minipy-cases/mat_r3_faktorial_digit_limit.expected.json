@@ -1,0 +1,5 @@
+{
+  "stdout": "n: Bit: 19053\nValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit\nBatas sekarang: 4300\nBanyak digit: 5736 | 10 digit awal: 3316275092\n",
+  "error": null,
+  "stderr": ""
+}

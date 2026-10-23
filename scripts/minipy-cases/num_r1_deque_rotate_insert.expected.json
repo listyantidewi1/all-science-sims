@@ -1,0 +1,5 @@
+{
+  "stdout": "deque([3, 1, 2])\ndeque([1, 2, 3])\ndeque([1, 2, 9, 3])\ndeque([1, 2, 9, 3, 8])\ndeque([0, 1, 2, 9, 3, 8])\n2 5 1 3 6\ndeque([], maxlen=0)\ndeque(['b', 'c'], maxlen=2) 2\ndeque(['z', 'y'], maxlen=2)\nIndexError deque already at its maximum size\nIndexError deque index out of range\nValueError 99 is not in deque\nValueError 99 is not in deque\nTypeError sequence index must be integer, not 'slice'\nIndexError pop from an empty deque\ndeque([1, 2, 1, 2]) deque([1, 2]) False deque([], maxlen=3) True\n",
+  "error": null,
+  "stderr": ""
+}

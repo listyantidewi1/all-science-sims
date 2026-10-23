@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "RuntimeError",
+    "message": "dictionary keys changed during iteration",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-q73mHh/main.py\", line 2, in <module>\n    for buah in stok:\n                ^^^^\nRuntimeError: dictionary keys changed during iteration\n"
+}

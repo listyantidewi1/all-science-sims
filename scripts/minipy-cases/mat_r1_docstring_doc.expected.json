@@ -1,0 +1,5 @@
+{
+  "stdout": "Menampilkan seluruh petugas piket\nbeserta nomor urutnya.\n\nJika daftar kosong, tampilkan pesan khusus.\n\n'Menambahkan petugas di akhir daftar.'\n  1. Andi\n  2. Eko\n  (daftar piket kosong)\n",
+  "error": null,
+  "stderr": ""
+}

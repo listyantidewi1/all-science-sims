@@ -1,0 +1,8 @@
+{
+  "stdout": "42 42 -7 3 1000 9\n3 -3 1 100000000000000000000 5 35\n10 255 15\n123 3\nValueError: invalid literal for int() with base 10: '12.5'\nValueError: invalid literal for int() with base 10: 'abc'\nValueError: invalid literal for int() with base 10: ''\nValueError: invalid literal for int() with base 10: '1 2'\nValueError: invalid literal for int() with base 10: '0x10'\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '7.5'",
+    "line": 10
+  }
+}

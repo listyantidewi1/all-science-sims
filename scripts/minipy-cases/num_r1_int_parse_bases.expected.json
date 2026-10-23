@@ -1,0 +1,5 @@
+{
+  "stdout": "'  0x1f  ' 16 31\n'0X1F' 0 31\n'-0b101' 0 -5\nValueError: invalid literal for int() with base 10: '_1'\nValueError: invalid literal for int() with base 10: '1__0'\n'0_0' 10 0\n'00' 0 0\nValueError: invalid literal for int() with base 0: '07'\nValueError: invalid literal for int() with base 0: '0_7'\n'+0o17' 0 15\nValueError: invalid literal for int() with base 10: '1_'\n'z' 36 35\n'Z' 36 35\nValueError: invalid literal for int() with base 2: '2'\nValueError: invalid literal for int() with base 10: '-'\nValueError: invalid literal for int() with base 16: '0x'\n'\\t42\\n' 10 42\nValueError: invalid literal for int() with base 10: '4 2'\n'٤٢' 10 42\nValueError: invalid literal for int() with base 16: '0x1g'\nValueError: invalid literal for int() with base 10: '1e3'\nValueError: invalid literal for int() with base 15: 'ff'\n' -0x_ff ' 0 -255\n'1010' 2 10\n'777' 8 511\nValueError: int() base must be >= 2 and <= 36, or 0\nValueError: int() base must be >= 2 and <= 36, or 0\nValueError: int() base must be >= 2 and <= 36, or 0\nTypeError: int() can't convert non-string with explicit base\n",
+  "error": null,
+  "stderr": ""
+}

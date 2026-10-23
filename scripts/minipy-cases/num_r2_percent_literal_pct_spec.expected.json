@@ -1,0 +1,5 @@
+{
+  "stdout": "'%5%' TypeError not enough arguments for format string\n'%5%' ValueError unsupported format character '%' (0x25) at index 2\n'%-5%|' ValueError unsupported format character '%' (0x25) at index 3\n'%.2%' TypeError not enough arguments for format string\n'%(x)%' ValueError unsupported format character '%' (0x25) at index 4\n'%(x)%' KeyError 'x'\n'%d%%' '5%'\n'%%%d' '%5'\n",
+  "error": null,
+  "stderr": ""
+}

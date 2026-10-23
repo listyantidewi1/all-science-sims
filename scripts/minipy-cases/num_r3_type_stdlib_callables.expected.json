@@ -1,0 +1,5 @@
+{
+  "stdout": "builtin_function_or_method random True\nmethod randint True\nmethod choice True\nmethod shuffle True\nmethod seed True\nmethod uniform True\nfunction mean True\nfunction median True\nbuiltin_function_or_method sqrt True\nbuiltin_function_or_method floor True\nmethod most_common True\nfunction most_common True\nbuiltin_function_or_method append True\nbuiltin_function_or_method sort True\nbuiltin_function_or_method join True\nmethod_descriptor upper True\nbuiltin_function_or_method len True\n",
+  "error": null,
+  "stderr": ""
+}

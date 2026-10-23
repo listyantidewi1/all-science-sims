@@ -1,0 +1,4 @@
+{
+  "stdout": "float True\n2026-08-17 2026 8 17 0 1\n17/08/2026 Monday, 17 August 2026 datetime.date(2026, 8, 17)\n2026-09-16 30 days, 0:00:00 30\n2026-01-02 07:30:05 7 30 07:30 datetime.datetime(2026, 1, 2, 7, 30, 5)\n29 days, 0:00:00 1 day, 12:00:00\nTrue\n060 Tue Feb\n",
+  "error": null
+}

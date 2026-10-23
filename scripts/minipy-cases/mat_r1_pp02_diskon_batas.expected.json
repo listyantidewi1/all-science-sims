@@ -1,0 +1,5 @@
+{
+  "stdout": "Banyak kasus uji: Harga awal: Diskon (%): Harga setelah diskon: 80000.0 float\nHarga awal: Diskon (%): Harga setelah diskon: 100000.0 float\nHarga awal: Diskon (%): Harga setelah diskon: 0.0 float\nHarga awal: Diskon (%): Harga setelah diskon: 87499.99125 float\nHarga awal: Diskon (%): Harga setelah diskon: 0 int\n80000.0 0.0 0\n",
+  "error": null,
+  "stderr": ""
+}

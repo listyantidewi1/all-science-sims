@@ -1,0 +1,8 @@
+{
+  "stdout": "0\n10\n30\n",
+  "error": {
+    "type": "TypeError",
+    "message": "unsupported operand type(s) for +: 'int' and 'NoneType'",
+    "line": 6
+  }
+}

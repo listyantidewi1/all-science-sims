@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "unsupported operand type(s) for +: 'int' and 'str'",
+    "line": 2
+  }
+}

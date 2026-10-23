@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected ':'",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-Ed1jXR/main.py\", line 1\n    def luas(p, l)\n                  ^\nSyntaxError: expected ':'\n"
+}

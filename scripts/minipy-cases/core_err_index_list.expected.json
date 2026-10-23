@@ -1,0 +1,8 @@
+{
+  "stdout": "80\n90\n70\n",
+  "error": {
+    "type": "IndexError",
+    "message": "list index out of range",
+    "line": 3
+  }
+}

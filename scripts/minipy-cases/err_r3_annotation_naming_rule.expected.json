@@ -1,0 +1,9 @@
+{
+  "stdout": "0812\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'xy' is not defined",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-nVZX6n/main.py\", line 3, in <module>\n    Var:+xy = 1\n         ^^\nNameError: name 'xy' is not defined\n"
+}

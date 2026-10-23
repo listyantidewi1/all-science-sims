@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "AssertionError",
+    "message": "saldo tidak cukup",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-ogPlhm/main.py\", line 3, in <module>\n    assert tarik <= saldo, (\n           ^^^^^^^^^^^^^^\nAssertionError: saldo tidak cukup\n"
+}

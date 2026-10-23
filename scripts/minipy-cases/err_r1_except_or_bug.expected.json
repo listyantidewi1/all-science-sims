@@ -1,0 +1,9 @@
+{
+  "stdout": "12\ntidak bisa\n",
+  "error": {
+    "type": "TypeError",
+    "message": "int() argument must be a string, a bytes-like object or a real number, not 'NoneType'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-ELU2pr/main.py\", line 8, in <module>\n    print(ubah(None))\n          ~~~~^^^^^^\n  File \"/tmp/minipy-ELU2pr/main.py\", line 3, in ubah\n    return int(x)\nTypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'\n"
+}

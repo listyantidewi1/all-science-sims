@@ -1,0 +1,5 @@
+{
+  "stdout": "Jam masuk: 07:00:00 | 07.00 | jam: 7 menit: 0\nJP 1: 07:00:00 - 07:45\nJP 2: 07:45:00 - 08:30\nJP 3: 08:30:00 - 09:15\nJP 4: 09:15:00 - 10:00\nIstirahat sampai 10:15:00\nJP 5: 10:15:00 - 11:00\nJP 6: 11:00:00 - 11:45\nPulang: 11:45:00 True True\n",
+  "error": null,
+  "stderr": ""
+}

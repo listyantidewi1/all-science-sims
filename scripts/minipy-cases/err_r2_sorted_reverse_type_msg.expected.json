@@ -1,0 +1,9 @@
+{
+  "stdout": "TypeError: '<' not supported between instances of 'str' and 'int'\nTypeError: '<' not supported between instances of 'int' and 'str'\nTypeError: '<' not supported between instances of 'NoneType' and 'int'\nTypeError: '>' not supported between instances of 'NoneType' and 'int'\nTypeError: '<' not supported between instances of 'NoneType' and 'int'\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'<' not supported between instances of 'str' and 'int'",
+    "line": 12
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-riQIRn/main.py\", line 12, in <module>\n    nilai.sort(reverse=True)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nTypeError: '<' not supported between instances of 'str' and 'int'\n"
+}

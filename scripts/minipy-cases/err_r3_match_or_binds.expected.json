@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "alternative patterns bind different names",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-qcRvm5/main.py\", line 3\n    case 1 | lain:\n         ^^^^^^^^\nSyntaxError: alternative patterns bind different names\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Help on method_descriptor:\n\nupper(self, /) unbound builtins.str method\n    Return a copy of the string converted to uppercase.\n\nBUDI SANTOSO\nHelp on method_descriptor:\n\nreplace(self, old, new, /, count=-1) unbound builtins.str method\n    Return a copy with all occurrences of substring old replaced by new.\n\n      count\n        Maximum number of occurrences to replace.\n        -1 (the default value) means replace all occurrences.\n\n    If the optional argument count is given, only the first count occurrences are\n    replaced.\n\nandi santoso\nHelp on method_descriptor:\n\nappend(self, object, /) unbound builtins.list method\n    Append object to the end of the list.\n\n",
+  "error": null,
+  "stderr": ""
+}

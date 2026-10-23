@@ -1,0 +1,9 @@
+{
+  "stdout": "Playlist acak: None\n",
+  "error": {
+    "type": "TypeError",
+    "message": "object of type 'NoneType' has no len()",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-W8yqHy/main.py\", line 7, in <module>\n    print(\"Jumlah lagu:\", len(playlist))\n                          ~~~^^^^^^^^^^\nTypeError: object of type 'NoneType' has no len()\n"
+}

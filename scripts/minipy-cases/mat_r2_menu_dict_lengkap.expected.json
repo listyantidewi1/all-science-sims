@@ -1,0 +1,9 @@
+{
+  "stdout": "{'Nasi Goreng': 12000, 'Mie Ayam': 10000, 'Es Teh': 3500, 'Bakso': 11000}\n{'Nasi Goreng': 10800.0, 'Mie Ayam': 9000.0, 'Es Teh': 3150.0, 'Bakso': 9900.0}\n[('Es Teh', 3500), ('Mie Ayam', 10000), ('Bakso', 11000), ('Nasi Goreng', 12000)]\nEs Teh 12000 36500\n11000 tidak ada 9000 4\n{'Nasi Goreng': 12000, 'Mie Ayam': 10500, 'Soto': 9000, 'Jus': 7000} ['Nasi Goreng', 'Mie Ayam', 'Soto', 'Jus'] dict_keys(['Nasi Goreng', 'Mie Ayam', 'Soto', 'Jus'])\n- Nasi Goreng Rp 12,000\n- Mie Ayam    Rp 10,500\n- Soto        Rp  9,000\n- Jus         Rp  7,000\nPesan apa? ",
+  "error": {
+    "type": "KeyError",
+    "message": "'mie ayam'",
+    "line": 17
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-SrJJCv/main.py\", line 17, in <module>\n    print(\"Harga:\", harga_menu[pesan])\n                    ~~~~~~~~~~^^^^^^^\nKeyError: 'mie ayam'\n"
+}

@@ -1,0 +1,4 @@
+{
+  "stdout": "Riwayat saat ini   : ['Beranda', 'Jadwal Pelajaran', 'Nilai Rapor']\nHalaman paling atas: Nilai Rapor\nKembali dari       : Nilai Rapor | sisa: ['Beranda', 'Jadwal Pelajaran']\nKembali dari       : Jadwal Pelajaran | sisa: ['Beranda']\n",
+  "error": null
+}

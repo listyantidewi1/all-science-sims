@@ -1,0 +1,9 @@
+{
+  "stdout": "5.0\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'ZeroDivisonError' is not defined. Did you mean: 'ZeroDivisionError'?",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-uwyGv1/main.py\", line 3, in bagi\n    return a / b\n           ~~^~~\nZeroDivisionError: division by zero\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-uwyGv1/main.py\", line 8, in <module>\n    print(bagi(10, 0))\n          ~~~~^^^^^^^\n  File \"/tmp/minipy-uwyGv1/main.py\", line 4, in bagi\n    except ZeroDivisonError:\n           ^^^^^^^^^^^^^^^^\nNameError: name 'ZeroDivisonError' is not defined. Did you mean: 'ZeroDivisionError'?\n"
+}

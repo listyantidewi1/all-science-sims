@@ -1,0 +1,9 @@
+{
+  "stdout": "Soal 1: Rumah adat Jawa Tengah?\nJawaban: Soal 2: Rumah adat Jawa Tengah?\nJawaban: Soal 3: Tarian dari Aceh?\nJawaban: Soal 4: Tarian dari Aceh?\nJawaban: ",
+  "error": {
+    "type": "KeyError",
+    "message": "0",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-MJMsFi/main.py\", line 8, in <module>\n    pertanyaan = random.choice(soal)\n  File \"/usr/lib/python3.13/random.py\", line 352, in choice\n    return seq[self._randbelow(len(seq))]\n           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyError: 0\n"
+}

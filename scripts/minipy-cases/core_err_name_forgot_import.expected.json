@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "NameError",
+    "message": "name 'math' is not defined. Did you forget to import 'math'?",
+    "line": 2
+  }
+}

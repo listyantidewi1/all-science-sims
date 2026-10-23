@@ -1,0 +1,5 @@
+{
+  "stdout": "'1_0.5' 10.5\nValueError: could not convert string to float: '1.5_'\nValueError: could not convert string to float: '  '\n'nan ' nan\n'-iNF' -inf\n'1e500' inf\nValueError: could not convert string to float: '.'\nValueError: could not convert string to float: 'e5'\nValueError: could not convert string to float: '0x1p3'\n'1.e2' 100.0\n'+.5e-2' 0.005\n'1e-500' 0.0\n'-0.0' -0.0\n'١.٥' 1.5\nValueError: could not convert string to float: '1__0'\nValueError: could not convert string to float: '_1'\nValueError: could not convert string to float: '1_e5'\nValueError: could not convert string to float: '1e_5'\nValueError: could not convert string to float: 'infinit'\n'+nan' nan\n'-nan' nan\nValueError: could not convert string to float: '1.2.3'\n'\\n3.5\\t' 3.5\nValueError: could not convert string to float: '1,5'\n'Infinity' inf\n'1E+3' 1000.0\n1.111111111111111e+29 1e-31 inf 10000000000000000 1e+22 -1.1805916207174113e+21\n",
+  "error": null,
+  "stderr": ""
+}

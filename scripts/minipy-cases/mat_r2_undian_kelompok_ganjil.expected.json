@@ -1,0 +1,5 @@
+{
+  "stdout": "hasil shuffle: None\nKelompok 1: ['Bayu', 'Dede', 'Hana', 'Citra']\nKelompok 2: ['Ani', 'Gilang', 'Eka', 'Fani']\nDibagi dua rata: ['Bayu', 'Dede', 'Hana', 'Citra'] ['Ani', 'Gilang', 'Eka', 'Fani']\nhasil shuffle: None\nKelompok 1: ['Eka', 'Dede', 'Gilang', 'Fani']\nKelompok 2: ['Bayu', 'Ani', 'Citra']\nDibagi dua rata: ['Eka', 'Dede', 'Gilang', 'Fani'] ['Bayu', 'Ani', 'Citra']\nhasil shuffle: None\nKelompok 1: ['Bayu', 'Ani', 'Citra']\nKelompok 2: []\nDibagi dua rata: ['Bayu', 'Ani'] ['Citra']\nKetua: Citra | nomor: 3 | dua wakil: ['Ani', 'Citra']\n",
+  "error": null,
+  "stderr": ""
+}

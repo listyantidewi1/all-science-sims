@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "f-string: expecting '!', or ':', or '}'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-mP3CjG/main.py\", line 2\n    print(f\"{x=y}\")\n               ^\nSyntaxError: f-string: expecting '!', or ':', or '}'\n"
+}

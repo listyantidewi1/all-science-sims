@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "daftar() got an unexpected keyword argument 'kelass'. Did you mean 'kelas'?",
+    "line": 3
+  }
+}

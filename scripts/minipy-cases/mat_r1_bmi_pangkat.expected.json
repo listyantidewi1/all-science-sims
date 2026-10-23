@@ -1,0 +1,9 @@
+{
+  "stdout": "60 1.7 20.761245674740486 20.761245674740486 20.8 20.76 Normal\n55 1.65 20.202020202020204 20.202020202020204 20.2 20.2 Normal\n45 1.58 18.02595737862522 18.02595737862522 18.0 18.03 Kurus\n80 1.75 26.122448979591837 26.122448979591837 26.1 26.12 Berlebih\n50 1.645 18.477286795206993 18.477286795206993 18.5 18.48 Kurus\n92.5 1.92 25.09223090277778 25.09223090277778 25.1 25.09 Berlebih\nSelisih BMI: 0.56\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-xJk42x/main.py\", line 16, in <module>\n    print(hitung_bmi(60, 0))\n          ~~~~~~~~~~^^^^^^^\n  File \"/tmp/minipy-xJk42x/main.py\", line 3, in hitung_bmi\n    return berat / tinggi_meter ** 2\n           ~~~~~~^~~~~~~~~~~~~~~~~~~\nZeroDivisionError: division by zero\n"
+}

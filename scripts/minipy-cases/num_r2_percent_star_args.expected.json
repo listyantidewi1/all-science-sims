@@ -1,0 +1,5 @@
+{
+  "stdout": "'%.*f' TypeError * wants int\n'%*d' TypeError * wants int\n'%*.*f|' '    3.14|'\n'%-*d|' '7   |'\n'%(a)*d' TypeError not enough arguments for format string\n'%.*f' OverflowError Python int too large to convert to C int\n'%*d' OverflowError Python int too large to convert to C ssize_t\n'%.*s|' 'a|'\n",
+  "error": null,
+  "stderr": ""
+}

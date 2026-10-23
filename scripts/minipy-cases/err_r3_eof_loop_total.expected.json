@@ -1,0 +1,9 @@
+{
+  "stdout": "Angka: Angka: Angka: \ntotal 8\nLagi: ",
+  "error": {
+    "type": "EOFError",
+    "message": "EOF when reading a line",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-XZd0f9/main.py\", line 8, in <module>\n    print(int(input(\"Lagi: \")))\n              ~~~~~^^^^^^^^^^\nEOFError: EOF when reading a line\n"
+}

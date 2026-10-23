@@ -1,0 +1,5 @@
+{
+  "stdout": "────────────────────\nAndi  │    80 ✔\nBudi  │  74.9 ❌\nCici  │    75 ✔\nDina  │    60 ❌\n────────────────────\nTuntas: 2 · KKM 75 🏆\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "7\nPrompt tanpa newline: didapat: xyz\nlagi? ",
+  "error": {
+    "type": "EOFError",
+    "message": "EOF when reading a line",
+    "line": 6
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "BUDI SANTOSO Budi Santoso\n['Andi', 'Budi']\n<method 'upper' of 'str' objects>\n<method 'append' of 'list' objects>\nmethod_descriptor\n['andi', 'Budi', 'cici']\n",
+  "error": null,
+  "stderr": ""
+}

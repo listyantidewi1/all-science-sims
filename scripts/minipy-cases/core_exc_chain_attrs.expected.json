@@ -1,0 +1,9 @@
+{
+  "stdout": "ValueError (\"invalid literal for int() with base 10: 'x'\",) ZeroDivisionError('division by zero') None False\nKeyError ('k',) IndexError('list index out of range') IndexError('list index out of range') True\nTrue\nTypeError ('t',) KeyError('a') None True\ncleanup\nNameError (\"name 'undefined_name' is not defined\",) ValueError('inner') None False\nRuntimeError ('first',) OSError('second') None False\nTrue None\nValueError (1, 2) None KeyError('c') True\nValueError (3,) None KeyError('c') False\nexception context must be None or derive from BaseException\n7 None 3 None\n['extra']\nLookupError ('wrapped',) ZeroDivisionError('integer modulo by zero') ZeroDivisionError('integer modulo by zero') True\n",
+  "error": {
+    "type": "RuntimeError",
+    "message": "while handling",
+    "line": 85
+  },
+  "stderr": "KeyError: 'final'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-RuhQ1z/main.py\", line 85, in <module>\n    raise RuntimeError(\"while handling\") from None if False else KeyError(\"final\")\nRuntimeError: while handling\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "True True False False False\n{3}\nKeyError: {8}\nTypeError: unhashable type: 'set'\nTypeError: unhashable type: 'list'\nTypeError: unhashable type: 'set'\nTypeError: unhashable type: 'set'\nTrue True True\n",
+  "error": null,
+  "stderr": ""
+}

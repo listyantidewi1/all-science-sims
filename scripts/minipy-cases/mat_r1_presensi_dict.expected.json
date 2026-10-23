@@ -1,0 +1,5 @@
+{
+  "stdout": "Yang hadir: Zaki tidak ada di daftar kelas.\n{'Andi': 'H', 'Budi': 'A', 'Cici': 'H', 'Dina': 'H', 'Eko': 'A', 'Fajar': 'H', 'Gina': 'S'}\nKehadiran: 57.14285714285714 57.1% 57.1% 57.14\nKelas kosong: 0.0\nTidak hadir: ['Budi', 'Eko', 'Gina']\nNone - S 6\n",
+  "error": null,
+  "stderr": ""
+}

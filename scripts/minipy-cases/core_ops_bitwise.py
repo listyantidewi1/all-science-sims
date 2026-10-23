@@ -1,0 +1,5 @@
+print(5 & 3, 5 | 3, 5 ^ 3, ~5, 1 << 10, 1024 >> 3, -16 >> 2)
+print(True & False, True | False, True ^ True)
+print({1, 2, 3} & {2, 3, 4}, {1, 2} | {3}, {1, 2, 3} - {2}, {1, 2} ^ {2, 3})
+print(bin(10), hex(255), oct(8), bin(-5), hex(-255))
+print(int("1010", 2), int("ff", 16), int("0x1f", 0), int("777", 8))

@@ -1,0 +1,5 @@
+{
+  "stdout": "True True True True False True False\nTrue True\nNotImplementedError: Counter.fromkeys() is undefined.  Use Counter(iterable) instead.\n",
+  "error": null,
+  "stderr": ""
+}

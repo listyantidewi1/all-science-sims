@@ -1,0 +1,5 @@
+{
+  "stdout": "0.0 0.0 0.0 4.0\nStatisticsError: ('No negative inputs allowed', -1)\nStatisticsError: Must have a non-empty dataset\n",
+  "error": null,
+  "stderr": ""
+}

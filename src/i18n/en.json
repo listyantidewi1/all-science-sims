@@ -36,6 +36,7 @@
   "footer.text": "Free for non-commercial use · commercial licenses available. Built with vanilla JS — no tracking, works offline once loaded.",
   "about.title": "About",
   "about.body": "All-Science Sims is a client-side collection of original interactive simulations and virtual labs across 14 subjects: physics, chemistry, biology, earth & space, computer science, data science, social science, mathematics, finance & economics, engineering, music & acoustics, climate & sustainability, psychology, and cognitive science. Every sim is hand-built in vanilla JavaScript, runs entirely in your browser, works in English or Bahasa Indonesia, and can be shared as a deep link or embedded in any web page. Free for students, teachers, self-learners, and anyone curious about science; commercial use needs a license.",
+  "about.notices": "The Python interpreter used by the programming sims includes code adapted from CPython, the GNU C Library, the Mersenne Twister, Unicode data, turtle.py and matplotlib, which keep their own open-source licenses: <a href=\"./THIRD-PARTY-NOTICES.txt\">third-party notices</a>.",
   "share.title": "Share this setup",
   "share.hint": "The link reproduces the current slider and switch values. The embed code drops the simulation into any web page or LMS.",
   "share.linkLabel": "Link to this simulation with current settings",

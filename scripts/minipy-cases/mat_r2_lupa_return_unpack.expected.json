@@ -1,0 +1,9 @@
+{
+  "stdout": "4 79.0\nhasil = None\n4 79.0\n",
+  "error": {
+    "type": "TypeError",
+    "message": "cannot unpack non-iterable NoneType object",
+    "line": 16
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-eMJOhj/main.py\", line 16, in <module>\n    tuntas, rata_rata = hitung_rekap(nilai_kelas)\n    ^^^^^^^^^^^^^^^^^\nTypeError: cannot unpack non-iterable NoneType object\n"
+}

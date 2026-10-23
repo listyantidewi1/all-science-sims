@@ -1,0 +1,5 @@
+{
+  "stdout": "int 32-bit maks + 1 : 2147483648 <class 'int'>\n2 ** 100            : 1267650600228229401496703205376\nsys.maxsize         : 9223372036854775807 True\nfloat terbesar      : 1.7976931348623157e+308\nfloat terkecil > 0  : 2.2250738585072014e-308\nepsilon             : 2.220446049250313e-16 True\ndigit presisi       : 15\nmelewati batas      : inf -inf\nchar (ASCII)        : 65 A ÿ 233 €\n",
+  "error": null,
+  "stderr": ""
+}

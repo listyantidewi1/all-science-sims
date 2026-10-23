@@ -1,0 +1,9 @@
+{
+  "stdout": "Skor lama: 50\nSkor baru: 60\nSkor setelah dua kali tambah: 70\n",
+  "error": {
+    "type": "UnboundLocalError",
+    "message": "cannot access local variable 'skor_tim' where it is not associated with a value",
+    "line": 20
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-AnP6EI/main.py\", line 23, in <module>\n    print(tambah_poin_salah())\n          ~~~~~~~~~~~~~~~~~^^\n  File \"/tmp/minipy-AnP6EI/main.py\", line 20, in tambah_poin_salah\n    skor_tim = skor_tim + 10\n               ^^^^^^^^\nUnboundLocalError: cannot access local variable 'skor_tim' where it is not associated with a value\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "Lanjut? jawab: ya\nLanjut? jawab: ya\nLanjut? ",
+  "error": {
+    "type": "EOFError",
+    "message": "EOF when reading a line",
+    "line": 2
+  }
+}

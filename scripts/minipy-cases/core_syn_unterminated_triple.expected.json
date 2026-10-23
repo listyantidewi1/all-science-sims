@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "unterminated triple-quoted string literal (detected at line 2)",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-5hhtcW/main.py\", line 1\n    teks = \"\"\"awal\n           ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 2)\n"
+}

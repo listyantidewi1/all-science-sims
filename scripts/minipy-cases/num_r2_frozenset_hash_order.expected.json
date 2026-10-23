@@ -1,0 +1,5 @@
+{
+  "stdout": "{frozenset(), frozenset({2}), frozenset({1})}\n{frozenset({3}), frozenset({1}), frozenset({1, 2})}\n133146708735736 -272375401224217160 -558064481276695278 True\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "ZeroDivisionError('division by zero')\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: 'x'",
+    "line": 6
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-g973Dz/main.py\", line 3, in <module>\n    1 / 0\n    ~~^~~\nZeroDivisionError: division by zero\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/tmp/minipy-g973Dz/main.py\", line 10, in <module>\n    raise simpan\n  File \"/tmp/minipy-g973Dz/main.py\", line 6, in <module>\n    int(\"x\")\n    ~~~^^^^^\nValueError: invalid literal for int() with base 10: 'x'\n"
+}

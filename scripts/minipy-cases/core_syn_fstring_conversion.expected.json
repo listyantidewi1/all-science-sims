@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "f-string: invalid conversion character 'z': expected 's', 'r', or 'a'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-eRd6sg/main.py\", line 2\n    y = f\"{x!z}\"\n             ^\nSyntaxError: f-string: invalid conversion character 'z': expected 's', 'r', or 'a'\n"
+}

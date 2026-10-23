@@ -1,0 +1,5 @@
+{
+  "stdout": "Nomor (set)  : {33, 7, 8, 42, 15, 21}\nNomor urut   : [7, 8, 15, 21, 33, 42] | percobaan: 7\nAda nomor 7? : True | list: [33, 7, 8, 42, 15, 21]\nSetelah ganti: {33, 7, 8, 15, 50, 21} 6\n",
+  "error": null,
+  "stderr": ""
+}

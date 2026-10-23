@@ -1,0 +1,4 @@
+{
+  "stdout": "{'z': 1, 'a': 2, 3: 'tiga', 1.5: 'float', True: 'bool'}\n{'z': 1, 'a': 2, 3: 'tiga', 1.5: 'float', True: 'satu menimpa True'}\n['a', 3, 1.5, True, 'z']\n{1: 'b'} {(1, 2): 't'}\n{'satu': 2, 'dua': 3, 'tiga': 1} dua\n",
+  "error": null
+}

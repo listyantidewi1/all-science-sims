@@ -1,0 +1,5 @@
+{
+  "stdout": "Pilihan ekskul (pisahkan koma): Peminat tiap ekskul: {'Pmr': 3, 'Futsal': 2, 'Pramuka': 2, 'Paskibra': 2}\nCounter({'Pmr': 3, 'Futsal': 2, 'Pramuka': 2, 'Paskibra': 2})\nPaling diminati : [('Pmr', 3)]\nTiga teratas    : [('Pmr', 3), ('Futsal', 2), ('Pramuka', 2)]\nPeminat Basket  : 0 | total: 9\nPmr     *** (3)\nFutsal  ** (2)\nPramuka ** (2)\nPaskibra** (2)\n",
+  "error": null,
+  "stderr": ""
+}

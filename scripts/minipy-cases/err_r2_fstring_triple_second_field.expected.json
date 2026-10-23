@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ValueError",
+    "message": "Unknown format code 'q' for object of type 'int'",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-U8701o/main.py\", line 4, in <module>\n    {nilai:q}\"\"\")\n    ^^^^^^^^^\nValueError: Unknown format code 'q' for object of type 'int'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "20\n60\nselesai membaca\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: 'dua'",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-bm5ju2/main.py\", line 9, in <module>\n    raise kesalahan\n  File \"/tmp/minipy-bm5ju2/main.py\", line 4, in <module>\n    print(int(teks) * 2)\n          ~~~^^^^^^\nValueError: invalid literal for int() with base 10: 'dua'\n"
+}

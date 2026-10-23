@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "f-string: unmatched ')'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-R1eNzJ/main.py\", line 2\n    print(f\"Halo {nama)\n                      ^\nSyntaxError: f-string: unmatched ')'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected ':'",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-1nFQzh/main.py\", line 3\n    while i > 0\n               ^\nSyntaxError: expected ':'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "'<' not supported between instances of 'str' and 'int' [3, 'a', 1]\n'<' not supported between instances of 'str' and 'int' [5, 3, 1, 'x', 2]\n'<' not supported between instances of 'str' and 'int' [1, 2, 3, 4, 'x', 0]\n'<' not supported between instances of 'NoneType' and 'int' [1, 2, 3, 5, 6, 7, None, 4]\n[70, 80, '90']\n",
+  "error": {
+    "type": "TypeError",
+    "message": "'<' not supported between instances of 'str' and 'int'",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-RRipqY/main.py\", line 8, in <module>\n    nilai.sort(reverse=True)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nTypeError: '<' not supported between instances of 'str' and 'int'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-9AGLcs/main.py\", line 3\n    await = nilai + 1\n          ^\nSyntaxError: invalid syntax\n"
+}

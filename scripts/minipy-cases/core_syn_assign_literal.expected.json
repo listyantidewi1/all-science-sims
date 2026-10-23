@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "cannot assign to literal here. Maybe you meant '==' instead of '='?",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-dLXZTK/main.py\", line 1\n    5 = x\n    ^\nSyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?\n"
+}

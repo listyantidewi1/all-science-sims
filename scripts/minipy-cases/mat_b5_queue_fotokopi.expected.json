@@ -1,0 +1,4 @@
+{
+  "stdout": "Antrean saat ini: ['Tugas Bu Sari', 'Soal Pak Budi', 'Surat Kepala Sekolah']\nSedang difotokopi: Tugas Bu Sari | sisa antrean: 2\nSedang difotokopi: Soal Pak Budi | sisa antrean: 1\nSedang difotokopi: Surat Kepala Sekolah | sisa antrean: 0\nSemua dokumen selesai.\n",
+  "error": null
+}

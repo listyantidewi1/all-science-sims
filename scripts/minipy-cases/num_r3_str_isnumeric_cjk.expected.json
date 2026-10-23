@@ -1,0 +1,5 @@
+{
+  "stdout": "零 True False False True True\n一 True False False True True\n二 True False False True True\n两 True False False True True\n三 True False False True True\n十 True False False True True\n百 True False False True True\n千 True False False True True\n万 True False False True True\n亿 True False False True True\n兆 True False False True True\n壱 True False False True True\n弐 True False False True True\n拾 True False False True True\n〇 True False False False True\n参 True False False True True\n伍 True False False True True\n佰 True False False True True\n仟 True False False True True\nTrue True False True\n'𐹥' True False True\n'𑁖' True False True\n'🄅' True False True\n'①' True False True\n'⑴' True False True\n'²' True False True\n'٣' True True True\n",
+  "error": null,
+  "stderr": ""
+}

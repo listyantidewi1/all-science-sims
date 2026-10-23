@@ -1,0 +1,4 @@
+{
+  "stdout": "normal end ['try0', 'else0', 'finally0', 'after0', 'try1', 'else1', 'finally1', 'after1', 'try2', 'else2', 'finally2', 'after2', 'for-else']\nbreak end ['try0', 'else0', 'finally0', 'after0', 'try1', 'finally1']\ncontinue end ['try0', 'finally0', 'try1', 'else1', 'finally1', 'after1', 'try2', 'else2', 'finally2', 'after2', 'for-else']\nreturn ret1 ['try0', 'else0', 'finally0', 'after0', 'try1', 'finally1']\nraise end ['try0', 'else0', 'finally0', 'after0', 'try1', 'except err1', 'finally1', 'try2', 'else2', 'finally2', 'after2', 'for-else']\nfinally menang\nfinally sebelum return 1\n1\nfinally k\nkeluar\nfinally dalam\nluar menangkap dalam\nfinally luar\nok\nditelan\nFalse\n",
+  "error": null
+}

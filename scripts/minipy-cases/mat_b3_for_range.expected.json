@@ -1,0 +1,4 @@
+{
+  "stdout": "[0, 1, 2, 3, 4] [1, 2, 3, 4, 5] [0, 2, 4, 6, 8] [3, 2, 1]\nSaya berjanji tidak akan mencontek lagi saat ujian.\nSaya berjanji tidak akan mencontek lagi saat ujian.\nSaya berjanji tidak akan mencontek lagi saat ujian.\nSaya berjanji tidak akan mencontek lagi saat ujian.\nSaya berjanji tidak akan mencontek lagi saat ujian.\nMemanggil peserta ujian lisan:\nSilakan masuk, siswa dengan nomor absen: 1\nSilakan masuk, siswa dengan nomor absen: 2\nSilakan masuk, siswa dengan nomor absen: 3\nBersedia... Siap...\n3\n2\n1\nYAA! Lari!\nJadwal piket hari ini:\n- Andi\n- Budi\n- Cici\n- Dina\nTotal petugas piket: 4\n1. Laskar Pelangi\n2. Hujan\n3. Bintang di Surga\n4. Tentang Rindu\n",
+  "error": null
+}

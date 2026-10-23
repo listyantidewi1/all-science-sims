@@ -1,0 +1,9 @@
+{
+  "stdout": "10,000,000,000,000,0\nOverflowError: int too large to convert to float\n",
+  "error": {
+    "type": "OverflowError",
+    "message": "int too large to convert to float",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-d27i2i/main.py\", line 7, in <module>\n    print(\"%.1f\" % besar)\n          ~~~~~~~^~~~~~~\nOverflowError: int too large to convert to float\n"
+}

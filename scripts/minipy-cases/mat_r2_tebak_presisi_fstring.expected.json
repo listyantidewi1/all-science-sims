@@ -1,0 +1,9 @@
+{
+  "stdout": "Rata-rata: 81.67\nRata-rata: 8.2e+01\nRata-rata: 81.7\nRata-rata: 81.67\n8.25 | 8.2 | 8e+00\n99.50 | 1e+02 | 1e+02\n100.00 | 1e+02 | 1e+02\n0.50 | 0.5 | 0.5\n7.00 | 7.0 | 7e+00\n",
+  "error": {
+    "type": "ValueError",
+    "message": "Precision not allowed in integer format specifier",
+    "line": 11
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-DqeKGA/main.py\", line 11, in <module>\n    print(f\"Siswa: {jumlah_siswa:.2}\")\n                   ^^^^^^^^^^^^^^^^^\nValueError: Precision not allowed in integer format specifier\n"
+}

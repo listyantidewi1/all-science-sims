@@ -1,0 +1,9 @@
+{
+  "stdout": "Sisi (ketik x untuk berhenti): Luas = 25.0 | sisi ** 2 = 25.0 | keliling = 20.0\nSisi (ketik x untuk berhenti): Luas = 6.25 | sisi ** 2 = 6.25 | keliling = 10.0\nSisi (ketik x untuk berhenti): Luas = 0.010000000000000002 | sisi ** 2 = 0.010000000000000002 | keliling = 0.4\nSisi (ketik x untuk berhenti): Luas = 1000000.0 | sisi ** 2 = 1000000.0 | keliling = 4000.0\nSisi (ketik x untuk berhenti): Luas = 9.0 | sisi ** 2 = 9.0 | keliling = -12.0\n  peringatan: sisi harus positif\nSisi (ketik x untuk berhenti): ",
+  "error": {
+    "type": "OverflowError",
+    "message": "(34, 'Numerical result out of range')",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-SOTpD0/main.py\", line 8, in <module>\n    print(\"Luas =\", luas, \"| sisi ** 2 =\", sisi ** 2, \"| keliling =\", 4 * sisi)\n                                           ~~~~~^^~~\nOverflowError: (34, 'Numerical result out of range')\n"
+}

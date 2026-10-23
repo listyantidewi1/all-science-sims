@@ -1,0 +1,8 @@
+{
+  "stdout": "'inf' '-inf' 'nan'\n'inf' '-inf' 'nan'\n'0000000inf' '-000000inf' '0000000nan'\n'00000inf' '-0000inf' '00000nan'\n'+inf' '-inf' '+nan'\n'     inf' '    -inf' '     nan'\n",
+  "error": {
+    "type": "ValueError",
+    "message": "Unknown format code '|' for object of type 'float'",
+    "line": 4
+  }
+}

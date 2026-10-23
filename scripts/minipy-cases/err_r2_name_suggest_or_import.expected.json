@@ -1,0 +1,9 @@
+{
+  "stdout": "name 'time' is not defined\nname 'math' is not defined\nname 'random' is not defined\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'time' is not defined. Did you mean: 'times'? Or did you forget to import 'time'?",
+    "line": 9
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-sL0Bw1/main.py\", line 9, in <module>\n    time.sleep(1)\n    ^^^^\nNameError: name 'time' is not defined. Did you mean: 'times'? Or did you forget to import 'time'?\n"
+}

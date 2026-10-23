@@ -1,0 +1,4 @@
+{
+  "stdout": "deque([1, 2, 3, 4, 5], maxlen=5) 5\ndeque([-1, 1, 2, 3, 4], maxlen=5)\ndeque([2, 3, 4, -1, 1], maxlen=5)\ndeque([20, 10, 2, 3, 4], maxlen=5) 1 0\ndeque([4, 3, 2, 20], maxlen=5) 4 [20, 2, 3, 4]\nAni deque(['Budi']) True False\nTrue b\n",
+  "error": null
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "8.0 (0.5, 4) 8.0 True\n0.1 (0.8, -3) 0.1 True\n-3.5 (-0.875, 2) -3.5 True\n1.0 (0.5, 1) 1.0 True\n0.0 (0.0, 0) 0.0 True\n-0.0 (-0.0, 0) -0.0 True\n5e-324 (0.5, -1073) 5e-324 True\n1e+308 (0.5562684646268004, 1024) 1e+308 True\n3 (0.75, 2) 3.0 True\n1180591620717411303424 (0.5, 71) 1.1805916207174113e+21 True\nTrue (0.5, 1) 1.0 True\n(inf, 0) (-inf, 0) (nan, 0)\n5e-324 0.0 1.348269851146737e+308 -0.0 12.0 0.0\nOverflowError math range error\nOverflowError math range error\nTypeError Expected an int as second argument to ldexp.\nTypeError must be real number, not str\nOverflowError int too large to convert to float\n",
+  "error": null,
+  "stderr": ""
+}

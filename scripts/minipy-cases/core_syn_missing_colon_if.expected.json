@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected ':'",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-UOBjPM/main.py\", line 2\n    if nilai >= 75\n                  ^\nSyntaxError: expected ':'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "AttributeError",
+    "message": "'NoneType' object has no attribute 'panjang' and no __dict__ for setting new attributes",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-uItAFZ/main.py\", line 2, in <module>\n    nama.panjang = len(\n    ^^^^^^^^^^^^\nAttributeError: 'NoneType' object has no attribute 'panjang' and no __dict__ for setting new attributes\n"
+}

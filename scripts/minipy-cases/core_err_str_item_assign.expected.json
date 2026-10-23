@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'str' object does not support item assignment",
+    "line": 2
+  }
+}

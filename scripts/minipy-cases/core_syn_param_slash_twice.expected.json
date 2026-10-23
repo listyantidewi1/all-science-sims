@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "/ may appear only once",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-9GsWoC/main.py\", line 1\n    def hitung(a, /, b, /):\n                        ^\nSyntaxError: / may appear only once\n"
+}

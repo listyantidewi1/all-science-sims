@@ -1,0 +1,9 @@
+{
+  "stdout": "1e+150 3.273390607896142e+150 2e+150\nOverflowError: int too large to convert to float\nOverflowError: int too large to convert to float\nOverflowError: int too large to convert to float\nOverflowError: int too large to convert to float\nOverflowError: int too large to convert to float\n",
+  "error": {
+    "type": "OverflowError",
+    "message": "int too large to convert to float",
+    "line": 10
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-NFFfAQ/main.py\", line 10, in <module>\n    print(math.sqrt(big))\n          ~~~~~~~~~^^^^^\nOverflowError: int too large to convert to float\n"
+}

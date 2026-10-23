@@ -1,0 +1,28 @@
+from collections import deque, Counter, defaultdict
+dq = deque([1, 2, 3])
+dq.append(4)
+dq.appendleft(0)
+print(dq, dq[0], dq[-1], len(dq))
+print(dq.pop(), dq.popleft(), dq)
+dq.extend([7, 8])
+dq.rotate(1)
+print(dq, list(dq), 7 in dq)
+riwayat = deque(maxlen=3)
+for halaman in ["a", "b", "c", "d"]:
+    riwayat.append(halaman)
+print(riwayat)
+ekskul = ["futsal", "musik", "futsal", "pramuka", "musik", "futsal", "tari"]
+c = Counter(ekskul)
+print(c)
+print(c.most_common(2), c["futsal"], c["catur"])
+print(c.most_common())
+c.update(["tari", "tari"])
+print(c, sum(c.values()))
+huruf = Counter("mississippi")
+print(huruf, huruf.most_common(1))
+dd = defaultdict(list)
+for kelas, nama in [("X", "Andi"), ("XI", "Budi"), ("X", "Citra")]:
+    dd[kelas].append(nama)
+print(dict(dd))
+dq2 = deque()
+dq2.popleft()

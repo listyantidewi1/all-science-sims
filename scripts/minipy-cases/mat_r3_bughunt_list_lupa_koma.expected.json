@@ -1,0 +1,9 @@
+{
+  "stdout": "Daftar: ['Andi', 'BudiCici', 'Dina']\nJumlah petugas: 3\n1. Andi\n2. BudiCici\n3. Dina\nFalse True\n",
+  "error": {
+    "type": "IndexError",
+    "message": "list index out of range",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-btVfbI/main.py\", line 8, in <module>\n    print(\"Petugas ke-4:\", siswa_piket[3])\n                           ~~~~~~~~~~~^^^\nIndexError: list index out of range\n"
+}

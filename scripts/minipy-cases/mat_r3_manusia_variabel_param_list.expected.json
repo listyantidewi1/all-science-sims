@@ -1,0 +1,5 @@
+{
+  "stdout": "['Andi', 'Budi'] ['Andi', 'Budi'] True\n['Andi', 'Budi'] ['Andi', 'Budi', 'Cici'] False\nDina! Dina\n(1, 2, 3) (1, 2) False\n['Andi', 'Budi'] ['Andi', 'Budi', 'Eko']\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "Belum ada artikel sebelumnya.\nMembaca : Juara OSN\nBelum ada artikel sebelumnya.\nMembaca : Pentas Seni\nMembaca : Kantin Sehat\nMembaca : Pentas Seni\nMembaca : Juara OSN\nRiwayat: ['Juara OSN'] | kosong? False\nRiwayat: [] | kosong? True\n",
+  "error": {
+    "type": "IndexError",
+    "message": "pop from empty list",
+    "line": 26
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-b7aDLi/main.py\", line 26, in <module>\n    riwayat.pop()\n    ~~~~~~~~~~~^^\nIndexError: pop from empty list\n"
+}

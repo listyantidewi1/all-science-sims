@@ -1,0 +1,6 @@
+print(round(2.5), round(3.5), round(-2.5), round(0.5), round(1.5), round(-0.5))
+print(round(2.675, 2), round(2.665, 2), round(1.005, 2), round(0.125, 2), round(0.375, 2))
+print(round(3.14159, 3), round(1234.5678, -2), round(1250, -2), round(1350, -2), round(-1250, -2))
+print(round(7), round(7.0), round(7.6), round(-7.6), type(round(7.6)), type(round(7.6, 1)))
+print(round(85.25, 1), round(85.35, 1), round(74.95, 1), round(0.1 + 0.2, 2))
+print(round(1e300, 2), round(5, 2), round(15, -1), round(25, -1))

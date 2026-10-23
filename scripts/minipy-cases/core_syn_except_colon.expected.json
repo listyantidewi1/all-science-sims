@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected ':'",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-PLQh8e/main.py\", line 3\n    except\n          ^\nSyntaxError: expected ':'\n"
+}

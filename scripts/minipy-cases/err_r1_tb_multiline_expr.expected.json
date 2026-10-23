@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "unsupported operand type(s) for +: 'int' and 'str'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-Wd1mKD/main.py\", line 6, in <module>\n    print(total(1000,\n          ~~~~~^^^^^^\n                2))\n                ^^\n  File \"/tmp/minipy-Wd1mKD/main.py\", line 3, in total\n    return (harga *\n            ~~~~~~~\n            jumlah +\n            ~~~~~~~^\n            \"ongkir\")\n            ~~~~~~~~\nTypeError: unsupported operand type(s) for +: 'int' and 'str'\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "Berat (kg): Tinggi (m): BMI: 20.8 | 20.761245674740486\nBerat (kg): Tinggi (m): BMI: 0.0 | 0.0020761245674740486\nBerat (kg): Tinggi (m): ",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "float division by zero",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-I3jzIb/main.py\", line 9, in <module>\n    bmi = hitung_bmi(berat, tinggi)\n  File \"/tmp/minipy-I3jzIb/main.py\", line 3, in hitung_bmi\n    bmi = berat / (tinggi_meter * tinggi_meter)\n          ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nZeroDivisionError: float division by zero\n"
+}

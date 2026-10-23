@@ -1,0 +1,5 @@
+{
+  "stdout": "NameError(\"name 'tidak_ada' is not defined\")\nname 'tidak_ada' is not defined\nTypeError('can only concatenate str (not \"int\") to str')\ncan only concatenate str (not \"int\") to str\nAttributeError(\"'list' object has no attribute 'push'\")\n'list' object has no attribute 'push'\nKeyError('k')\n'k'\nValueError('invalid literal for int() with base 10: \"it\\'s\"')\ninvalid literal for int() with base 10: \"it's\"\nZeroDivisionError('division by zero')\ndivision by zero\n",
+  "error": null,
+  "stderr": ""
+}

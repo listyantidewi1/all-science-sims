@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "Did you mean to use 'from ... import ...' instead?",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-nZLy5i/main.py\", line 1\n    import sqrt from math\n    ^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: Did you mean to use 'from ... import ...' instead?\n"
+}

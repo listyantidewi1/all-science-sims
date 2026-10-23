@@ -1,0 +1,5 @@
+{
+  "stdout": "-> Awal disisipkan di posisi 1.\n  1. Awal\n  2. Andi\n  3. Budi\n  4. Cici\n-> Akhir disisipkan di posisi 5.\n  1. Awal\n  2. Andi\n  3. Budi\n  4. Cici\n  5. Akhir\n-> Nol disisipkan di posisi 0.\n  1. Awal\n  2. Andi\n  3. Budi\n  4. Cici\n  5. Nol\n  6. Akhir\n-> Jauh disisipkan di posisi 99.\n  1. Awal\n  2. Andi\n  3. Budi\n  4. Cici\n  5. Nol\n  6. Akhir\n  7. Jauh\n-> Minus disisipkan di posisi -1.\n  1. Awal\n  2. Andi\n  3. Budi\n  4. Cici\n  5. Nol\n  6. Minus\n  7. Akhir\n  8. Jauh\n5 8\n",
+  "error": null,
+  "stderr": ""
+}

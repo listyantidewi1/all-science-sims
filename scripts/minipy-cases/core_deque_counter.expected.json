@@ -1,0 +1,8 @@
+{
+  "stdout": "deque([0, 1, 2, 3, 4]) 0 4 5\n4 0 deque([1, 2, 3])\ndeque([8, 1, 2, 3, 7]) [8, 1, 2, 3, 7] True\ndeque(['b', 'c', 'd'], maxlen=3)\nCounter({'futsal': 3, 'musik': 2, 'pramuka': 1, 'tari': 1})\n[('futsal', 3), ('musik', 2)] 3 0\n[('futsal', 3), ('musik', 2), ('pramuka', 1), ('tari', 1)]\nCounter({'futsal': 3, 'tari': 3, 'musik': 2, 'pramuka': 1}) 9\nCounter({'i': 4, 's': 4, 'p': 2, 'm': 1}) [('i', 4)]\n{'X': ['Andi', 'Citra'], 'XI': ['Budi']}\n",
+  "error": {
+    "type": "IndexError",
+    "message": "pop from an empty deque",
+    "line": 28
+  }
+}

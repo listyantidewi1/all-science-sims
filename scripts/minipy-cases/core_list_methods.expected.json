@@ -1,0 +1,4 @@
+{
+  "stdout": "['Intro', 'Lagu A', 'Lagu B', 'Lagu C', 'Bonus', 'Outro'] 6\nOutro Intro ['Lagu A', 'Lagu B', 'Lagu C', 'Bonus']\n['Lagu A', 'Lagu C', 'Bonus'] 1 1\n['Lagu A', 'Lagu C', 'Bonus', 'X', 'Y', 'a', 'b']\n['b', 'a', 'Y', 'X', 'Bonus', 'Lagu C', 'Lagu A']\n[1, 2, 3] [3, 1, 2] None\n[] 0\n[1, [2, 3, 4]]\n3\n",
+  "error": null
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Counter({'Andi': 2, 'Budi': 1}) False 0 2\nCounter({'Andi': 2})\nCounter({'Andi': 2}) {'Andi': 2}\nKeyError: 'Citra'\n",
+  "error": null,
+  "stderr": ""
+}

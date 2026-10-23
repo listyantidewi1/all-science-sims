@@ -1,0 +1,5 @@
+{
+  "stdout": "{nan, nan} 2\n{nan: 2} {nan} {nan: 1, nan: 2}\n3 {nan, nan, nan}\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "unterminated string literal (detected at line 1)",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-ohnr65/main.py\", line 1\n    print(\"Halo dunia)\n          ^\nSyntaxError: unterminated string literal (detected at line 1)\n"
+}

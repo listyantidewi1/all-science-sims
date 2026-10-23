@@ -1,0 +1,5 @@
+{
+  "stdout": "{'a': 2, 'b': 5} dict {'a': 1, 'b': 1} {'a': 2, 'b': 1} dict\nCounter({'b': 5, 'a': 2}) Counter({'a': 2, 'b': 1})\nTypeError: unsupported operand type(s) for &: 'Counter' and 'dict'\nTypeError: unsupported operand type(s) for +: 'Counter' and 'dict'\nTypeError: unsupported operand type(s) for -: 'Counter' and 'dict'\nTypeError: unsupported operand type(s) for +: 'dict' and 'Counter'\nCounter({'x': 7, 'y': 2}) Counter\n",
+  "error": null,
+  "stderr": ""
+}

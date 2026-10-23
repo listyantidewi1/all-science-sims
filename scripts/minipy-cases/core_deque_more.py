@@ -1,0 +1,18 @@
+from collections import deque
+d = deque(range(5), maxlen=5)
+d.append(5)
+print(d, d.maxlen)
+d.appendleft(-1)
+print(d)
+d.rotate(-2)
+print(d)
+d.extendleft([10, 20])
+print(d, d.count(10), d.index(20))
+d.remove(10)
+d.reverse()
+print(d, len(d), list(reversed(d)))
+e = deque()
+for nama in ["Ani", "Budi"]:
+    e.append(nama)
+print(e.popleft(), e, bool(e), bool(deque()))
+print(deque([1, 2]) == deque([1, 2]), deque("abc")[1])

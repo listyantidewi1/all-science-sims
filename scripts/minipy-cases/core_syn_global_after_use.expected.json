@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "name 'skor' is assigned to before global declaration",
+    "line": 4
+  },
+  "stderr": "  File \"/tmp/minipy-og5gQT/main.py\", line 4\n    global skor\n    ^^^^^^^^^^^\nSyntaxError: name 'skor' is assigned to before global declaration\n"
+}

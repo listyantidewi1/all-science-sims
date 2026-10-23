@@ -1,0 +1,9 @@
+{
+  "stdout": "a b: 7 + 3 = 10 | a // b = 2\na b: 10 + 0 = 10 | a // b = tak terdefinisi\na b: ValueError: not enough values to unpack (expected 2, got 1)\na b: ValueError: too many values to unpack (expected 2)\na b: ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '4,5'",
+    "line": 8
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-cYoqML/main.py\", line 8, in <module>\n    a, b = map(int, input(\"a b: \").split())\n    ^^^^\nValueError: invalid literal for int() with base 10: '4,5'\n"
+}

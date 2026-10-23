@@ -1,0 +1,5 @@
+{
+  "stdout": "Apakah kamu hadir hari ini? (Ya/Tidak): Tercatat hadir.\n  (perbaikan) hadir\nApakah kamu hadir hari ini? (Ya/Tidak): Tercatat TIDAK hadir. 'Ya ' 3\n  (perbaikan) hadir\nApakah kamu hadir hari ini? (Ya/Tidak): Tercatat TIDAK hadir. 'ya' 2\n  (perbaikan) hadir\nApakah kamu hadir hari ini? (Ya/Tidak): Tercatat TIDAK hadir. '  Y' 3\n  (perbaikan) hadir\n",
+  "error": null,
+  "stderr": ""
+}

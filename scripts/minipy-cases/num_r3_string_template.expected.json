@@ -1,0 +1,5 @@
+{
+  "stdout": "Halo Budi, nilai IPAmu 90. Diskon 10$!\nHalo Citra, nilai Fisikamu 87.5. Diskon 10$!\nHalo Dewi, nilai ${mapel}mu $nilai. Diskon 10$! Halo $nama, nilai ${mapel}mu $nilai. Diskon 10$$!\n1[2]-1c kw\n['nama', 'mapel', 'nilai'] True False\nKeyError 'nama'\nValueError Invalid placeholder in string: line 1, col 1\nValueError Invalid placeholder in string: line 1, col 1\nValueError Invalid placeholder in string: line 1, col 1\n${nama $ x\n",
+  "error": null,
+  "stderr": ""
+}

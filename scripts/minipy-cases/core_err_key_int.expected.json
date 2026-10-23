@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "KeyError",
+    "message": "2",
+    "line": 2
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Counter({'b': 2})\nCounter({'b': 1})\nCounter({'b': 2})\nCounter({'b': 2})\nCounter({'a': 5, 'b': -4}) 1 Counter({'a': 5}) Counter({'b': 4})\nCounter({'apel': 3, 'jeruk': 0, 'mangga': -2}) Counter({'apel': 3}) Counter({'apel': 3}) ['apel', 'apel', 'apel'] [('apel', 3), ('jeruk', 0), ('mangga', -2)]\nCounter({'the': 3, 'cat': 1, 'hat': 1}) [('the', 3), ('cat', 1)] the ['the', 'cat', 'hat'] Counter({2: 2, 3: 2, 1: 1, 4: 1})\n",
+  "error": null,
+  "stderr": ""
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "TypeError: unsupported operand type(s) for ** or pow(): 'int', 'int', 'str'\nTypeError: unsupported operand type(s) for ** or pow(): 'int', 'str', 'int'\nTypeError: pow() 3rd argument not allowed unless all arguments are integers\nTypeError: pow() 3rd argument not allowed unless all arguments are integers\nTypeError: unsupported operand type(s) for ** or pow(): 'str', 'int', 'int'\nTypeError: 'float' object cannot be interpreted as an integer\n",
+  "error": null,
+  "stderr": ""
+}

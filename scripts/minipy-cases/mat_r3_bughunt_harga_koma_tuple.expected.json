@@ -1,0 +1,9 @@
+{
+  "stdout": "Harga buku: (10, 0) <class 'tuple'>\nDua buku: (10, 0, 10, 0)\nBanyak bagian: 2 10 0\n",
+  "error": {
+    "type": "TypeError",
+    "message": "can only concatenate tuple (not \"int\") to tuple",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-e84j5h/main.py\", line 7, in <module>\n    total = harga_buku + harga_pulpen\n            ~~~~~~~~~~~^~~~~~~~~~~~~~\nTypeError: can only concatenate tuple (not \"int\") to tuple\n"
+}

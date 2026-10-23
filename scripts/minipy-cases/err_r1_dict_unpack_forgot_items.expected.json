@@ -1,0 +1,9 @@
+{
+  "stdout": "A l\n",
+  "error": {
+    "type": "ValueError",
+    "message": "too many values to unpack (expected 2)",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-uyUXYE/main.py\", line 2, in <module>\n    for nama, skor in nilai:\n        ^^^^^^^^^^\nValueError: too many values to unpack (expected 2)\n"
+}

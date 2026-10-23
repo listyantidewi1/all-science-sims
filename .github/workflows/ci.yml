@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Python interpreter tests (minipy vs recorded CPython 3.13 output)
+        run: npm run test:minipy
+
       - name: Build
         run: npm run build
 

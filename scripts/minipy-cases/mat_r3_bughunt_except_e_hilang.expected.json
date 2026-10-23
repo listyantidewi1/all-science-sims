@@ -1,0 +1,9 @@
+{
+  "stdout": "Masukkan nilai: OK - 80\nMasukkan nilai: Di dalam except: invalid literal for int() with base 10: 'delapan'\nGagal - delapan\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'e' is not defined",
+    "line": 11
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-MjbGVg/main.py\", line 11, in <module>\n    print(\"Pesan error terakhir:\", e)\n                                   ^\nNameError: name 'e' is not defined\n"
+}

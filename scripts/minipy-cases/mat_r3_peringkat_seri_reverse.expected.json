@@ -1,0 +1,5 @@
+{
+  "stdout": "1 Budi 90\n2 Dina 90\n3 Andi 85\n4 Cici 85\n5 Fani 85\n6 Eko 70\n['Budi', 'Dina', 'Andi', 'Cici', 'Fani', 'Eko']\n['Dina', 'Budi', 'Fani', 'Cici', 'Andi', 'Eko']\n('Budi', 90) ('Eko', 70)\n['cici', 'budi', 'Budi', 'Andi'] ['cici', 'budi', 'Budi', 'Andi']\nTrue\n",
+  "error": null,
+  "stderr": ""
+}

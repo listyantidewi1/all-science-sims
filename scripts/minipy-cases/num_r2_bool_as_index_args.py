@@ -1,0 +1,10 @@
+# bool passed where an int index/count is expected is converted with __index__ (results are plain ints)
+import math
+print(list(enumerate("ab", True)), range(True, 3), range(False, True), range(5, 0, -True), list(range(True + True)))
+print([1, 2, 3][True], [1, 2, 3][True:], "ab" * True, (1, 2)[True], "abc"[True], [0] * True, range(3)[True])
+print(round(2.567, True), round(True), round(True, 1), round(False, -1), divmod(True, 2), pow(True, -1), True ** -1)
+print(math.factorial(True), math.comb(True, False), math.gcd(True, 4), math.isqrt(True), math.floor(True), math.lcm(True, 6))
+print(bin(True), hex(False), oct(True), chr(True + 64), True.bit_length(), True.as_integer_ratio(), True.numerator, True.imag)
+print(f"{True:d}|{True:x}|{True:5.1f}|{False:+}|{True:,}|{True:e}|{True:%}|{True!r:>6}|{True:>6}")
+print([1, 2, 3].pop(True), "abc".find("c", True), "a,b,c".split(",", True), "x".zfill(True + 2), [1, 2, 3].index(2, True))
+print(max(True, 1), max(1, True), min(True, 1), sum([True], True), sorted([True, False, 0, 1, -1, 0.5]))

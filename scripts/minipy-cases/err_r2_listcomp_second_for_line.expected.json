@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'int' object is not iterable",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-5pidK2/main.py\", line 3, in <module>\n    for y in ukuran]\n             ^^^^^^\nTypeError: 'int' object is not iterable\n"
+}

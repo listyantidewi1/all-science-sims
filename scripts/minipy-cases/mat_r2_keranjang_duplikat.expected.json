@@ -1,0 +1,9 @@
+{
+  "stdout": "Setelah diganti : ['Buku Tulis', 'Spidol', 'Tipe-X', 'Pulpen', 'Penggaris']\nSetelah dihapus : ['Buku Tulis', 'Spidol', 'Tipe-X', 'Penggaris'] 0\nDikeluarkan     : Penggaris | sisa: ['Buku Tulis', 'Spidol', 'Tipe-X']\nIndeks Spidol   : 1 | ada Pulpen? False\nAmbil: Buku Tulis | sisa 2\nAmbil: Spidol | sisa 1\nAmbil: Tipe-X | sisa 0\n",
+  "error": {
+    "type": "ValueError",
+    "message": "list.remove(x): x not in list",
+    "line": 12
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-h18jHo/main.py\", line 12, in <module>\n    keranjang.remove(\"Tipe-X\")\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^\nValueError: list.remove(x): x not in list\n"
+}

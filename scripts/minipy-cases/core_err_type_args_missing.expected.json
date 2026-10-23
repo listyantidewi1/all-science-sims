@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "luas() missing 1 required positional argument: 'l'",
+    "line": 3
+  }
+}

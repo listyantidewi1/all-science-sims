@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'not' after an operator must be parenthesized",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-fdMoTp/main.py\", line 2\n    b = 5 + not a\n            ^^^^^\nSyntaxError: 'not' after an operator must be parenthesized\n"
+}

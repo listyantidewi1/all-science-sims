@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'break' outside loop",
+    "line": 3
+  },
+  "stderr": "  File \"/tmp/minipy-ifmw1y/main.py\", line 3\n    break\n    ^^^^^\nSyntaxError: 'break' outside loop\n"
+}

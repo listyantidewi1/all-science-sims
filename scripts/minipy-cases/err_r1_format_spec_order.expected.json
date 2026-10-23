@@ -1,0 +1,9 @@
+{
+  "stdout": "10.3s -> Unknown format code 's' for object of type 'int'\nz -> Negative zero coercion (z) not allowed in integer format specifier\n.2 -> Precision not allowed in integer format specifier\ns -> Unknown format code 's' for object of type 'int'\n'42.0'\n",
+  "error": {
+    "type": "ValueError",
+    "message": "Unknown format code 's' for object of type 'int'",
+    "line": 7
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-2RbLyF/main.py\", line 7, in <module>\n    print(f\"{n:10.3s}\")\n            ^^^^^^^^^\nValueError: Unknown format code 's' for object of type 'int'\n"
+}

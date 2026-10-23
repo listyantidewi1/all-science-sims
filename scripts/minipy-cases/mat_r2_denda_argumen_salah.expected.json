@@ -1,0 +1,9 @@
+{
+  "stdout": "5000 10000 1500 0\ntarif -> hitung_denda() got an unexpected keyword argument 'tarif'\nganda -> hitung_denda() got multiple values for argument 'hari_terlambat'\nlebih -> hitung_denda() takes from 1 to 2 positional arguments but 3 were given\n",
+  "error": {
+    "type": "TypeError",
+    "message": "hitung_denda() missing 1 required positional argument: 'hari_terlambat'",
+    "line": 16
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-XRnlcr/main.py\", line 16, in <module>\n    print(hitung_denda())\n          ~~~~~~~~~~~~^^\nTypeError: hitung_denda() missing 1 required positional argument: 'hari_terlambat'\n"
+}

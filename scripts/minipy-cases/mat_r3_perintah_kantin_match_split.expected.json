@@ -1,0 +1,5 @@
+{
+  "stdout": "> > >   Menu tidak dikenal: soto\n>   Menu tidak dikenal: (kosong)\n>   (baris kosong)\n>   Menu tidak dikenal: mie dua\n>   Perintah 'batal' tidak dikenal\n>   {'bakso': 1, 'esteh': 3} -> Rp 21.500\n> >   {'bakso': 1, 'esteh': 3, 'mie': 1} -> Rp 31.500\n>   Perintah 'hapus' tidak dikenal\n> ",
+  "error": null,
+  "stderr": ""
+}

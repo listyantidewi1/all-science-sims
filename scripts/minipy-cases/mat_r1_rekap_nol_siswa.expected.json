@@ -1,0 +1,9 @@
+{
+  "stdout": "Jumlah siswa yang didata: =============================\nBanyak siswa hemat : 0 dari 0 siswa\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 18
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-4C7pRP/main.py\", line 18, in <module>\n    rata_rata = total_uang_saku / jumlah_siswa\n                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~\nZeroDivisionError: division by zero\n"
+}

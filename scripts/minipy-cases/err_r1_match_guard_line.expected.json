@@ -1,0 +1,9 @@
+{
+  "stdout": "nol\nbesar\n",
+  "error": {
+    "type": "ZeroDivisionError",
+    "message": "division by zero",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-fMDHfy/main.py\", line 11, in <module>\n    print(kategori(10, 0))\n          ~~~~~~~~^^^^^^^\n  File \"/tmp/minipy-fMDHfy/main.py\", line 5, in kategori\n    case n if n / pembagi > 1:\n              ~~^~~~~~~~~\nZeroDivisionError: division by zero\n"
+}

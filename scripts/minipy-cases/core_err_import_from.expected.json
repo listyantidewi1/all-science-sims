@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "ImportError",
+    "message": "cannot import name 'randomint' from 'random' (/usr/lib/python3.13/random.py). Did you mean: 'randint'?",
+    "line": 1
+  }
+}

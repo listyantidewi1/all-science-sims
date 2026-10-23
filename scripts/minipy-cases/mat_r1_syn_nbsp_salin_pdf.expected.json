@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid non-printable character U+00A0",
+    "line": 4
+  },
+  "stderr": "  File \"/tmp/minipy-wi28AJ/main.py\", line 4\n        print(\"Sudah boleh membuat KTP.\")\n    ^\nSyntaxError: invalid non-printable character U+00A0\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "RecursionError",
+    "message": "maximum recursion depth exceeded",
+    "line": 2
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "unexpected character after line continuation character",
+    "line": 5
+  },
+  "stderr": "/tmp/minipy-Q1YS95/main.py:5: SyntaxWarning: invalid escape sequence '\\{'\n  print(f\"A = \\{A\\}\")\n  File \"/tmp/minipy-Q1YS95/main.py\", line 5\n    print(f\"A = \\{A\\}\")\n                    ^\nSyntaxError: unexpected character after line continuation character\n"
+}

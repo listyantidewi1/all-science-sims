@@ -1,0 +1,5 @@
+{
+  "stdout": "5\nSyntaxError: invalid syntax (<string>, line 0)\nSyntaxError: invalid syntax (<string>, line 0)\nSyntaxError: invalid syntax (<string>, line 1)\nSyntaxError: invalid syntax (<string>, line 1)\nEkspresi: SyntaxError: invalid syntax (<string>, line 0)\n",
+  "error": null,
+  "stderr": ""
+}

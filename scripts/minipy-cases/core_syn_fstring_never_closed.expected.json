@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'{' was never closed",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-tyCdwt/main.py\", line 2\n    print(f\"Harga: {harga\n                   ^\nSyntaxError: '{' was never closed\n"
+}

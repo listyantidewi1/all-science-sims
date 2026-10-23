@@ -1,0 +1,5 @@
+{
+  "stdout": "4300\nValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit\n6000 5736 3316275092\nValueError: Exceeds the limit (6000 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit\n0 7001 777\nValueError: maxdigits must be 0 or larger than 640\nValueError: maxdigits must be 0 or larger than 640\nValueError: Exceeds the limit (640 digits) for integer string conversion: value has 641 digits; use sys.set_int_max_str_digits() to increase the limit\n",
+  "error": null,
+  "stderr": ""
+}

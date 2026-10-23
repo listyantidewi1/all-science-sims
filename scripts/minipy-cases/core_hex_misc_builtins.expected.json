@@ -1,0 +1,4 @@
+{
+  "stdout": "0x0 0x1000 0o777 0b11111111 0b0\n255 10\n(-4, 1) (-4, -1) (0, 0)\n1000 0.001 -8 9\n3! 2\n'caf\\xe9' 'café' 00101010\nABC True False\n1 habis\na b None\n",
+  "error": null
+}

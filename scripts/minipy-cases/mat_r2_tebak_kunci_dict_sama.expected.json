@@ -1,0 +1,5 @@
+{
+  "stdout": "{1: 'benar'} 1\n{0: 'salah'}\n{1, 2} 2\nbenar benar True True 3\n",
+  "error": null,
+  "stderr": ""
+}

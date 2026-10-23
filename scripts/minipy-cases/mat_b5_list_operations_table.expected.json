@@ -1,0 +1,4 @@
+{
+  "stdout": "['A', 'B', 'C'] A\n['A', 'X', 'C']\n['A', 'B', 'C', 'D']\n['A', 'D', 'B', 'C']\n['A', 'C']\nC ['A', 'B']\n3 True 2 ['A', 'B']\n['A', 'B', 'C']\n['C', 'B', 'A']\n",
+  "error": null
+}

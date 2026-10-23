@@ -1,0 +1,5 @@
+{
+  "stdout": "'ﬁ' 'Fi' 'Fi' 'fi' 'FI' 'Fix'\n'ﬃ' 'Ffi' 'Ffi' 'ffi' 'FFI' 'Ffix'\n'ﬆ' 'St' 'St' 'st' 'ST' 'Stx'\n'ŉ' 'ʼN' 'ʼN' 'ʼn' 'ʼN' 'ʼNx'\n'ǅ' 'ǅ' 'ǅ' 'ǆ' 'ǅ' 'ǅx'\n'ᾳ' 'ᾼ' 'ᾼ' 'αι' 'ΑΙ' 'ᾼx'\n'ᾈ' 'ᾈ' 'ᾈ' 'ἀι' 'ᾈ' 'ᾈx'\n'և' 'Եւ' 'Եւ' 'եւ' 'ԵՒ' 'Եւx'\nFile Flow ǅEMAL True True False\n",
+  "error": null,
+  "stderr": ""
+}

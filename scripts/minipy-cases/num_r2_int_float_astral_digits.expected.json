@@ -1,0 +1,5 @@
+{
+  "stdout": "12 9 1.5 -2000.0 7\nTrue True True True\nValueError: invalid literal for int() with base 10: '𝐀'\n",
+  "error": null,
+  "stderr": ""
+}

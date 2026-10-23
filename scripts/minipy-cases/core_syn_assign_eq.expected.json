@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax. Maybe you meant '==' or ':=' instead of '='?",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-sXmoNX/main.py\", line 2\n    if x = 5:\n       ^^^^^\nSyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?\n"
+}

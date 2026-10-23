@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "AttributeError",
+    "message": "'list' object has no attribute 'push'",
+    "line": 2
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "TypeError",
+    "message": "'int' object is not subscriptable",
+    "line": 2
+  }
+}

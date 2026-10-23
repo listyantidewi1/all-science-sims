@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "NameError",
+    "message": "cannot access free variable 'x' where it is not associated with a value in enclosing scope",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-nDdW06/main.py\", line 7, in <module>\n    print(luar())\n          ~~~~^^\n  File \"/tmp/minipy-nDdW06/main.py\", line 4, in luar\n    hasil = dalam()\n  File \"/tmp/minipy-nDdW06/main.py\", line 3, in dalam\n    return x * 2\n           ^\nNameError: cannot access free variable 'x' where it is not associated with a value in enclosing scope\n"
+}

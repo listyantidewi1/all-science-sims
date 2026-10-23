@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "Function parameters cannot be parenthesized",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-bCnFW5/main.py\", line 1\n    def luas(p, (l, t)):\n                ^^^^^^\nSyntaxError: Function parameters cannot be parenthesized\n"
+}

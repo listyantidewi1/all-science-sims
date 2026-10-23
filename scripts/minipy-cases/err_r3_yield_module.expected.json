@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "'yield' outside function",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-Vw0R6s/main.py\", line 2\n    yield 5\n    ^^^^^^^\nSyntaxError: 'yield' outside function\n"
+}

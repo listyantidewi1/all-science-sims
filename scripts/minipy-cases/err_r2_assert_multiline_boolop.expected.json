@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "AssertionError",
+    "message": "belum boleh naik wahana",
+    "line": 4
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-ObkVaH/main.py\", line 4, in <module>\n    umur >= 12 and\n    tinggi >= 140\nAssertionError: belum boleh naik wahana\n"
+}

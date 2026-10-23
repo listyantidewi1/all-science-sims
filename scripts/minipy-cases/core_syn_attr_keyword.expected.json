@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-hIzQPG/main.py\", line 2\n    data.if = 5\n         ^^\nSyntaxError: invalid syntax\n"
+}

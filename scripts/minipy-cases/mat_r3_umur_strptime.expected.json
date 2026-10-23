@@ -1,0 +1,5 @@
+{
+  "stdout": "Tanggal lahir (dd/mm/yyyy):   Lahir Tuesday, 20 October 2009 -> umur 17 tahun, sudah 6209 hari\n  Boleh membuat KTP\nTanggal lahir (dd/mm/yyyy):   Lahir Wednesday, 21 October 2009 -> umur 16 tahun, sudah 6208 hari\n  Belum boleh membuat KTP\nTanggal lahir (dd/mm/yyyy):   Lahir Friday, 29 February 2008 -> umur 18 tahun, sudah 6808 hari\n  Boleh membuat KTP\nTanggal lahir (dd/mm/yyyy):   Format salah: day is out of range for month\nTanggal lahir (dd/mm/yyyy):   Format salah: time data '2009-10-20' does not match format '%d/%m/%Y'\nTanggal lahir (dd/mm/yyyy):   Lahir Friday, 01 January 2010 -> umur 16 tahun, sudah 6136 hari\n  Belum boleh membuat KTP\n",
+  "error": null,
+  "stderr": ""
+}

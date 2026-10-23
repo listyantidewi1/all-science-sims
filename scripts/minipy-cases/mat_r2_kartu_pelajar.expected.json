@@ -1,0 +1,9 @@
+{
+  "stdout": "Nama: Kelas: Nomor absen: Nama: Rani, Kelas: X-B, Absen: 7\nNama: Rani, Kelas: X-B, Absen: 07\nNama: Kelas: Nomor absen: Nama:   siti aminah , Kelas: xi-2, Absen: 17\nNama: Siti Aminah, Kelas: XI-2, Absen: 17\nNama: Kelas: Nomor absen: ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: '17.0'",
+    "line": 5
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-QbcRlh/main.py\", line 5, in <module>\n    absen = int(input(\"Nomor absen: \"))\nValueError: invalid literal for int() with base 10: '17.0'\n"
+}

@@ -1,0 +1,8 @@
+{
+  "stdout": "17\nTertangkap: Umur tidak boleh negatif\nKeyError('kunci') 'kunci'\nkosong: IndexError() True\nlog dulu\nditeruskan: division by zero\n",
+  "error": {
+    "type": "ValueError",
+    "message": "Umur tidak boleh negatif",
+    "line": 3
+  }
+}

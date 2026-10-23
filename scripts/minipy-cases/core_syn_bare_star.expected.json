@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "named arguments must follow bare *",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-EPS8oK/main.py\", line 1\n    def f(*, **opsi):\n          ^\nSyntaxError: named arguments must follow bare *\n"
+}

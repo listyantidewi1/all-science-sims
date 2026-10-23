@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "KeyError",
+    "message": "'Budi'",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-7XMxOp/main.py\", line 3, in <module>\n    nilai[\"Budi\"]\n    ~~~~~^^^^^^^^\nKeyError: 'Budi'\n"
+}

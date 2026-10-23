@@ -1,0 +1,5 @@
+{
+  "stdout": "'\\x1c' [\"invalid literal for int() with base 10: '\\\\x1c12\\\\x1c'\", \"could not convert string to float: '\\\\x1c12\\\\x1c'\"] '12'\n'\\x1d' [\"invalid literal for int() with base 10: '\\\\x1d12\\\\x1d'\", \"could not convert string to float: '\\\\x1d12\\\\x1d'\"] '12'\n'\\x1e' [\"invalid literal for int() with base 10: '\\\\x1e12\\\\x1e'\", \"could not convert string to float: '\\\\x1e12\\\\x1e'\"] '12'\n'\\x1f' [\"invalid literal for int() with base 10: '\\\\x1f12\\\\x1f'\", \"could not convert string to float: '\\\\x1f12\\\\x1f'\"] '12'\n'\\x85' [12, 12.0] '12'\n'\\xa0' [12, 12.0] '12'\n'\\u2003' [12, 12.0] '12'\n'\\x0b' [12, 12.0] '12'\n'\\x0c' [12, 12.0] '12'\n",
+  "error": null,
+  "stderr": ""
+}

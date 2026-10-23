@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "KeyError",
+    "message": "'Ani'",
+    "line": 2
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-2ElKIv/main.py\", line 2, in <module>\n    skor[\"Ani\"] += sum([\n    ~~~~^^^^^^^\nKeyError: 'Ani'\n"
+}

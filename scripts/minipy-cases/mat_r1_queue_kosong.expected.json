@@ -1,0 +1,9 @@
+{
+  "stdout": "Awal: deque(['Ani', 'Bayu']) 2\nTerdepan: Guru | terakhir: Citra | Bayu ada? True\nDilayani: Guru | sisa: ['Ani', 'Bayu', 'Citra']\nDilayani: Ani | sisa: ['Bayu', 'Citra']\nDilayani: Bayu | sisa: ['Citra']\nDilayani: Citra | sisa: []\nAntrean kosong: deque([]) False\nlist: pop from empty list\n",
+  "error": {
+    "type": "IndexError",
+    "message": "pop from an empty deque",
+    "line": 16
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-VX6eIU/main.py\", line 16, in <module>\n    antrean.popleft()\n    ~~~~~~~~~~~~~~~^^\nIndexError: pop from an empty deque\n"
+}

@@ -1,0 +1,4 @@
+{
+  "stdout": "Andi    85.00 Tuntas\nBudi    70.00 Remedial\nCitra   95.00 Tuntas\nTerbaik: Citra {'nama': 'Citra', 'nilai': [95, 92, 98], 'rata': 95.0}\n{'X-A': ['Andi', 'Budi'], 'X-B': ['Citra', 'Dewi'], 'X-C': ['Eka']} 5\n[[1, 4], [2, 5], [3, 6]] [6, 15] [5, 7, 9]\n",
+  "error": null
+}

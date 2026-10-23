@@ -1,0 +1,5 @@
+{
+  "stdout": "0x19b True True False True 0x19b 0x19b True\n0x264 True True False True 0x264 0x264 True\n0x897 False False False False 0x897 0x897 False\n0x1c89 False False False False 0x1c89 0x1c89 False\n0x1c8a False False False False 0x1c8a 0x1c8a False\n0xa7cb False False False False 0xa7cb 0xa7cb False\n0xa7cd False False False False 0xa7cd 0xa7cd False\n0xa7dc False False False False 0xa7dc 0xa7dc False\n0x105c1 False False False False 0x105c1 0x105c1 False\n0x1b4e False False False False 0x1b4e 0x1b4e False\n0x2427 False False False False 0x2427 0x2427 False\n'\\u0897\\U000105c1' '\\u019b' True ɤ 1\n",
+  "error": null,
+  "stderr": ""
+}

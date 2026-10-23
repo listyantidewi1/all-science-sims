@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "invalid syntax",
+    "line": 9
+  },
+  "stderr": "  File \"/tmp/minipy-YhKLHS/main.py\", line 9\n    elif nilai >= 70:\n    ^^^^\nSyntaxError: invalid syntax\n"
+}

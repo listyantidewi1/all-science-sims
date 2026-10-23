@@ -1,0 +1,8 @@
+{
+  "stdout": "80\n",
+  "error": {
+    "type": "KeyError",
+    "message": "'Citra'",
+    "line": 3
+  }
+}

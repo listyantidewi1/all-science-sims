@@ -1,0 +1,5 @@
+# float // and % follow floor semantics; the remainder takes the sign of the divisor (signed zeros too)
+print(-0.0 // 1, 0.0 // -1, -1e-300 // 1e300, divmod(-0.0, -1), (-0.0) % -1, 0.0 % -1, -0.0 % 5)
+print(-1 % 1e300, 1 % -1e300, -1e-300 % 1, divmod(-1e-300, 1), divmod(7.5, -2), divmod(-7.5, 2))
+print(5 // -0.5, -5 // 0.5, 5.5 // 1.1, 1 // 0.1, 1 % 0.1, 0.3 // 0.1, 0.3 % 0.1, 2.0 // 0.2, -2.0 % 0.2, 4.0 % -0.3)
+print(-7 // 2.0, -7 % 2.0, 7 % -2.0, 7.0 // -2, -6.0 % 3, 6 % -3.0, 1e16 % 3, -1e16 // 7)

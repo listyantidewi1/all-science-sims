@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "IndexError",
+    "message": "list assignment index out of range",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-aSVExI/main.py\", line 3, in <module>\n    b[5]) = 1, 2\n    ~^^^\nIndexError: list assignment index out of range\n"
+}

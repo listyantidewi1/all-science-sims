@@ -1,0 +1,8 @@
+print(str(42), str(3.0), str(True), str(None), str([1, "a"]), str("x"))
+print(str(7) + "%", "Nilai: " + str(85.5))
+print(bool("False"), bool(0), bool("0"), bool([]), bool([[]]))
+print(repr(str(1/3)), len(str(2 ** 100)))
+print(list("abc"), tuple([1, 2]), set("aab") == {"a", "b"}, dict([("a", 1), ("b", 2)]))
+print(list(range(3)), list({"x": 1, "y": 2}), list((1, 2)), list())
+print(dict(nama="Andi", umur=17), dict({"a": 1}, b=2))
+print(sorted(set([3, 1, 2, 3])), frozenset([1, 2]))

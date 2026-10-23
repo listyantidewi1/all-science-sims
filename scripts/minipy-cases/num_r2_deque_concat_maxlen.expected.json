@@ -1,0 +1,5 @@
+{
+  "stdout": "deque([2, 3, 4], maxlen=3) deque([4, 1, 2, 3]) deque([1, 2, 3], maxlen=3) deque([1, 2, 3], maxlen=3)\ndeque([3, 9, 8, 7], maxlen=4) deque([3, 1, 2, 3], maxlen=4) 4 deque([1, 2, 3], maxlen=4)\n",
+  "error": null,
+  "stderr": ""
+}

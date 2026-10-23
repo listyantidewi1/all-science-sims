@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers",
+    "line": 1
+  },
+  "stderr": "  File \"/tmp/minipy-mbuwvg/main.py\", line 1\n    kode = 007\n           ^^\nSyntaxError: leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers\n"
+}

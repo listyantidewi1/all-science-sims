@@ -1,0 +1,5 @@
+{
+  "stdout": "+3.14   | 5|0xff|0o10|abc|    3|7   |2.72|\n-02.5| 0042|-0042|2.|1.00000|0.5|1e-05|1E+20|\n007| -007|1|ab|50%|  7%|8   |\n003.1|3.14159|3.14159 {'a': 1} a (1, 2)\n0.000000e+00|100000|1e+06|0.0001|0|2|2|   ab|cd   |\n-ff|-10|400000000000000000|1000000000000000000000000000000|100000000000000000000.000|None|3|-2\nTypeError %d format: a real number is required, not str\nTypeError must be real number, not str\nTypeError %x format: an integer is required, not float\nTypeError not enough arguments for format string\nTypeError not all arguments converted during string formatting\nValueError unsupported format character 'z' (0x7a) at index 1\nTypeError format requires a mapping\nTypeError %d format: a real number is required, not list\n",
+  "error": null,
+  "stderr": ""
+}

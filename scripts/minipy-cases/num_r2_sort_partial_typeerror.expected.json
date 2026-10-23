@@ -1,0 +1,5 @@
+{
+  "stdout": "TypeError: '<' not supported between instances of 'str' and 'int'\n[3, 1, 'a', 2]\nTypeError: '<' not supported between instances of 'str' and 'int'\n[0, 1, 2, 3, 'a']\nTypeError: '<' not supported between instances of 'str' and 'int'\n[5, 4, 3, 2, 1, 'x', 0]\nTypeError: '<' not supported between instances of 'str' and 'int'\n[1, 2, 3, 8, 9, 'z', 4]\nTypeError: '<' not supported between instances of 'str' and 'int'\n[1, 2, 5, 'q', 4, 3]\nTypeError: '<' not supported between instances of 'NoneType' and 'int'\n[30, 10, 20, None, 5]\nZeroDivisionError: division by zero\n[3, 1, 2]\n",
+  "error": null,
+  "stderr": ""
+}

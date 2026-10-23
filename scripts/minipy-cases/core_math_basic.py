@@ -1,0 +1,12 @@
+import math
+print(math.sqrt(16), math.sqrt(2), math.sqrt(10 ** 40), math.pi, math.e, math.tau)
+print(math.floor(3.7), math.floor(-3.2), math.ceil(3.2), math.ceil(-3.7), math.trunc(-3.7), type(math.floor(2.0)))
+print(math.pow(2, 10), math.pow(2, 0.5), math.fabs(-3), math.fabs(2.5))
+print(math.gcd(12, 18), math.gcd(0, 5), math.gcd(12, 18, 27), math.lcm(4, 6), math.factorial(10), math.factorial(0))
+print(math.isqrt(17), math.isqrt(10 ** 20), math.comb(5, 2), math.perm(5, 2))
+print(math.log(math.e), math.log(100, 10), math.log(8, 2), math.log10(1000), math.log2(1024), math.log(1))
+print(math.log(1000, 10), math.log10(0.001), math.exp(1), math.exp(0))
+print(math.hypot(3, 4), math.hypot(1, 1), math.dist((0, 0), (3, 4)))
+print(math.fsum([0.1] * 10), math.prod([1, 2, 3, 4]), math.isclose(0.1 + 0.2, 0.3))
+print(math.inf, -math.inf, math.isinf(math.inf), math.isnan(math.nan), math.isfinite(1.0))
+print(math.copysign(3, -0.0), math.fmod(7, 3), math.fmod(-7, 3), math.modf(3.75))

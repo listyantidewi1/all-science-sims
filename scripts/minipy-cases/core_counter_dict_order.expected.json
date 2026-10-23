@@ -1,0 +1,4 @@
+{
+  "stdout": "Counter({'Andi': 3, 'Budi': 3, 'Citra': 2, 'Dewi': 1})\n[('Andi', 3), ('Budi', 3), ('Citra', 2), ('Dewi', 1)]\n[('Andi', 3), ('Budi', 3)] 4 9 ['Andi', 'Andi', 'Andi', 'Budi']\nAndi  ### 3\nBudi  ### 3\nCitra ## 2\nDewi  # 1\nCounter({'a': 2, 'b': 1, 'c': -2}) Counter({'a': 3, 'b': 1}) Counter({'a': 1})\nCounter({'a': 4, 'n': 2, 'b': 1}) {'b': 1, 'a': 4, 'n': 2} ['b', 'a', 'n'] 0\n",
+  "error": null
+}

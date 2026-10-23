@@ -1,0 +1,5 @@
+{
+  "stdout": "dequeue() -> AttributeError: 'collections.deque' object has no attribute 'dequeue'\npush() -> AttributeError: 'collections.deque' object has no attribute 'push'\npop(0) -> TypeError: deque.pop() takes no arguments (1 given)\npopleft() -> Ani\nindeks 5 -> IndexError: deque index out of range\nsebagai kunci dict -> TypeError: unhashable type: 'collections.deque'\nbandingkan list -> TypeError: '<' not supported between instances of 'collections.deque' and 'list'\nisi akhir -> ['Bayu', 'Citra']\n",
+  "error": null,
+  "stderr": ""
+}

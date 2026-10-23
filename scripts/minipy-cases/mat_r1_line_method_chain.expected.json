@@ -1,0 +1,9 @@
+{
+  "stdout": "Nama: Umur: Halo, Budi Santoso\n",
+  "error": {
+    "type": "AttributeError",
+    "message": "'int' object has no attribute 'strip'",
+    "line": 9
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-bNlpWL/main.py\", line 9, in <module>\n    .strip())\n     ^^^^^\nAttributeError: 'int' object has no attribute 'strip'\n"
+}

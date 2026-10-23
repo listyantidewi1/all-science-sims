@@ -1,0 +1,9 @@
+{
+  "stdout": "Tebak angka 1-10: Terlalu kecil.\nTebak angka 1-10: Terlalu besar.\nTebak angka 1-10: Terlalu kecil.\nTebak angka 1-10: Benar! Kamu menebak 4 kali.\nMain lagi? Tebak angka 1-10: ",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: ' tujuh'",
+    "line": 13
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-8JRGx7/main.py\", line 13, in <module>\n    tebakan = int(input(\"Main lagi? Tebak angka 1-10: \"))\nValueError: invalid literal for int() with base 10: ' tujuh'\n"
+}

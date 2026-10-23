@@ -1,0 +1,5 @@
+{
+  "stdout": "Bilangan:    0 ->           '' | bin():          0b0 | format: 00000000 | kembali: 0\n   1 ->          '1' | bin():          0b1 | format: 00000001 | kembali: 1\n   2 ->         '10' | bin():         0b10 | format: 00000010 | kembali: 2\n   7 ->        '111' | bin():        0b111 | format: 00000111 | kembali: 7\n   8 ->       '1000' | bin():       0b1000 | format: 00001000 | kembali: 8\n 156 ->   '10011100' | bin():   0b10011100 | format: 10011100 | kembali: 156\n 255 ->   '11111111' | bin():   0b11111111 | format: 11111111 | kembali: 255\n 256 ->  '100000000' | bin():  0b100000000 | format: 100000000 | kembali: 256\n  -5 ->           '' | bin():       -0b101 | format: -0000101 | kembali: 0\n",
+  "error": null,
+  "stderr": ""
+}

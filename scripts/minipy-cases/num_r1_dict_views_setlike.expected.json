@@ -1,0 +1,5 @@
+{
+  "stdout": "{2, 3} {1, 2, 3, 4}\n{1} {1, 4} {2, 3}\n{(2, 'buku')}\nTrue True False\nTrue True True\n[1, 2, 3, 4] 2\n",
+  "error": null,
+  "stderr": ""
+}

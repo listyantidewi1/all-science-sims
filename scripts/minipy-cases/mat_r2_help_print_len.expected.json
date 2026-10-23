@@ -1,0 +1,5 @@
+{
+  "stdout": "Help on built-in function print in module builtins:\n\nprint(*args, sep=' ', end='\\n', file=None, flush=False)\n    Prints the values to a stream, or to sys.stdout by default.\n\n    sep\n      string inserted between values, default a space.\n    end\n      string appended after the last value, default a newline.\n    file\n      a file-like object (stream); defaults to the current sys.stdout.\n    flush\n      whether to forcibly flush the stream.\n\nHelp on built-in function len in module builtins:\n\nlen(obj, /)\n    Return the number of items in a container.\n\nSelesai membaca dokumentasi.\n",
+  "error": null,
+  "stderr": ""
+}

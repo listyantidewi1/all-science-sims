@@ -1,0 +1,9 @@
+{
+  "stdout": "Daftar sapaan:\n",
+  "error": {
+    "type": "NameError",
+    "message": "name 'sapa' is not defined",
+    "line": 3
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-D3B1h8/main.py\", line 3, in <module>\n    sapa(\"Andi\")\n    ^^^^\nNameError: name 'sapa' is not defined\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "Judul buku (pisahkan ;): Ditumpuk: Matematika | tinggi: 1\nDitumpuk: Fisika | tinggi: 2\nDitumpuk: Informatika | tinggi: 3\nDitumpuk:  | tinggi: 4\nPaling atas: \nDiambil: \nDiambil: Informatika\nDiambil: Fisika\nDiambil: Matematika\nTumpukan: [] | kosong? True\n",
+  "error": {
+    "type": "IndexError",
+    "message": "pop from empty list",
+    "line": 10
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/minipy-fGtNrp/main.py\", line 10, in <module>\n    print(\"Diambil:\", tumpukan.pop())\n                      ~~~~~~~~~~~~^^\nIndexError: pop from empty list\n"
+}

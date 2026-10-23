@@ -1,0 +1,8 @@
+{
+  "stdout": "2 4 [6, 8] []\nTrue False\n385 3\n0, 1, 2, 3, 4 ('a', 'b', 'c')\n[(1, 2)]\n",
+  "error": {
+    "type": "ValueError",
+    "message": "invalid literal for int() with base 10: 'b'",
+    "line": 10
+  }
+}

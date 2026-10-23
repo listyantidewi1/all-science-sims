@@ -1,0 +1,5 @@
+{
+  "stdout": "Menu (1=tambah, 2=kali, 0=keluar): a: b: Hasil: 0\nMenu (1=tambah, 2=kali, 0=keluar): a: b: Hasil: 1082152022374638\nMenu (1=tambah, 2=kali, 0=keluar): a: b: Menu tidak ada\nMenu (1=tambah, 2=kali, 0=keluar): Menyimpan data...\nProgram berakhir.\n",
+  "error": null,
+  "stderr": "Terima kasih telah menggunakan kalkulator.\n"
+}

@@ -1,0 +1,9 @@
+{
+  "stdout": "",
+  "error": {
+    "type": "SyntaxError",
+    "message": "expected 'else' after 'if' expression",
+    "line": 2
+  },
+  "stderr": "  File \"/tmp/minipy-71ZhBZ/main.py\", line 2\n    status = \"besar\" if x > 3\n             ^^^^^^^^^^^^^^^^\nSyntaxError: expected 'else' after 'if' expression\n"
+}

@@ -1,0 +1,5 @@
+{
+  "stdout": "Uang saku (pisahkan spasi): 10000 -> Hemat\n20000 -> Boros\n15000 -> Hemat\n25000 -> Boros\nRata-rata: 17500.0 | hemat: 2\nUang saku (pisahkan spasi): 15001 -> Boros\n14999 -> Hemat\n15000 -> Hemat\nRata-rata: 15000.0 | hemat: 2\nUang saku (pisahkan spasi): Rata-rata: 0 | hemat: 0\n",
+  "error": null,
+  "stderr": ""
+}
